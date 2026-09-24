@@ -1,12 +1,17 @@
 import { readFileSync, writeFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 
 import { describe, expect, it } from "vitest";
-import { fileURLToPath } from "node:url";
 
 import { contrastRatio, hexToRgb, meetsWcag } from "../src/contrast";
 import { contrastPairs, prohibitedPairs } from "../src/semantic";
 import { color } from "../src/tokens";
 import { renderTokensCss } from "../src/to-css";
+
+/** Generated files are stored with LF; normalize CRLF checkouts (git autocrlf). */
+function readLf(path: string): string {
+  return readFileSync(path, "utf8").replace(/\r\n/g, "\n");
+}
 
 describe("WCAG contrast of approved token pairs", () => {
   it.each(contrastPairs.map((p) => [p.usage, p.fg, p.bg, p.min] as const))(
@@ -22,11 +27,6 @@ describe("WCAG contrast of approved token pairs", () => {
       expect(meetsWcag(fg, bg, min)).toBe(false);
     },
   );
-
-  it("rejects invalid hex colors", () => {
-    expect(() => hexToRgb("#12345")).toThrow(/Invalid hex color/);
-    expect(() => hexToRgb("nope")).toThrow(/Invalid hex color/);
-  });
 
   it("rejects invalid hex colors", () => {
     expect(() => hexToRgb("#12345")).toThrow(/Invalid hex color/);
@@ -54,11 +54,11 @@ describe("generated tokens.css", () => {
   if (process.env.UPDATE_TOKENS_CSS) {
     it("writes css/tokens.css (UPDATE_TOKENS_CSS=1)", () => {
       writeFileSync(cssPath, generated);
-      expect(readFileSync(cssPath, "utf8")).toBe(generated);
+      expect(readLf(cssPath)).toBe(generated);
     });
   } else {
     it("is in sync with src/tokens.ts (run with UPDATE_TOKENS_CSS=1 -u to regenerate)", () => {
-      expect(readFileSync(cssPath, "utf8")).toBe(generated);
+      expect(readLf(cssPath)).toBe(generated);
     });
   }
 });

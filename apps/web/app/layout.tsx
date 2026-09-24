@@ -1,18 +1,17 @@
-import "./globals.css";
+import type { Metadata } from "next";
 
-export const metadata = {
+import "./globals.css";
+import { fontVariables } from "../src-fonts";
+
+export const metadata: Metadata = {
   title: "Dentaliva",
   description: "Dental clinic in Istanbul",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="tr">
-      <body className="bg-white text-neutral-900 antialiased">{children}</body>
+    <html lang="tr" className={fontVariables}>
+      <body className="bg-ivory text-ink antialiased">{children}</body>
     </html>
   );
 }
