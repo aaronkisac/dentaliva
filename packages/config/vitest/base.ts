@@ -5,13 +5,14 @@
 // Threshold shape note (vitest 4/5): flat keys (`statements: 90`) are the
 // GLOBAL thresholds; glob keys map to per-path thresholds. `global:` is NOT a
 // valid key anymore (it would be read as a file glob matching nothing).
+// Glob keys are resolved relative to each package root, so 100% packages pass
+// their own thresholds via the `coverage.thresholds` override in their
+// vitest.config.ts.
 import { defineConfig } from "vitest/config";
 
-const PERFECT = { statements: 100, branches: 100, functions: 100, lines: 100 };
-
 export interface BaseVitestOverrides {
-  test?: { include?: string[]; environment?: "node" | "jsdom" };
-  coverage?: { exclude?: string[] };
+  test?: { include?: string[]; environment?: "node" | "jsdom"; setupFiles?: string[] };
+  coverage?: { exclude?: string[]; thresholds?: Record<string, unknown> };
 }
 
 export function baseVitestConfig(overrides: BaseVitestOverrides = {}) {
@@ -25,16 +26,18 @@ export function baseVitestConfig(overrides: BaseVitestOverrides = {}) {
         include: ["src/**"],
         // Exclusions (each with a reason):
         // - tests/, *.test.* — test code itself is not under test
-        exclude: ["tests/**", "src/**/*.test.*", "src/**/*.stories.*", ...overrides.coverage?.exclude ?? []],
+        exclude: [
+          "tests/**",
+          "src/**/*.test.*",
+          "src/**/*.stories.*",
+          ...(overrides.coverage?.exclude ?? []),
+        ],
         thresholds: {
           statements: 90,
           branches: 90,
           functions: 90,
           lines: 90,
-          // Reusable, content-independent packages are held to 100%:
-          "packages/ui/src/**": PERFECT,
-          "packages/lib/src/**": PERFECT,
-          "packages/seo/src/**": PERFECT,
+          ...overrides.coverage?.thresholds,
         },
       },
     },

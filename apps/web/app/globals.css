@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@source "../../packages/ui/src";
 @import "@dentaliva/tokens/css/tokens.css";
 @import "@dentaliva/config/tailwind/theme.css";
 

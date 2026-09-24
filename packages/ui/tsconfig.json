@@ -2,6 +2,14 @@
   "extends": "@dentaliva/config/tsconfig/library.json",
   "include": [
     "src/**/*.ts",
-    "vitest.config.ts"
-  ]
+    "src/**/*.tsx",
+    "vitest.config.ts",
+    "vitest.setup.ts",
+    "tests/**/*.ts",
+    "tests/**/*.tsx",
+    "types/**/*.d.ts"
+  ],
+  "compilerOptions": {
+    "lib": ["dom", "dom.iterable", "ES2022"]
+  }
 }
