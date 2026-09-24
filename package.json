@@ -1,0 +1,16 @@
+{
+  "name": "dentaliva",
+  "private": true,
+  "packageManager": "pnpm@11.1.2",
+  "engines": { "node": ">=22.12" },
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test"
+  },
+  "devDependencies": {
+    "turbo": "^2.11.3"
+  }
+}
