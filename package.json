@@ -2,7 +2,9 @@
   "name": "dentaliva",
   "private": true,
   "packageManager": "pnpm@11.1.2",
-  "engines": { "node": ">=22.12" },
+  "engines": {
+    "node": ">=22.12"
+  },
   "scripts": {
     "dev": "turbo run dev",
     "build": "turbo run build",
@@ -11,6 +13,13 @@
     "test": "turbo run test"
   },
   "devDependencies": {
-    "turbo": "^2.11.3"
+    "turbo": "^2.11.3",
+    "@types/node": "^24.0.0",
+    "eslint": "^9.0.0",
+    "prettier": "^3.0.0",
+    "typescript": "^5.9.0",
+    "vitest": "^5.0.0",
+    "@vitest/coverage-v8": "^5.0.0",
+    "@dentaliva/config": "workspace:*"
   }
 }

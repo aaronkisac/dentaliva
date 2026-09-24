@@ -1,0 +1,4 @@
+/* Tailwind v4 theme bridge. Design tokens land in DSN-1; until then this is
+   intentionally empty so the app already builds with Tailwind v4 CSS-first
+   configuration. @theme here maps token CSS variables to utilities. */
+@theme;

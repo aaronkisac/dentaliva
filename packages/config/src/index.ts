@@ -1,4 +1,4 @@
-// @dentaliva/config — shared tooling presets land in FND-2.
-// This package holds files (tsconfig/eslint/prettier/tailwind/vitest presets),
-// not runtime code; the entry point exists only to satisfy tooling.
+// @dentaliva/config holds tooling preset files consumed via its `exports` map
+// (tsconfig/*.json, eslint/*, vitest/base.ts, prettier.json, tailwind/theme.css).
+// It ships no runtime code — this entry exists only to satisfy type resolution.
 export {};

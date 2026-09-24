@@ -4,7 +4,9 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "sanity dev",
-    "build": "sanity build"
+    "build": "sanity build",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "react": "^19.3.0",
@@ -13,6 +15,7 @@
     "styled-components": "^6.1.0"
   },
   "devDependencies": {
-    "typescript": "^5.9.0"
+    "typescript": "^5.9.0",
+    "@dentaliva/config": "workspace:*"
   }
 }
