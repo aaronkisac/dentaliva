@@ -1,0 +1,20 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended", ":semanticCommits"],
+  "timezone": "Europe/Istanbul",
+  "schedule": ["after 9am and before 5pm on monday"],
+  "rangeStrategy": "bump",
+  "packageRules": [
+    {
+      "description": "Group minor+patch into one weekly PR",
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "all minor+patch",
+      "automerge": false
+    },
+    {
+      "description": "Major updates each get an individual PR",
+      "matchUpdateTypes": ["major"],
+      "automerge": false
+    }
+  ]
+}
