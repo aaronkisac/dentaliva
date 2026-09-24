@@ -1,16 +1,19 @@
 {
+  // Standalone (no `extends` of @dentaliva/config): Sanity's CLI loads this file
+  // with its own TS loader, which resolves `extends` as a file path only and
+  // cannot follow package exports. Keep in sync with tsconfig/library.json.
   "compilerOptions": {
     "target": "ES2022",
     "lib": ["dom", "dom.iterable", "ES2022"],
-    "skipLibCheck": true,
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "noEmit": true,
     "esModuleInterop": true,
+    "isolatedModules": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
     "module": "esnext",
     "moduleResolution": "bundler",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
     "jsx": "react-jsx",
     "incremental": true
   },
