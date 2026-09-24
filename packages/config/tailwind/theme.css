@@ -1,4 +1,23 @@
-/* Tailwind v4 theme bridge. Design tokens land in DSN-1; until then this is
-   intentionally empty so the app already builds with Tailwind v4 CSS-first
-   configuration. @theme here maps token CSS variables to utilities. */
-@theme;
+/* Maps generated @dentaliva/tokens CSS custom properties into Tailwind v4
+   utilities. `inline` lets utilities reference runtime vars directly. */
+@theme inline {
+  --color-navy: var(--dvn-navy);
+  --color-navy-2: var(--dvn-navy-2);
+  --color-navy-3: var(--dvn-navy-3);
+  --color-gold: var(--dvn-gold);
+  --color-gold-soft: var(--dvn-gold-soft);
+  --color-gold-deep: var(--dvn-gold-deep);
+  --color-ivory: var(--dvn-ivory);
+  --color-ivory-2: var(--dvn-ivory-2);
+  --color-ink: var(--dvn-ink);
+  --color-muted: var(--dvn-muted);
+  --font-serif: var(--dvn-font-serif);
+  --font-sans: var(--dvn-font-sans);
+  --shadow-soft: var(--dvn-shadow-soft);
+  --shadow-lift: var(--dvn-shadow-lift);
+  --shadow-gold: var(--dvn-shadow-gold);
+  --radius-full: var(--dvn-radius-full);
+  --breakpoint-md: 900px;
+  --breakpoint-lg: 1080px;
+  --ease-out-brand: var(--dvn-ease-out);
+}

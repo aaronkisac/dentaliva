@@ -7,9 +7,14 @@
   "types": "./src/index.ts",
   "scripts": {
     "lint": "eslint .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run --coverage"
   },
   "devDependencies": {
     "@dentaliva/config": "workspace:*"
+  },
+  "exports": {
+    ".": "./src/index.ts",
+    "./css/tokens.css": "./css/tokens.css"
   }
 }
