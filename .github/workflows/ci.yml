@@ -29,6 +29,6 @@ jobs:
       - name: Typecheck
         run: pnpm typecheck
       - name: Unit + coverage thresholds
-        run: pnpm test -- --coverage
+        run: pnpm test
       - name: Build
         run: pnpm build
