@@ -21,7 +21,7 @@ Two goals of equal weight:
 | 0 — Tooling setup | MCP servers, CLIs, ZCode config | **Done 2026-09-24** — MCP config written (verify in Settings → MCP after ZCode restart); gh 2.101 ✓; pnpm 12.6 installed (stale `C:\Program Files\nodejs\pnpm*` shims shadow it — needs elevated `del`, non-blocking); `gh project` scope still missing — run `gh auth refresh -s project -h github.com` before Phase 3 |
 | 1 — Discovery | 14 numbered questions | **Closed 2026-09-24** — Aaron accepted all defaults ("ok you can go on"); decisions recorded below |
 | 2 — Architecture | `docs/ARCHITECTURE.md` + `docs/adr/ADR-001…007` | **Approved 2026-09-24 (Checkpoint 2)** |
-| 3 — Backlog | `docs/BACKLOG.md` — 10 epics, **55 issues** | **Created on GitHub 2026-09-24** — private repo `aaronkisac/dentaliva`; Projects board pending `gh project` scope |
+| 3 — Backlog | `docs/BACKLOG.md` — 10 epics, **55 issues** | **Complete 2026-09-24** — private repo `aaronkisac/dentaliva` seeded; 10 milestones, labels, issues #1–#55; **Dentaliva Delivery** board live (all 55 items, Status=Todo): https://github.com/users/aaronkisac/projects/1 |
 | 4 — Execution | One issue → one branch → one PR | Blocked on Checkpoint 3 + explicit go |
 
 **Checkpoints (⏸) are hard stops.** Do not continue past 0/1/2/3 without Aaron's explicit reply. Do not use Goal mode / full-access mode until Phase 4 is explicitly approved. **No application code until Phase 4.**
