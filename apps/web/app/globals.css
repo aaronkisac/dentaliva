@@ -1,3 +1,22 @@
 @import "tailwindcss";
 @import "@dentaliva/tokens/css/tokens.css";
 @import "@dentaliva/config/tailwind/theme.css";
+
+/* Loaded webfonts win over the static token stacks (which remain as fallbacks). */
+:root {
+  --dvn-font-serif: var(--dvn-font-cormorant), "Georgia", serif;
+  --dvn-font-sans: var(--dvn-font-montserrat), "Segoe UI", sans-serif;
+}
+
+body {
+  font-family: var(--dvn-font-sans);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--dvn-font-serif);
+}
