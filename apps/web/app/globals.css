@@ -1,2 +1,3 @@
 @import "tailwindcss";
+@import "@dentaliva/tokens/css/tokens.css";
 @import "@dentaliva/config/tailwind/theme.css";

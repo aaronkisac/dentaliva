@@ -1,0 +1,64 @@
+import { readFileSync, writeFileSync } from "node:fs";
+
+import { describe, expect, it } from "vitest";
+import { fileURLToPath } from "node:url";
+
+import { contrastRatio, hexToRgb, meetsWcag } from "../src/contrast";
+import { contrastPairs, prohibitedPairs } from "../src/semantic";
+import { color } from "../src/tokens";
+import { renderTokensCss } from "../src/to-css";
+
+describe("WCAG contrast of approved token pairs", () => {
+  it.each(contrastPairs.map((p) => [p.usage, p.fg, p.bg, p.min] as const))(
+    "%s passes its minimum",
+    (_usage, fg, bg, min) => {
+      expect(meetsWcag(fg, bg, min)).toBe(true);
+    },
+  );
+
+  it.each(prohibitedPairs.map((p) => [p.usage, p.fg, p.bg, p.min] as const))(
+    "prohibited: %s is documented as failing",
+    (_usage, fg, bg, min) => {
+      expect(meetsWcag(fg, bg, min)).toBe(false);
+    },
+  );
+
+  it("rejects invalid hex colors", () => {
+    expect(() => hexToRgb("#12345")).toThrow(/Invalid hex color/);
+    expect(() => hexToRgb("nope")).toThrow(/Invalid hex color/);
+  });
+
+  it("rejects invalid hex colors", () => {
+    expect(() => hexToRgb("#12345")).toThrow(/Invalid hex color/);
+    expect(() => hexToRgb("nope")).toThrow(/Invalid hex color/);
+  });
+
+  it("handles the sRGB linearization low-channel branch", () => {
+    expect(contrastRatio("#000000", "#ffffff")).toBe(21);
+  });
+
+  it("reads the exact approved brand colors", () => {
+    expect(color.navy).toBe("#0c1f38");
+    expect(color.gold).toBe("#c9a35c");
+  });
+
+  it("gold-on-navy has a documented ratio in AA-normal territory", () => {
+    expect(contrastRatio(color.gold, color.navy)).toBeGreaterThan(4.5);
+  });
+});
+
+describe("generated tokens.css", () => {
+  const cssPath = fileURLToPath(new URL("../css/tokens.css", import.meta.url));
+  const generated = renderTokensCss();
+
+  if (process.env.UPDATE_TOKENS_CSS) {
+    it("writes css/tokens.css (UPDATE_TOKENS_CSS=1)", () => {
+      writeFileSync(cssPath, generated);
+      expect(readFileSync(cssPath, "utf8")).toBe(generated);
+    });
+  } else {
+    it("is in sync with src/tokens.ts (run with UPDATE_TOKENS_CSS=1 -u to regenerate)", () => {
+      expect(readFileSync(cssPath, "utf8")).toBe(generated);
+    });
+  }
+});
