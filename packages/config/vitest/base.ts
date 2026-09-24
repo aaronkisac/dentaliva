@@ -1,6 +1,10 @@
 // Shared Vitest preset. Coverage thresholds are the quality gate from the brief:
 // 100% for ui/lib/seo (+ clinic schema helpers), >=90% global. Every exclusion
 // below carries a reason — do not add exclusions without one.
+//
+// Threshold shape note (vitest 4/5): flat keys (`statements: 90`) are the
+// GLOBAL thresholds; glob keys map to per-path thresholds. `global:` is NOT a
+// valid key anymore (it would be read as a file glob matching nothing).
 import { defineConfig } from "vitest/config";
 
 const PERFECT = { statements: 100, branches: 100, functions: 100, lines: 100 };
@@ -23,7 +27,10 @@ export function baseVitestConfig(overrides: BaseVitestOverrides = {}) {
         // - tests/, *.test.* — test code itself is not under test
         exclude: ["tests/**", "src/**/*.test.*", "src/**/*.stories.*", ...overrides.coverage?.exclude ?? []],
         thresholds: {
-          global: { statements: 90, branches: 90, functions: 90, lines: 90 },
+          statements: 90,
+          branches: 90,
+          functions: 90,
+          lines: 90,
           // Reusable, content-independent packages are held to 100%:
           "packages/ui/src/**": PERFECT,
           "packages/lib/src/**": PERFECT,
