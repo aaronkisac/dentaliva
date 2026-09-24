@@ -13,13 +13,13 @@
     "test": "turbo run test"
   },
   "devDependencies": {
-    "turbo": "^2.11.3",
+    "@dentaliva/config": "workspace:*",
     "@types/node": "^24.0.0",
+    "@vitest/coverage-v8": "^4.1.11",
     "eslint": "^9.0.0",
     "prettier": "^3.0.0",
+    "turbo": "^2.11.3",
     "typescript": "^5.9.0",
-    "vitest": "^5.0.0",
-    "@vitest/coverage-v8": "^5.0.0",
-    "@dentaliva/config": "workspace:*"
+    "vitest": "^4.1.11"
   }
 }
