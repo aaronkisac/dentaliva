@@ -5,3 +5,6 @@ dist/
 coverage/
 pnpm-lock.yaml
 .sanity/
+
+# Generated artifacts — regenerating them must be the only way they change
+packages/tokens/css/tokens.css
