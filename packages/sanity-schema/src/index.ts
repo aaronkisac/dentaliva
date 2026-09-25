@@ -2,7 +2,7 @@ import { imageWithAlt } from "./objects/image-with-alt";
 import { localeString, localeText } from "./objects/locale-text";
 import { seo } from "./objects/seo";
 
-export { requireTr, validRedirectTarget, validTrPhone } from "./validation";
+export { requireNonEmpty, requireTr, validRedirectTarget, validTrPhone } from "./validation";
 export { imageWithAlt } from "./objects/image-with-alt";
 export { localeString, localeText } from "./objects/locale-text";
 export { seo } from "./objects/seo";

@@ -20,6 +20,7 @@
   },
   "exports": {
     ".": "./src/index.ts",
-    "./queries": "./src/queries.ts"
+    "./queries": "./src/queries.ts",
+    "./client": "./src/client.ts"
   }
 }

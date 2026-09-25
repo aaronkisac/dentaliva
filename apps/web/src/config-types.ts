@@ -34,6 +34,12 @@ export const homeSectionIds = [
 
 export type HomeSectionId = (typeof homeSectionIds)[number];
 
+export interface NavItem {
+  label: string;
+  href: string;
+  children?: Array<{ label: string; href: string }>;
+}
+
 export interface SiteConfig {
   /** Short registry key — set as SITE_ID at build time. */
   id: string;
@@ -44,6 +50,8 @@ export interface SiteConfig {
   /** Sister domains for hreflang alternates once ≥2 translated sites exist. */
   sisterDomains: string[];
   features: SiteFeatures;
+  /** Structural navigation (labels are domain-fixed; dropdown children come from CMS). */
+  nav: NavItem[];
   sections: {
     home: HomeSectionId[];
   };
