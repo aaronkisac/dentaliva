@@ -1,0 +1,40 @@
+import type { ReactNode } from "react";
+
+import type { HomeSectionId } from "../../src/config-types";
+import type { HomeData } from "../../src/content/home";
+import { AboutSection } from "./about";
+import { CtaSection, FaqSection } from "./faq-cta";
+import { DoctorsSection } from "./doctors";
+import { GallerySection } from "./gallery";
+import { HeroSection } from "./hero";
+import { QuickServicesSection } from "./quick-services";
+import { ReviewsSection, VideoTestimonialsSection } from "./testimonials";
+
+type SectionRenderer = (data: HomeData) => ReactNode;
+
+/** Registry: section id → renderer. Order comes from the site config. */
+export const sectionRegistry: Record<HomeSectionId, SectionRenderer> = {
+  hero: (data) => <HeroSection data={data.homePage?.hero ?? null} />,
+  quickServices: (data) => <QuickServicesSection items={data.quickServices} />,
+  about: (data) => <AboutSection data={data.homePage?.about ?? null} />,
+  videoTestimonials: (data) => <VideoTestimonialsSection items={data.testimonials} />,
+  reviews: (data) => <ReviewsSection items={data.testimonials} />,
+  gallery: (data) => <GallerySection images={data.homePage?.gallery ?? []} />,
+  doctors: (data) => <DoctorsSection items={data.doctors} />,
+  faq: (data) => <FaqSection items={data.faqs} />,
+  cta: (data) => (
+    <CtaSection title={data.homePage?.cta?.title ?? null} phone={data.siteSettings?.phone ?? ""} />
+  ),
+};
+
+export function HomeSections({ data, order }: { data: HomeData; order: HomeSectionId[] }) {
+  return (
+    <>
+      {order.map((id) => (
+        <div key={id} data-section={id}>
+          {sectionRegistry[id](data)}
+        </div>
+      ))}
+    </>
+  );
+}
