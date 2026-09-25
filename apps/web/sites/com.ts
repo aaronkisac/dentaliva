@@ -8,6 +8,14 @@ export const site = {
   defaultLocale: "tr",
   sanity: { projectId: "86x2hbzv", dataset: "production", stagingDataset: "staging" },
   sisterDomains: ["dentaliva.eu", "dentaliva.nl"],
+  nav: [
+    { label: "Hakkımızda", href: "/hakkimizda" },
+    { label: "Hizmetlerimiz", href: "/hizmetlerimiz" },
+    { label: "Hekimlerimiz", href: "/hekimlerimiz" },
+    { label: "Şubelerimiz", href: "/subelerimiz" },
+    { label: "Blog", href: "/blog" },
+    { label: "İletişim", href: "/iletisim" },
+  ],
   features: {
     callbackForm: true,
     chatbotApi: true,

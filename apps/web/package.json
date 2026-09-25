@@ -14,7 +14,9 @@
     "next": "16.3.6",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
-    "@dentaliva/tokens": "workspace:*"
+    "@dentaliva/tokens": "workspace:*",
+    "@dentaliva/ui": "workspace:*",
+    "@dentaliva/sanity-schema": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^24.0.0",
