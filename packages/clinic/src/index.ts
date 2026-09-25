@@ -1,2 +1,3 @@
-// @dentaliva/clinic — populated in its own story.
-export {};
+export { branch } from "./documents/branch";
+export { doctor } from "./documents/doctor";
+export { treatment } from "./documents/treatment";

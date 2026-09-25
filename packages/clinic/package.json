@@ -7,9 +7,14 @@
   "types": "./src/index.ts",
   "scripts": {
     "lint": "eslint .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
   },
   "devDependencies": {
     "@dentaliva/config": "workspace:*"
+  },
+  "dependencies": {
+    "@dentaliva/sanity-schema": "workspace:*",
+    "sanity": "^6.16.0"
   }
 }
