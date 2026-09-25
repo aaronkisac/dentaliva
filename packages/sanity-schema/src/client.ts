@@ -5,6 +5,7 @@ import type { LocalizedValue } from "./validation";
 export interface SanityEnv {
   projectId: string;
   dataset: string;
+  token?: string;
   /** API content date — pin to a version for stable query behavior. */
   apiVersion?: string;
 }
@@ -24,11 +25,14 @@ export function defaultEnv(): SanityEnv {
  */
 export function createReadClient(env: Partial<SanityEnv> = {}) {
   const resolved = { ...defaultEnv(), ...env };
+  const token = resolved.token ?? process.env.SANITY_READ_TOKEN;
   return createClient({
     projectId: resolved.projectId,
     dataset: resolved.dataset,
     apiVersion: resolved.apiVersion,
-    useCdn: true,
+    // Anonymous reads may use the CDN; token reads go to the origin for freshness.
+    useCdn: !token,
+    token,
   });
 }
 
