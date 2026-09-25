@@ -1,3 +1,11 @@
+export { blogPost } from "./documents/blog-post";
 export { branch } from "./documents/branch";
+export { faq } from "./documents/faq";
+export { legalPage } from "./documents/legal-page";
+export { homePage } from "./documents/home-page";
+export { redirect } from "./documents/redirect";
+export { siteSettings } from "./documents/site-settings";
+export { testimonial } from "./documents/testimonial";
+export { localeBlockContent } from "./objects/locale-block-content";
 export { doctor } from "./documents/doctor";
 export { treatment } from "./documents/treatment";
