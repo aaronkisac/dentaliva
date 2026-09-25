@@ -4,6 +4,8 @@ export { Button, buttonVariants, type ButtonProps } from "./button";
 export { Card, cardVariants, type CardProps } from "./card";
 export { cn } from "./cn";
 export { Container, type ContainerProps } from "./container";
+export { Footer, type FooterColumn, type FooterContact, type FooterProps } from "./footer";
+export { Header, type HeaderProps, type NavLink } from "./header";
 export {
   Heading,
   headingSize,
@@ -12,5 +14,7 @@ export {
   type HeadingSize,
 } from "./heading";
 export { Link, type LinkProps } from "./link";
+export { Reveal, type RevealProps } from "./reveal";
 export { Section, type SectionProps } from "./section";
 export { Text, textSize, type TextProps, type TextSize } from "./text";
+export { useFocusTrap } from "./use-focus-trap";
