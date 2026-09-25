@@ -15,6 +15,10 @@ concurrency:
 jobs:
   CI:
     runs-on: ubuntu-latest
+    env:
+      # Content fetches at build time need project access (access control
+      # blocks anonymous reads). Viewer-role token, repo secret.
+      SANITY_READ_TOKEN: ${{ secrets.SANITY_READ_TOKEN }}
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
