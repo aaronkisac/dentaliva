@@ -14,6 +14,12 @@
     "@dentaliva/config": "workspace:*"
   },
   "dependencies": {
+    "@sanity/client": "^8.7.0",
+    "groq": "^6.16.0",
     "sanity": "^6.16.0"
+  },
+  "exports": {
+    ".": "./src/index.ts",
+    "./queries": "./src/queries.ts"
   }
 }
