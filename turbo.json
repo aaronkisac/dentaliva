@@ -3,18 +3,35 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": [".next/**", "!.next/cache/**", "out/**", "dist/**"]
+      "outputs": [".next/**", "!.next/cache/**", "out/**", "dist/**"],
+      "env": [
+        "SITE_ID",
+        "SANITY_PROJECT_ID",
+        "SANITY_DATASET",
+        "SANITY_READ_TOKEN",
+        "SANITY_API_VERSION"
+      ]
     },
     "dev": {
       "cache": false,
-      "persistent": true
+      "persistent": true,
+      "env": [
+        "SITE_ID",
+        "SANITY_PROJECT_ID",
+        "SANITY_DATASET",
+        "SANITY_READ_TOKEN",
+        "SANITY_API_VERSION",
+        "SANITY_STUDIO_PROJECT_ID",
+        "SANITY_STUDIO_DATASET"
+      ]
     },
     "lint": {},
     "typecheck": {
       "dependsOn": ["^build"]
     },
     "test": {
-      "dependsOn": ["^build"]
+      "dependsOn": ["^build"],
+      "env": ["SANITY_READ_TOKEN", "SANITY_PROJECT_ID", "SANITY_DATASET"]
     }
   }
 }
