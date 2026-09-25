@@ -14,6 +14,7 @@ export {
   type HeadingSize,
 } from "./heading";
 export { Link, type LinkProps } from "./link";
+export { Reveal, type RevealProps } from "./reveal";
 export { Section, type SectionProps } from "./section";
 export { Text, textSize, type TextProps, type TextSize } from "./text";
 export { useFocusTrap } from "./use-focus-trap";
