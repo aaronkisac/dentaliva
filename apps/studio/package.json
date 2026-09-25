@@ -13,7 +13,8 @@
     "react-dom": "^19.3.0",
     "sanity": "^6.16.0",
     "styled-components": "^6.1.0",
-    "@dentaliva/clinic": "workspace:*"
+    "@dentaliva/clinic": "workspace:*",
+    "@dentaliva/sanity-schema": "workspace:*"
   },
   "devDependencies": {
     "typescript": "^5.9.0",

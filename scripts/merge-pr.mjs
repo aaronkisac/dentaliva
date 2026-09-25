@@ -37,6 +37,10 @@ for (let attempt = 0; attempt < 60; attempt++) {
 
 // 3. Verify green, then merge.
 const conclusions = rollup.map((c) => c.conclusion ?? c.status);
+if (conclusions.length === 0) {
+  console.error("REFUSING to merge: zero checks at merge time.");
+  process.exit(1);
+}
 if (!conclusions.every((c) => c === "SUCCESS")) {
   console.error("REFUSING to merge: checks not green:", conclusions.join(","));
   process.exit(1);
