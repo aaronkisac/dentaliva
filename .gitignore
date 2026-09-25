@@ -16,3 +16,9 @@ CLAUDE.md
 .cursor/
 .sanity/
 *.log
+jl.txt
+jl2.txt
+jobid.txt
+joblog.txt
+r.json
+*.log
