@@ -18,6 +18,7 @@ describe("createReadClient", () => {
   });
 
   it("honors env overrides without a token (anonymous public reads)", () => {
+    delete process.env.SANITY_READ_TOKEN; // simulate anonymous context
     process.env.SANITY_PROJECT_ID = "abc123";
     process.env.SANITY_DATASET = "staging";
     const client = createReadClient();
