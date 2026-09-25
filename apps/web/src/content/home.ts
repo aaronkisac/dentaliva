@@ -53,6 +53,7 @@ export interface HomePageContent {
 
 export interface SiteSettingsLite {
   phone?: string;
+  email?: string;
   social?: Array<{ platform?: string; url?: string }>;
 }
 
