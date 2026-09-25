@@ -47,4 +47,5 @@ export const branch = defineType({
     defineField({ name: "image", title: "Görsel", type: "imageWithAlt" }),
     defineField({ name: "seo", title: "SEO", type: "seo" }),
   ],
+  preview: { select: { title: "name", subtitle: "address.tr", media: "image" } },
 });

@@ -7,5 +7,6 @@ export { redirect } from "./documents/redirect";
 export { siteSettings } from "./documents/site-settings";
 export { testimonial } from "./documents/testimonial";
 export { localeBlockContent } from "./objects/locale-block-content";
+export { schemaTypes, singletonTypes } from "./schema";
 export { doctor } from "./documents/doctor";
 export { treatment } from "./documents/treatment";

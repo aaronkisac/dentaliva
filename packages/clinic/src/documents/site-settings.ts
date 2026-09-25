@@ -46,4 +46,5 @@ export const siteSettings = defineType({
     }),
     defineField({ name: "defaultSeo", title: "Varsayılan SEO", type: "seo" }),
   ],
+  preview: { select: { title: "siteName", subtitle: "phone" } },
 });

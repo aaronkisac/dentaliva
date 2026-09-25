@@ -57,4 +57,5 @@ export const homePage = defineType({
       ],
     }),
   ],
+  preview: { select: { title: "hero.headline.tr" } },
 });

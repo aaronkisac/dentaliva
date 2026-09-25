@@ -39,4 +39,5 @@ export const testimonial = defineType({
       to: [{ type: "treatment" }],
     }),
   ],
+  preview: { select: { title: "author", subtitle: "source" } },
 });
