@@ -26,4 +26,5 @@ export const faq = defineType({
     }),
   ],
   orderings: [{ title: "Sıralama", name: "orderAsc", by: [{ field: "order", direction: "asc" }] }],
+  preview: { select: { title: "question.tr" } },
 });

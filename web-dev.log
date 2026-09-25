@@ -1,0 +1,35 @@
+$ next dev
+▲ Next.js 16.3.6 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://10.5.0.2:3000
+✓ Ready in 6.3s
+✓ Running next.config.ts took 282ms
+
+○ Compiling / ...
+ GET / 200 in 7.3s (next.js: 7.2s, application-code: 187ms)
+ GET / 200 in 54ms (next.js: 17ms, application-code: 37ms)
+[browser] [RUM] ArmsEventBridge is not available, events dropped (<anonymous>:9:4511)
+[browser] [RUM] ArmsEventBridge is not available, events dropped (<anonymous>:9:4511)
+[browser] [RUM] ArmsEventBridge is not available, events dropped (<anonymous>:9:4511)
+[browser] [RUM] ArmsEventBridge is not available, events dropped (<anonymous>:9:4511)
+[browser] [RUM] ArmsEventBridge is not available, events dropped (<anonymous>:9:4511)
+[browser] [RUM] ArmsEventBridge is not available, events dropped (<anonymous>:9:4511)
+[browser] [RUM] ArmsEventBridge is not available, events dropped (<anonymous>:9:4511)
+[browser] [RUM] ArmsEventBridge is not available, events dropped (<anonymous>:9:4511)
+[browser] [RUM] ArmsEventBridge is not available, events dropped (<anonymous>:9:4511)
+[browser] [RUM] ArmsEventBridge is not available, events dropped (<anonymous>:9:4511)
+[browser] [RUM] ArmsEventBridge is not available, events dropped (<anonymous>:9:4511)
+[browser] [RUM] ArmsEventBridge is not available, events dropped (<anonymous>:9:4511)
+[browser] [RUM] ArmsEventBridge is not available, events dropped (<anonymous>:9:4511)
+[browser] [RUM] ArmsEventBridge is not available, events dropped (<anonymous>:9:4511)
+[browser] [RUM] ArmsEventBridge is not available, events dropped (<anonymous>:9:4511)
+[browser] [RUM] ArmsEventBridge is not available, events dropped (<anonymous>:9:4511)
+[browser] [RUM] ArmsEventBridge is not available, events dropped (<anonymous>:9:4511)
+[browser] [RUM] ArmsEventBridge is not available, events dropped (<anonymous>:9:4511)
+[browser] [RUM] ArmsEventBridge is not available, events dropped (<anonymous>:9:4511)
+[browser] [RUM] ArmsEventBridge is not available, events dropped (<anonymous>:9:4511)
+[browser] [RUM] ArmsEventBridge is not available, events dropped (<anonymous>:9:4511)
+ GET /tokens 200 in 336ms (next.js: 270ms, application-code: 66ms)
+ GET / 200 in 15ms (next.js: 7ms, application-code: 9ms)
+ GET / 200 in 32ms (next.js: 7ms, application-code: 25ms)
+ GET / 200 in 81ms (next.js: 16ms, application-code: 65ms)

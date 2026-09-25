@@ -56,6 +56,9 @@ importers:
 
   apps/studio:
     dependencies:
+      '@dentaliva/clinic':
+        specifier: workspace:*
+        version: link:../../packages/clinic
       react:
         specifier: ^19.3.0
         version: 19.3.0

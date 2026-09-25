@@ -37,4 +37,5 @@ export const blogPost = defineType({
     defineField({ name: "tags", title: "Etiketler", type: "array", of: [{ type: "string" }] }),
     defineField({ name: "seo", title: "SEO", type: "seo" }),
   ],
+  preview: { select: { title: "title.tr", subtitle: "publishedAt", media: "heroImage" } },
 });

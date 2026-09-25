@@ -1,4 +1,6 @@
+import { schemaTypes, singletonTypes } from "@dentaliva/clinic";
 import { defineConfig } from "sanity";
+import { structureTool } from "sanity/structure";
 
 // One Studio codebase, deployed per domain via env (ADR-002/ARCHITECTURE §4).
 // Fallbacks keep `sanity build` green in CI before real projects exist (SAN-6).
@@ -10,8 +12,36 @@ export default defineConfig({
   title: "Dentaliva Studio",
   projectId,
   dataset,
-  plugins: [],
-  schema: {
-    types: [],
+  plugins: [
+    structureTool({
+      structure: (S) =>
+        S.list()
+          .title("Dentaliva")
+          .items([
+            S.listItem()
+              .title("Site Ayarları")
+              .id("siteSettings")
+              .child(S.document().schemaType("siteSettings").documentId("siteSettings")),
+            S.listItem()
+              .title("Ana Sayfa")
+              .id("homePage")
+              .child(S.document().schemaType("homePage").documentId("homePage")),
+            S.divider(),
+            S.documentTypeListItem("treatment").title("Tedaviler"),
+            S.documentTypeListItem("doctor").title("Hekimler"),
+            S.documentTypeListItem("branch").title("Şubeler"),
+            S.documentTypeListItem("faq").title("SSS"),
+            S.documentTypeListItem("testimonial").title("Hasta Yorumları"),
+            S.documentTypeListItem("blogPost").title("Blog"),
+            S.documentTypeListItem("legalPage").title("Yasal Sayfalar"),
+            S.documentTypeListItem("redirect").title("Yönlendirmeler"),
+          ]),
+    }),
+  ],
+  schema: { types: schemaTypes },
+  document: {
+    // Singletons are reachable from the desk; hide them from "create new".
+    newDocumentOptions: (prev) =>
+      prev.filter((item) => !(singletonTypes as readonly string[]).includes(item.templateId)),
   },
 });

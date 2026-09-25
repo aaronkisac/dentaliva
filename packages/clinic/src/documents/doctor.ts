@@ -38,4 +38,5 @@ export const doctor = defineType({
     }),
     defineField({ name: "seo", title: "SEO", type: "seo" }),
   ],
+  preview: { select: { title: "name", subtitle: "title.tr", media: "photo" } },
 });

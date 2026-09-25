@@ -30,4 +30,5 @@ export const redirect = defineType({
       initialValue: true,
     }),
   ],
+  preview: { select: { title: "from.current", subtitle: "to" } },
 });

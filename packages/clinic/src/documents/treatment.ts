@@ -63,4 +63,5 @@ export const treatment = defineType({
     defineField({ name: "priceNote", title: "Fiyat notu", type: "localeString" }),
     defineField({ name: "seo", title: "SEO", type: "seo" }),
   ],
+  preview: { select: { title: "name.tr", subtitle: "slug.current", media: "heroImage" } },
 });
