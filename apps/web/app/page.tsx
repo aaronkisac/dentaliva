@@ -1,8 +1,9 @@
-export default function HomePage() {
-  return (
-    <main>
-      <h1>Dentaliva</h1>
-      <p>Scaffold — content arrives from Sanity in a later story.</p>
-    </main>
-  );
+import { HomeSections } from "../components/sections/compose";
+import { fetchHomeData } from "../src/content/home";
+import { site } from "../src/config";
+import { readClient } from "../src/sanity";
+
+export default async function HomePage() {
+  const data = await fetchHomeData(readClient);
+  return <HomeSections data={data} order={site.sections.home} />;
 }
