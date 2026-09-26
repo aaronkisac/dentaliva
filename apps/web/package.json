@@ -10,7 +10,8 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:perf": "node scripts/lighthouse-budget.mjs",
-    "test:bundle": "node scripts/bundle-budget.mjs && node scripts/use-client-audit.mjs"
+    "test:bundle": "node scripts/bundle-budget.mjs && node scripts/use-client-audit.mjs",
+    "postbuild": "node scripts/generate-headers.mjs"
   },
   "dependencies": {
     "@dentaliva/sanity-schema": "workspace:*",
