@@ -14,19 +14,21 @@
     "prepare": "husky"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
     "@commitlint/cli": "^21.2.3",
     "@commitlint/config-conventional": "^21.2.3",
     "@dentaliva/config": "workspace:*",
+    "@playwright/test": "^1.63.0",
     "@types/node": "^24.0.0",
     "@vitest/coverage-v8": "^4.1.11",
     "eslint": "^9.0.0",
+    "globals": "^16.0.0",
     "husky": "^9.1.7",
     "lint-staged": "^17.5.1",
     "prettier": "^3.0.0",
     "turbo": "^2.11.3",
     "typescript": "^5.9.0",
-    "vitest": "^4.1.11",
-    "globals": "^16.0.0"
+    "vitest": "^4.1.11"
   },
   "lint-staged": {
     "*.{ts,tsx,mjs,js}": [

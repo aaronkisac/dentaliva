@@ -12,6 +12,7 @@ interface CallbackWorkerEnv {
   /** E2E/local: dış çağrıları atlat (mock mod). */
   MOCK_EXTERNAL?: string;
   RATE_LIMITER?: { limit(key: { key: string }): Promise<{ success: boolean }> };
+  ASSETS: { fetch(request: Request): Promise<Response> };
 }
 
 async function verifyTurnstile(
@@ -73,12 +74,19 @@ async function sendMail(
 
 export default {
   async fetch(request: Request, env: CallbackWorkerEnv): Promise<Response> {
-    const deps = {
-      verifyTurnstile: (token: string, ip: string | null) => verifyTurnstile(env, token, ip),
-      rateLimit: (ip: string | null) => rateLimit(env, ip),
-      sendMail: (input: { name: string; phone: string; preferredTime: string }) =>
-        sendMail(env, input),
-    };
-    return handleCallbackPost(request, deps);
+    const url = new URL(request.url);
+
+    // Yalnızca form API'si Worker'da işlenir; diğer istekler statik asset'lere düşer.
+    if (request.method === "POST" && url.pathname === "/api/callback") {
+      const deps = {
+        verifyTurnstile: (token: string, ip: string | null) => verifyTurnstile(env, token, ip),
+        rateLimit: (ip: string | null) => rateLimit(env, ip),
+        sendMail: (input: { name: string; phone: string; preferredTime: string }) =>
+          sendMail(env, input),
+      };
+      return handleCallbackPost(request, deps);
+    }
+
+    return env.ASSETS.fetch(request);
   },
 };
