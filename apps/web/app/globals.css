@@ -21,3 +21,17 @@ h5,
 h6 {
   font-family: var(--dvn-font-serif);
 }
+
+/* PRF-2: honor prefers-reduced-motion globally — transitions (hover lifts,
+   reveals) collapse to instant state changes; the Reveal component also
+   short-circuits via matchMedia before any animation starts. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
