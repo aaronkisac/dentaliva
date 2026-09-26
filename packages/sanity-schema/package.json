@@ -21,6 +21,7 @@
   "exports": {
     ".": "./src/index.ts",
     "./queries": "./src/queries.ts",
-    "./client": "./src/client.ts"
+    "./client": "./src/client.ts",
+    "./image-url": "./src/image-url.ts"
   }
 }

@@ -7,7 +7,11 @@ export interface TreatmentListItem {
   name?: LocalizedPair;
   slug?: string;
   summary?: LocalizedPair;
-  heroImage?: unknown;
+  heroImage?: {
+    ref?: string;
+    lqip?: string;
+    alt?: LocalizedPair;
+  };
 }
 
 export interface TreatmentStep {
