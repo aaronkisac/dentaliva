@@ -12,12 +12,14 @@
   },
   "dependencies": {
     "@dentaliva/sanity-schema": "workspace:*",
+    "@dentaliva/seo": "workspace:*",
     "@dentaliva/tokens": "workspace:*",
     "@dentaliva/ui": "workspace:*",
+    "@hookform/resolvers": "^5.9.1",
     "next": "16.3.6",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
-    "@dentaliva/seo": "workspace:*"
+    "react-hook-form": "^7.88.0"
   },
   "devDependencies": {
     "@dentaliva/config": "workspace:*",

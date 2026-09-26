@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { CallbackForm } from "../../components/CallbackForm";
 import { Heading, Section, Text } from "@dentaliva/ui";
 
 import { fetchHomeData } from "../../src/content/home";
@@ -30,18 +31,15 @@ export default async function ContactPage() {
             </Text>
           ) : null}
           {settings?.email ? <Text>{settings.email}</Text> : null}
-          <Text tone="muted">
-            Randevu ve danışmak için bize ulaşın. Geri arama formu sonraki sürümde eklenecek.
-          </Text>
+          {settings?.hours?.tr ? <Text tone="muted">{settings.hours.tr}</Text> : null}
         </div>
         <div className="border border-[var(--dvn-line-gold)] bg-white p-6">
           <Heading level="h2" size="title">
-            Randevu
+            Geri arama talebi
           </Heading>
-          <Text className="mt-3">
-            Online randevu sistemi hazırlanıyor. Acil durumlar için telefon hattımızı
-            kullanabilirsiniz.
-          </Text>
+          <div className="mt-4">
+            <CallbackForm />
+          </div>
         </div>
       </div>
     </Section>
