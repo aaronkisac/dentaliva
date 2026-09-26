@@ -1,0 +1,54 @@
+// Runner: normalized/*.json → Sanity NDJSON + NAP diff report (MIG-2).
+// Usage (repo root): node packages/migration/transform.mjs
+import { mkdir, readFile, writeFile } from "node:fs/promises";
+
+import {
+  branchToSanity,
+  buildNapReport,
+  doctorToSanity,
+  treatmentToSanity,
+  validateDocs,
+} from "./src/transform.ts";
+
+const normalizedDir = "migration/normalized";
+const outDir = "migration/ndjson";
+
+async function load(type) {
+  try {
+    return JSON.parse(await readFile(`${normalizedDir}/${type}.json`, "utf8"));
+  } catch {
+    return [];
+  }
+}
+
+const [core, treatments, doctors, branches] = await Promise.all([
+  load("core"),
+  load("treatment"),
+  load("doctor"),
+  load("branch"),
+]);
+
+const docs = [
+  ...treatments.map(treatmentToSanity),
+  ...doctors.map(doctorToSanity),
+  ...branches.map(branchToSanity),
+];
+
+const errors = validateDocs(docs);
+if (errors.length > 0) {
+  console.error("VALIDATION FAILED:\n" + errors.join("\n"));
+  process.exit(1);
+}
+
+const napReport = buildNapReport(
+  core.filter((p) => p.url.includes("iletisim") || p.url.includes("hakkimizda")),
+);
+
+await mkdir(outDir, { recursive: true });
+await writeFile(`${outDir}/core.ndjson`, docs.map((d) => JSON.stringify(d)).join("\n"));
+await writeFile("migration/nap-diff.json", JSON.stringify(napReport, null, 2));
+
+console.log(
+  `docs: ${docs.length} (treatments ${treatments.length}, doctors ${doctors.length}, branches ${branches.length})`,
+);
+console.log("NAP:", JSON.stringify(napReport, null, 2));
