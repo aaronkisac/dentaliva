@@ -105,6 +105,11 @@ export type HomePage = {
     _type: "statPair";
     _key: string;
   }>;
+  gallery?: Array<
+    {
+      _key: string;
+    } & ImageWithAlt
+  >;
   cta?: {
     title?: LocaleString;
     text?: LocaleText;
@@ -627,7 +632,7 @@ export type SiteSettingsQueryResult = {
 
 // Source: ../../packages/sanity-schema/queries/site.ts
 // Variable: homePageQuery
-// Query: *[_type == "homePage"][0]{  hero { ..., image { ..., alt } },  quickServiceLinks->{ name, slug, summary },  about { ..., image { ..., alt } },  stats,  cta}
+// Query: *[_type == "homePage"][0]{  hero { ..., image { ..., alt } },  quickServiceLinks->{ name, slug, summary },  about { ..., image { ..., alt } },  stats,  gallery[]{ "asset": { "_ref": asset._ref }, "alt": alt },  cta}
 export type HomePageQueryResult = {
   hero: {
     headline?: LocaleString;
@@ -660,6 +665,12 @@ export type HomePageQueryResult = {
     _type: "statPair";
     _key: string;
   }> | null;
+  gallery: Array<{
+    asset: {
+      _ref: string | null;
+    };
+    alt: LocaleString | null;
+  }> | null;
   cta: {
     title?: LocaleString;
     text?: LocaleText;
@@ -678,7 +689,7 @@ export type TreatmentListQueryResult = Array<{
 
 // Source: ../../packages/sanity-schema/queries/treatment.ts
 // Variable: treatmentBySlugQuery
-// Query: *[_type == "treatment" && slug.current == $slug][0]{    name,    "slug": slug.current,    summary,    body,    heroImage { ..., alt },    benefits,    steps,    priceNote,    faqs->{ question, answer },    doctors->{ name, slug, title, photo },    seo  }
+// Query: *[_type == "treatment" && slug.current == $slug][0]{    name,    "slug": slug.current,    summary,    body,    heroImage { ..., alt, "ref": asset._ref, "lqip": asset->metadata.lqip },    benefits,    steps,    priceNote,    faqs->{ question, answer },    doctors->{ name, slug, title, photo },    seo  }
 export type TreatmentBySlugQueryResult = {
   name: LocaleString | null;
   slug: string | null;
@@ -691,6 +702,8 @@ export type TreatmentBySlugQueryResult = {
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt: LocaleString | null;
+    ref: string | null;
+    lqip: string | null;
   } | null;
   benefits: Array<
     {
@@ -724,9 +737,9 @@ declare global {
     '*[_type == "treatment"] | order(name.tr asc){ "id": slug.current, name, summary }': ChatbotServicesQueryResult;
     '*[_type == "doctor"]{ name, title, "photo": photo.asset->url }': ChatbotDoctorsQueryResult;
     '*[_type == "siteSettings"][0]': SiteSettingsQueryResult;
-    '*[_type == "homePage"][0]{\n  hero { ..., image { ..., alt } },\n  quickServiceLinks->{ name, slug, summary },\n  about { ..., image { ..., alt } },\n  stats,\n  cta\n}': HomePageQueryResult;
+    '*[_type == "homePage"][0]{\n  hero { ..., image { ..., alt } },\n  quickServiceLinks->{ name, slug, summary },\n  about { ..., image { ..., alt } },\n  stats,\n  gallery[]{ "asset": { "_ref": asset._ref }, "alt": alt },\n  cta\n}': HomePageQueryResult;
     '*[_type == "treatment"] | order(name.tr asc){\n    name,\n    "slug": slug.current,\n    summary,\n    heroImage\n  }': TreatmentListQueryResult;
-    '*[_type == "treatment" && slug.current == $slug][0]{\n    name,\n    "slug": slug.current,\n    summary,\n    body,\n    heroImage { ..., alt },\n    benefits,\n    steps,\n    priceNote,\n    faqs->{ question, answer },\n    doctors->{ name, slug, title, photo },\n    seo\n  }': TreatmentBySlugQueryResult;
+    '*[_type == "treatment" && slug.current == $slug][0]{\n    name,\n    "slug": slug.current,\n    summary,\n    body,\n    heroImage { ..., alt, "ref": asset._ref, "lqip": asset->metadata.lqip },\n    benefits,\n    steps,\n    priceNote,\n    faqs->{ question, answer },\n    doctors->{ name, slug, title, photo },\n    seo\n  }': TreatmentBySlugQueryResult;
   }
 }
 // Lets @sanity/client releases that predate the global registry read it too

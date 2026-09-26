@@ -27,9 +27,10 @@ async function fetchSiteSettings(): Promise<SiteSettingsFetch | null> {
   try {
     const data: SiteSettingsFetch | null = await readClient.fetch(`*[_type == "siteSettings"][0]`);
     return data;
-  } catch {
-    // Build resilience: a unreachable Sanity must not break the export;
+  } catch (error) {
+    // Build resilience: an unreachable Sanity must not break the export;
     // content lands on the next rebuild after the webhook fires.
+    console.warn("[layout] siteSettings fetch failed:", error);
     return null;
   }
 }

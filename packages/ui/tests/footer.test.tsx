@@ -42,7 +42,28 @@ describe("Footer", () => {
     expect(ref.current).toBeInstanceOf(HTMLElement);
   });
 
+  it("omits nameless anchors when contact values are empty", () => {
+    renderUi(
+      <Footer
+        {...props}
+        contact={{ phone: "", email: "info@dentaliva.com", address: "", hours: "" }}
+      />,
+    );
+    expect(screen.queryByRole("link", { name: /tel:/ })).not.toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "info@dentaliva.com" })).toHaveAttribute(
+      "href",
+      "mailto:info@dentaliva.com",
+    );
+    expect(screen.queryByText("Her gün 09:00 – 23:00")).not.toBeInTheDocument();
+  });
+
   it("has no axe violations", async () => {
     await expectNoA11yViolations(<Footer {...props} />);
+  });
+
+  it("has no axe violations with partial contact data", async () => {
+    await expectNoA11yViolations(
+      <Footer {...props} contact={{ phone: "", email: "", address: "", hours: "" }} />,
+    );
   });
 });

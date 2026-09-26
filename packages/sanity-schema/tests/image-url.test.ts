@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { refToBase, urlForImage } from "../src/image-url";
+import { lqipUrl, refDimensions, refToBase, urlForImage } from "../src/image-url";
 
 const REF = "image-abc123-1900x1200-jpg";
 
@@ -31,6 +31,25 @@ describe("urlForImage", () => {
   it("defaults quality and omits width when not given", () => {
     const url = urlForImage(REF, {}, { projectId: "p", dataset: "d" });
     expect(url).not.toContain("w=");
+    expect(url).toContain("fit=crop");
+  });
+});
+
+describe("refDimensions", () => {
+  it("extracts intrinsic dimensions from the reference", () => {
+    expect(refDimensions(REF)).toEqual({ width: 1900, height: 1200 });
+  });
+
+  it("returns null for malformed references", () => {
+    expect(refDimensions("not-a-ref")).toBeNull();
+  });
+});
+
+describe("lqipUrl", () => {
+  it("builds a tiny placeholder URL for blurDataURL", () => {
+    const url = lqipUrl(REF, { projectId: "86x2hbzv", dataset: "production" });
+    expect(url).toContain("w=32");
+    expect(url).toContain("q=30");
     expect(url).toContain("fit=crop");
   });
 });
