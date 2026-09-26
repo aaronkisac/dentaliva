@@ -1,0 +1,15 @@
+{
+  // Workers with static assets: Worker handles /api/*, static export from out/.
+  "name": "dentaliva-com",
+  "compatibility_date": "2026-09-01",
+  "main": "worker/index.ts",
+  "assets": {
+    "directory": "./out",
+    "binding": "ASSETS",
+    "not_found_handling": "404-page"
+  },
+  "vars": {
+    "MOCK_EXTERNAL": "1"
+  },
+  "observability": { "enabled": true }
+}
