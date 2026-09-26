@@ -19,7 +19,7 @@ async function verifyTurnstile(
   token: string,
   ip: string | null,
 ): Promise<boolean> {
-  if (env.MOCK_EXTERNAL === "1") return token.length > 0;
+  if (env.MOCK_EXTERNAL === "1") return true; // mock mod: harici doğrulama yok
   const res = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
     method: "POST",
     headers: { "content-type": "application/x-www-form-urlencoded" },

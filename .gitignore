@@ -23,3 +23,6 @@ joblog.txt
 r.json
 *.log
 migration/assets/
+.wrangler/
+test-results/
+playwright-report/
