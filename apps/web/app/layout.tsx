@@ -50,6 +50,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang={site.defaultLocale} className={fontVariables}>
       <body className="bg-ivory text-ink antialiased">
+        {/* PRF-2: keyboard users skip the nav straight to <main id="icerik">. */}
+        <a
+          href="#icerik"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:bg-navy focus:px-4 focus:py-2 focus:font-sans focus:text-sm focus:text-white"
+        >
+          İçeriğe atla
+        </a>
         <Header
           items={site.nav}
           logo={<span className="font-serif text-2xl text-navy">{siteName}</span>}
@@ -57,7 +64,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             settings?.phone ? { phone: settings.phone, email: settings.email ?? "" } : undefined
           }
         />
-        {children}
+        <main id="icerik" tabIndex={-1}>
+          {children}
+        </main>
         <Footer
           columns={site.nav.map((item) => ({ title: item.label, links: [item] }))}
           contact={contact ?? { phone: "", email: "", address: "", hours: "" }}
