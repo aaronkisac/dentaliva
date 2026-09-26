@@ -44,15 +44,24 @@ export default async function TreatmentDetailPage({ params }: PageProps) {
           {pickLocalized(treatment.name)}
         </Heading>
         {treatment.heroImage?.ref ? (
-          <Image
-            src={treatment.heroImage.ref}
-            alt={treatment.heroImage.alt?.tr ?? ""}
-            width={1200}
-            height={800}
-            priority
-            sizes="(max-width: 900px) 100vw, 1180px"
-            className="mt-8 h-auto w-full border border-[var(--dvn-line-gold)] object-cover"
-          />
+          <div
+            className="mt-8 border border-[var(--dvn-line-gold)]"
+            style={
+              treatment.heroImage.lqip
+                ? { backgroundImage: `url(${treatment.heroImage.lqip})`, backgroundSize: "cover" }
+                : undefined
+            }
+          >
+            <Image
+              src={treatment.heroImage.ref}
+              alt={treatment.heroImage.alt?.tr ?? ""}
+              width={1200}
+              height={800}
+              priority
+              sizes="(max-width: 900px) 100vw, 1180px"
+              className="h-auto w-full object-cover"
+            />
+          </div>
         ) : null}
         {treatment.summary?.tr ? (
           <Text size="lg" tone="white" className="mt-6 max-w-3xl">
