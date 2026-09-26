@@ -113,10 +113,31 @@ const { child, ready } = startWrangler();
 try {
   await ready;
 
+  // Performance is noisy on shared CI CPUs (±9 points single-sample); the
+  // median of LH_SAMPLES runs per category is the enforced number.
+  const SAMPLES = Number(process.env.LH_SAMPLES ?? 3);
+  const median = (values) => {
+    const sorted = [...values].sort((a, b) => a - b);
+    const mid = Math.floor(sorted.length / 2);
+    return sorted.length % 2 === 1 ? sorted[mid] : Math.round((sorted[mid - 1] + sorted[mid]) / 2);
+  };
+
   const rows = [];
   for (const route of ROUTES) {
-    const { scores, lhr } = await auditRoute(route);
-    rows.push({ route: route || "/", scores, lhr });
+    const runs = [];
+    for (let i = 0; i < SAMPLES; i += 1) {
+      runs.push(await auditRoute(route));
+    }
+    /** @type {Record<string, number>} */
+    const scores = {};
+    for (const category of CATEGORIES) {
+      scores[category] = median(runs.map((run) => run.scores[category]));
+    }
+    // Persist the sample with the worst performance score for debugging.
+    const worst = [...runs].sort(
+      (a, b) => (a.scores.performance ?? 0) - (b.scores.performance ?? 0),
+    )[0];
+    rows.push({ route: route || "/", scores, lhr: worst.lhr });
   }
 
   const failed = rows.filter((row) =>
