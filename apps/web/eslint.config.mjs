@@ -1,9 +1,16 @@
+import globals from "globals";
+
 import react from "@dentaliva/config/eslint/react";
 
 // Lightbox: native <dialog> handles Esc; backdrop-click close is pointer-only
 // by design and the Kapat button is the keyboard path.
 export default [
   ...react,
+  {
+    files: ["scripts/*.mjs"],
+    languageOptions: { globals: { ...globals.node } },
+    rules: { "no-console": "off" },
+  },
   {
     files: ["components/lightbox.tsx"],
     rules: {
