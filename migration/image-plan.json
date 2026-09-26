@@ -1,0 +1,260 @@
+[
+  {
+    "slug": "protez-dis-tedavisi",
+    "type": "treatment",
+    "name": "Protez Diş Tedavisi",
+    "imageUrl": "https://www.dentaliva.com/wp-content/uploads/2025/07/dis-genel-026-1024x1024.webp"
+  },
+  {
+    "slug": "zirkonyum-kaplama",
+    "type": "treatment",
+    "name": "Zirkonyum Kaplama",
+    "imageUrl": "https://www.dentaliva.com/wp-content/uploads/2025/07/dis-kaplamasi-006-1024x1024.webp"
+  },
+  {
+    "slug": "subperiostal-implant",
+    "type": "treatment",
+    "name": "Subperiostal İmplant",
+    "imageUrl": "https://www.dentaliva.com/wp-content/uploads/2025/07/subperiostal-imp-300x247.jpg"
+  },
+  {
+    "slug": "periodontoloji",
+    "type": "treatment",
+    "name": "Periodontoloji",
+    "imageUrl": "https://www.dentaliva.com/wp-content/uploads/2025/07/dis-genel-012-1024x1024.webp"
+  },
+  {
+    "slug": "pedodonti",
+    "type": "treatment",
+    "name": "Pedodonti",
+    "imageUrl": "https://www.dentaliva.com/wp-content/uploads/2025/07/pedodonti-002-1024x1024.webp"
+  },
+  {
+    "slug": "ortodonti",
+    "type": "treatment",
+    "name": "Ortodonti",
+    "imageUrl": "https://www.dentaliva.com/wp-content/uploads/2025/07/ortodonti-tedavisi-002-1024x1024.webp"
+  },
+  {
+    "slug": "lamine-kaplama",
+    "type": "treatment",
+    "name": "Lamine Kaplama",
+    "imageUrl": "https://www.dentaliva.com/wp-content/uploads/2025/07/dis-kaplamasi-010-1024x1024.webp"
+  },
+  {
+    "slug": "kompozit-dolgu",
+    "type": "treatment",
+    "name": "Kompozit Dolgu",
+    "imageUrl": "https://www.dentaliva.com/wp-content/uploads/2025/07/kompozit-dolgu-001-1024x1024.webp"
+  },
+  {
+    "slug": "kirik-dis-tedavisi",
+    "type": "treatment",
+    "name": "Kırık Diş Tedavisi",
+    "imageUrl": "https://www.dentaliva.com/wp-content/uploads/2025/07/kirilan-dis-001-1024x1024.webp"
+  },
+  {
+    "slug": "invisalign",
+    "type": "treatment",
+    "name": "Invisalign",
+    "imageUrl": "https://www.dentaliva.com/wp-content/uploads/2025/07/seffaf-plak-tedavisi-001-1024x1024.webp"
+  },
+  {
+    "slug": "inlay-ve-onlay",
+    "type": "treatment",
+    "name": "Inlay ve Onlay",
+    "imageUrl": "https://www.dentaliva.com/wp-content/uploads/2025/07/inley-and-onlay-001-1024x1024.webp"
+  },
+  {
+    "slug": "implant-tedavisi",
+    "type": "treatment",
+    "name": "İmplant Tedavisi",
+    "imageUrl": "https://www.dentaliva.com/wp-content/uploads/2025/06/dis-implanti-002-1024x1024.webp"
+  },
+  {
+    "slug": "gulus-estetigi",
+    "type": "treatment",
+    "name": "Gülüş Estetiği",
+    "imageUrl": "https://www.dentaliva.com/wp-content/uploads/2025/07/gulus-tasarimi-001-1024x1024.webp"
+  },
+  {
+    "slug": "estetik-kompozit-dolgu-bonding",
+    "type": "treatment",
+    "name": "Estetik Kompozit Dolgu (Bonding)",
+    "imageUrl": "https://www.dentaliva.com/wp-content/uploads/2025/07/scale_1200-300x247.jpg"
+  },
+  {
+    "slug": "endodonti-kanal-tedavisi",
+    "type": "treatment",
+    "name": "Endodonti (Kanal Tedavisi)",
+    "imageUrl": "https://www.dentaliva.com/wp-content/uploads/2025/07/kanal-tedavisi-001-1024x1024.webp"
+  },
+  {
+    "slug": "dis-beyazlatma",
+    "type": "treatment",
+    "name": "Diş Beyazlatma",
+    "imageUrl": "https://www.dentaliva.com/wp-content/uploads/2025/07/dis-beyazlatma-002-1024x1024.webp"
+  },
+  {
+    "slug": "diastema",
+    "type": "treatment",
+    "name": "Diastema",
+    "imageUrl": "https://www.dentaliva.com/wp-content/uploads/2025/09/diastema-1024x1024.webp"
+  },
+  {
+    "slug": "cocuk-dis-tedavileri-acil-durumlar",
+    "type": "treatment",
+    "name": "Çocuk Diş Tedavileri Acil Durumlar",
+    "imageUrl": "https://www.dentaliva.com/wp-content/uploads/2025/07/dis-kliniginde-korkan-ve-aci-ceken-cocuk-001-1024x1024.webp"
+  },
+  {
+    "slug": "bruksizm-dis-sikmasi",
+    "type": "treatment",
+    "name": "Bruksizm (Diş Sıkması)",
+    "imageUrl": "https://www.dentaliva.com/wp-content/uploads/2025/07/bruksizm-dis-sikmasi-300x247.jpg"
+  },
+  {
+    "slug": "all-on-six",
+    "type": "treatment",
+    "name": "All On Six Implant",
+    "imageUrl": "https://www.dentaliva.com/wp-content/uploads/2025/07/all-on-six-implant-001-1024x1024.webp"
+  },
+  {
+    "slug": "all-on-four",
+    "type": "treatment",
+    "name": "All On Four Implant",
+    "imageUrl": "https://www.dentaliva.com/wp-content/uploads/2025/07/all-on-four-implant-001-1024x1024.webp"
+  },
+  {
+    "slug": "agiz-dis-ve-cene-cerrahisi",
+    "type": "treatment",
+    "name": "Ağız, Diş ve Çene Cerrahisi",
+    "imageUrl": "https://www.dentaliva.com/wp-content/uploads/2025/07/dis-agrisi-ceken-kadin-004-1024x1024.webp"
+  },
+  {
+    "slug": "20lik-dis-tedavisi",
+    "type": "treatment",
+    "name": "20’lik Diş Tedavisi",
+    "imageUrl": "https://www.dentaliva.com/wp-content/uploads/2025/07/dis-agrisi-ceken-kadin-006-1024x1024.webp"
+  },
+  {
+    "slug": "cene-eklemi-tedavisi",
+    "type": "treatment",
+    "name": "Çene Eklemi Tedavisi",
+    "imageUrl": "https://www.dentaliva.com/wp-content/uploads/2025/07/eklem-tedavisi-300x247.jpg"
+  },
+  {
+    "slug": "dt-dila-das",
+    "type": "doctor",
+    "name": "Dt. Dila Daş",
+    "imageUrl": "https://www.dentaliva.com/wp-content/uploads/2025/09/dila-webb-819x1024.jpg"
+  },
+  {
+    "slug": "dt-sehmus-saygin",
+    "type": "doctor",
+    "name": "Dt. Şehmus Saygın",
+    "imageUrl": "https://www.dentaliva.com/wp-content/uploads/2025/09/sehmus-hoca-819x1024.jpg"
+  },
+  {
+    "slug": "dr-melis-bal",
+    "type": "doctor",
+    "name": "Dr. Melis Bal",
+    "imageUrl": "https://www.dentaliva.com/wp-content/uploads/2025/07/melis-bal-web-site-819x1024.jpg"
+  },
+  {
+    "slug": "dt-eda-dilmac",
+    "type": "doctor",
+    "name": "Dt. Eda Dilmac",
+    "imageUrl": "https://www.dentaliva.com/wp-content/uploads/2025/07/eda-dilmac-web-819x1024.jpg"
+  },
+  {
+    "slug": "dt-bugrahan-kocyigit",
+    "type": "doctor",
+    "name": "Dt. Buğrahan Koçyiğit",
+    "imageUrl": "https://www.dentaliva.com/wp-content/uploads/2025/07/bugra-hoca-819x1024.webp"
+  },
+  {
+    "slug": "dt-hacer-kazanci",
+    "type": "doctor",
+    "name": "Dt. Hacer Kazancı",
+    "imageUrl": "https://www.dentaliva.com/wp-content/uploads/2025/07/web-hacer-kazanci-819x1024.jpg"
+  },
+  {
+    "slug": "dt-feyza-nuroglu",
+    "type": "doctor",
+    "name": "Dt. Feyza Nuroğlu",
+    "imageUrl": "https://www.dentaliva.com/wp-content/uploads/2025/07/feyza-hoca-819x1024.jpg"
+  },
+  {
+    "slug": "dt-furkan-nuroglu",
+    "type": "doctor",
+    "name": "Dt. Furkan Nuroğlu",
+    "imageUrl": "https://www.dentaliva.com/wp-content/uploads/2025/07/furkan-hoca-web-sitwsei-819x1024.jpg"
+  },
+  {
+    "slug": "dr-dt-emel-ozdemir",
+    "type": "doctor",
+    "name": "Dr.Dt. Emel Özdemir",
+    "imageUrl": "https://www.dentaliva.com/wp-content/uploads/2025/07/emel-hoca-web-819x1024.jpg"
+  },
+  {
+    "slug": "dr-dt-yucel-ozdemir",
+    "type": "doctor",
+    "name": "Dr.Dt. Yücel Özdemir",
+    "imageUrl": "https://www.dentaliva.com/wp-content/uploads/2025/07/yucel-hoca-web-819x1024.jpg"
+  },
+  {
+    "slug": "dt-kadir-demir",
+    "type": "doctor",
+    "name": "Dt. Kadir Demir",
+    "imageUrl": "https://www.dentaliva.com/wp-content/uploads/2025/07/kadir-hoca-web-site-2-819x1024.webp"
+  },
+  {
+    "slug": "dt-orkun-uslu",
+    "type": "doctor",
+    "name": "Dt. Orkun Uslu",
+    "imageUrl": "https://www.dentaliva.com/wp-content/uploads/2025/07/orkun-hoca-web-site-819x1024.jpg"
+  },
+  {
+    "slug": "dt-omer-faruk-tani",
+    "type": "doctor",
+    "name": "Dt. Ömer Faruk Tanı",
+    "imageUrl": "https://www.dentaliva.com/wp-content/uploads/2025/06/oft-beyaz-819x1024.webp"
+  },
+  {
+    "slug": "dt-eda-ozdemir",
+    "type": "doctor",
+    "name": "Dt. Eda Özdemir",
+    "imageUrl": "https://www.dentaliva.com/wp-content/uploads/2025/07/Dt.-Eda-Ozdemir-819x1024.webp"
+  },
+  {
+    "slug": "dt-cem-sarkan",
+    "type": "doctor",
+    "name": "Dt. Cem Şarkan",
+    "imageUrl": "https://www.dentaliva.com/wp-content/uploads/2025/07/web-site-at-cem-819x1024.jpg"
+  },
+  {
+    "slug": "dt-baris-kolik",
+    "type": "doctor",
+    "name": "Dt. Barış Kolik",
+    "imageUrl": "https://www.dentaliva.com/wp-content/uploads/2025/07/baris-kolik-web-819x1024.jpg"
+  },
+  {
+    "slug": "dr-dt-merve-mese",
+    "type": "doctor",
+    "name": "Dr.Dt. Merve Meşe",
+    "imageUrl": "https://www.dentaliva.com/wp-content/uploads/2025/07/merve-mese-webe-attt-240x300.jpg"
+  },
+  {
+    "slug": "dr-dt-m-cihan-babuccu",
+    "type": "doctor",
+    "name": "Dr.Dt. M.Cihan Babuccu",
+    "imageUrl": "https://www.dentaliva.com/wp-content/uploads/2025/07/cihan-babuccu-web-site-819x1024.jpg"
+  },
+  {
+    "slug": "dr-dt-ibrahim-talha-mese",
+    "type": "doctor",
+    "name": "Dr.Dt. İbrahim Talha Meşe",
+    "imageUrl": "https://www.dentaliva.com/wp-content/uploads/2025/07/talha-hoca-web-819x1024.jpg"
+  }
+]
