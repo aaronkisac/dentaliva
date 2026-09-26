@@ -41,8 +41,8 @@ async function rateLimit(env: CallbackWorkerEnv, ip: string | null): Promise<boo
     const result = await env.RATE_LIMITER.limit({ key: ip ?? "unknown" });
     return result.success;
   }
-  // FALLBACK: isolate-bazlı bellek sayacı (tek isolate'te yeterli; DEP-1'de
-  // RATE_LIMITER binding bağlanır).
+  // FALLBACK: isolate-bazlı bellek sayacı (sadece RATE_LIMITER binding'siz
+  // ortamlar için — deploy'larda binding devrede, DEP-1).
   const key = ip ?? "unknown";
   const now = Date.now();
   const entry = memoryCounters.get(key);

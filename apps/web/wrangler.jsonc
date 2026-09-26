@@ -1,5 +1,7 @@
 {
   // Workers with static assets: Worker handles /api/*, static export from out/.
+  // Root config = production ("dentaliva-com"); a named env deploys as
+  // "<name>-<env>" (see env.staging). Deploy commands: docs/runbooks/deploy.md.
   "name": "dentaliva-com",
   "compatibility_date": "2026-09-01",
   "main": "worker/index.ts",
@@ -9,7 +11,27 @@
     "not_found_handling": "404-page"
   },
   "vars": {
-    "MOCK_EXTERNAL": "1"
+    // Production hits Turnstile + Resend for real; their values live in Worker
+    // secrets (wrangler secret put, docs/runbooks/deploy.md) — never in config.
+    "MOCK_EXTERNAL": "0"
   },
-  "observability": { "enabled": true }
+  // Rate limit binding for POST /api/callback: 5 requests / 60 s per key,
+  // matching the in-isolate fallback in worker/index.ts. namespace_id is an
+  // account-wide counter id — prod (1001) and staging (1002) stay separate.
+  // ratelimits is NOT inherited by named environments, hence the duplication.
+  "ratelimits": [
+    { "name": "RATE_LIMITER", "namespace_id": "1001", "simple": { "limit": 5, "period": 60 } }
+  ],
+  "observability": { "enabled": true },
+  "env": {
+    // pnpm --filter @dentaliva/web deploy:staging → "dentaliva-com-staging".
+    // Mock mode on: staging can never send real mail or call Turnstile; the
+    // URL is locked behind Cloudflare Access (docs/runbooks/deploy.md).
+    "staging": {
+      "vars": { "MOCK_EXTERNAL": "1" },
+      "ratelimits": [
+        { "name": "RATE_LIMITER", "namespace_id": "1002", "simple": { "limit": 5, "period": 60 } }
+      ]
+    }
+  }
 }
