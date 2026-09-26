@@ -1,2 +1,8 @@
-// @dentaliva/seo — populated in its own story.
-export {};
+export {
+  buildCanonical,
+  buildMetadata,
+  joinUrl,
+  type BuiltMetadata,
+  type SeoBuilderInput,
+  type SeoObject,
+} from "./metadata";
