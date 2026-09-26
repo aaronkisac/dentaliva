@@ -40,3 +40,12 @@ jobs:
         run: pnpm --filter @dentaliva/web exec playwright install --with-deps chromium
       - name: E2E form journey (mocked externals)
         run: pnpm --filter @dentaliva/web exec playwright test
+      # PRF-3: Lighthouse budgets against wrangler dev (the production static-
+      # assets runtime). 75 is the localhost floor — emulated slow-4G scores
+      # land at 78-90 depending on runner CPU. The 95-per-category budget
+      # (issue #45 AC) is enforced on real preview deploys once DEP-1 lands;
+      # move the threshold there.
+      - name: Lighthouse budgets
+        run: pnpm --filter @dentaliva/web test:perf
+        env:
+          LH_THRESHOLD: 75

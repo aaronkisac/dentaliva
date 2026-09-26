@@ -7,7 +7,17 @@ import prettier from "eslint-config-prettier";
 import tseslint from "typescript-eslint";
 
 export default tseslint.config(
-  { ignores: ["**/node_modules/**", "**/out/**", "**/dist/**", "**/.next/**", "**/coverage/**", "**/.sanity/**"] },
+  {
+    ignores: [
+      "**/node_modules/**",
+      "**/out/**",
+      "**/dist/**",
+      "**/.next/**",
+      "**/coverage/**",
+      "**/.sanity/**",
+      "**/.wrangler/**",
+    ],
+  },
   eslint.configs.recommended,
   tseslint.configs.recommended,
   prettier,

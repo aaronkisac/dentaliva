@@ -4,9 +4,11 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 
 import { pickLocalized } from "@dentaliva/sanity-schema/client";
+import { urlForImage } from "@dentaliva/sanity-schema/image-url";
 
 import { Accordion, Card, Heading, Section, Text } from "@dentaliva/ui";
 import { fetchTreatmentBySlug, fetchTreatments } from "../../../src/content/treatments";
+import { site } from "../../../src/config";
 import { readClient } from "../../../src/sanity";
 
 interface PageProps {
@@ -36,9 +38,24 @@ export default async function TreatmentDetailPage({ params }: PageProps) {
   if (!treatment) notFound();
 
   const steps = treatment.steps ?? [];
+  // React hoists this into <head>: the LCP image fetch starts at head-parse,
+  // in parallel with CSS, instead of after discovery (PRF-3).
+  const heroPreload = treatment.heroImage?.ref
+    ? urlForImage(
+        treatment.heroImage.ref,
+        { width: 1200, quality: 75 },
+        {
+          projectId: process.env.SANITY_PROJECT_ID ?? site.sanity.projectId,
+          dataset: process.env.SANITY_DATASET ?? site.sanity.dataset,
+        },
+      )
+    : null;
 
   return (
     <>
+      {heroPreload ? (
+        <link rel="preload" as="image" href={heroPreload} fetchPriority="high" />
+      ) : null}
       <Section className="bg-navy">
         <Heading level="h1" size="lg" className="text-white">
           {pickLocalized(treatment.name)}
