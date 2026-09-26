@@ -74,16 +74,17 @@ against the old site. Publish (drafts don't render — ADR-03 webhook rebuild).
 
 ### 5. Workers project + secrets (5 min)
 
+Full walkthrough incl. staging + Access: [deploy.md](deploy.md). Short form:
+
 ```bash
 cd apps/web
-npx wrangler deploy                       # first deploy creates the project
 npx wrangler secret put TURNSTILE_SECRET  # step 8
 npx wrangler secret put RESEND_API_KEY    # step 8
 npx wrangler secret put NOTIFY_EMAIL      # where callback leads to
 npx wrangler secret put MAIL_FROM         # e.g. mail.<client-domain>
+pnpm --filter @dentaliva/web deploy:prod     # build + first deploy creates the project
+pnpm --filter @dentaliva/web deploy:staging  # <name>-staging, mock mode — lock behind Access
 ```
-
-Static assets + `_redirects` + `_headers` (per-route CSP) ship with the deploy.
 
 ### 6. DNS + custom domain (5 min + propagation)
 
