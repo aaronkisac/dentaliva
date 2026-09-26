@@ -36,6 +36,11 @@ jobs:
         run: pnpm test
       - name: Build
         run: pnpm build
+      # PRF-4: bound the client bundle (Next 16 framework floor ≈165KB gzip
+      # documented in scripts/bundle-budget.mjs) and keep every "use client"
+      # surface reviewed.
+      - name: Bundle budget + use-client audit
+        run: pnpm --filter @dentaliva/web test:bundle
       - name: Install Playwright chromium
         run: pnpm --filter @dentaliva/web exec playwright install --with-deps chromium
       - name: E2E form journey (mocked externals)
