@@ -14,7 +14,7 @@
   "scripts": {
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run --coverage",
+    "test": "vitest run",
     "crawl": "node crawl.mjs"
   }
 }
