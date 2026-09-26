@@ -22,3 +22,4 @@ jobid.txt
 joblog.txt
 r.json
 *.log
+migration/assets/
