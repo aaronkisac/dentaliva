@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import Image from "next/image";
+
 import { pickLocalized } from "@dentaliva/sanity-schema/client";
 
 import { Accordion, Card, Heading, Section, Text } from "@dentaliva/ui";
@@ -41,6 +43,17 @@ export default async function TreatmentDetailPage({ params }: PageProps) {
         <Heading level="h1" size="lg" className="text-white">
           {pickLocalized(treatment.name)}
         </Heading>
+        {treatment.heroImage?.ref ? (
+          <Image
+            src={treatment.heroImage.ref}
+            alt={treatment.heroImage.alt?.tr ?? ""}
+            width={1200}
+            height={800}
+            priority
+            sizes="(max-width: 900px) 100vw, 1180px"
+            className="mt-8 h-auto w-full border border-[var(--dvn-line-gold)] object-cover"
+          />
+        ) : null}
         {treatment.summary?.tr ? (
           <Text size="lg" tone="white" className="mt-6 max-w-3xl">
             {pickLocalized(treatment.summary)}

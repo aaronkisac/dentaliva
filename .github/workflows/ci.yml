@@ -36,3 +36,7 @@ jobs:
         run: pnpm test
       - name: Build
         run: pnpm build
+      - name: Install Playwright chromium
+        run: pnpm --filter @dentaliva/web exec playwright install --with-deps chromium
+      - name: E2E form journey (mocked externals)
+        run: pnpm --filter @dentaliva/web exec playwright test

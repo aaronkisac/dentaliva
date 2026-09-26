@@ -15,7 +15,7 @@ export const treatmentBySlugQuery = defineQuery(
     "slug": slug.current,
     summary,
     body,
-    heroImage { ..., alt },
+    heroImage { ..., alt, "ref": asset._ref, "lqip": asset->metadata.lqip },
     benefits,
     steps,
     priceNote,
