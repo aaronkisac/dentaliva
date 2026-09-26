@@ -3,7 +3,18 @@
   // tsconfig parser resolves extends as a file path only. Keep in sync with
   // packages/config/tsconfig/nextjs.json.
   "extends": "../../packages/config/tsconfig/nextjs.json",
-  "compilerOptions": { "incremental": true },
+  "compilerOptions": {
+    "incremental": true,
+    "paths": {
+      // Turbopack + TS resolve these lib subpaths reliably via paths (package
+      // exports with .ts targets are flaky across the toolchain).
+      "@dentaliva/lib": ["../../packages/lib/src/index.ts"],
+      "@dentaliva/lib/forms/*": ["../../packages/lib/src/forms/*"],
+      "@dentaliva/lib/worker/*": ["../../packages/lib/src/worker/*"],
+      "@dentaliva/seo": ["../../packages/seo/src/index.ts"],
+      "@dentaliva/seo/redirects": ["../../packages/seo/src/redirects.ts"]
+    }
+  },
   "include": ["**/*.ts", "**/*.tsx", "next-env.d.ts"],
   "exclude": ["node_modules", "out"]
 }

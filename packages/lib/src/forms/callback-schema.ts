@@ -22,8 +22,11 @@ export const callbackFormSchema = z.object({
   kvkkConsent: z.boolean().refine((value) => value === true, {
     message: "KVKK aydınlatma metnini onaylamanız gerekiyor.",
   }),
+  turnstileToken: z.string().max(2048).optional(),
   /** Honeypot: bots fill this; humans never see it. */
   website: z.string().max(0).optional(),
 });
 
-export type CallbackFormValues = z.infer<typeof callbackFormSchema>;
+export type CallbackFormValues = z.output<typeof callbackFormSchema>;
+export type CallbackFormInput = z.input<typeof callbackFormSchema>;
+export type CallbackFormOutput = z.output<typeof callbackFormSchema>;
