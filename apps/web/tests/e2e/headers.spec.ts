@@ -1,0 +1,43 @@
+import { expect, test } from "@playwright/test";
+
+/** DEP-2: güvenlik başlıkları ve CSP assertion'ları (wrangler dev üzerinden). */
+const routes = ["/", "/iletisim"];
+
+test.describe("DEP-2: güvenlik başlıkları", () => {
+  for (const route of routes) {
+    test(`başlıklar mevcut: ${route}`, async ({ request }) => {
+      const res = await request.get(route);
+      expect(res.ok()).toBeTruthy();
+      const headers = res.headers();
+
+      expect(headers["strict-transport-security"]).toContain("max-age=63072000");
+      expect(headers["x-content-type-options"]).toBe("nosniff");
+      expect(headers["referrer-policy"]).toBe("strict-origin-when-cross-origin");
+      expect(headers["permissions-policy"]).toContain("camera=()");
+      expect(headers["cross-origin-opener-policy"]).toBe("same-origin");
+
+      const csp = headers["content-security-policy"];
+      expect(csp).toBeTruthy();
+      expect(csp).toContain("default-src 'self'");
+      // Gözden geçirilmiş üçüncü taraf yüzeyleri: Turnstile + youtube-nocookie.
+      expect(csp).toContain("https://challenges.cloudflare.com");
+      expect(csp).toContain("https://www.youtube-nocookie.com");
+      expect(csp).toContain("https://cdn.sanity.io");
+      // Inline script'ler hash'le kurulur — 'unsafe-inline' scriptler için yok.
+      expect(csp).toMatch(/'sha256-[A-Za-z0-9+/=]+'/);
+      expect(csp).not.toMatch(/script-src[^;]*'unsafe-inline'/);
+      expect(csp).toContain("frame-ancestors 'none'");
+    });
+  }
+
+  test("CSP ihlali yok (hidrasyon + Turnstile yüklemesi sonrası)", async ({ page }) => {
+    const violations: string[] = [];
+    page.on("console", (msg) => {
+      if (msg.type() === "error") violations.push(msg.text());
+    });
+    await page.goto("/iletisim");
+    await page.waitForLoadState("networkidle");
+    // Turnstile widget'ı hidrasyondan sonra yüklenir; ihlaller console'a düşer.
+    expect(violations.filter((v) => v.includes("Content-Security-Policy"))).toEqual([]);
+  });
+});
