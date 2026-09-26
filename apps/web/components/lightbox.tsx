@@ -1,8 +1,17 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
+import { pickLocalized } from "@dentaliva/sanity-schema/client";
+import { lqipUrl, refDimensions } from "@dentaliva/sanity-schema/image-url";
+
 import type { GalleryImage } from "../src/content/home";
+
+const ENV = {
+  projectId: process.env.SANITY_PROJECT_ID ?? "86x2hbzv",
+  dataset: process.env.SANITY_DATASET ?? "production",
+};
 
 /**
  * Native <dialog>-based lightbox: Esc closes it, focus moves into the dialog
@@ -26,17 +35,30 @@ export function GalleryLightbox({ images }: { images: GalleryImage[] }) {
   return (
     <>
       <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-        {items.map((image, index) => (
-          <button
-            key={image.asset?._ref ?? index}
-            type="button"
-            onClick={() => setActive(index)}
-            className="aspect-square bg-ivory-2 transition-shadow duration-300 hover:shadow-[var(--dvn-shadow-lift)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
-            aria-label={`Görsel ${index + 1} — büyüt`}
-          >
-            <span className="sr-only">{image.alt?.tr}</span>
-          </button>
-        ))}
+        {items.map((image, index) => {
+          const ref = image.asset?._ref as string;
+          const dims = refDimensions(ref) ?? { width: 800, height: 800 };
+          return (
+            <button
+              key={ref}
+              type="button"
+              onClick={() => setActive(index)}
+              className="aspect-square bg-ivory-2 transition-shadow duration-300 hover:shadow-[var(--dvn-shadow-lift)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
+              aria-label={`Görsel ${index + 1} — büyüt`}
+            >
+              <Image
+                src={ref}
+                alt={pickLocalized(image.alt) || `Klinik görseli ${index + 1}`}
+                width={dims.width}
+                height={dims.height}
+                sizes="(max-width: 768px) 50vw, 25vw"
+                placeholder="blur"
+                blurDataURL={lqipUrl(ref, ENV)}
+                className="h-auto w-full object-cover"
+              />
+            </button>
+          );
+        })}
       </div>
       {/* Native dialog covers keyboard (Esc) — the click handler only closes
           on backdrop taps, which keyboard users reach via the Kapat button. */}
@@ -54,11 +76,22 @@ export function GalleryLightbox({ images }: { images: GalleryImage[] }) {
       >
         {active !== null && items[active] ? (
           <div className="p-4">
-            <div className="flex aspect-[4/3] w-[80vw] max-w-3xl items-center justify-center bg-navy">
-              <span className="font-serif text-2xl text-gold-soft">
-                {items[active].alt?.tr ?? "Görsel"}
-              </span>
-            </div>
+            {(() => {
+              const ref = items[active].asset?._ref as string;
+              const dims = refDimensions(ref) ?? { width: 1600, height: 1200 };
+              return (
+                <Image
+                  src={ref}
+                  alt={pickLocalized(items[active].alt) || "Büyük görsel"}
+                  width={dims.width}
+                  height={dims.height}
+                  sizes="80vw"
+                  placeholder="blur"
+                  blurDataURL={lqipUrl(ref, ENV)}
+                  className="h-auto max-h-[80vh] w-[80vw] max-w-3xl border border-[var(--dvn-line-gold)] object-contain"
+                />
+              );
+            })()}
             <button
               type="button"
               onClick={() => setActive(null)}

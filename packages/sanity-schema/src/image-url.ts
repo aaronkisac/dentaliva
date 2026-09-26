@@ -29,3 +29,23 @@ export function urlForImage(
   });
   return `https://cdn.sanity.io/images/${env.projectId}/${env.dataset}/${base}?${params.toString()}`;
 }
+
+/** Intrinsic dimensions encoded in the asset reference; null when malformed. */
+export interface RefDimensions {
+  width: number;
+  height: number;
+}
+
+export function refDimensions(ref: string): RefDimensions | null {
+  const match = /^image-[a-f0-9]+-(\d+)x(\d+)-\w+$/.exec(ref);
+  if (!match) return null;
+  return { width: Number(match[1]), height: Number(match[2]) };
+}
+
+/**
+ * Tiny placeholder (32px, q30) fed to next/image `blurDataURL` (PRF-1):
+ * served from the same CDN as the full image, a few hundred bytes.
+ */
+export function lqipUrl(ref: string, env: { projectId: string; dataset: string }): string {
+  return urlForImage(ref, { width: 32, quality: 30 }, env);
+}

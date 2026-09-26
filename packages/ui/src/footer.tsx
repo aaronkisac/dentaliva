@@ -35,14 +35,20 @@ export const Footer = forwardRef<HTMLElement, FooterProps>(function Footer(
             İletişim
           </h2>
           <address className="mt-3 space-y-2 font-sans text-sm not-italic">
-            <a href={`tel:${contact.phone}`} className="block hover:text-gold-soft">
-              {contact.phone}
-            </a>
-            <a href={`mailto:${contact.email}`} className="block hover:text-gold-soft">
-              {contact.email}
-            </a>
-            <p>{contact.address}</p>
-            <p className="text-gold-soft">{contact.hours}</p>
+            {/* Render the anchor only when a value exists — an empty tel:/mailto:
+                link has no accessible name (axe link-name) and dials nothing. */}
+            {contact.phone ? (
+              <a href={`tel:${contact.phone}`} className="block hover:text-gold-soft">
+                {contact.phone}
+              </a>
+            ) : null}
+            {contact.email ? (
+              <a href={`mailto:${contact.email}`} className="block hover:text-gold-soft">
+                {contact.email}
+              </a>
+            ) : null}
+            {contact.address ? <p>{contact.address}</p> : null}
+            {contact.hours ? <p className="text-gold-soft">{contact.hours}</p> : null}
           </address>
         </div>
         {columns.map((column) => (

@@ -48,6 +48,13 @@ export const homePage = defineType({
       ],
     }),
     defineField({
+      name: "gallery",
+      title: "Fotoğraf galerisi",
+      type: "array",
+      of: [{ type: "imageWithAlt" }],
+      validation: (rule) => rule.max(24),
+    }),
+    defineField({
       name: "cta",
       title: "CTA bandı",
       type: "object",

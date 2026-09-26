@@ -8,5 +8,6 @@ export const homePageQuery = defineQuery(`*[_type == "homePage"][0]{
   quickServiceLinks->{ name, slug, summary },
   about { ..., image { ..., alt } },
   stats,
+  gallery[]{ "asset": { "_ref": asset._ref }, "alt": alt },
   cta
 }`);
