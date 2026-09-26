@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
 
 import { pickLocalized } from "@dentaliva/sanity-schema/client";
 
 import { Heading, Section, Text } from "@dentaliva/ui";
 import { fetchDoctorBySlug, fetchDoctors } from "../../../src/content/doctors";
 import { readClient } from "../../../src/sanity";
+import { SeedPlaceholder } from "../../../components/seed-placeholder";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -13,9 +13,12 @@ interface PageProps {
 
 export async function generateStaticParams(): Promise<Array<{ slug: string }>> {
   const doctors = await fetchDoctors(readClient);
-  return doctors
+  const params = doctors
     .filter((doctor): doctor is typeof doctor & { slug: string } => Boolean(doctor.slug))
     .map((doctor) => ({ slug: doctor.slug }));
+  // output: "export" rejects an empty params array — a fresh clone with an
+  // empty Sanity project must still build (STR-1 template dry run).
+  return params.length > 0 ? params : [{ slug: "_seed" }];
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -27,7 +30,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default async function DoctorDetailPage({ params }: PageProps) {
   const { slug } = await params;
   const doctor = await fetchDoctorBySlug(readClient, slug);
-  if (!doctor) notFound();
+  if (!doctor) {
+    return <SeedPlaceholder title="Hekim" />;
+  }
 
   return (
     <>

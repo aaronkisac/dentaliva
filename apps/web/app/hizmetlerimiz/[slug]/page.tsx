@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
 
 import Image from "next/image";
 
@@ -10,6 +9,7 @@ import { Accordion, Card, Heading, Section, Text } from "@dentaliva/ui";
 import { fetchTreatmentBySlug, fetchTreatments } from "../../../src/content/treatments";
 import { site } from "../../../src/config";
 import { readClient } from "../../../src/sanity";
+import { SeedPlaceholder } from "../../../components/seed-placeholder";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -17,11 +17,14 @@ interface PageProps {
 
 export async function generateStaticParams(): Promise<Array<{ slug: string }>> {
   const treatments = await fetchTreatments(readClient);
-  return treatments
+  const params = treatments
     .filter((treatment): treatment is typeof treatment & { slug: string } =>
       Boolean(treatment.slug),
     )
     .map((treatment) => ({ slug: treatment.slug }));
+  // output: "export" rejects an empty params array — a fresh clone with an
+  // empty Sanity project must still build (STR-1 template dry run).
+  return params.length > 0 ? params : [{ slug: "_seed" }];
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -35,7 +38,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default async function TreatmentDetailPage({ params }: PageProps) {
   const { slug } = await params;
   const treatment = await fetchTreatmentBySlug(readClient, slug);
-  if (!treatment) notFound();
+  if (!treatment) {
+    // Only reachable when the CMS has no documents for this slug (fresh
+    // template clone rendering the _seed path) — real content never 404s here.
+    return <SeedPlaceholder title="Tedavi" />;
+  }
 
   const steps = treatment.steps ?? [];
   // React hoists this into <head>: the LCP image fetch starts at head-parse,

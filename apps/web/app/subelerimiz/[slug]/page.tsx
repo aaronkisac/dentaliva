@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
 
 import { pickLocalized } from "@dentaliva/sanity-schema/client";
 
 import { Heading, Section, Text } from "@dentaliva/ui";
 import { fetchBranchBySlug, fetchBranches } from "../../../src/content/branches";
 import { readClient } from "../../../src/sanity";
+import { SeedPlaceholder } from "../../../components/seed-placeholder";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -13,9 +13,12 @@ interface PageProps {
 
 export async function generateStaticParams(): Promise<Array<{ slug: string }>> {
   const branches = await fetchBranches(readClient);
-  return branches
+  const params = branches
     .filter((branch): branch is typeof branch & { slug: string } => Boolean(branch.slug))
     .map((branch) => ({ slug: branch.slug }));
+  // output: "export" rejects an empty params array — a fresh clone with an
+  // empty Sanity project must still build (STR-1 template dry run).
+  return params.length > 0 ? params : [{ slug: "_seed" }];
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -27,7 +30,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default async function BranchDetailPage({ params }: PageProps) {
   const { slug } = await params;
   const branch = await fetchBranchBySlug(readClient, slug);
-  if (!branch) notFound();
+  if (!branch) {
+    return <SeedPlaceholder title="Şube" />;
+  }
 
   return (
     <>
