@@ -1,7 +1,4 @@
 {
   "extends": "@dentaliva/config/tsconfig/library.json",
-  "include": [
-    "src/**/*.ts",
-    "vitest.config.ts"
-  ]
+  "include": ["src/**/*.ts", "vitest.config.ts", "tests/**/*.ts"]
 }
