@@ -87,6 +87,9 @@ importers:
       '@dentaliva/sanity-schema':
         specifier: workspace:*
         version: link:../../packages/sanity-schema
+      '@dentaliva/seo':
+        specifier: workspace:*
+        version: link:../../packages/seo
       '@dentaliva/tokens':
         specifier: workspace:*
         version: link:../../packages/tokens
