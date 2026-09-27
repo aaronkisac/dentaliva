@@ -1,0 +1,33 @@
+[
+  {
+    "id": "branch.altunizade",
+    "status": "patched",
+    "phones": ["+902125555482", "+905301255482"],
+    "phone": "+902125555482",
+    "hours": "Tüm Günler | 9:00 - 23:00 ",
+    "address": "Altunizade, Nuhkuyusu Cd No:90 B, 34662 Üsküdar/İstanbul",
+    "mapUrl": ""
+  },
+  {
+    "id": "branch.basaksehir",
+    "status": "patched",
+    "phones": ["+902125555482", "+905076249120"],
+    "phone": "+902125555482",
+    "hours": "Tüm Günler | 9:00 - 23:00 ",
+    "address": "Başakşehir Mahallesi Hürriyet Bulvarı No.131/A 34306 Başakşehir / İstanbul",
+    "mapUrl": "https://www.google.com/maps/place/Dentaliva+Ba%C5%9Fak%C5%9Fehir+A%C4%9F%C4%B1z+ve+Di%C5%9F+Sa%C4%9Fl%C4%B1%C4%9F%C4%B1+Poliklini%C4%9Fi/@41.0981243,28.7890346,17z/data=!3m1!4b1!4m5!3m4!1s0x14caaf6b2a9951fd:0x7b1e5ec9d26a3aa1!8m2!3d41.0981243!4d28.7912233",
+    "geo": {
+      "lat": 41.0981243,
+      "lng": 28.7890346
+    }
+  },
+  {
+    "id": "branch.avcilar",
+    "status": "patched",
+    "phones": ["+902125555482", "+905308405482"],
+    "phone": "+902125555482",
+    "hours": "Tüm Günler | 9:00 - 23:00 ",
+    "address": "Üniversite Mahallesi Londra Asfaltı E5 Yanyol Çimli Sokak No:24 Avcılar/İstanbul",
+    "mapUrl": ""
+  }
+]

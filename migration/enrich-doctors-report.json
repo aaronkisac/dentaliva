@@ -1,0 +1,135 @@
+[
+  {
+    "id": "doctor.dt-dila-das",
+    "status": "patched",
+    "title": "Diş Hekimi",
+    "bioLength": 987,
+    "photo": "image-a0e63737faa44b7db5b6bcb4aecd523ca16029cb-1080x1350-jpg"
+  },
+  {
+    "id": "doctor.dt-sehmus-saygin",
+    "status": "patched",
+    "title": "Diş Hekimi",
+    "bioLength": 945,
+    "photo": "image-363772fd28d7826656a3dbe1c578c1f4eba8eab7-600x400-jpg"
+  },
+  {
+    "id": "doctor.dr-melis-bal",
+    "status": "patched",
+    "title": "Diş Hekimi",
+    "bioLength": 405,
+    "photo": "image-21807fb4eb3b2d1ae2ed1b17366105aeaec1545f-1080x1350-jpg"
+  },
+  {
+    "id": "doctor.dt-eda-dilmac",
+    "status": "patched",
+    "title": "Diş Hekimi",
+    "bioLength": 347,
+    "photo": "image-b9b978d7faa107df47ca66f45e4ad1c6a87ec0ca-1080x1350-jpg"
+  },
+  {
+    "id": "doctor.dt-bugrahan-kocyigit",
+    "status": "patched",
+    "title": "Diş Hekimi",
+    "bioLength": 267,
+    "photo": "image-bd4522d229445adb6177465398e41f3086ef8dfc-819x1024-webp"
+  },
+  {
+    "id": "doctor.dt-hacer-kazanci",
+    "status": "patched",
+    "title": "Diş Hekimi",
+    "bioLength": 708,
+    "photo": "image-11d4784f0fc6b52002b28bf0d1dd5ff652f6cc16-1080x1350-jpg"
+  },
+  {
+    "id": "doctor.dt-feyza-nuroglu",
+    "status": "patched",
+    "title": "DİŞ HEKİMİ",
+    "bioLength": 715,
+    "photo": "image-5f71a758ff2145ec4cb17df4e094b19dbdeb39eb-1080x1350-jpg"
+  },
+  {
+    "id": "doctor.dt-furkan-nuroglu",
+    "status": "patched",
+    "title": "DİŞ HEKİMİ",
+    "bioLength": 500,
+    "photo": "image-61a2f8672b206da573d2139bbc7b0b0e81083a14-1080x1350-jpg"
+  },
+  {
+    "id": "doctor.dr-dt-emel-ozdemir",
+    "status": "patched",
+    "title": "Diş Hekimi",
+    "bioLength": 1459,
+    "photo": "image-9732e815b267cde7ef178fc7ac54d2c471f908bd-1080x1350-jpg"
+  },
+  {
+    "id": "doctor.dr-dt-yucel-ozdemir",
+    "status": "patched",
+    "title": "Diş Hekimi",
+    "bioLength": 17,
+    "photo": "image-31536ec99f60900873063457b31e8ffe562e14d0-1080x1350-jpg"
+  },
+  {
+    "id": "doctor.dt-kadir-demir",
+    "status": "patched",
+    "title": "Diş Hekimi",
+    "bioLength": 773,
+    "photo": "image-9f891b35a9d67526f1efd6e301edd496e59afbff-819x1024-webp"
+  },
+  {
+    "id": "doctor.dt-orkun-uslu",
+    "status": "patched",
+    "title": "",
+    "bioLength": 1132,
+    "photo": "image-843ae171f53d8a6f3b91058c62657cb8e69779b4-1080x1350-jpg"
+  },
+  {
+    "id": "doctor.dt-omer-faruk-tani",
+    "status": "patched",
+    "title": "Diş Hekimi",
+    "bioLength": 336,
+    "photo": "image-407d528964da7c0d24f0cb8f67828362fe61771c-819x1024-webp"
+  },
+  {
+    "id": "doctor.dt-eda-ozdemir",
+    "status": "patched",
+    "title": "Pedodonti (Çocuk) Diş Hekimi",
+    "bioLength": 1056,
+    "photo": "image-54ee8220b13af79136c8dc41fa2bf8bbaff5fa4d-819x1024-webp"
+  },
+  {
+    "id": "doctor.dt-cem-sarkan",
+    "status": "patched",
+    "title": "Diş Hekimi",
+    "bioLength": 580,
+    "photo": "image-b92fd02d7ca8ce015dcf86b71bb216d4b77b7adc-1080x1350-jpg"
+  },
+  {
+    "id": "doctor.dt-baris-kolik",
+    "status": "patched",
+    "title": "Ortodonti",
+    "bioLength": 464,
+    "photo": "image-a8d4d715ec6ddc1d27d2003f488b54d1345ef874-1080x1350-jpg"
+  },
+  {
+    "id": "doctor.dr-dt-merve-mese",
+    "status": "patched",
+    "title": "Çocuk Diş Hekimi (Pedodonti)",
+    "bioLength": 653,
+    "photo": "image-68bc0b37b992a8daeba51324bf9cd64ddc1f2839-548x684-jpg"
+  },
+  {
+    "id": "doctor.dr-dt-m-cihan-babuccu",
+    "status": "patched",
+    "title": "Ağız, Diş ve Çene Cerrahisi Uzmanı",
+    "bioLength": 994,
+    "photo": "image-b66e1b338f39f5c7750971b95d07ae1e9d8ef2a9-1080x1350-jpg"
+  },
+  {
+    "id": "doctor.dr-dt-ibrahim-talha-mese",
+    "status": "patched",
+    "title": "Protetik Diş Hekimi",
+    "bioLength": 745,
+    "photo": "image-b1cb36e2cc1d7f60f023fb122835ac35a36636b1-1080x1350-jpg"
+  }
+]
