@@ -15,6 +15,7 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "crawl": "node crawl.mjs"
+    "crawl": "node crawl.mjs",
+    "verify": "node verify.mjs"
   }
 }
