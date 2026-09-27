@@ -17,7 +17,7 @@ export interface BranchItem {
 }
 
 async function fetchJson<T>(client: SanityClient, query: string): Promise<T> {
-  const result: unknown = await client.fetch(query);
+  const result: unknown = await client.fetch(query, {});
   return result as T;
 }
 

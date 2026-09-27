@@ -72,6 +72,21 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang={site.defaultLocale} className={fontVariables}>
       <body className="bg-ivory text-ink antialiased">
+        {/* PRF-3: display: optional only works with a preloaded font file. */}
+        <link
+          rel="preload"
+          href="/fonts/cormorant-latin.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preload"
+          href="/fonts/cormorant-latin-ext.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
         {orgJsonLd ? <JsonLd data={orgJsonLd} /> : null}
         {/* PRF-2: keyboard users skip the nav straight to <main id="icerik">. */}
         <a
