@@ -38,6 +38,15 @@ export const testimonial = defineType({
       type: "reference",
       to: [{ type: "treatment" }],
     }),
+    defineField({
+      // CPT-5: video testimonials — presence of youtubeId routes the doc to
+      // the home video section; text-only docs stay in the reviews section.
+      name: "youtubeId",
+      title: "YouTube video ID",
+      type: "string",
+      hidden: true,
+      validation: (rule) => rule.regex(/^[A-Za-z0-9_-]{6,20}$/, { name: "YouTube ID" }),
+    }),
   ],
   preview: { select: { title: "author", subtitle: "source" } },
 });

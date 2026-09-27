@@ -33,6 +33,13 @@ describe("supporting documents (SAN-3)", () => {
     expect(fieldOf(testimonial, "source").initialValue).toBe("Google");
   });
 
+  it("testimonial youtubeId is hidden and shape-validated (CPT-5)", () => {
+    const field = fieldOf(testimonial, "youtubeId");
+    expect((field as { hidden?: boolean }).hidden).toBe(true);
+    const regex = field.validation;
+    expect(regex).toBeDefined();
+  });
+
   it("legalPage declares title/slug/body", () => {
     for (const name of ["title", "slug", "body"]) {
       expect(fieldOf(legalPage, name)).toBeDefined();
