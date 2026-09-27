@@ -10,8 +10,9 @@ import {
   validateDocs,
 } from "./src/transform.ts";
 
-const normalizedDir = "migration/normalized";
-const outDir = "migration/ndjson";
+// CPT-1: optional argv overrides for v2 re-extraction runs.
+const normalizedDir = process.argv[2] ?? "migration/normalized";
+const outDir = process.argv[3] ?? "migration/ndjson";
 
 async function load(type) {
   try {
@@ -46,7 +47,7 @@ const napReport = buildNapReport(
 
 await mkdir(outDir, { recursive: true });
 await writeFile(`${outDir}/core.ndjson`, docs.map((d) => JSON.stringify(d)).join("\n"));
-await writeFile("migration/nap-diff.json", JSON.stringify(napReport, null, 2));
+await writeFile(`${outDir}/nap-diff.json`, JSON.stringify(napReport, null, 2));
 
 console.log(
   `docs: ${docs.length} (treatments ${treatments.length}, doctors ${doctors.length}, branches ${branches.length})`,

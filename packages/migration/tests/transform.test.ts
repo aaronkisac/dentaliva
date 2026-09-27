@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 
+import { isJunkLine } from "../src/extract";
 import {
   branchToSanity,
   normalizePhone,
@@ -7,6 +8,7 @@ import {
   doctorToSanity,
   extractEmails,
   extractPhones,
+  realSummary,
   treatmentToSanity,
   validateDocs,
   type NormalizedPage,
@@ -172,5 +174,67 @@ describe("validator name-shape edge", () => {
       { _id: "treatment.x", _type: "treatment", name: {}, slug: { current: "x" } },
     ]);
     expect(errors).toEqual(["treatment.x: missing name"]);
+  });
+});
+
+describe("CPT-1 junk filters and structured extras", () => {
+  const junkPage: NormalizedPage = {
+    url: "https://www.dentaliva.com/implant-tedavisi/",
+    title: "İmplant Tedavisi | Dentaliva",
+    h1: "İmplant Tedavisi",
+    paragraphs: [
+      "Hakkımızda İnsan Kaynakları Fotoğraf Galerisi",
+      "Eksik dişlerin yerine titanyum implantlar yerleştirilir ve onlarca yıl sorunsuz kullanılır.",
+      "## İmplant Tedavisi Uygulama Süreci",
+      "### İmplantın çene kemiğine yerleştirilmesi",
+      "### Protez üst yapının hazırlanması ve takılması",
+      "© Copyright Dentaliva 2026 – Tüm hakları saklıdır.",
+    ],
+    blocks: [
+      {
+        type: "p",
+        text: "Eksik dişlerin yerine titanyum implantlar yerleştirilir ve onlarca yıl sorunsuz kullanılır.",
+      },
+      { type: "h2", text: "İmplant Tedavisinin Diğer Diş Tedavilerinden Farkları" },
+      {
+        type: "li",
+        text: "Kalıcı ve doğal dişe çok yakın bir sonuç sunması sayesinde çiğneme konforu kaybolmaz",
+      },
+      { type: "h2", text: "İmplant Tedavisi Uygulama Süreci" },
+      { type: "h3", text: "İmplantın çene kemiğine yerleştirilmesi" },
+      { type: "h3", text: "Protez üst yapının hazırlanması ve takılması" },
+    ],
+  };
+
+  it("isJunkLine catches menu concatenations and footer lines", () => {
+    expect(isJunkLine("Hakkımızda İnsan Kaynakları Fotoğraf Galerisi")).toBe(true);
+    expect(isJunkLine("© Copyright Dentaliva 2026 – Tüm hakları saklıdır.")).toBe(true);
+    expect(isJunkLine("Eksik dişlerin yerine titanyum implantlar yerleştirilir.")).toBe(false);
+  });
+
+  it("realSummary picks the first substantial non-heading line", () => {
+    expect(realSummary(junkPage.paragraphs)).toContain("titanyum implantlar");
+    expect(realSummary(["## Başlık", "Hakkımızda İnsan Kaynakları Fotoğraf Galerisi"])).toBe("");
+  });
+
+  it("maps benefits and steps from blocks and drops junk", () => {
+    const doc = treatmentToSanity(junkPage);
+    const summary = String((doc.summary as { tr?: string }).tr ?? "");
+    expect(summary).toContain("titanyum implantlar");
+    const body = JSON.stringify(doc.body);
+    expect(body).not.toContain("Hakkımızda");
+    expect(body).not.toContain("Copyright");
+    const benefits = doc.benefits as Array<{ _key: string; tr: string }>;
+    expect(benefits).toHaveLength(1);
+    expect(benefits[0]?.tr).toContain("çiğneme konforu");
+    const steps = doc.steps as Array<{ title: { tr: string }; _key: string }>;
+    expect(steps).toHaveLength(2);
+    expect(steps[0]?.title.tr).toContain("çene kemiğine");
+  });
+
+  it("keeps legacy normalized pages working (no blocks)", () => {
+    const doc = treatmentToSanity(page);
+    expect(doc.benefits).toBeUndefined();
+    expect(doc.steps).toBeUndefined();
   });
 });

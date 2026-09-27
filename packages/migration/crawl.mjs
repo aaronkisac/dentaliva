@@ -3,9 +3,8 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 
-import * as cheerio from "cheerio";
-
 import { classifyUrl } from "./src/classify.ts";
+import { extractPage } from "./src/extract.ts";
 import { isAllowed, parseDisallowedPaths, parseLocs } from "./src/sitemap.ts";
 
 const BASE = "https://www.dentaliva.com";
@@ -46,16 +45,9 @@ for (const url of allowed) {
   if (type === "ignored") continue;
   try {
     const html = await (await fetch(url)).text();
-    const $ = cheerio.load(html);
-    const title = $("title").first().text().replace(/\s+/g, " ").trim();
-    const h1 = $("h1").first().text().replace(/\s+/g, " ").trim();
-    const paragraphs = [];
-    $("h1, h2, h3, p, li").each((_i, el) => {
-      const text = $(el).text().replace(/\s+/g, " ").trim();
-      if (text.length < 40) return;
-      paragraphs.push(text);
-    });
-    byType[type].push({ url, title, h1, paragraphs });
+    // CPT-1: shared scoped extraction (main container, junk filters, blocks).
+    const { title, h1, blocks, paragraphs } = extractPage(html);
+    byType[type].push({ url, title, h1, blocks, paragraphs });
   } catch (error) {
     log(`FETCH FAIL ${url}: ${error.message}`);
   }
