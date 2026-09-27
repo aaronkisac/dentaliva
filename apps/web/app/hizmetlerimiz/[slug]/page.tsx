@@ -131,6 +131,22 @@ export default async function TreatmentDetailPage({ params }: PageProps) {
           <Text className="max-w-3xl whitespace-pre-line">{pickLocalized(treatment.body)}</Text>
         ) : null}
 
+        {/* CPT-6: H2 "farklar/avantajlar" bölümlerinden gelen faydalar. */}
+        {(treatment.benefits ?? []).length > 0 ? (
+          <div className="mt-10">
+            <Heading level="h2" size="md">
+              Öne Çıkan Faydalar
+            </Heading>
+            <div className="mt-6 grid gap-4 md:grid-cols-3">
+              {(treatment.benefits ?? []).map((benefit, index) => (
+                <Card key={index}>
+                  <Text>{benefit.tr}</Text>
+                </Card>
+              ))}
+            </div>
+          </div>
+        ) : null}
+
         {steps.length > 0 ? (
           <div className="mt-12 grid gap-6 md:grid-cols-3">
             {steps.map((step, index) => (

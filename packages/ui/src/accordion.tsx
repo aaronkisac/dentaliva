@@ -37,10 +37,12 @@ export function Accordion({
         className,
       )}
     >
-      {items.map((item) => {
+      {items.map((item, index) => {
         const isOpen = openId === item.id;
-        const buttonId = `${baseId}-${item.id}-button`;
-        const panelId = `${baseId}-${item.id}-panel`;
+        // DOM id'leri item.id'den türetilemez: soru metni boşluk/?" içerebilir
+        // ve IDREF boşluklu değeri geçersiz kılar (axe: aria-valid-attr-value).
+        const buttonId = `${baseId}-${index}-button`;
+        const panelId = `${baseId}-${index}-panel`;
         return (
           <div key={item.id}>
             <h3>

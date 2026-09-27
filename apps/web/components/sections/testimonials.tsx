@@ -47,16 +47,35 @@ export function VideoTestimonialsSection({ items }: { items: VideoTestimonial[] 
       <Heading level="h2" size="md">
         Hastalarımızın Görüşleri
       </Heading>
-      <div className="mt-8 grid gap-6 md:grid-cols-2">
+      <div className="mt-8 grid gap-6 md:grid-cols-3">
         {videos.map((item) => (
-          <div key={item.youtubeId} className="aspect-video">
-            <iframe
-              src={`https://www.youtube-nocookie.com/embed/${item.youtubeId}`}
-              title={item.author ?? "Hasta videosu"}
-              allowFullScreen
-              className="h-full w-full"
+          <a
+            key={item.youtubeId}
+            href={`https://www.youtube-nocookie.com/embed/${item.youtubeId}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group relative block aspect-video overflow-hidden border border-[var(--dvn-line-soft)]"
+          >
+            {/* CSP img-src i.ytimg.com'a izin verir (PRF-1); iframe yerine
+                poster: klavye tek durak + sayfa 6 uzaktan frame yüklemez. */}
+            <img
+              src={`https://i.ytimg.com/vi/${item.youtubeId}/hqdefault.jpg`}
+              alt={item.author ?? "Hasta videosu"}
+              loading="lazy"
+              className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
             />
-          </div>
+            <span
+              aria-hidden="true"
+              className="absolute inset-0 flex items-center justify-center bg-navy/30 text-3xl text-white"
+            >
+              ▶
+            </span>
+            {item.author ? (
+              <span className="absolute inset-x-0 bottom-0 bg-navy/80 px-3 py-2 font-sans text-sm text-white">
+                {item.author}
+              </span>
+            ) : null}
+          </a>
         ))}
       </div>
     </Section>
