@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 
+import Image from "next/image";
+
 import { pickLocalized } from "@dentaliva/sanity-schema/client";
 import { buildBreadcrumbJsonLd } from "@dentaliva/seo";
 
@@ -55,14 +57,27 @@ export default async function DoctorDetailPage({ params }: PageProps) {
         ])}
       />
       <Section className="bg-navy">
-        <Heading level="h1" size="lg" className="text-white">
-          {doctor.name}
-        </Heading>
-        {doctor.title?.tr ? (
-          <Text size="lg" tone="white" className="mt-4">
-            {pickLocalized(doctor.title)}
-          </Text>
-        ) : null}
+        <div className="flex flex-col items-start gap-8 md:flex-row md:items-center">
+          {doctor.photo?.ref ? (
+            <Image
+              src={doctor.photo.ref}
+              alt={doctor.name ?? ""}
+              width={192}
+              height={192}
+              className="h-48 w-48 shrink-0 rounded-full border-2 border-[var(--dvn-line-gold)] object-cover"
+            />
+          ) : null}
+          <div>
+            <Heading level="h1" size="lg" className="text-white">
+              {doctor.name}
+            </Heading>
+            {doctor.title?.tr ? (
+              <Text size="lg" tone="white" className="mt-4">
+                {pickLocalized(doctor.title)}
+              </Text>
+            ) : null}
+          </div>
+        </div>
       </Section>
       <Section>
         {doctor.bio?.tr ? (
