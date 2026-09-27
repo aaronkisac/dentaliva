@@ -50,6 +50,37 @@ image, and body substance. NAP values must match the canonical decision (+90
 
 - [ ] Spots 1–8 compared by a human; differences are Studio-fixable, not code.
 
+### Programmatic pre-check — recorded 2026-09-27
+
+All 8 pairs fetched live (www.dentaliva.com vs the production deploy) and
+compared on status, `<title>`, `<h1>`:
+
+- **8/8 HTTP 200**; the legacy blog stub → 301 confirmed earlier.
+- **H1: 6/8 identical.** Home differs by design (composed hero — the live
+  home has no H1 at all); KVKK renders "KVKK Aydınlatma Metni" vs live
+  "KVKK" — clearer, no content loss.
+- **Titles:** the new site uses the consistent "%s | Dentaliva" pattern; the
+  live site carries keyword-rich variants on some pages ("İmplant Tedavisi |
+  Titanyum ve Zirkonyum İmplant — Dentaliva"). Restoring keyword titles per
+  page is a Studio edit (`seo.metaTitle`) — no code needed.
+- The first pass exposed the missing canonical/OG/JSON-LD wiring → fixed in
+  [#114](https://github.com/aaronkisac/dentaliva/pull/115) (SEO-5). After the
+  fix, detail pages render canonical + og:* (incl. per-treatment OG image) +
+  twitter:card + Dentist/BreadcrumbList JSON-LD.
+
+### Live Lighthouse — recorded 2026-09-27 (3 runs, median)
+
+| Category       | Score                       |
+| -------------- | --------------------------- |
+| Performance    | **92** (runs: 86 / 93 / 92) |
+| Accessibility  | **100**                     |
+| Best practices | **96**                      |
+| SEO            | **100**                     |
+
+Performance median sits under the 95 target (PRF-3) — single-sample runs
+against the remote edge spread widely on a dev machine; re-measure on a
+stable connection before drawing conclusions or optimizing.
+
 ## 3. EN placeholder policy (client review)
 
 v1 is Turkish-only; **EN is authored fresh later, not machine-migrated**
