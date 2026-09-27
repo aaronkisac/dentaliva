@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
 
 import { pickLocalized } from "@dentaliva/sanity-schema/client";
+import { buildBreadcrumbJsonLd } from "@dentaliva/seo";
 
 import { Heading, Section, Text } from "@dentaliva/ui";
+import { JsonLd } from "../../../components/json-ld";
 import { fetchBranchBySlug, fetchBranches } from "../../../src/content/branches";
 import { readClient } from "../../../src/sanity";
+import { absoluteUrl, pageMetadata } from "../../../src/seo";
 import { SeedPlaceholder } from "../../../components/seed-placeholder";
 
 interface PageProps {
@@ -24,7 +27,13 @@ export async function generateStaticParams(): Promise<Array<{ slug: string }>> {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const branch = await fetchBranchBySlug(readClient, slug);
-  return { title: branch?.name ?? "Şube" };
+  if (!branch) return { title: "Şube" };
+  return pageMetadata({
+    path: `/subelerimiz/${slug}`,
+    title: branch.name ?? "Şube",
+    description: pickLocalized(branch.address),
+    seo: branch.seo,
+  });
 }
 
 export default async function BranchDetailPage({ params }: PageProps) {
@@ -36,6 +45,13 @@ export default async function BranchDetailPage({ params }: PageProps) {
 
   return (
     <>
+      <JsonLd
+        data={buildBreadcrumbJsonLd([
+          { name: "Ana Sayfa", url: absoluteUrl("/") },
+          { name: "Şubelerimiz", url: absoluteUrl("/subelerimiz") },
+          { name: branch.name ?? "Şube", url: absoluteUrl(`/subelerimiz/${slug}`) },
+        ])}
+      />
       <Section className="bg-navy">
         <Heading level="h1" size="lg" className="text-white">
           {branch.name}

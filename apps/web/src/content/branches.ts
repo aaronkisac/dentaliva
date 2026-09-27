@@ -1,5 +1,6 @@
 import type { SanityClient } from "@sanity/client";
 
+import type { SeoObject } from "@dentaliva/seo";
 import { branchListQuery } from "@dentaliva/sanity-schema/queries";
 import type { LocalizedPair } from "./home";
 
@@ -12,6 +13,7 @@ export interface BranchItem {
   mapUrl?: string;
   geo?: { lat?: number; lng?: number };
   image?: unknown;
+  seo?: SeoObject | null;
 }
 
 async function fetchJson<T>(client: SanityClient, query: string): Promise<T> {

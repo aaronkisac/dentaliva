@@ -6,11 +6,13 @@ import { pickLocalized } from "@dentaliva/sanity-schema/client";
 import { Link } from "@dentaliva/ui";
 import { fetchBranches } from "../../src/content/branches";
 import { readClient } from "../../src/sanity";
+import { pageMetadata } from "../../src/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
+  path: "/subelerimiz",
   title: "Şubelerimiz",
   description: "Dentaliva şubeleri",
-};
+});
 
 export default async function BranchesPage() {
   const branches = await fetchBranches(readClient);

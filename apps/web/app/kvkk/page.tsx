@@ -6,11 +6,13 @@ import { pickLocalized } from "@dentaliva/sanity-schema/client";
 
 import { fetchLegalPageBySlug } from "../../src/content/legal";
 import { readClient } from "../../src/sanity";
+import { pageMetadata } from "../../src/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
+  path: "/kvkk",
   title: "KVKK Aydınlatma Metni",
   description: "Kişisel verilerin korunması aydınlatma metni",
-};
+});
 
 export default async function KvkkPage() {
   const page = await fetchLegalPageBySlug(readClient, "kvkk");

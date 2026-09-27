@@ -9,7 +9,8 @@ export const branchListQuery = defineQuery(
     hours,
     mapUrl,
     geo,
-    image
+    image,
+    seo
   }`,
 );
 
@@ -34,7 +35,7 @@ export const blogBySlugQuery = defineQuery(
     title,
     "slug": slug.current,
     body,
-    heroImage { ..., alt },
+    heroImage { ..., alt, "ref": asset._ref },
     publishedAt,
     author->{ name, slug, title, photo },
     seo

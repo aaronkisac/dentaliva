@@ -6,11 +6,13 @@ import { pickLocalized } from "@dentaliva/sanity-schema/client";
 import { GalleryLightbox } from "../../components/lightbox";
 import { fetchHomeData } from "../../src/content/home";
 import { readClient } from "../../src/sanity";
+import { pageMetadata } from "../../src/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
+  path: "/fotograf-galerisi",
   title: "Fotoğraf Galerisi",
   description: "Dentaliva fotoğraf galerisi",
-};
+});
 
 export default async function GalleryPage() {
   const data = await fetchHomeData(readClient);

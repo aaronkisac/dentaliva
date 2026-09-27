@@ -1,5 +1,6 @@
 import type { SanityClient } from "@sanity/client";
 
+import type { SeoObject } from "@dentaliva/seo";
 import { doctorBySlugQuery, doctorListQuery } from "@dentaliva/sanity-schema/queries";
 import type { DoctorItem, LocalizedPair } from "./home";
 
@@ -7,6 +8,8 @@ export interface DoctorDetail extends DoctorItem {
   bio?: LocalizedPair;
   phone?: string;
   treatments?: Array<{ name?: LocalizedPair; slug?: string }>;
+  photo?: { ref?: string; alt?: LocalizedPair };
+  seo?: SeoObject | null;
 }
 
 async function fetchJson<T>(
