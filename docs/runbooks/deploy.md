@@ -16,6 +16,13 @@ npx wrangler login        # opens the browser; log in with the Cloudflare accoun
 npx wrangler whoami       # must list the account
 ```
 
+First deploy on a **new** account also needs a workers.dev subdomain
+(dashboard: the deploy error links the onboarding page, or via API:
+`PUT /accounts/{id}/workers/subdomain {"subdomain":"<name>"}`). Recorded for
+dentaliva 2026-09-27: subdomain **`dentaliva.workers.dev`** →
+`dentaliva-com.dentaliva.workers.dev` (prod) and
+`dentaliva-com-staging.dentaliva.workers.dev` (staging).
+
 ## 1. Staging (5 min)
 
 ```bash
@@ -68,12 +75,17 @@ Risk #1 — registrar-side change, the one step outside this repo).
 
 ## Verification
 
-- [ ] Staging URL serves the site **behind** Access; `/api/callback` answers
-      validation errors (mock mode — no mail).
-- [ ] Production workers.dev URL serves the site; `/api/callback` with a real
-      submission delivers to `NOTIFY_EMAIL`.
-- [ ] More than 5 POSTs/min from one IP hit HTTP 429 (rate-limit binding).
-- [ ] Custom domains resolve and serve the static build.
+- [x] Staging URL serves the site; `/api/callback` answers validation errors
+      (mock mode — no mail). _Access lock still pending — see below._
+- [x] Production workers.dev URL serves the site with HSTS + per-route CSP
+      (verified 2026-09-27); a legacy blog URL from `_redirects` returns `301`.
+- [x] `/api/callback` behaves: staging `200 {ok:true}` in mock mode;
+      production answers `400 Doğrulama başarısız` until `TURNSTILE_SECRET`
+      is set (fail-loud, by design).
+- [ ] Rate-limit binding: deployed (5 req/60s) but **permissive by design** —
+      Cloudflare's Workers rate limiting is eventually consistent and
+      per-isolate, so short bursts can exceed the limit. Treat it as abuse
+      shaping, not a hard quota; Turnstile is the real bot gate.
 
 ## Related (separate issues, need the same login)
 
