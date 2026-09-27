@@ -5,7 +5,10 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { splitByLastmod, toBlogPostDoc, toRedirectDoc } from "./src/blog-transform.ts";
 
 const POST_SITEMAP = "https://www.dentaliva.com/post-sitemap.xml";
-const normalized = JSON.parse(await readFile("migration/normalized/blog.json", "utf8"));
+// CPT-1: optional argv overrides for v2 re-extraction runs.
+const normalizedDir = process.argv[2] ?? "migration/normalized";
+const outDir = process.argv[3] ?? "migration/ndjson";
+const normalized = JSON.parse(await readFile(`${normalizedDir}/blog.json`, "utf8"));
 
 const sitemapXml = await (await fetch(POST_SITEMAP)).text();
 const urlBlocks = sitemapXml.split("<url>").slice(1);
@@ -41,9 +44,9 @@ function slugOf(loc) {
 console.log(`blogPost docs: ${postDocs.length}, redirect docs: ${redirectDocs.length}`);
 
 await mkdir("migration/ndjson", { recursive: true });
-await writeFile("migration/ndjson/blog.ndjson", postDocs.map((d) => JSON.stringify(d)).join("\n"));
+await writeFile(`${outDir}/blog.ndjson`, postDocs.map((d) => JSON.stringify(d)).join("\n"));
 await writeFile(
-  "migration/ndjson/redirects.ndjson",
+  `${outDir}/redirects.ndjson`,
   redirectDocs.map((d) => JSON.stringify(d)).join("\n"),
 );
 log2(`wrote ${postDocs.length} posts + ${redirectDocs.length} redirects`);

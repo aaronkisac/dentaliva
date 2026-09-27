@@ -1,14 +1,19 @@
 /**
  * Normalized crawler pages → Sanity documents (TR-only v1).
- * Conservative mapping: name/slug/summary/body only — structured extras
- * (benefits/steps/faqs) are curated manually at MIG-5 review.
+ * CPT-1: summaries come from the first real paragraph, and structured
+ * `benefits[]`/`steps[]` are mapped from the H2 sections the live pages
+ * already have (avantaj/fark lists, uygulama süreci sub-steps).
  */
+import { isJunkLine, type ContentBlock } from "./extract.ts";
 
 export interface NormalizedPage {
   url: string;
   title: string;
   h1: string;
+  /** Flat lines with `## `/`### ` heading markers. */
   paragraphs: string[];
+  /** Typed blocks from the v2 crawler; absent in legacy normalized files. */
+  blocks?: ContentBlock[];
 }
 
 export interface SanityDoc {
@@ -42,18 +47,71 @@ export function nameFrom(page: NormalizedPage): string {
     .join(" ");
 }
 
+/** First substantial, non-junk, non-heading line — the treatment summary. */
+export function realSummary(lines: string[]): string {
+  return (
+    lines.find((line) => !line.startsWith("#") && !isJunkLine(line) && line.length >= 80) ?? ""
+  );
+}
+
+/** Lines after `headingPattern`'s H2/H3 until the next heading. */
+export function sectionLines(blocks: ContentBlock[], headingPattern: RegExp): string[] {
+  const start = blocks.findIndex((block) => block.type === "h2" && headingPattern.test(block.text));
+  if (start === -1) return [];
+  const lines: string[] = [];
+  for (const block of blocks.slice(start + 1)) {
+    if (block.type === "h2") break;
+    if (block.type === "h3" || block.type === "p" || block.type === "li") lines.push(block.text);
+  }
+  return lines;
+}
+
 export function treatmentToSanity(page: NormalizedPage): SanityDoc {
   const slug = slugFromUrl(page.url);
   const name = nameFrom(page);
-  const [summary, ...rest] = page.paragraphs.filter((p) => !p.startsWith("## "));
-  const body = rest.join("\n\n") || summary || "";
+  const nonHeading = page.paragraphs.filter((p) => !p.startsWith("#"));
+  const summary =
+    realSummary(page.paragraphs) || nonHeading.find((line) => !isJunkLine(line)) || name;
+  const cleanedBody = nonHeading
+    .filter((line) => !isJunkLine(line) && line !== summary)
+    .join("\n\n");
+  // Legacy single-paragraph pages reused the paragraph as the body too —
+  // but a page with no paragraphs keeps an empty body.
+  const body = cleanedBody || (nonHeading.length > 0 && !isJunkLine(summary) ? summary : "");
+
+  // Structured extras from the H2 sections (CPT-1); absent in legacy input.
+  const blocks = page.blocks ?? [];
+  const benefits = sectionLines(blocks, /avantaj|fark/i).filter(
+    (line) => line.length >= 25 && line.length <= 140 && !isJunkLine(line),
+  );
+  const steps: Array<{ title: { tr: string }; description: { tr: string }; _key: string }> = [];
+  const processStart = blocks.findIndex(
+    (block) => block.type === "h2" && /uygulama süreci|süreç/i.test(block.text),
+  );
+  if (processStart !== -1) {
+    for (const block of blocks.slice(processStart + 1)) {
+      if (block.type === "h2") break;
+      if (block.type === "h3") {
+        steps.push({
+          title: { tr: block.text },
+          description: { tr: "" },
+          _key: `step${steps.length}`,
+        });
+      }
+    }
+  }
+
   return {
     _id: docId("treatment", slug),
     _type: "treatment",
     name: { tr: name },
     slug: { _type: "slug", current: slug },
-    summary: { tr: summary ?? name },
+    summary: { tr: summary },
     body: { tr: body },
+    ...(benefits.length > 0
+      ? { benefits: benefits.map((text, index) => ({ _key: `ben${index}`, tr: text })) }
+      : {}),
+    ...(steps.length > 0 ? { steps } : {}),
   };
 }
 

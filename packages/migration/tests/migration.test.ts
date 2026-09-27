@@ -66,6 +66,20 @@ describe("page extraction", () => {
     expect(page.paragraphs.length).toBeGreaterThanOrEqual(3);
     expect(page.paragraphs.some((p) => p.startsWith("## "))).toBe(true);
   });
+
+  // CPT-1: nav/footer chrome outside <main> must never leak into content.
+  it("excludes navigation and footer junk outside main", () => {
+    const all = page.paragraphs.join("\n");
+    expect(all).not.toContain("Hakkımızda İnsan Kaynakları");
+    expect(all).not.toContain("Tüm hakları saklıdır");
+    expect(all).not.toContain("Dentaliva Studio");
+  });
+
+  it("produces typed blocks with h2/h3 markers", () => {
+    expect(page.blocks?.some((b) => b.type === "li")).toBe(true);
+    expect(page.blocks?.filter((b) => b.type === "h3")).toHaveLength(2);
+    expect(page.paragraphs.some((p) => p.startsWith("### "))).toBe(true);
+  });
 });
 
 describe("parseLocs edge cases", () => {
