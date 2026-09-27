@@ -5,11 +5,13 @@ import { Heading, Section, Text } from "@dentaliva/ui";
 
 import { fetchHomeData } from "../../src/content/home";
 import { readClient } from "../../src/sanity";
+import { pageMetadata } from "../../src/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
+  path: "/iletisim",
   title: "İletişim",
   description: "Dentaliva iletişim bilgileri",
-};
+});
 
 export default async function ContactPage() {
   const data = await fetchHomeData(readClient);

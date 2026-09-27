@@ -5,11 +5,13 @@ import { pickLocalized } from "@dentaliva/sanity-schema/client";
 
 import { fetchHomeData } from "../../src/content/home";
 import { readClient } from "../../src/sanity";
+import { pageMetadata } from "../../src/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
+  path: "/hakkimizda",
   title: "Hakkımızda",
   description: "Dentaliva hakkında",
-};
+});
 
 export default async function AboutPage() {
   const data = await fetchHomeData(readClient);

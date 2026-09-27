@@ -6,11 +6,13 @@ import { pickLocalized } from "@dentaliva/sanity-schema/client";
 import { Link } from "@dentaliva/ui";
 import { fetchBlogPosts } from "../../src/content/blog";
 import { readClient } from "../../src/sanity";
+import { pageMetadata } from "../../src/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
+  path: "/blog",
   title: "Blog",
   description: "Dentaliva blog — diş sağlığı yazıları",
-};
+});
 
 export default async function BlogPage() {
   const posts = await fetchBlogPosts(readClient);

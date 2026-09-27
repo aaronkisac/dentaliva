@@ -6,11 +6,13 @@ import { pickLocalized } from "@dentaliva/sanity-schema/client";
 import { Link } from "@dentaliva/ui";
 import { fetchDoctors } from "../../src/content/doctors";
 import { readClient } from "../../src/sanity";
+import { pageMetadata } from "../../src/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
+  path: "/hekimlerimiz",
   title: "Hekimlerimiz",
   description: "Dentaliva hekim kadrosu",
-};
+});
 
 export default async function DoctorsPage() {
   const doctors = await fetchDoctors(readClient);

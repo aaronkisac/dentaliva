@@ -4,11 +4,14 @@ import Image from "next/image";
 
 import { pickLocalized } from "@dentaliva/sanity-schema/client";
 import { urlForImage } from "@dentaliva/sanity-schema/image-url";
+import { buildBreadcrumbJsonLd, buildFaqJsonLd } from "@dentaliva/seo";
 
 import { Accordion, Card, Heading, Section, Text } from "@dentaliva/ui";
+import { JsonLd } from "../../../components/json-ld";
 import { fetchTreatmentBySlug, fetchTreatments } from "../../../src/content/treatments";
 import { site } from "../../../src/config";
 import { readClient } from "../../../src/sanity";
+import { absoluteUrl, pageMetadata } from "../../../src/seo";
 import { SeedPlaceholder } from "../../../components/seed-placeholder";
 
 interface PageProps {
@@ -30,9 +33,15 @@ export async function generateStaticParams(): Promise<Array<{ slug: string }>> {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const treatment = await fetchTreatmentBySlug(readClient, slug);
-  return {
-    title: treatment ? pickLocalized(treatment.name) : "Tedavi",
-  };
+  if (!treatment) return { title: "Tedavi" };
+  return pageMetadata({
+    path: `/hizmetlerimiz/${slug}`,
+    title: pickLocalized(treatment.name) || "Tedavi",
+    description: pickLocalized(treatment.summary),
+    seo: treatment.seo,
+    ogImageRef: treatment.heroImage?.ref,
+    ogImageAlt: treatment.heroImage?.alt?.tr,
+  });
 }
 
 export default async function TreatmentDetailPage({ params }: PageProps) {
@@ -45,6 +54,26 @@ export default async function TreatmentDetailPage({ params }: PageProps) {
   }
 
   const steps = treatment.steps ?? [];
+  const name = pickLocalized(treatment.name);
+  const faqs = (treatment.faqs ?? []).filter((f) => f.question?.tr && f.answer?.tr);
+  // SEO-5: breadcrumb trail + FAQ answers as structured data.
+  const jsonLd = [
+    buildBreadcrumbJsonLd([
+      { name: "Ana Sayfa", url: absoluteUrl("/") },
+      { name: "Hizmetlerimiz", url: absoluteUrl("/hizmetlerimiz") },
+      { name, url: absoluteUrl(`/hizmetlerimiz/${slug}`) },
+    ]),
+    ...(faqs.length > 0
+      ? [
+          buildFaqJsonLd(
+            faqs.map((f) => ({
+              question: f.question?.tr ?? "",
+              answer: f.answer?.tr ?? "",
+            })),
+          ),
+        ]
+      : []),
+  ];
   // React hoists this into <head>: the LCP image fetch starts at head-parse,
   // in parallel with CSS, instead of after discovery (PRF-3).
   const heroPreload = treatment.heroImage?.ref
@@ -60,6 +89,9 @@ export default async function TreatmentDetailPage({ params }: PageProps) {
 
   return (
     <>
+      {jsonLd.map((data, index) => (
+        <JsonLd key={index} data={data} />
+      ))}
       {heroPreload ? (
         <link rel="preload" as="image" href={heroPreload} fetchPriority="high" />
       ) : null}

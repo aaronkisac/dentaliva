@@ -1,5 +1,6 @@
 import type { SanityClient } from "@sanity/client";
 
+import type { SeoObject } from "@dentaliva/seo";
 import { treatmentBySlugQuery, treatmentListQuery } from "@dentaliva/sanity-schema/queries";
 import type { LocalizedPair } from "./home";
 
@@ -26,6 +27,7 @@ export interface TreatmentDetail extends TreatmentListItem {
   priceNote?: LocalizedPair;
   faqs?: Array<{ question?: LocalizedPair; answer?: LocalizedPair }>;
   doctors?: Array<{ name?: string; slug?: string; title?: LocalizedPair }>;
+  seo?: SeoObject | null;
 }
 
 async function fetchJson<T>(

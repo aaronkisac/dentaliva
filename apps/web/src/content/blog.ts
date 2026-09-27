@@ -1,5 +1,6 @@
 import type { SanityClient } from "@sanity/client";
 
+import type { SeoObject } from "@dentaliva/seo";
 import { blogBySlugQuery, blogListQuery } from "@dentaliva/sanity-schema/queries";
 import type { LocalizedPair } from "./home";
 
@@ -9,6 +10,11 @@ export interface BlogListItem {
   excerpt?: LocalizedPair;
   publishedAt?: string;
   heroImage?: unknown;
+}
+
+export interface BlogImage {
+  ref?: string;
+  alt?: LocalizedPair;
 }
 
 export interface PortableBlock {
@@ -22,6 +28,8 @@ export interface PortableBlock {
 export interface BlogPostDetail extends BlogListItem {
   body?: { tr?: PortableBlock[]; en?: PortableBlock[] };
   author?: { name?: string; slug?: string; title?: LocalizedPair };
+  heroImage?: BlogImage;
+  seo?: SeoObject | null;
 }
 
 async function fetchJson<T>(
