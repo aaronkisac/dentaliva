@@ -66,11 +66,13 @@ export default async function BranchDetailPage({ params }: PageProps) {
             <Heading level="h2" size="title">
               İletişim
             </Heading>
-            <Text className="mt-3">
-              <a href={`tel:${branch.phone}`} className="hover:text-gold-deep">
-                {branch.phone}
-              </a>
-            </Text>
+            {branch.phone ? (
+              <Text className="mt-3">
+                <a href={`tel:${branch.phone}`} className="hover:text-gold-deep">
+                  {branch.phone}
+                </a>
+              </Text>
+            ) : null}
             {branch.hours?.tr ? <Text className="mt-2">{pickLocalized(branch.hours)}</Text> : null}
           </div>
           {branch.mapUrl ? (

@@ -24,6 +24,14 @@ export const faq = defineType({
       type: "number",
       initialValue: 0,
     }),
+    defineField({
+      // CPT-3: anasayfa SSS bölümü yalnızca işaretli soruları gösterir;
+      // tedaviye bağlı SSS'ler yalnızca tedavi sayfasında yaşar.
+      name: "displayOnHome",
+      title: "Anasayfada göster",
+      type: "boolean",
+      initialValue: false,
+    }),
   ],
   orderings: [{ title: "Sıralama", name: "orderAsc", by: [{ field: "order", direction: "asc" }] }],
   preview: { select: { title: "question.tr" } },
