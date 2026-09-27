@@ -1,0 +1,783 @@
+{
+  "videos": 6,
+  "reviews": [
+    {
+      "author": "Kerem Ercanlı",
+      "text": "Tüm çalışanlara teşekkürler. Eda hanım işine çok hakim ve güler yüzlü. Eli de fazlasıyla hafif. Tavsiye ederim.",
+      "rating": 5
+    },
+    {
+      "author": "Yeliz Bayraktar",
+      "text": "Ben gitmeden arastirdim ve gittigimde gercekten herkes cok güler yüzlü ve cok ilgililerdi doktorum süperdi cok ilgili davrandi en ince detaya kadar gitmeden cok korkuyodum ama gercekten korkum falan kalmadi herkese tavsiye ederim.",
+      "rating": 5
+    },
+    {
+      "author": "birol oturanel",
+      "text": "20 yaş dişimin bir kısmı kırılınca çektirmem gerekti. Bir tanıdığım vasıtasıyla randevu aldım. Gittiğimde gayet nezih bir yer ve 20 yaş dişimi çene cerrahı bir arkadaş çekti dikiş attı. Hiç bir sıkıntı yaşamadım. Kısa bir zamanda halloldu , Bir kaç günde iyileştim.",
+      "rating": 5
+    },
+    {
+      "author": "Nurçin Kaya",
+      "text": "Tüm korkumu ve endişemi boşa çıkaran Eda Dilmaç’a ve ekibe tekrar çok teşekkür ediyorum. Detaylı anlatımı, yaklaşımı, işindeki titizliği ve pratikliği iyi ki gelmişim dedirtiyor",
+      "rating": 5
+    },
+    {
+      "author": "Nubya Luz",
+      "text": "excellent service excellents professionnels sont très agréables ils ont résolu mon problème avec beaucoup de professionnalisme Shayma qui m'a traité avec toute sa gentillesse",
+      "rating": 5
+    },
+    {
+      "author": "Ronaldo Mendonca",
+      "text": "Muito bem atendido, pessoas gentis, local super limpo. Maravilha. 5 estrelas",
+      "rating": 5
+    },
+    {
+      "author": "TAYFUN YILMAZ",
+      "text": "Dün diş ağrısı şikayetiyle randevusuz olarak gittiğim Dentaliva Altunizade şb. de ,öncelikle hasta kayıttaki hanımefendilere durumumu anlattıktan sonra insiyatif alarak muayene olmamı sağladıkları için hepsine teşekkür ederim. Doktor Eda Dilmaç Hanım'da muayene sonrası hiç bekletmeden hızlıca müdahele ederek beni bu dertten kurtardı. Eda Hanımada güleryüzü, kibarlığı ve işindeki pratikliği için çok teşekkür ederim. Hepinize iyi çalışmalar dilerim..",
+      "rating": 5
+    },
+    {
+      "author": "Derya Küçük",
+      "text": "Ben ne desem nerden başlasam bilemiyorum.. Uzun zamandır bu yorumu yazmak istiyordum.. Hayatımda çok zor bir dönem yaşadığım günlerde Dentaliva ile karşılaştım.. Çok ciddi bir çene kisti tedavi sürecim başlamıştı ve sonunun ne olacağını kimse ön göremiyordu.. Mental anlamda tam da her şeyden umudumu kesmişken karşıma çıktı Dentaliva… Başta Cihan Hoca olmak üzere kapıdan içeri girdiğim anda danışmada duran arkadaşlardan diğer bütün çalışanlara kadar herkese ne kadar teşekkür etsem az … Sağlığım i",
+      "rating": 5
+    }
+  ],
+  "homeFaqs": 6,
+  "treatmentsWithFaqs": 24,
+  "treatmentFaqLinks": 24,
+  "mutations": 184,
+  "treatmentFaqs": [
+    {
+      "slug": "protez-dis-tedavisi",
+      "faqs": [
+        {
+          "q": "Protez diş tedavisi fiyatı ne kadar?",
+          "a": "Protez diş tedavisi fiyatları birden fazla etken doğrultusunda belirlenir. Bu yüzden herhangi bir diş protez tedavisi için net bir fiyat bilgisi belirtmek doğru olmayacaktır. Protez diş tedavisinde kullanılan tedavi yöntemi, söz konusu olan protezin kalitesi, hastanın malzeme seçimi gibi konularda verdiği kararlar ve hastanın tıbbi ihtiyaçları protez diş tedavisi fiyatının net ve doğru bir şekilde hesaplanmasını sağlar. Bütün bunlardan dolayı protez diş tedavisi fiyatları ile ilgili net bir bilgi almak istiyorsanız Dentaliva gibi güvenilir sağlık kuruluşlarına danışabilirsiniz."
+        },
+        {
+          "q": "Protetik diş tedavisi protez mi?",
+          "a": "Protetik diş tedavisi protez diş tedavisidir. Sağlık alanında bir tedavi birden fazla isimle anılabilir. Bu tedavilerden bir tanesi olan protez diş tedavisi de protetik diş tedavisi olarak da anılmaktadır. Protetik diş tedavisi kapsamında bireylerin diş eksikliğinin giderilmesi için oldukça güvenli ve etkili yöntemlere başvurulur. İmplant tedavilerinden total protez uygulamalarına kadar birçok farklı tedavi çeşidi protetik diş tedavisi kapsamına girer. Protetik diş tedavileri Dentaliva gibi profesyonel ve güvenilir sağlık kuruluşlarında yapılmalıdır."
+        },
+        {
+          "q": "Protez dişin ömrü ne kadar?",
+          "a": "Protez dişin ömrü, duruma göre değişkenlik gösterebilir. Protez diş kapsamına giren birçok farklı protez çeşidi vardır. İmplant üstü sabit protezlerden takım ya da tıbbi adı ile total protezlere kadar birçok farklı protez türü vardır ve her birinin ömrü birbirinden farklı olabilir. Buna ek olarak bireyin diş protezi bakımına özen gösterme seviyesi ve diş protezi beyazlatma gibi işlemlerde güvenilir sağlık kuruluşlarından yardım alması gibi durumlar da protez dişin ömrünü etkiler. Hareketli protezlerin ortalama ömrü 5-6 yıl civarındayken implant üstü sabit protezlerin ömrü ise 20-25 yıl civarındadır."
+        },
+        {
+          "q": "Protez diş tedavisi acıtıyor mu?",
+          "a": "Protez diş tedavisi sanıldığı kadar acı verici bir tedavi değildir. Zaten diş protez tedavisine ihtiyaç duyan bireyler genellikle birden fazla dişini kaybetmiş ve nedeni fark etmeksizin bu dişleri kaybederken acı ve ağrı ile karşı karşıya kalmış kişilerdir. Bu kişiler total protez olarak adlandırılan acısız protez diş tedavilerinden yararlanabilirler. Buna ek olarak implant üstü sabit protez tedavisi gibi tedavilerde minimal bir acı söz konusu olsa da bu acının ağrı kesicilerin kullanımı ile kontrol altına alınması mümkündür."
+        },
+        {
+          "q": "Protez diş tedavisi bakımı nasıl yapılır?",
+          "a": "Protez diş tedavisi bakımının nasıl yapılacağı duruma göre değişkenlik gösterebilir. Protez dişler ve özellikle de bu protez dişlerin ön yüzeyinde kullanılan malzemeler birbirlerinden farklı olabildiği için bireylere sunulacak bakım önerileri de duruma göre değişebiliyor. Örnek olarak bir protez malzemesi için oldukça güvenli olan bir bakım ürünü başka bir protez çeşidine zarar verebilir. Bu yüzden diş protezi bakımı söz konusu olduğunda protez tedavinizi gerçekleştirmiş olan diş hekiminin önerilerini dikkate almalısınız."
+        },
+        {
+          "q": "Diş protez tedavisi ne kadar sürer?",
+          "a": "Diş protez tedavisinin ne kadar süreceği duruma göre değişkenlik gösterebilir çünkü protez diş çeşitlerinin sayısı oldukça fazladır. Her bir diş protezi çeşidi farklı tedavi süreleri ile yerleştirilebilir. Ancak diş protez tedavilerinde olabildiğince hızlı sonuç almak için bazı yöntemlere başvurulur. Buna ek olarak diş protez tedavisi süresi boyunca hastanın dişsizlik probleminden dolayı olumsuz yönde etkilenmemesi adına geçici protezler takılabilir ve bu sayede tedavi süresinde mağduriyet yaşanmasının önüne geçilebilir."
+        }
+      ]
+    },
+    {
+      "slug": "zirkonyum-kaplama",
+      "faqs": [
+        {
+          "q": "Sadece ön dişlere zirkonyum kaplama yapılır mı?",
+          "a": "Sadece ön dişlere zirkonyum zirkonyum kaplama yapılabilir. Zaten zirkonyum kaplama ışık geçirgenliğinden dolayı estetik ve doğal bir görünüm sunmasından ötürü genel olarak ön dişlerde kullanılan bir kaplama çeşididir. Bu yüzden birçok kişi ön dişlerinde kaplama ihtiyacı meydana geldiği zaman zirkonyum kaplama seçeneğin tercih ederek hem dayanıklı hem estetik görünen hem kullanımı güvenli olan kaplamalara kavuşmuş olur. Dişe zirkonyum kaplama uygulamasından yararlanırken duruma, isteklerinize ve ihtiyaçlarınıza göre sadece ön dişlerinize uygulama yaptırılmasını talep edebilirsiniz."
+        },
+        {
+          "q": "Zirkonyum kaplama fiyatı ne kadar?",
+          "a": "Zirkonyum kaplama fiyatı, birden fazla etken doğrultusunda belirlendiği için duruma göre değişkenlik gösterebilir. Öncelikle zirkonyum diş maliyetinin dayanıklılığı ve sunduğu doğal görünüm gibi etkenlerden dolayı bazı kaplama çeşitlerine oranla daha yüksek olabileceğini bilmek gerekir. Buna ek olarak tam zirkonyum kaplama ve porselen destekli zirkonyum kaplama çeşitlerinden hangisinin tercih edildiğinden kaplama yapılacak alanın büyüklüğüne kadar birçok farklı etken de zirkonyum estetik kaplama ücretini etkileyebilir. Bütün bunlardan dolayı zirkonyum estetik kaplama ücreti için net bir bilgi almak istiyorsanız bir sağlık kuruluşuna danışmanız gerekiyor."
+        },
+        {
+          "q": "Zirkonyum kaplama öncesi ve sonrası nelere dikkat etmek gerekir?",
+          "a": "Zirkonyum kaplama öncesi ve sonrası dikkat edilmesi gerekenler diğer diş tedavilerinden çok da farklı değildir. Zirkonyum kaplama yaptırmadan önce genel ağız sağlığına dikkat ederek diş enfeksiyonu gibi hastalıklardan korunmak, sigara ve alkol kullanımı gibi etkenlerle ağız sağlığını bozmamak gerekir. Buna ek olarak zirkonyum kaplama sonrasında ise kaplama yapılan diş ya da dişler ile çok sert yiyecekleri çiğnememek, derinlemesine diş temizliği kapsamında diş ipi ve ağız gargarası gibi ürünleri de kullanmaya dikkat etmek gerekiyor."
+        },
+        {
+          "q": "Zirkonyum kaplama ağız kokusu yapar mı?",
+          "a": "Zirkonyum kaplama ile ilgili en büyük endişelerden bir tanesi ağız kokusu yapacağına yönelik yaygın ve yanlış bilgidir. Zirkonyum kaplama ağız kokusu yapmaz. Özellikle de doğru şartlar altında, uzman zirkonyum hekimi tarafından ve bireye uygun ölçülerle yapılmış olan bir zirkonyum kaplama, kaplama malzemesi de kaliteli olduğu müddetçe ağız kokusu oluşumuna yol açmaz. Ancak zirkonyum kaplamanın yanlış ölçüler ve teknikler ile yapılması ya da bireyin genel ağız hijyenine dikkat etmemesi gibi durumlar ağız kokusu oluşumuna sebep olabilir. Bütün bunlardan dolayı zirkonyum kaplama sonrası ağız kokusu oluşumu ile karşılaşmamak için güvenli bir sağlık kuruluşunu seçmek gerekiyor."
+        },
+        {
+          "q": "Zirkonyum kaplama öncesi diş kesimi yapılır mı?",
+          "a": "Zirkonyum kaplama öncesi diş kesimi yapılıp yapılmayacağı duruma göre değişkenlik gösterebilir. Ancak genel olarak zirkonyum kaplama da dahil olmak üzere kaplama uygulamalarının büyük bir çoğunluğunda diş kesimi yapılır. Aslında bu işleme diş kesiminden çok diş törpüleme demek daha doğru olacaktır çünkü alanında uzman diş hekimleri hastanın ana dişini olabildiğince kaybetmemesi adına çok az dişin kaybedileceği şekilde hassas işlemler gerçekleştirirler. Bütün bunlardan dolayı zirkonyum kaplama sonucunda dişlerinizin büyük bir kısmının kesileceğini ve kaybedileceğini düşünmemeniz gerekiyor."
+        },
+        {
+          "q": "Zirkonyum kaplama ömürlük mü?",
+          "a": "Zirkonyum kaplamanın ömürlük kullanılıp kullanılamayacağı duruma göre değişkenlik gösterebilir. Zirkonyum kaplama gibi dayanıklı, kaliteli ve kapsamlı etkiler sunan bir kaplama çeşidi oldukça uzun bir kullanım süresine sahiptir. Zirkonyum kaplamanın ortalama ömrü 10 yıl civarında olsa da zirkonyum kaplamanın çok doğru şartlar altında yapılmış olması, bireyin genel ağız ve diş sağlığına dikkat etmesi ya da kaplamanın çok iyi korunması gibi etkenler bu süreyi çok daha fazla uzatabilir. Bütün bunlardan dolayı zirkonyum kaplamanın ömürlük olarak kullanılıp kullanılamayacağı ve net kullanım süresi kişiden kişiye göre değişkenlik gösterdiği için bu konuda net bir bilgi vermek doğru olmayacaktır."
+        }
+      ]
+    },
+    {
+      "slug": "subperiostal-implant",
+      "faqs": [
+        {
+          "q": "Subperiostal implant tedavisi ne kadar sürer?",
+          "a": "Subperiostal implant tedavilerinin ne kadar süreceği, duruma göre değişkenlik gösterebilir. Subperiostal implant tedavileri genel olarak çok komplike operasyonlar olmadıkları ve ekstrem bir tahribata yol açmadıkları için klasik implant tedavilerinden daha kısa sürebilir. Örnek olarak klasik implant tedavilerinde çene kemiğine implant yerleştirildiği için implantın çene kemiğine kaynaması gibi süreçlerden geçilir. Subperiostal implant tedavileri ise 3 – 6 ay gibi oldukça kısa sürelerde tamamlanabilir."
+        },
+        {
+          "q": "Subperiostal implant için nasıl bir hazırlık süreci gerekir?",
+          "a": "Subperiostal implant için özenli davranılan bir hazırlık sürecinin geçirilmesi gerekir. Subperiostal implantlar diğer implant çeşitlerinin aksine çene kemiğine değil çene kemiği ile diş arasındaki diş eti dokusuna yerleştirildiği ve çene kemiğinin üstüne oturduğu için kapsamlı bir hazırlık sürecinden geçmek gerekir. Bu hazırlık süreci esnasında bireyin genel sağlık durumunun ve özellikle de diş sağlığının iyi durumda olması için çeşitli yöntem ve müdahalelere başvurulabilir. Hazırlık sürecinde yapılan doğru uygulamalar sayesinde diş eksikliği ideal bir şekilde giderilebilir."
+        },
+        {
+          "q": "Subperiostal implantlar klasik implantlara göre daha mı dayanıklıdır?",
+          "a": "Subperiostal implantların klasik implantlara göre daha dayanıklı olup olmayacağı, duruma göre değişkenlik gösterir. Subperiostal implantlar çene kemiğine yerleştirilmez. Bu yüzden çene kemiği yoğunluğunun büyük bir kısmını kaybetmiş bir hastaya all on four implant tedavisi gibi uygulamalar yerine subperiostal implant uygulamasını yapmak çok daha dayanıklı bir seçenek olabilir. Ancak çene kemiği yoğunluğu yüksek olan hastalar için ise klasik implant tedavileri subperiostal implant tedavilerinden daha dayanıklı çözümler sunar."
+        },
+        {
+          "q": "Subperiostal implant fiyatları ne kadar?",
+          "a": "Subperiostal implant fiyatları birden fazla faktör doğrultusunda belirlenir. Subperiostal implant fiyatları için özellikle de seçilen implant malzemesinin kalitesi, protez dişte kullanılan malzemelerin türü ve hastanın genel sağlık durumu gibi etkenler dikkate alınır. Buna ek olarak elbette ki ihtiyaç duyulan implant yani diş kökü sayısı artıkça fiyat da artabilir. Bütün bunlardan dolayı subperiostal implant fiyatlarına ilişkin net bir bilgi edinmek istiyorsanız bir diş hekimine danışmalısınız."
+        },
+        {
+          "q": "Subperiostal implant çok acıtır mı?",
+          "a": "Subperiostal implant sanılanın aksine çok acıtmaz. Zaten implant tedavilerinin geneli halk arasında anıldıkları kadar çok acı veren tedaviler değildir. Özellikle de subperiostal implant tedavisi gibi minimal cerrahi müdahale ile gerçekleştirilen tedavilerde ekstrem bir acı ya da ağrı söz konusu olmaz. Subperiostal implant tedavisi klasik implant tedavilerinden farklı olarak çene kemiğine implant yerleştirme işlemine başvurulmadan yapıldığı için all on six implant tedavisi gibi tedavilerden çok daha az acılı ve çok daha fazla konforlu bir tedavi türüdür. Subperiostal implant tedavisi sonrasında ortaya çıkabilecek minimal ağrı, ağrı kesicilerle kontrol altında tutulabilir."
+        },
+        {
+          "q": "Subperiostal implantın ömrü ne kadar?",
+          "a": "Subperiostal implantın ömrü duruma göre değişkenlik gösterir. Subperiostal implantlar da tıpkı diğer implant çeşitleri gibi doğru bir şekilde yerleştirilmişlerse ve bireyin genel ağız sağlığına dikkat etmesi gibi olumlu faktörlerin de etkisi ile birlikte neredeyse ömürlük denilebilecek kadar uzun süre kullanılabilir. Subperiostal implantların ömrü ortalama olarak 20 yıl civarındadır. Ancak subperiostal implantlara bağlanacak olan sabit ve sabit olmayan protezlerin kullanım süresi ise subperiostal implantın ömründen bağımsızdır. Bu protezlerin ömürleri ya da daha doğru bir deyişle kullanım süreleri protezin kalitesi ve bireyin ağız sağlığına dikkat etme seviyesine göre değişkenlik gösterebilir."
+        }
+      ]
+    },
+    {
+      "slug": "periodontoloji",
+      "faqs": [
+        {
+          "q": "Periodontoloji randevusu nasıl alınır?",
+          "a": "Periodontoloji randevusu duruma göre farklı şekillerde alınabilir. Periodontoloji randevusunun nasıl alınacağı, seçmek istediğiniz sağlık kuruluşuna göre değişkenlik gösterir. Devlet hastaneleri ve özel sağlık kuruluşları arasında randevu alma işlemleri açısından değişkenlik görülebilir. Dentaliva’nın periodontoloji muayeneleri ve tedavilerinden yararlanmak istiyorsanız info@dentaliva.com mail adresimizden, +90 212 555 5482 numaralı telefonumuzdan, https://www.dentaliva.com/iletisim/ sayfamızdan ya da WhatsApp destek hattımızdan bize ulaşarak periodontoloji randevusu talep edebilirsiniz."
+        },
+        {
+          "q": "Periodontoloji tedavileri çok acır mı?",
+          "a": "Periodontoloji tedavilerinin çok acıtacağına yönelik yaygın bir bilgi vardır. Ancak bu bilgi aslında bazı durumlarda yalnızca halk arasındaki bir efsane olarak ele alınması gereken yanıltıcı bir bilgidir. Periodontoloji tedavileri her durumda çok acı verici olmaz. Bazı durumlarda periodontoloji tedavilerinden hiç acı çekmeden yararlanabilirsiniz. Özellikle de lazerle diş eti kesimi gibi hem yenilikçi hem lokal anestezi ile uygulanan tedavi yöntemlerinde uygulama esnasında acı da dahil olmak üzere herhangi bir şey hissetmezsiniz."
+        },
+        {
+          "q": "Periodontoloji tedavisi yapılmazsa ne olur?",
+          "a": "Periodontoloji tedavisi yapılmazsa yaşanacaklar hem tedavi içeriğine hem hastanın genel sağlık durumuna göre değişkenlik gösterebilir. Bir uzman periodontoloji hekimi bir hasta için periodontoloji tedavisi olmasını tavsiye ediyorsa ve hatta bunu gerekli görüyorsa bu durumda vakit kaybetmemek gerekir. Vakit kaybetmek ve periodontoloji tedavilerinden yararlanmamak demek öncelikle diş eti iltihabı gibi minimal sağlık problemlerini yaşarken sonrasında ise ileri diş eti hastalığına sahip olmanıza, genel sağlık durumunuzun bozulmasına ve hatta gebelik süreci gibi hassas bir süreçteyseniz bebeğinizin hayatının riske atılmasına bile yol açabilir."
+        },
+        {
+          "q": "Periodontal sağlığı korumak için neler yapılmalıdır?",
+          "a": "Periodontal sağlığı korumak için birçok şey yapılabilir. Periodontal sağlık genellikle diş etleri başta olmak üzere ağız içi genelinin temiz kalması ile ilişkilidir. Bu kapsamda özellikle de evde periodontal bakım yapmak için öncelikle ağız ve diş hijyeninize dikkat etmelisiniz. Ağız ve diş hijyenine dikkat etmeyi diş fırçası ve macunu kullanmaktan ibaret görmeyip diş ipi, gargara ya da ağız duşu gibi materyallerden de yararlanarak derinlemesine temizlik yapıp herhangi bir hijyen zafiyetine fırsat bırakmamanız gerekiyor."
+        },
+        {
+          "q": "Periodontoloji tedavisi fiyatları ne kadar?",
+          "a": "Periodontoloji tedavisi fiyatları ya da başka bir deyişle Diş eti tedavisi maliyeti duruma göre değişkenlik gösterebilir. Bu yüzden diş eti çekilme tedavisi ücreti gibi spesifik konularda da genel periodontoloji tedavi fiyatları gibi konularda da net bir değer vermek doğru olmayacaktır. Periodontoloji tedavilerinizin fiyatının ne kadar olacağı sizin genel sağlık durumunuza, isteklerinize ve diş hekiminizin sizin için tercih ettiği tedavi yönteminin içeriğine göre değişkenlik gösterebilir. Periodontoloji tedavisi fiyatları hakkında daha kapsamlı bilgi sahibi olmak için öncelikle bir diş hekimi tarafından muayene edilmeniz ve kapsamlı görüşmeler doğrultusunda yararlanacağınız tedavilere karar vermeniz gerekiyor."
+        },
+        {
+          "q": "Periodontoloji tedavileri ne kadar sürer?",
+          "a": "Periodontoloji tedavilerinin ne kadar süreceği tamamen duruma bağlıdır. Bir hastanın istekleri, tıbbi ihtiyaçları ya da diş hekiminin o hasta için belirlediği tedavi yönteminin içeriği gibi birçok faktör periodontoloji tedavisinin süresini etkiler. Ancak sanılanın aksine periodontoloji tedavileri her zaman yıllar gibi uzun süreler boyunca devam eden tedaviler değildir. Periodontoloji tedavilerinde erken teşhis, erken müdahale ve hasta için en ideal tedavi yönteminin seçilmesi gibi olumlu durumlar söz konusu ise periodontoloji tedavilerinin 1 ay gibi kısa sürelerde tamamlanması bile mümkün hale gelir."
+        }
+      ]
+    },
+    {
+      "slug": "pedodonti",
+      "faqs": [
+        {
+          "q": "Pedodonti neye bakar?",
+          "a": "Pedodonti bölümü genel olarak çocukların ağız ve diş sağlığı ile ilgilenilen bir bölümdür. Bu kapsamda çocukların yaşadığı diş eti hastalıklarından çürük problemine kadar birçok sağlık sorununa pedodonti bölümü bakar. Bir pedodonti uzmanı çocukların diş tedavilerinin yanı sıra rutin kontrollerini de gerçekleştirir. Bu işlemlerin her biri çocukların hem çocukluk hem ergenlik hem de yetişkinlik dönemlerinde estetik görünümlü ve sağlıklı dişlere sahip olmalarına yardımcı olmaktadır. Bu yüzden çocukların düzenli olarak pedodonti muayenelerine götürülmeleri gerekir."
+        },
+        {
+          "q": "Pedodonti tedavileri acıtır mı?",
+          "a": "Pedodonti tedavilerinin büyük bir çoğunluğu can acıtıcı değildir. Özellikle de fissür örtücü dolgu uygulamaları gibi tedavi yöntemleri çocukların herhangi bir acı hissetmelerine sebep olmaz. Ancak çocuk kanal tedavisi gibi tedavi yöntemlerinde minimal bir acı duyulabilir. Bu tür durumlarda da pedodonti kapsamında çocuğun yaşına ve genel sağlık durumuna uygun bir şekilde lokal anestezi yöntemlerine başvurulabilir. Lokal anestezi yöntemleri sayesinde çocuğun acı çekmeden tedavi olabilmesi mümkün hale gelir."
+        },
+        {
+          "q": "Çocuklardaki dişçi korkusu nasıl yenilir?",
+          "a": "Çocuklardaki dişçi korkusu, söz konusu olan çocuğun diş hekimlerinden ve diş tedavilerinden korkma sebeplerine göre değişkenlik gösterebilir. Bazı çocuklar ne yazık ki profesyonel olmayan bir uzman çocuk hiş hekiminin yanlış müdahale ve tavırlarından dolayı diş hekimlerinden ve diş tedavilerinden korkmaya başlayabilirler. Bu tür durumlarda bir pedagog yardımı almak ve pedagog onayı doğrultusunda çocuğu Dentaliva gibi alanında uzman ve doğru yaklaşımları benimsemiş pedodonti uzmanlarının çalıştığı bir sağlık kuruluşunda tedavi ettirmek gerekebilir."
+        },
+        {
+          "q": "Çocuklara diş fırçalama alışkanlığı nasıl kazandırılır?",
+          "a": "Çocuklara diş fırçalama alışkanlığını kazandırmak aslında sanıldığı kadar zor değildir. Ancak ebeveynlerin çocuklarına diş fırçalama alışkanlığını kazandırma konusunda geç kalmaları ya da yanlış yaklaşımları benimsemeleri gibi durumlar çocukların diş fırçalama alışkanlığı kazanmalarına engel olabilir. Çocukların dişleri en geç 2 yaş itibariyle fırçalanmaya başlamalıdır. İlk etapta çocuğa dişlerini fırçalamak konusunda yardım etmeniz ve kendi diş fırçalama rutinlerinizi göstererek çocukların taklit etme yeteneğini kullanmak, çocuğunuza en sağlıklı şekilde diş fırçalama alışkanlığı kazandırmanıza yardımcı olacaktır."
+        },
+        {
+          "q": "Süt dişleri önemsiz mi?",
+          "a": "Çocuk diş sağlığı ile ilgili bilinen en yaygın yanlışlardan bir tanesi süt dişlerinin önemsiz olduğuna yönelik bilgidir. Sanılanın aksine süt dişleri önemsiz değildir ve birçok uzman çocuk diş hekimi süt dişlerini korumak ve ağızda kalacakları sürece sağlıklı bir şekilde kalmalarına yardımcı olmak için çeşitli uygulamalara başvurulur. Süt dişlerinin zarar görmesi çocuğun erken yaşlarda çiğneme fonksiyonunun bozulmasına ve hatta konuşma bozuklukları gibi sorunlarla bile karşı karşıya kalmasına yol açabilir."
+        },
+        {
+          "q": "Pedodonti muayenesi nasıl yapılır?",
+          "a": "Pedodonti muayenesi duruma göre farklı şekillerle yapılır. Pedodonti uzmanları sağlık hizmeti sunmak adına pedogojik eğitimler de alırlar. Pedogoji eğitimi çocukların davranışsal gelişimleri gibi birçok konu hakkında bilgi sahibi olunmasına yardımcı olur. Bu yüzden pedodonti uzmanları çocuklara yalnızca tıbbi açıdan değil davranışsal açıdan da doğru tutumları benimseyerek yaklaşırlar. Pedodonti muayenesi esnasında duruma göre çocuğun diş hekimlerinden ve diş tedavilerinden korkmayacağı şekilde doğru davranışlar sergilenir. Buna ek olarak duruma göre muayene diş röntgeni çekimi gibi işlemler ile de pekiştirilebilir."
+        }
+      ]
+    },
+    {
+      "slug": "ortodonti",
+      "faqs": [
+        {
+          "q": "Ortodonti Tedavisi Ağrılı mıdır?",
+          "a": "Ortodonti tedavisi sırasında hafif bir rahatsızlık hissetmek normaldir. Ancak bu ağrı genel olarak birkaç gün içinde kaybolur. Ağrı kesici kullanımı ile bu rahatsızlık hafifletilebilir."
+        },
+        {
+          "q": "Diş Telleri Ne Kadar Süre Takılır?",
+          "a": "Diş tellerinin takılma süresi ise hastanın kişisel ihtiyaçlarına bağlı olarak genel olarak 18-24 ay arasında değişiklik gösterir. Bazı durumlarda ise daha uzun ya da kısa olabilir."
+        },
+        {
+          "q": "Şeffaf Plaklar Her Yaşta Kullanılabilir mi?",
+          "a": "Şeffaf plaklar hem yetişkin hem de çocuk hastalar için idealdir. Yaş sınırlaması olmadan diş yapısına uygun kullanım söz konusudur."
+        },
+        {
+          "q": "Ortodonti Tedavisi Ne Kadar Sürer?",
+          "a": "Ortodonti tedavisi tamamen kişiye özel olarak planlanır ve genel olarak 1,5-2 yıl arasında sürecektir. Tedavi süresi, dişlerin düzelme ihtiyacına bağlı olarak değişikliğe uğrayabilir."
+        },
+        {
+          "q": "Tedavi Sonrası Dişler Tekrar Bozulur mu?",
+          "a": "Tedavi sonrasında ise dişlerin eski haline dönmemesi açısından retainer kullanımı çok önemli bir tavsiyedir. Bu sayede dişlerin yeni elde edilen pozisyonu korunur ve eski haline dönmesinin önüne geçilir."
+        }
+      ]
+    },
+    {
+      "slug": "lamine-kaplama",
+      "faqs": [
+        {
+          "q": "Zirkonyum kaplama ve lamine kaplama arasındaki fark nedir?",
+          "a": "Zirkonyum kaplama ve lamine kaplama arasında birçok farklı yönden fark bulunur. Zirkonyum kaplama da en az lamine kaplama kadar popüler bir uygulamadır ama bu iki yöntem arasında özellikle de ne kadar dişin törpüleneceği ve elde edilecek sonuçların doğallığı gibi konular açısından farklar mevcuttur. Lamine kaplamada diş yüzeyi çok minimal bir şekilde törpülenir ve bu sayede pek de dikkate alınmayacak bir kayıp dışında ekstrem bir diş kaybı yaşanmaz. Ancak zirkonyum kaplamada ise dişin hatırı sayılır şekilde törpülenmesi ve biraz diş kaybının oluşması söz konusu olabilir. Buna ek olarak zirkonyum kaplamadan elde edilecek sonuçlar lamine kaplamadan elde edilecek sonuçlara oranla daha yapay görünebilir."
+        },
+        {
+          "q": "Lamine kaplama öncesi nelere dikkat etmek gerekir?",
+          "a": "Lamine kaplama öncesi dikkat edilmesi gereken birden fazla şey vardır. Dikkat edilmesi gereken en önemli ve genel şey ağız ve diş sağlığının iyi durumda olmasıdır. Lamine kaplama da tıpkı diğer diş hekimliği uygulamaları gibi tıbbi bir müdahaledir ve böyle bir müdahalenin yapılması için bireyin genel ağız sağlığının iyi durumda olması gerekir. Özellikle de diş eti iltihabı ya da çürük problemi gibi sağlık sorunları yaşayan bireylerin lamine kaplama da dahil olmak üzere herhangi bir estetik uygulamadan faydalanmaları mümkün olmayabilir."
+        },
+        {
+          "q": "Lamine kaplama için diş kesilir mi?",
+          "a": "Lamine kaplama için diş kesimi yapılıp yapılmayacağı duruma göre değişkenlik gösterir. Ancak lamine kaplama uygulamalarının genelinde diş kesiminden çok diş yüzeyini törpüleme olarak adlandırılabilecek kadar minimal bir işlem yapılır. Zaten bu yüzden lamine diş kaplama uygulaması, diş hacmini kaybetmeden diş kaplaması yaptırmak isteyen bireylerle sıklıkla tavsiye edilen yöntemlerden birisidir. Özetle lamine kaplama avantajları ile dişin kesilmesi gibi bir işleme gerek kalmadan minimal bir törpülemeyle diş hacmi korunacak şekilde yapılabilecek bir uygulamadır."
+        },
+        {
+          "q": "Lamine kaplama çıkar mı?",
+          "a": "Lamine kaplama çıkabilir. Ancak lamine kaplamanın çıkabilir olması her durumda çıkacağı anlamına gelmez. Lamine kaplama da dahil olmak üzere herhangi bir diş kaplamasının diş yüzeyinden çıkması yani halk arasındaki deyişle diş kaplamasının düşmesi çeşitli etkenler sonucunda meydana gelen bir durumdur. Lamine kaplama İstanbul klinik seçenekleri arasından güvenilir olmayan seçenekleri tercih etmekten kaplama uygulamasından sonra çok sert gıdaları çiğnemeye kadar birçok farklı durum lamine kaplamanın düşmesine yol açabilir. Ancak doğru şartlar altında yapıştırılan bir lamine kaplama bireyin de özenli davranışları ile birlikte uzun yıllar boyunca yerinde kalabilir."
+        },
+        {
+          "q": "Lamine kaplama fiyatı ne kadar?",
+          "a": "Lamine kaplama fiyatları da tıpkı diğer tüm uygulamalarda olduğu gibi birden fazla etken doğrultusunda belirlenmektedir. Lamine kaplamanın fiyatını etkileyen ana etkenler bu uygulamayı yapacak olan diş hekiminin tecrübe seviyesi, lamine kaplama için seçilen malzemenin kalitesi, müdahalenin yapılacağı kliniğin şartları ve bireyin tıbbi ihtiyaçları gibi faktörlerdir. Bu faktörlerin her biri laminate veneer maliyetinin belirlenmesi gibi konularda önemli rol oynadığı için lamine kaplama fiyatları için net bir değer vermek doğru olmayacaktır."
+        },
+        {
+          "q": "Lamine diş kaplama mi zirkonyum mu daha iyi?",
+          "a": "Lamine diş kaplama ve zirkonyum kaplama seçeneklerinden hangisinin daha iyi olacağına dair net bir bilgi vermek doğru olmaz çünkü bu tür uygulamalarda hangi seçeneğin daha iyi olacağı bireyin istek ve ihtiyaçlarına bağlıdır. Örnek olarak dişlerinde çok büyük problemler olan bireyler için zirkonyum kaplama tavsiye edilirken dişlerinde minimal problemler olan bireyler için lamine diş kaplama uygulaması tavsiye edilmektedir. Buna ek olarak iki uygulamanın farklı hasta profillerine uygun bulunabilmesi de bazı hastaların bu iki seçeneğe değil tek bir seçeneğe sahip olabilmelerine de yol açabilir."
+        }
+      ]
+    },
+    {
+      "slug": "kompozit-dolgu",
+      "faqs": [
+        {
+          "q": "Kompozit dolgu ağrı yapar mı?",
+          "a": "Kompozit dolgu sanılanın aksine ağrı yapmayan bir uygulamadır. Zaten dolgu uygulamalarının geneli ağrısız ve acısız uygulamalardır. Ancak kompozit dolgu uygulamasından önce çürük temizliğinin yapılması gibi bazı işlemler minimal bir ağrı hissetmenize yol açabilir. Bu minimal ağrı lokal anestezi yöntemleriyle hissedilemez hale getirilebilir. Kompozit dolgu sonrası hassasiyet meydana geldiği için hafif bir ağrı olabilir ama bu ağrı da güçlü ağrı kesici ilaçlar sayesinde kontrol altında tutulabilir."
+        },
+        {
+          "q": "Kompozit dolgu ayrık diş sorununu çözer mi?",
+          "a": "Kompozit dolgu ayrık diş sorununu da çözebilir. Birçok kişi kompozit dolgunun yalnızca çürük sonrası meydana gelen boşlukları kapatmak için uygun olduğunu düşünse de durum aslında böyle değildir. Kompozit dolgu ayrık diş sorunu gibi problemlere de çözüm sunabilir. Özellikle de kompozit dolgu İstanbul klinikleri arasında bulunan Dentaliva gibi seçenekleri tercih ederseniz kompozit dolguyla ayrık diş sorunundan ya da tıbbi deyişle diastema probleminden hızlı ve güvenli bir şekilde kurtulabilirsiniz."
+        },
+        {
+          "q": "Kompozit dolgu ömrü ne kadar?",
+          "a": "Kompozit dolgunun standart bir ömrü yoktur. Kompozit dolgunun ömrü ya da daha doğru bir deyişle kullanım süresi birden fazla etkene bağlı olarak belirlenir. Piyasada birden fazla kompozit dolgu üreten marka bulunur. Bu markaların her birinin ürün kaliteleri birbirlerinden farklıdır ve bu durum kompozit dolgunun ömrüne etki eder. Buna ek olarak bireyin dolgu uygulaması yapılan diş ya da dişlerini nasıl kullandığı gibi faktörler de dolgunun kullanım süresine etki edebilir. Ancak ortalama olarak kompozit dolgu kullanım süresi 10 yıl civarındadır."
+        },
+        {
+          "q": "Kompozit dolgu fiyatları ne kadar?",
+          "a": "Kompozit dolgu fiyatı duruma göre değişkenlik gösterebilir. Kompozit diş dolgu maliyeti hesaplanırken birden fazla etken dikkate alınır. Beyaz diş dolgu ücretleri yani dolgu malzemesinin maliyetinden dolgu uygulamasını yapacak olan diş hekiminin tecrübesine kadar birçok farklı faktör doğrultusunda kompozit dolgu fiyatı belirlenebilir. Bütün bunlardan dolayı kompozit dolgu uygulaması hakkında net bir fiyat bilgisi edinmek istiyorsanız dolgu uygulaması yaptırmak istediğiniz sağlık kuruluşuna danışmanız gerekiyor."
+        },
+        {
+          "q": "Kompozit dolgu bakımı zor mu?",
+          "a": "Kompozit dolgu bakımı zor olan bir dolgu çeşidi değildir. Kompozit dolgu amalgam dolgu gibi dolgu türlerinin aksine dişe kimyasal olarak yapışan yani dişin neredeyse kendi parçası haline gelebilen bir dolgu türü olmasından dolayı bakım konusunda da bireylere zorluk yaşatmaz. Kompozit dolgu sonrasında dişlerinizi düzenli fırçalamak, diş bakım rutinlerinize diş ipi ya da gargara gibi derinlemesine temizlik sunan ürünleri eklemek ve düzenli olarak diş hekimi kontrollerinden geçmek gibi zaten standart olarak yapılması gerekenler dışında bir şey yapmanıza gerek kalmayacaktır."
+        },
+        {
+          "q": "Kompozit dolgu nasıl çıkarılır?",
+          "a": "Kompozit dolgunun nasıl çıkarılacağı, duruma göre değişkenlik gösterebilir. Kompozit dolgu genel olarak kendi kendine çıkabilen bir dolgu değildir çünkü dişe kimyasal olarak bağlandığı için oldukça sağlamdır. Ekstrem durumlar dışında kompozit dolgunun bir diş hekimi tarafından güçlü ve diş hekimliği alanında kullanılan özel medikal materyaller ile çıkarılması gerekiyor. Bu yüzden kompozit dolgunuzu çıkarmak istiyorsanız bu işlemi kendi başınıza yapmak yerine bir diş hekimine danışmanız gerekiyor."
+        }
+      ]
+    },
+    {
+      "slug": "kirik-dis-tedavisi",
+      "faqs": [
+        {
+          "q": "Yarısı kırılan dişe dolgu yapılır mı?",
+          "a": "Birçok kişi kırık diş tedavilerinin yalnızca ucu kırık diş tedavisi gibi minimal tedaviler olduğunu düşünse de durum aslında böyle değildir. Bazı durumlarda neredeyse yarısı kırılmış ve kaybedilmiş olan bir dişe bile dolgu yapılabilir. Ancak yarısı kırılan dişe dolgu uygulamasının yapılabilmesi için dişin sinirlerinin zarar görmemiş olması ve dişin fonksiyonel açıdan korunabilecek durumda olması gerekir. Aksi taktirde uzman kırık diş hekimi tarafından dolgu uygulaması yerine dişinizin çekilmesi ve implant tedavisinin yapılması tavsiye edilebilir."
+        },
+        {
+          "q": "Çürümüş kırık diş çekilir mi?",
+          "a": "Çürümüş kırık diş her durumda çekilmez. Bu tür dişler çürük ve kırık diş tedavisi kapsamında çürükleri temizlenerek ve dolgu uygulaması gibi uygulamalar yapılarak kurtarılabilir. Hatta birçok durumda çürük ve kırık diş tedavisi ile dişin hem estetik hem işlevsel hale gelmesi söz konusu olabilir. Ancak dişin çürüğü çok ilerlemiş durumdaysa ve özellikle de diş köküne bile zarar gelmişse bu tür durumlarda çürümüş kırık dişin çekilmesi ve implant tedavisi gibi tedavilere başvurulması gerekebilir."
+        },
+        {
+          "q": "Kırık diş tedavisi devlet hastanesinde yapılır mı?",
+          "a": "Devlet hastanesinde kırık diş tedavisi yapılabilir. Bazı bireyler özel sağlık kuruluşlarında ön ya da arka kırık diş tedavisi fiyatlarının çok yüksek olduğunu düşündükleri için kırık diş tedavisi için devlet hastanelerini tercih edebilirler. Kırık diş tedavisi devlet hastanesinde de elbette ki yapılabilir ama özel sağlık kuruluşlarının aksine devlet hastanelerinde kırık diş tedavileri için randevu almak adına bile çok fazla beklemeniz söz konusu olabilir çünkü büyük bir yoğunluk vardır. Buna ek olarak sanılanın aksine Dentaliva gibi sağlık kuruluşlarında kırık diş tedavi ücretleri uygun değerler üzerinden belirlendiği için acil müdahale gerektiren durumlarda özel kuruluşları seçmek daha mantıklı olabilir."
+        },
+        {
+          "q": "Kırık diş tedavisi kaç yaşında yapılır?",
+          "a": "Kırık diş tedavisi için hem hukuki hem tıbbi olarak bir yaş sınırlandırması söz konusu değildir. Birçok kişi çocuğunun dişi kırıldığı zaman özellikle de söz konusu diş süt dişlerinden biri ise bu durumu önemsemez ve halihazırda kaybedilecek bir diş kırılmış gibi görür. Ancak diş kırıkları diş ve hatta çene kemiği enfeksiyonu gibi durumlara yol açabildiği için çocukların da dişleri kırıldığı zaman duruma müdahale edilmesi ve çocuklara uygun kırık diş tedavilerinin yapılması gerekir. Buna ek olarak kırık diş tedavisi yaşlılar için de önemli ve gerekli olabilir. Bütün bunlardan dolayı her yaş grubundan bireylerin dişleri kırıldığı zaman diş hekimine başvurmaları tavsiye edilir."
+        },
+        {
+          "q": "Kırık diş kanal tedavisi olur mu?",
+          "a": "Kulağa ilginç gelse de kırık dişe kanal tedavisi yapılabilir. Ancak her türlü uygulamada söz konusu olduğu gibi kanal tedavisi uygulamasında da aranan bazı şartlar vardır ve bazı diş kırıkları bireylerin bu şartları karşılayamamalarına yol açabilir. Özellikle de diş kırığının diş kökünü bile etkilemiş olması ya da artık tedavi edilemeyecek durumlara yol açması kırık dişlere kanal tedavisi uygulanamamasına ve bu durumdan dolayı bireylerin kaçınılmaz bir diş kaybı yaşamalarına yol açabilir. Bu yüzden kırık bir dişiniz varsa ve bu dişiniz için kanal tedavisine ihtiyaç duyduğunuzu düşünüyorsanız bir diş hekimine danışmanız gerekir."
+        },
+        {
+          "q": "Kırık diş tedavisi fiyatları ne kadar?",
+          "a": "Kırık diş tedavisi fiyatları sabit değildir ve birden fazla faktör doğrultusunda belirlenebilir. Kırık dişe müdahale fiyatı belirlenirken en çok göz önünde bulundurulan etken, müdahalenin içeriğidir. Örnek olarak bonding dolgu uygulaması gibi minimal müdahalelerin ücreti kırık diş dolgu maliyeti düşük olabildiğinden dolayı oldukça uygunken kanal tedavisi gibi komplike müdahalelerin ücreti ise çok daha yüksek olabilir. Bütün bunlara ek olarak kırık diş tedavi ücretleri belirlenirken tedaviyi yapacak olan diş hekiminin tecrübesinden tedavide kullanılacak malzemelerin kalitesine, tedavinin gerçekleştirileceği kuruluşun şartlarından bireyin isteklerine kadar birçok farklı etken de göz önünde bulundurulur."
+        }
+      ]
+    },
+    {
+      "slug": "invisalign",
+      "faqs": [
+        {
+          "q": "Invisalign tedavi fiyatları ne kadar?",
+          "a": "İnvisalign şeffaf plak fiyatları birden fazla etken doğrultusunda belirlenir. Bu yüzden invisalign fiyatları hakkında net bir bilgi sunmak doğru olmayacaktır. Şeffaf plak tedavi maliyeti hesaplanırken seçilen şeffaf plakların kalitesi, tedavi süresi ve diş hekiminin tecrübesi gibi birçok farklı etken dikkate alınır. Bu yüzden invisalign tedavi fiyatları hakkında net ve size hitap eden bir fiyat bilgisi almak istiyorsanız Dentaliva gibi invisalign tedavisinde uzmanlaşmış sağlık kuruluşları ile görüşerek bilgi talep edebilirsiniz."
+        },
+        {
+          "q": "Invisalign şeffaf plakları ne kadar takılır?",
+          "a": "İnvisalign tedavisi söz konusu olduğunda en çok merak edilen konulardan bir tanesi bu şeffaf plakların ne kadar süre boyunca takılacağıdır. Sanılanın aksine invisalign şeffaf plaklarının ne kadar takılacağına ilişkin net ve hatta ortalama bir süre bilgisi yoktur. İnvisalign tedavisi kişiye özel bir tedavi olduğu ve bu tedavide bireylerin ihtiyaçları da birbirinden farklı olabilmektedir. Dişinde orta derecede hizalanma problemi yaşayan bireyler aylar süren bir invisalign tedavisi ile çözüme ulaşırken hizalanma problemleri daha büyük olan bireyler ise bir yılı aşkın sürede sonuç alabilirler."
+        },
+        {
+          "q": "Invasalign tedavisi sonrası tekrar bozulma olur mu?",
+          "a": "İnvisalign tedavisi sonrası tekrar bozulma olup olmayacağı duruma göre değişkenlik gösterebilir. Diş düzeltme amacıyla yapılan şeffaf plak ya da klasik tel tedavisi gibi birçok tedavi yöntemi etkili sonuçlar verse de bazı durumlarda dişlerin tekrar bozulması söz konusu olabilir. Özellikle de genel ağız ve çene yapısında problem olan bireyler tekrar sorun yaşayabilirler. Bu yüzden uzman invisalign hekimleri tarafından yardım alarak tedavinin hem kalıcılık süresini hem etkilerini maksimum düzeye çıkarmalısınız."
+        },
+        {
+          "q": "Invisalign tedavisi acılı mıdır?",
+          "a": "İnvisalign tedavisi sanıldığının aksine pek acılı değildir. Klasik tel tedavileri gibi ortodontik tedavilerinde yoğun baskı ve müdahaleden dolayı çok fazla acı çekilirken invisalign şeffaf plak tedavisinde ise yoğun acıya sebep olacak bir durum söz konusu olmaz. Ancak çok nadiren de olsa bazı bireyler şeffaf plak kullandıkları ilk dönemde şeffaf plağın dişlere yaptığı baskı ve alışılmadık rahatsızlık hissinden dolayı minimal bir acı ve ağrı hissedebilirler. Bu acı ve ağrı oldukça hafif ağrı kesicilerle bile kontrol altına alınabilir."
+        }
+      ]
+    },
+    {
+      "slug": "inlay-ve-onlay",
+      "faqs": [
+        {
+          "q": "Inlay ve onlay dolgu ömrü ne kadar?",
+          "a": "Inlay ve onlay dolgu ömrü birden fazla faktör doğrultusunda değişkenlik gösterebilir. Inlay ve onlay dolguların ömrünü belirleyen ana etken, bu dolguların hangi şartlar altında yapıldığıdır. Doğru şartlar altında ve profesyonel laboratuvar ortamlarında ınlay ve onlay dolgular uzman ınlay onlay hekimleri tarafından dişe yerleştirilirse bu durum dolgu ömrünü uzatır. Buna ek olarak dolgu yapılan dişin sert gıdaları çiğnemek için kullanılmaması ve genel ağız içi hijyenine dikkat edilmesi de dolgu ömrünü uzatabilir. Klasik ınlay ve onlay dolguların ömrü 10 – 15 yıl civarındadır."
+        },
+        {
+          "q": "Inlay ve onlay dolgu fiyatları ne kadar?",
+          "a": "Inlay ve onlay dolgu fiyatları birden fazla etken doğrultusunda belirlenir. Bu yüzden ınlay ve onlay dolgu fiyatı olarak net bir fiyat belirtmek doğrul olmayacaktır. Inlay onlay farkı kapsamında bu iki dolgu çeşidi bile boyutları gibi etkenlerle birlikte birbirlerinden farklı şekilde fiyatlandırılabilir. Buna ek olarak dolgu için seçilen malzemeler, seçilen sağlık kuruluşunun olanakları ve diş hekiminin tecrübesi gibi etkenler de ınlay onlay dolgu fiyatlarına etki edebilir."
+        },
+        {
+          "q": "Inlay ve onlay dolgu uygulaması çok acıtır mı?",
+          "a": "Inlay ve onlay dolgu uygulaması sanıldığı kadar acılı uygulamalar değildir. Özellikle de dişin fazla zarar görmediği durumlarda ınlay ve onlay dolgu uygulamaları da dahil olmak üzere herhangi bir dolgu uygulaması ekstrem bir acı ya da ağrıya sebep olmaz. Ancak ınlay ve onlay dolgu uygulaması öncesindeki çürük tedavisi kapsamında olan çürük temizleme ve diş şekillendirme gibi işlemler minimal bir acıya yol açabilir. Bu acı da işlem esnasında lokal anestezi ile işlem sonrasında ağrı kesiciler ile kontrol altında tutulabilir."
+        },
+        {
+          "q": "Inlay ve onlay dolgu sonrası diş kaybı yaşanır mı?",
+          "a": "Inlay ve onlay dolgu sonrası diş kaybı yaşanacağına yönelik bilgi oldukça yaygın ama oldukça da yanlış bir bilgidir. Inlay ve onlay dolgu uygulamalarında amaç aslında kaybedilme ihtimali olacak kadar çürümüş ya da kırılmış bir dişi kurtarmaktır. Inlay ve onlay dolgunun dişin bütünlüğünü geri kazandırması ve dişin iç yapılarını koruması gibi durumlar diş kaybına sebep olmaz ve tam aksine diş kaybı yaşanmasına engel olabilir. Bütün bunlardan dolayı ınlay onlay dolgu uygulamalarını diş kaybına sebep olacak zararlı ve tehlikeli uygulamalar olarak değil diş kaybını önleyecek, dişe işlevini geri kazandıracak ve diş görünümünü iyileştirecek faydalı uygulamalar olarak görmek gerekir."
+        }
+      ]
+    },
+    {
+      "slug": "implant-tedavisi",
+      "faqs": [
+        {
+          "q": "İmplant uygulamasının yararları nelerdir?",
+          "a": "İmplant uygulaması; sağlam, güvenilir ve rahat bir tedavi şeklidir. İmplantlar üzerine uygulanan protezler, gerçek dişlerin yerini alarak kişinin ağzında en doğal görünümü oluştururlar. Eksik olan dişlerin tamamlanması sürecinde ise sağlıklı dişlere hiçbir şekilde dokunulmamış olur. Bütün dişleri protez yapma işlemine göre daha uzun ömürlü olduğu söylenebilir. Normalde yaşanan diş kayıplarının etkileri fizyolojik olduğu kadar psikoloji de ortaya çıkar. İmplant ise doğal dişlerin yerine geçen bir özel uygulama olarak, diş kayıplarının neden olabileceği her türlü soruna karşı en sağlıklı ve kesin tedavi seçeneği olarak değerlendirilebilir.Her hasta için iyileşme süresi farklı olabilir ve birkaç faktör tarafından etkilenebilir, örneğin implant vidasının konumu, hastanın genel diş ve oral sağlığı, implant vidasının tipi ve uygulama tekniği.Takılan implant tedavisinin ömrünün uzun olması ve doğru yapılabilmesi için implant üzerine yüklemenin doğru zamanda ve kurallara uygun şekilde gerçekleştirilmesi gerekmektedir. İmplant ile kemiğin kaynaşması 3 ay sürebilmektedir. 3 ayın sonunda implant vidasına dişler takılmaya başlanmaktadır.İmplant tedavisi ile ilgili süreçleri doğru ve güvenilir bir şekilde tamamlamak için Dentaliva Diş Kliniğinin uzman hekimlerine güvenebilirsiniz. Web sitemiz üzerinden kolayca randevu alabilir, tedavinize başlayabilirsiniz."
+        },
+        {
+          "q": "İmplant tedavisinde ilk muayenede ne yapılır?",
+          "a": "İmplant tedavisinde ilk muayene hastanın bu tedavi sürecine uyumlu olup olmadığını anlamak için önemlidir. Alanında uzman diş hekimleri, ağız içini detaylı olarak muayene eder. Diş etleri, alt ve üst çene, dişlerin genel durumu gibi unsurlara bağlı olarak hastanın implanta uygun oluşu incelenir. Muayene sonrasında ise tedavi planına geçilir."
+        },
+        {
+          "q": "İmplant vidası takıldıktan sonra diş ne zaman takılır?",
+          "a": "Hastalara uygulanan implant tedavisinde gereken teşhis ve planlamalar yapıldıktan sonra vida yerleştirilir. Sonrasında ise protez hazırlığına geçilir. Hastanın kişisel zevkleri ve ağızda bulunan dişlerin durumu dikkate alınarak bir protez tasarlanır. Ağız içinin ölçüsü alınır ve diğer dişlerle uyumlu görünecek renge karar verilir. Sonrasında ise hastanın mevcut olan dişlere uygun olacak şekilde protezleri hazırlanır."
+        },
+        {
+          "q": "Hangi durumlar implant uygulamasını gerektirir?",
+          "a": "Diş kayıplarının ya da ortaya çıkan çeşitli travmaların sonucunda fizyolojik açıdan oluşan kemik erimeleri, çene kemiğinin seviyesinin ve hacminin azalmasına sebep olabilir. Bu durum ise uygulanacak olan protezin işlevini tam anlamıyla yerine getirmesine engel olur. Bunun sonucunda ise konuşma ve çiğneme fonksiyonlarında sorunlar yaşanması kaçınılmazdır."
+        },
+        {
+          "q": "İmplant uygulaması ne kadar sürer?",
+          "a": "İmplant tedavisinde işlem süresi yapılacak olan implant sayısına ve kemikte yapılacak farklılıklara göre değişiklik gösterir. Bu bağlamda ise ortalama bir implant tedavisi, implant başına 10 dakika gibi bir sürede ağız içerisinde yerleştirilebilir."
+        },
+        {
+          "q": "Dikişli implant nasıl yapılır?",
+          "a": "Dikişli implant; dişi eti kısmına bir kesi açılarak kemiğe ulaşılan ve sonrasında vidalama yöntemi ile yapılan bir uygulamadır. İmplant yerleştirildikten sonra dikiş atılır ve bu alanda işlem tamamlanmış olur. Operasyon sürecinin tamamen bitmesi ise tamamen hastaya ve uygulanan implant sayısına bağlı olarak değişiklik gösterir.İmplant tedavisi sürecini sağlıklı ve verimli bir şekilde geçirmek için hastaların klinik seçiminde titiz davranması gerekir. Bu sayede hayal edilen sağlıklı dişlere sahip olarak, estetik bir gülüşe kavuşmak mümkün olur. Dentaliva; söz konusu ağız ve diş sağlığı için etkili tedavi yöntemlerini hayata geçirmek olduğunda her zaman üst düzey kalite standartlarında çalışmalara imza atan nitelikli bir kliniktir. Uzun süredir bu alanda verdiği nitelikli hizmetler sayesinde büyümeye ve gelişmeye devam eden kliniğimizde çalışan uzman diş hekimleri ve güler yüzlü personeller sayesinde beklentilerinizi karşılayan diş tedavilerini hayata geçirebilirsiniz. Dentaliva; sağlıklı dişlere sahip olmanız için çalışmaya devam eder."
+        }
+      ]
+    },
+    {
+      "slug": "gulus-estetigi",
+      "faqs": [
+        {
+          "q": "Gülüş estetiği kalıcı mı?",
+          "a": "Gülüş estetiği kalıcı değildir. Tıpkı diğer tüm diş estetiği uygulamalarında olduğu gibi gülüş estetiğinde de genel olarak ömür boyu kalıcı sonuçlar elde edilmez. Gülüş estetiğinde kullanılan implant tedavisi gibi yöntemlerin sonuçları kalıcı olsa da diş beyazlatma gibi uygulamaların etkisi ise genellikle geçicidir. Ancak gülüş estetiğinden sonra ayrıntılı ağız ve diş bakım rutinlerini benimsemek, düzenli olarak diş hekimi kontrolünden geçmek ve diş hekimi önerilerini dikkate almak gülüş estetiğinin etkilerinden neredeyse yıllarca yararlanabilirsiniz."
+        },
+        {
+          "q": "Gülüş estetiği yapımı ne kadar sürer?",
+          "a": "Gülüş estetiği yapımının ne kadar süreceği duruma göre değişkenlik gösterebilir çünkü gülüş estetiği aslında standart prosedürler üzerinden değil bireyin istek ve ihtiyaçlarına uygun şekilde hazırlanan planlamalar üzerinden yapılan bir uygulamadır. Bu yüzden gülüş estetiği yapımının ne kadar süreceğine ilişkin net bir bilgi sunmak doğru olmayacaktır. Gülüş estetiğinde kullanılan implant tedavileri gibi tedaviler aylarca sürebilirken diş beyazlatma işlemi gibi işlemler ise tek seansta tamamlanabilir."
+        },
+        {
+          "q": "Gülüş estetiği fiyatları ne kadar?",
+          "a": "Gülüş estetiği fiyatları birden fazla etken doğrultusunda belirlenmektedir. Gülüş estetiği ücreti söz konusu olduğu zaman hastanın estetik talepleri, uygulama yapacak diş hekiminin tecrübe seviyesi, hastanın tıbbi ihtiyaçları ve uygulamanın gerçekleştirileceği sağlık kuruluşunun sahip olduğu olanaklar gibi birçok etken göz önünde bulundurularak fiyatlandırma yapılır. Buna ek olarak Hollywood smile maliyeti diğer uygulamalardan çok daha değişkendir çünkü bu uygulama kapsamında farklı işlemlere başvurulabilir ve farklı fiyatlandırmalar söz konusu olabilir."
+        },
+        {
+          "q": "Gülüş estetiği öncesi sonrası nelere dikkat etmek gerekir?",
+          "a": "Gülüş estetiği öncesi sonrası dikkat edilmesi gereken birçok farklı şey vardır. Gülüş estetiği gibi uygulamalardan önce en çok dikkat edilmesi gereken şey istek ve ihtiyaçlarınıza uygun hizmet sunacak güvenilir bir sağlık kuruluşunu tercih etmektir. Dentaliva gibi her hasta profiline uygun gülüş estetiği hizmeti sunan güvenilir klinikler sayesinde gülüş estetiği konusunda etkili sonuçlar elde edebilirsiniz. Gülüş estetiği sonrası dikkat edilmesi gerekenler ise yararlandığınız işlemlere ve diş hekiminizin önerilerine göre değişkenlik gösterebilir. Bundan dolayı bu konuda diş hekiminizi dinlemeniz gerekiyor."
+        },
+        {
+          "q": "Gülüş estetiği nerede yapılır?",
+          "a": "Gülüş estetiği, diş tedavilerinin yapıldığı sağlık kuruluşlarında yapılır. Özel diş kliniklerinden devlet hastanelerine kadar birçok sağlık kuruluşu diş estetiği konusunda uzman diş hekimlerine sahi oldukları müddetçe gülüş estetiği hizmeti sunabilirler. Ancak gülüş estetiğinin implant tedavisi ya da diş teli tedavisi gibi komplike yöntemleri içeriyor olması bu tedavinin çeşitli alanlarda uzman olan diş hekimlerine sahip sağlık kuruluşları tarafından yapılması gerekliliğinin oluşmasına sebep olabilir. Bu yüzden gülüş estetiği konusunda Dentaliva gibi diş hekimliğine ilişkin her alanda uzman birçok hekimi barındıran sağlık kuruluşlarını tercih etmek gerekiyor."
+        },
+        {
+          "q": "Gülüş estetiğinin zararları var mı?",
+          "a": "Gülüş estetiği doğru müdahalelerle yapıldığı müddetçe herhangi bir zararı olmayan uygulamalardan bir tanesidir. Özellikle de uzman gülüş estetiği doktoru tarafından yeterli şartlar altında yapılan gülüş estetiği uygulamaları herhangi bir zarar görmenize değil avantajlı sonuçların tadını çıkarmanıza yardımcı olabilir. Ancak güvenilir, yeterli ve profesyonel olmayan sağlık kuruluşunda yapılan gülüş estetiği uygulamaları diş sağlığınızın ve hatta genel sağlık durumunuzun zarar görmesine sebep olabilir."
+        }
+      ]
+    },
+    {
+      "slug": "estetik-kompozit-dolgu-bonding",
+      "faqs": [
+        {
+          "q": "Estetik kompozit dolgu fiyatı ne kadar?",
+          "a": "Estetik kompozit dolgu ya da başka bir deyişle bonding fiyatları birden fazla faktöre bağlı olarak değişkenlik gösterebiliyor. Bonding dolgu fiyatları hesaplanırken dikkate alınan önemli etkenler başlıca uygulamayı yapacak olan diş hekiminin tecrübesi, seçilen sağlık kuruluşunun olanakları ve bireyin istekleri ile ihtiyaçlarıdır. Bütün bunlara ek olarak estetik dolgu maliyeti de bonding fiyatlarına etki edebiliyor çünkü FDA onaylı dolgu markalarının ürünlerinin fiyatları da birbirinden farklı olabilmektedir. Bütün bunlardan dolayı estetik kompozit dolgu ücreti ile ilgili net bir bilgi almak için bir sağlık kuruluşu ile birebir iletişime geçmelisiniz."
+        },
+        {
+          "q": "Estetik kompozit dolgu ömrü ne kadar?",
+          "a": "Estetik kompozit dolgunun ömrü, dolgu uygulamasının yapılış şeklinden hastanın ağız bakımı ile ilgili davranışlarına, kompozit dolgu malzemesinin kalitesinden uygulamanın yapılmış olduğu sağlık kuruluşunun olanaklarına kadar birçok farklı etkene bağlıdır. Doğru şartlar altında ve FDA onaylı dolgu markalarının ürünleri kullanılarak gerçekleştirilmiş olan estetik kompozit dolguların ömrü genel olarak 3 ila 9 yıl arasındadır. Hastanın düzenli olarak diş kontrollerinden geçmesi ve dolgu bulunan dişini hoyratça kullanmaması gibi durumlar bu süreyi biraz daha uzatabiliyor."
+        },
+        {
+          "q": "Estetik kompozit dolgu sonrası sigara içilir mi?",
+          "a": "Estetik kompozit dolgu sonrası sigara içmek oldukça tehlikelidir. Birçok diş hekimi estetik kompozit dolgu sonrası en az birkaç saatlik ya da mümkünse birkaç günlük süreçte sigara içilmemesini tavsiye eder çünkü sigara içmek dolgu uygulamasını ve genel ağız sağlığınızı çeşitli açılardan riske atabilir. Sigara dumanından dolayı dolgunun sertleşmesi gecikir, kan dolaşımı azaldığı için iyileşme süreci uzar ve sigara dumanı yüzünden dolgu üzerinde lekelenmeler söz konusu olabilir. Bütün bunlardan dolayı estetik kompozit dolgu uygulamasından sonra önerilen süre boyunca sigara içmemeye çalışın."
+        },
+        {
+          "q": "Estetik kompozit dolgu sonrası hassasiyet normal mi ve nasıl geçer?",
+          "a": "Estetik kompozit dolgu sonrası hassasiyet normal kabul edilen bir durumdur. Birçok kişi estetik dolgu uygulamasının yüzeysel bir işlem olduğunu sansa da bu uygulamada da diş minesine müdahale edilmesi gibi önemli işlemler yapılabiliyor. Dişi törpüleme ve pürüzlü hale getirme gibi işlemler esnasında diş minesinde minimal tahribatlar meydana gelebildiği için bonding uygulamasından sonra minimal bir hassasiyet yaşanabilir. Bu hassasiyeti geçirmek için bir şey yapmaya gerek yoktur çünkü kısa bir süre içerisinde kendiliğinden geçer."
+        }
+      ]
+    },
+    {
+      "slug": "endodonti-kanal-tedavisi",
+      "faqs": [
+        {
+          "q": "Endodonti riskli mi?",
+          "a": "Endodonti uzmanı tarafından uygulanan endodonti, yani kanal tedavisi genel olarak risksiz ve acısız bir işlem olarak bilinir. İşlem öncesinde dokunun lokal anestezi işe uyuşturulması sayesinde herhangi bir acı söz konusu değildir."
+        },
+        {
+          "q": "Kanal tedavisi sonrası ağrı olur mu?",
+          "a": "Kanal tedavisi, ağrısız bir işlemdir. Kanal tedavisi ile uzaklaştırılan doku ağrıya neden olan enfekte doku olduğundan dolayı, kanal tedavisi sonrası dişteki ağrı da sona erer. Dolayısıyla kanal tedavisi sonrasında herhangi bir ağrı hissedilmez."
+        },
+        {
+          "q": "Kanal tedavisi acıtır mı?",
+          "a": "Birçok kişi kanal tedavisinin çok fazla acı veren bir yöntem olduğunu düşünmektedir. Ancak günümüzde durum aslında bu şekilde değildir. Kanal tedavisi esnasında güçlü lokal anestezi yöntemlerine başvurularak bireyin acı da dahil olmak üzere herhangi bir şey hissetmesine engel olunur. Ancak kanal tedavisi seansları esnasında ve kanal tedavisi sonrasında bölgedeki hassasiyetten dolayı minimal bir ağrı çekme durumu söz konusu olabilir. Bu durumda da kanal tedavisini yapan diş hekiminin önerdiği bir ağrı kesici ile acıdan kurtulabilirsiniz."
+        },
+        {
+          "q": "Kanal tedavisi endodonti mi?",
+          "a": "Kanal tedavisinin endodonti ile aynı anlama gelip gelmediği oldukça kafa karıştırıcı bir konudur. Endodonti demek aslında dişin iç yapısını inceleyen ve dişin iç yapısına ilişkin tedaviler sunan bir diş hekimliği uzmanlık alanı anlamına gelir. Kanal tedavisi ise endodontik tedavi olarak da bilinen ve endodonti alanının en etkili tedavisi olan bir yöntemdir. Bu yüzden birçok kişi kanal tedavisini endodonti adı ile anmaya başlamıştır. Kanal tedavisinin endodonti adı ile anılmaya başlanmasından dolayı günümüzde diş hekimleri bile kanal tedavisinden endodonti tedavisi olarak bahsetmektedir."
+        },
+        {
+          "q": "Endodonti (Kanal) tedavisi ne kadar sürer?",
+          "a": "Endodonti tedavisinin süresi kişinin sahip olduğu kanal sayısı, dişin hangi bölgede bulunduğu ve enfeksiyon şiddetine bağlı olarak farklılık gösterir. Endodontik tedavi pulpada herhangi bir kist ya da enfeksiyon oluşumu yoksa bir seansta bitebilir. Genel olarak diş enfeksiyonlu geldiği için tedavi 2 seans sürebilir. Kanal tedavisinin tek bir seansı ise 45 dakikaya kadar uzayabilir. Diş kanalı ilk seans içerisinde çok iyi temizlenmeli ve şekillendirilmelidir. Kanal tedavisinin 2. Seansında ise kanal içinde bir enflamasyın oluşmadıysa, hastanın dişinde herhangi bir duyarlılık olmadığı takdirde röntgen temiz çıkarsa ve dişi çevreleyen dokuda bir bozukluk yoksa dişin dolgusu yapılarak tedavi tamamlanır."
+        },
+        {
+          "q": "1 diş kanal tedavisi kaç dakika sürer?",
+          "a": "Tek bir diş kanal tedavisinin kaç dakika süreceği, birden fazla etken doğrultusunda belirlenir. Kanal tedavisi süreci sanılanın aksine yalnızca kanalların dezenfekte edilmesi gibi ana işlemlerden ibaret değildir. Kanal tedavisi sürecinde muayene yapılmasından panoramik diş röntgenlerinin çekilmesine, bireyle kapsamlı bir görüşme sağlanmasından kanal tedavisinde geçici dolgu uygulamasına başvurulmasına kadar birçok farklı adımdan geçilir. Bu yüzden 1 diş kanal tedavisinin kaç dakika ve belki de hastanın ihtiyaçlarına ya da diş hassasiyetine göre kaç seans süreceği duruma göre değişkenlik gösterebiliyor."
+        },
+        {
+          "q": "Kanal tedavisi kaç TL?",
+          "a": "Endodonti tedavisi söz konusu olduğu zaman akıllara sıklıkla gelen sorulardan bir tanesi “Kanal tedavisi kaç TL?” sorusu olmaktadır. Ancak aslında bu sorunun genel bir cevabı yoktur. Kanal tedavisi fiyatları ya da başka bir deyişle kanal tedavisi ücretleri birden fazla faktör doğrultusunda belirlendiği için duruma göre değişiklik gösterebiliyor. Kanal tedavisi ücret belirlemesi yapılırken ise uygulamayı gerçekleştirecek olan endodonti uzmanının tecrübe seviyesinden kanal tedavisinde kullanılacak malzemelerin kalitesine, bireyin istek ve ihtiyaçlarından tedavinin yapılacağı sağlık kuruluşunun bulunduğu konuma kadar birçok farklı etken dikkate alınmaktadır."
+        },
+        {
+          "q": "Kanal tedavisi ağrısına ne iyi gelir?",
+          "a": "Kanal tedavisi ağrısına iyi gelebilecek birden fazla yöntem vardır. Günümüzde kanal tedavileri ağrıya yol açmayacak ya da en azından minimal yani çok rahatsız etmeyecek bir ağrıya yol açacak kadar yenilikçi ve etkili yöntemlerle yapılır. Ancak buna rağmen kanal tedavisinden sonra ağrı çekerseniz ve bu ağrıdan ağrıya neyin iyi geleceğini düşünecek kadar rahatsız olursanız doktorunuzun önerdiği yöntemlere başvurabilirsiniz. Endodonti uzmanı olan diş hekimleri kanal tedavisi ağrısını geçirmek için genellikle ağrı kesici kullanımı ve soğuk kompres yöntemlerine başvurulmasını tavsiye ederler."
+        },
+        {
+          "q": "Kanal tedavisinde geçici dolgu neden yapılır?",
+          "a": "Kanal tedavisinde geçici dolgu yapılmasının nedenleri kişiye ve duruma göre değişkenlik gösterebiliyor. Kanal tedavileri genellikle komplike yöntemler oldukları için tek bir seansta değil birden fazla seansta zamana yayılarak yapılır. Bu sayede bireylerin dişlerinde ve özellikle de pulpa dokusu gibi oldukça hassas olan dokularda ekstrem bir baskıya sebep olunmaz. Ancak bu esnada bireyin iç diş yapısını, estetik görünümünü ve genel ağız içi konforunu korumak için geçici dolgu yapılır."
+        }
+      ]
+    },
+    {
+      "slug": "dis-beyazlatma",
+      "faqs": [
+        {
+          "q": "Diş beyazlatma acıtır mı?",
+          "a": "Diş beyazlatma işlemleri sanıldığı gibi acılı işlemler değildir. Diş beyazlatma işlemlerinde genellikle diş beyazlatıcı güçlü jeller, özel cihazlar ve plaklar kullanılır. Bu medikal malzeme ve cihazlardan hiç biri can acıtıcı değildir. Ancak diş beyazlatıcı jellerin diş etine değmesi ya da yanlış ürün kullanımı gibi durumlar bireylerin canını acıtabilir. Bu yüzden diş beyazlatma işleminden acısız ve güvenli bir şekilde faydalanmak için Dentaliva gibi güvenilir ve uzman diş beyazlatma hizmeti sunan sağlık kuruluşlarını tercih etmeye özen göstermelisiniz."
+        },
+        {
+          "q": "Diş beyazlatma ameliyatı var mı?",
+          "a": "Diş beyazlatma ameliyatı olarak adlandırılabilecek bir cerrahi müdahale yoktur. Diş beyazlatma ameliyatı yaptığını iddia eden ve güvenilir olmayan sağlık kuruluşlarını dikkate almamak gerekiyor. Diş beyazlatma konusunda ev tipi diş beyazlatma, ofis tipi diş beyazlatma ve kombine diş beyazlatma olarak kullanılabilecek üç farklı ana yöntem vardır. Bu yöntemler dışındaki diş beyazlatma ameliyatı gibi aslında var olmayan ve içeriği belli olmayan yöntemlere inanmamanız gerekiyor. Aksi takdirde yanlış bir müdahale sonucunda genel sağlık durumunuz bozulabilir ve dişlerinizi kaybedebilirsiniz."
+        },
+        {
+          "q": "Diş beyazlatma zararlı mı?",
+          "a": "Birçok diş beyazlatmanın zararlı bir işlem olduğunu düşünse de durum aslında böyle değildir. Diş beyazlatma işlemi herhangi bir zararı bulunmayan ve hatta çeşitli yönlerden faydaları bulunan bir işlemdir. Özellikle de Dentaliva gibi diş uygulamaları konusunda uzman olan güvenilir sağlık kuruluşları tarafından yapılan diş beyazlatma işlemleri ile herhangi bir zarar görmez ve oldukça estetik, sağlıklı ve canlı görünecek bembeyaz dişlere kavuşabilirsiniz. Ancak diş beyazlatma konusunda güvenilir olmayan bir sağlık kuruluşunu ya da internette satılan ve etkileri kanıtlanmamış bazı ürünleri tercih ederseniz diş beyazlatmanın zararları ile karşı karşıya kalabilirsiniz."
+        },
+        {
+          "q": "Diş beyazlatma fiyatı ne kadar?",
+          "a": "Diş beyazlatma fiyatları duruma göre değişkenlik gösterebilir. Diş beyazlatma fiyatı ya da daha doğru bir deyişle diş beyazlatma ücretleri birden fazla faktör dikkate alınarak belirlenir. Diş beyazlatma fiyatları belirlenirken dikkate alınan ana faktörler; diş beyazlatma için kullanılacak yöntem, diş beyazlatma işlemlerinde size yardımcı olacak olan diş hekiminin tecrübesi ve söz konusu olan sağlık kuruluşunun olanakları gibi etkenlerdir. Örnek olarak lazerle beyazlatma maliyeti ev tipi diş beyazlatma maliyetine oranla çok daha yüksek olabilir çünkü yöntemler arasında birçok açıdan farklılıklar bulunmaktadır."
+        },
+        {
+          "q": "Diş beyazlatma kalıcı mı?",
+          "a": "Diş beyazlatma ömürlük kalıcı sonuçlar sunan bir uygulama değildir. Zaten diş beyazlatma gibi diş estetiğine yönelik uygulamaların geneli geçici sonuçlar vermektedir. Ancak ev tipi diş beyazlatma ile ofis tipi diş beyazlatmanın birleştirildiği kombine diş beyazlatma yönteminin güvenilir sağlık kuruluşları tarafından doğru şartlar altında yapılması gibi olumlu etkenler ve doğru ağız ve diş bakım rutinleri, diş beyazlatma işlemi sonuçlarının birkaç yıl gibi uzun süreler bolunca kalıcı olmasını sağlayabiliyor."
+        },
+        {
+          "q": "Diş beyazlatma ne kadar sürer?",
+          "a": "Diş beyazlatmanın ne kadar süreceği yani diş beyazlatma uygulama süreci kişiden kişiye göre değişkenlik gösterebilir. Diş beyazlatma işlemleri genellikle seanslar halinde yapılan uygulamalardır. Ofis tipi diş beyazlatma hastanın ihtiyaçlarına göre birkaç seans şeklinde yapılır ve seanslar genel olarak 25 – 35 dakika sürer. Ev tipi diş beyazlatma ise genellikle 1 hafta boyuna günde 4 – 5 saat kadar yapılan bir plak ve jel bekletme uygulamasıdır. İki uygulamanın kombine edilmesi ise daha uzun sürebilir ama çok etkili sonuçlar alınmasına yardımcı olur."
+        }
+      ]
+    },
+    {
+      "slug": "diastema",
+      "faqs": [
+        {
+          "q": "Diastema/diş boşluğu kendiliğinden geçer mi?",
+          "a": "Diastema yani diş boşluğu kendiliğinden geçmez. Diş boşluğu doğuştan olsa da sonradan meydana gelse de herhangi bir müdahale olmadan kendiliğinden geçmez. Buna ek olarak diş boşluğu birçok vakada zaman içerisinde daha fazla büyüyebilir. Özellikle de diş eti hastalıkları gibi sağlık problemlerinden kaynaklanan diş boşlukları uygun tedavi yapılmadığı müddetçe çok rahatsız edici bir biçimde hızla büyüyebilir. Bundan dolayı diastema yani diş boşluğunun kendiliğinden geçeceğini düşünmek ya da evde ayrık diş birleştirme gibi güvenilir olmayan yöntemlere yönelmek yerine bir diş hekimine danışmak gerekir."
+        },
+        {
+          "q": "Diastema tedavisi ne kadar sürer?",
+          "a": "Diastema tedavisinin ne kadar süreceği duruma göre değişkenlik gösterir. Diastema tedavi süresi, tedavi için tercih edilen yönteme göre değişkenlik gösterebilir. Diastema estetik dolgu uygulamaları ile tedavi edilecekse bu durumda tedavi bir ya da birkaç seansta tamamlanabilir. Ancak diastema tedavisi için tel ya da diş plağı gibi tedavi yöntemlerine başvurulursa bu tedavilerden sonuç alabilmek için aylarca beklemek gerekebilir."
+        },
+        {
+          "q": "Diastema kapatma fiyatı ne kadar?",
+          "a": "Diastema ya da başka bir deyişle ayrık diş kapatma fiyatı ya da başka bir deyişle diastema kapatma ücreti birden fazla faktöre göre belirlenir. Diastema tedavisi fiyatları belirlenirken hem hastanın sahip olduğu bazı durumlara hem tedaviyi yapacak sağlık kuruluşunun bazı özelliklerine göre fiyatlandırma yapılır. Sağlık kuruluşunun bulunduğu konumdan ortalama diş arası boşluk tedavisi fiyatına, hastanın isteklerinden tedavinin içeriğine kadar birçok farklı etken diş arası boşluk tedavisi fiyatına etki edebiliyor. Örnek olarak diastema tedavisi İstanbul gibi büyük şehirlerde küçük şehirlere oranla daha farklı değerler üzerinden fiyatlandırılabilir."
+        },
+        {
+          "q": "Diş boşluğu telle ne zaman kapanır?",
+          "a": "Diş boşluğunun telle ne zaman kapanacağı, birden fazla faktöre bağlıdır. Bu durumda tedavi süresini etkileyen en önemli etken diş boşluğunun büyüklüğüdür. Çok büyük olmayan diş boşlukları birkaç ay gibi oldukça kısa bir sürede tamamlanacak bir tel tedavisi ile giderilebilir. Ancak çok büyük diş boşlukları ve özellikle de diş boşluğuna eşlik eden bir diş hizalanması problemi varsa bu durumda diş boşluğunu gidermek için birkaç yıl boyunca diş teli tedavisi görmek gerekebilir. Bundan dolayı diş boşluğu için göreceğiniz tel tedavisinin süresi hakkında ortalama bir bilgi sahibi olmak için diş hekiminize danışmalısınız."
+        },
+        {
+          "q": "Diastema tedavisi için en iyi yöntem hangisidir?",
+          "a": "Diastema tedavisi için en iyi yöntem olarak tek bir teknikten bahsetmek doğru olmaz. Bir bireyin diastema tedavisi için benim yenebilecek en iyi yöntem, onun istek ve ihtiyaçlarına uygun bir şekilde belirlenen yöntemdir. Diastema tedavilerinde hem estetik hem fonksiyonel fayda sağlanması hedeflendiği için diş hekimi önerileri, hasta istekleri ve çeşitli faktörleri dikkate alarak bireye en uygun ya da başka bir deyişle birey için en iyi yöntemi seçmek gerekiyor. Diş arası boşluk problemi oldukça minimal düzeylerde yani dişlerinin arasındaki boşluklar oldukça küçük olan bireyler için diastema estetik dolgu gibi ideal yöntemlerle çözülürken diş arası boşlukları çok büyük olan bireylerde ise diş teli tedavilerine başvurmak gerekebilir."
+        },
+        {
+          "q": "Diastema tedavisi çok acıtır mı?",
+          "a": "Diastema tedavisi hakkında yaygın bir inanışa göre bu tedavinin çok can acıtıcı olacağı düşünülür. Ancak aslında bu her durum için geçerli değildir. Diastema tedavisi için sıklıkla tercih edilen estetik dolgu uygulamalarında hem uygulama esnasında hem uygulama sonrasında acı çekmek neredeyse mümkün değildir. Ancak diş teli gibi daha komplike tedaviler ya da cerrahi yöntemler söz konusu olduğu zaman diastema tedavisi sonrası acı çekmek söz konusu olabilir. Bu acı ya da başka bir deyişle ağrı ise ağrı kesiciler ile kontrol altında tutulabilir."
+        }
+      ]
+    },
+    {
+      "slug": "cocuk-dis-tedavileri-acil-durumlar",
+      "faqs": [
+        {
+          "q": "2 yaşındaki çocuğa diş dolgusu yapılır mı?",
+          "a": "2 yaşındaki çocuğa diş dolgusu yapılması mümkündür. Kulağa ilginç gelse de 2 yaşındaki bir çocuk bile ihtiyaç durumunda çocuklarda diş tedavisi genel anestezi ya da lokal anestezi işlemleri ile birlikte dolgu uygulamalarından yararlanabilir. Ancak çocuklarda ve özellikle de 2 yaş grubu gibi çok küçük çocuklarda dolgu uygulaması oldukça hassas bir işlemdir. Bu yüzden bazı durumlarda söz konusu olan problem dolgu yapılmadan çözülebilir ya da dişin çekilmesi gibi yöntemlere başvurulabilir. Bütün bunlardan dolayı 2 yaşındaki çocuğa diş dolgusu yapılıp yapılmayacağı duruma ve diş hekimine bağlıdır."
+        },
+        {
+          "q": "Diş ağrısı çeken çocuğa ne yapılmalıdır?",
+          "a": "Diş ağrısı çeken bir çocuğa öncelikle sabır ve nezaketle yaklaşmalısınız. Özellikle de yaşı çok küçük olan ve kendini ifade etmekte zorlanacak kadar gelişimini tamamlamış bir çocuğun diş ağrısı çekip çekmediğinden emin olmak için onunla konuşmanız gerekir. Çocuğun diş ağrısı çektiğinden eminseniz ya da o ağrı çektiğini anlatıyorsa bu durumda şişlik gibi diğer semptomların olup olmadığına bakmalısınız. Diş ağrısı özellikle de şişlikle birlikte görülüyorsa acilen, şişlik gibi semptomlar olmadan tek başına görünüyorsa mümkün olabildiğince kısa bir süre içerisinde bir pedodonti uzmanı diş hekimine danışmanız gerekiyor."
+        },
+        {
+          "q": "Çocuklarda acil diş tedavileri fiyatları ne kadar?",
+          "a": "Çocuklarda acil diş tedavileri fiyatları birden fazla etken doğrultusunda belirlendiği için total acil pedodonti ücretine ya da daha spesifik olarak çocuk diş travması maliyetine yönelik net bir fiyat bilgisi vermek doğru olmayacaktır. Çocuklarda acil diş tedavilerinin fiyatları uygulamaları yapacak pedodonti uzmanının tecrübesi, çocuğun tıbbi ihtiyaçları, başvurulan tedavi yöntemleri, kullanılan medikal materyaller ve tedavilerin yapılacağı sağlık kuruluşunun olanakları gibi ayrıntılar dikkate alınarak hesaplanmalıdır."
+        },
+        {
+          "q": "Çocuklarda dişçi korkusu nasıl geçer?",
+          "a": "Çocuklarda dişçi korkusunun nasıl geçeceği duruma göre değişkenlik gösterebilir. Bazı çocuklar dişçilerin davranışsal olarak yanlış tavırları, anestezi yöntemlerini doğru kullanmamaları ya da yanlış müdahalelerde bulunmamaları gibi sebeplerle diş hekimleriyle ilgili travmatik anılara sahip olabilirler. Bu anılar çocukların dişçiden korkmalarına yol açabilir. Böyle bir durumda hem bir pedagogdan hem doğru tedaviler uygulayan bir pedodonti uzmanından yardım alarak çocuğunuzun dişçi korkusunu geçirebilir ve onu tedavi olmaya ikna edebilirsiniz."
+        }
+      ]
+    },
+    {
+      "slug": "bruksizm-dis-sikmasi",
+      "faqs": [
+        {
+          "q": "Bruksizm Tedavisi için Hangi Doktora Başvurmalıyız?",
+          "a": "İlk olarak, dişlerinizin durumunu incelemek için bir ortodontist tarafından randevu edilmelisiniz. Ortodontist, dişlerinizi ve çene yapınızı inceledikten sonra gerekli tedavi yöntemlerini uygulayacaktır."
+        },
+        {
+          "q": "Bruksizm Ne Gibi Sorunlara Yol Açabilir?",
+          "a": "Bruksizm diş minesine zarar verebilir ve dişlerin çürümesine, kırılmasına, gevşemesine ve düşmesine neden olabilir. Ayrıca, çene bozukluklarına, baş ağrısına ve kulak ağrısına neden olabilir."
+        },
+        {
+          "q": "Bruksizm Hangi Vitamin Eksikliğine Yol Açar?",
+          "a": "Kalsiyum veya magnezyum gibi vitaminlerin eksikliği dişlerinizi istemsiz olarak gıcırdatmanıza neden olabilir. Bu nedenle bruksizm ek tedavisi için multivitamin takviyesi alınması önerilir. Kalsiyum açısından zengin bir diyet uygulamak, süt ve süt ürünleri tüketmek de çok önemlidir."
+        },
+        {
+          "q": "Bruksizm randevusu nasıl alınır?",
+          "a": "Bruksizm randevusu ya da daha doğru bir deyişle bruksizm sorununuzun saptanması ve tedavi edilmesi adına randevu almak için öncelikle durumunuza uygun bir sağlık kuruluşunu tercih etmeniz gerekir. Bruksizm sorunlarında genellikle ilk olarak danışılması gereken sağlık çalışanı diş hekimleridir. Diş hekimleri bruksizm için etkili tedaviler sunarlar, bruksizmden dolayı dişte meydana gelmiş olan problemleri giderebilirler ve duruma göre bruksizm tedavinizin pekiştirilmesi için psikiyatri gibi alanlara yönlenmenizi tavsiye edebilirler. Bruksizm randevusu almak için güvenilir bir klinik arıyorsanız Dentaliva ile iletişime geçerek en erken tarihte uzman diş hekimleri ile görüşmek adına randevu talep edebilirsiniz."
+        },
+        {
+          "q": "Bruksizm tedavi fiyatı ne kadar?",
+          "a": "Bruksizm tedavisi fiyatları ya da başka bir deyişle bruksizm tedavi ücretleri birden fazla faktöre bağlı olarak belirlenir. Bu konuda çok belirleyici olan iki ana faktör vardır. İlk faktör, bruksizm tedavisinin yapılacağı sağlık kuruluşunun konumu gibi koşullarıdır. Örnek olarak bruksizm tedavi ücretleri Türkiye’de birçok ülkeye oranla daha uygun değerler üzerinden belirlenir. Bruksizm tedavi süresi fiyat konusunda belirleyici olan diğer faktördür. Tedavi karmaşıklaştıkça ve tedavi süreci uzadıkça tedavi için talep edilecek olan ücret de yükselebilir. Bütün bunlara ek olarak gece plağı fiyatları gibi tedavide kullanılacak materyallerin fiyatları da toplam tedavi ücretini etkileyebilir."
+        },
+        {
+          "q": "Bruksizm kendiliğinden geçer mi?",
+          "a": "Bruksizm söz konusu olduğu zaman birçok kişi bu problemin kendiliğinden geçip geçmeyeceğini sorgulamaktadır. Bruksizm çok nadiren de olsa kendiliğinden geçebilir. Özellikle de çok fazla rahatsız edici seviyelerde olmayan ve uzun süreler boyunca devam etmeyen bruksizm probleminin kendiliğinden geçmesi söz konusu olabilir. Ancak bu durum oldukça nadir görülür ve bruksizm problemi ile karşı karşıya kalan bireylerin çoğu etkili tedavi yöntemlerinden yararlanmadan bruksizm sorunundan kurtulamazlar."
+        },
+        {
+          "q": "Şiddetli Bruksizm Tedavi Edilebilir Mi?",
+          "a": "Şiddetli bruksizm genellikle sadece gece plağı kullanmak gibi diş prosedürleri kullanılarak tedavi edilemez. Bir psikiyatriste gitmek, beslenme alışkanlıklarını ve yaşam tarzını değiştirmek de dahil olmak üzere diğer tedavi yöntemleri kullanılmalıdır."
+        },
+        {
+          "q": "Bruksizm Evde Nasıl Tedavi Edilir?",
+          "a": "İlk adım stresi azaltmaktır. Bunun için rahatlatıcı bir müzik dinleyebilirsiniz. Sıcak bir duş alın veya yoga yapın. Geceleri enerjik yiyecek veya içeceklerden kaçının. Uyku saatlerinizi düzenleyin ve her gece belirli bir saatte uyuyun. Düzenli olarak dişçiye gitmeyi unutmayın."
+        },
+        {
+          "q": "Solucanlar ve Parazitler Bruksizme Neden Olur Mu?",
+          "a": "Bazı gastroenterologlar, bağırsak solucanları gibi bazı sindirim hastalıklarının bruksizme neden olduğuna inanmaktadır. Bu nedenle bruksizmin kesin tedavisi için hastanın tüm sağlık faktörlerinin kontrol edilmesi gerekir."
+        },
+        {
+          "q": "Bruksizm Çocuklarda Nasıl Tedavi Edilir?",
+          "a": "Çocuklar, kötü beslenme alışkanlığı, stres ve sindirim sorunlarının bir sonucu olarak diş gıcırdatma yaşayabilir. Bu sorunlardan herhangi birini düzelterek çocuğunuzun bruksizmini tedavi edebilirsiniz. Çocuğunuzun özellikle geceleri sakin hissetmesine yardımcı olmak da çok önemlidir. Çocuğunuzun daha rahat hissetmesi için uyumadan önce yüzüne sıcak bir havlu koyabilirsiniz. Çocuklarda bruksizm tedavisi veya önlenmesi için düzenli olarak diş hekimine gidilmesi önerilir."
+        },
+        {
+          "q": "Bruksizm ağrısı nasıl geçer?",
+          "a": "Bruksizm ağrısının nasıl geçeği söz konusu olan ağrıya bağlı olarak değişkenlik gösterebilir. Bruksizm ağrısı genellikle çene bölgesinde görülen bir ağrıdır. Bu durumlarda acilen bruksizm tedavisi görmek, doktor önerisi ile kav gevşetici ve ağrı kesici ilaçlardan yararlanmak gerekiyor. Bütün bunların yanı sıra bruksizm ağrısı olarak görülebilecek genel baş ağrısı gibi durumlar söz konusu olduğunda ise stres yönetimi yapmaya yarayan yöntemlere ya da baş bölgesinde kasları gevşetecek masaj terapilerine başvurabilirsiniz."
+        },
+        {
+          "q": "Bruksizm ameliyatı var mı?",
+          "a": "Bruksizm ameliyatı olarak adlandırılabilecek spesifik bir ameliyat yoktur. Bruksizm genellikle aşırı stres gibi psikolojik etkenlerin genetik yatkınlık gibi fizyolojik etkenlerle bir araya gelmesi sonucunda meydana gelen bir diş sıkma problemidir. Bu yüzden bruksizm için başvurulabilecek spesifik bir cerrahi müdahale yöntemi yoktur. Ancak bireyin çene yapısında bruksizmi tetikleyecek bir bozukluk varsa bu durumda ağız, diş ve çene cerrahisi uzmanları tarafından gerçekleştirilebilecek bazı cerrahi operasyonlara yani ameliyatlara başvurabilirsiniz."
+        },
+        {
+          "q": "Bruksizm antidepresan ile geçer mi?",
+          "a": "Bruksizm tedavisinde antidepresan kullanımının iyi bir seçenek olup olmayacağı ve sorunu geçirip geçiremeyeceği, duruma göre değişkenlik gösterebilir. Bruksizm tedavisinin altında yatan nedenler kişiden kişiye göre değişkenlik gösterebilir. Bu yüzden her bruksizm sorununda bireyin ekstrem stres gibi antidepresan tedavisi gerektiren bir soruna sahip olduğunu düşünmemek gerekir. Ancak bazı vakalarda bruksizmin nedeni gerçekten de bireyin psikolojik sorunları ve bunları yönetememesinden dolayı diş sıkma tiki gibi tiklere sahip olması olabilir. Bu tür durumlarda bruksizm antidepresan tedavisi ile geçebilir."
+        }
+      ]
+    },
+    {
+      "slug": "all-on-six",
+      "faqs": [
+        {
+          "q": "İmplant uygulamasının yararları nelerdir?",
+          "a": "İmplant uygulaması; sağlam, güvenilir ve rahat bir tedavi şeklidir. İmplantlar üzerine uygulanan protezler, gerçek dişlerin yerini alarak kişinin ağzında en doğal görünümü oluştururlar. Eksik olan dişlerin tamamlanması sürecinde ise sağlıklı dişlere hiçbir şekilde dokunulmamış olur. Bütün dişleri protez yapma işlemine göre daha uzun ömürlü olduğu söylenebilir. Normalde yaşanan diş kayıplarının etkileri fizyolojik olduğu kadar psikoloji de ortaya çıkar. İmplant ise doğal dişlerin yerine geçen bir özel uygulama olarak, diş kayıplarının neden olabileceği her türlü soruna karşı en sağlıklı ve kesin tedavi seçeneği olarak değerlendirilebilir.Her hasta için iyileşme süresi farklı olabilir ve birkaç faktör tarafından etkilenebilir, örneğin implant vidasının konumu, hastanın genel diş ve oral sağlığı, implant vidasının tipi ve uygulama tekniği.Takılan implant tedavisinin ömrünün uzun olması ve doğru yapılabilmesi için implant üzerine yüklemenin doğru zamanda ve kurallara uygun şekilde gerçekleştirilmesi gerekmektedir. İmplant ile kemiğin kaynaşması 3 ay sürebilmektedir. 3 ayın sonunda implant vidasına dişler takılmaya başlanmaktadır.İmplant tedavisi ile ilgili süreçleri doğru ve güvenilir bir şekilde tamamlamak için Dentaliva Diş Kliniğinin uzman hekimlerine güvenebilirsiniz. Web sitemiz üzerinden kolayca randevu alabilir, tedavinize başlayabilirsiniz."
+        },
+        {
+          "q": "İmplant tedavisinde ilk muayenede ne yapılır?",
+          "a": "İmplant tedavisinde ilk muayene hastanın bu tedavi sürecine uyumlu olup olmadığını anlamak için önemlidir. Alanında uzman diş hekimleri, ağız içini detaylı olarak muayene eder. Diş etleri, alt ve üst çene, dişlerin genel durumu gibi unsurlara bağlı olarak hastanın implanta uygun oluşu incelenir. Muayene sonrasında ise tedavi planına geçilir."
+        },
+        {
+          "q": "İmplant vidası takıldıktan sonra diş ne zaman takılır?",
+          "a": "Hastalara uygulanan implant tedavisinde gereken teşhis ve planlamalar yapıldıktan sonra vida yerleştirilir. Sonrasında ise protez hazırlığına geçilir. Hastanın kişisel zevkleri ve ağızda bulunan dişlerin durumu dikkate alınarak bir protez tasarlanır. Ağız içinin ölçüsü alınır ve diğer dişlerle uyumlu görünecek renge karar verilir. Sonrasında ise hastanın mevcut olan dişlere uygun olacak şekilde protezleri hazırlanır."
+        },
+        {
+          "q": "Hangi durumlar implant uygulamasını gerektirir?",
+          "a": "Diş kayıplarının ya da ortaya çıkan çeşitli travmaların sonucunda fizyolojik açıdan oluşan kemik erimeleri, çene kemiğinin seviyesinin ve hacminin azalmasına sebep olabilir. Bu durum ise uygulanacak olan protezin işlevini tam anlamıyla yerine getirmesine engel olur. Bunun sonucunda ise konuşma ve çiğneme fonksiyonlarında sorunlar yaşanması kaçınılmazdır."
+        },
+        {
+          "q": "İmplant uygulaması ne kadar sürer?",
+          "a": "İmplant tedavisinde işlem süresi yapılacak olan implant sayısına ve kemikte yapılacak farklılıklara göre değişiklik gösterir. Bu bağlamda ise ortalama bir implant tedavisi, implant başına 10 dakika gibi bir sürede ağız içerisinde yerleştirilebilir."
+        },
+        {
+          "q": "Dikişli implant nasıl yapılır?",
+          "a": "Dikişli implant; dişi eti kısmına bir kesi açılarak kemiğe ulaşılan ve sonrasında vidalama yöntemi ile yapılan bir uygulamadır. İmplant yerleştirildikten sonra dikiş atılır ve bu alanda işlem tamamlanmış olur. Operasyon sürecinin tamamen bitmesi ise tamamen hastaya ve uygulanan implant sayısına bağlı olarak değişiklik gösterir.İmplant tedavisi sürecini sağlıklı ve verimli bir şekilde geçirmek için hastaların klinik seçiminde titiz davranması gerekir. Bu sayede hayal edilen sağlıklı dişlere sahip olarak, estetik bir gülüşe kavuşmak mümkün olur. Dentaliva; söz konusu ağız ve diş sağlığı için etkili tedavi yöntemlerini hayata geçirmek olduğunda her zaman üst düzey kalite standartlarında çalışmalara imza atan nitelikli bir kliniktir. Uzun süredir bu alanda verdiği nitelikli hizmetler sayesinde büyümeye ve gelişmeye devam eden kliniğimizde çalışan uzman diş hekimleri ve güler yüzlü personeller sayesinde beklentilerinizi karşılayan diş tedavilerini hayata geçirebilirsiniz. Dentaliva; sağlıklı dişlere sahip olmanız için çalışmaya devam eder."
+        }
+      ]
+    },
+    {
+      "slug": "all-on-four",
+      "faqs": [
+        {
+          "q": "All on four implant fiyatı ne kadar?",
+          "a": "All on four implant fiyatı birden fazla etken doğrultusunda belirlenir. All on four fiyatları demek total all on four tedavi ücreti demektir. Bu yüzden 4 implantlı protez maliyetinden uygulamayı yapacak olan diş hekiminin tecrübesine, uygulamanın yapılacağı sağlık kuruluşunun şartlarından bireyin ekstrem taleplerine kadar birçok farklı etken all on four implant tedavisi fiyatlarını etkiler. Bu yüzden all on four implant fiyat hakkında net ve kapsamlı bilgi almak için bir diş hekimine danışmanız gerekiyor."
+        },
+        {
+          "q": "All on four implantlar ne kadar süreyle kullanılabilir?",
+          "a": "All on four implantların ne kadar süreyle kullanılabileceği ya da başka bir deyişle all on four implantların ömrü duruma göre değişkenlik gösterebiliyor. All on four implantlar yani dörtlü yapay diş kökleri de tıpkı diğer implant çeşitleri gibi 35 – 50 yıl gibi uzun sürelerle ya da başka bir deyişle ömürlük bir şekilde kullanılabilirler. Ancak all on four implantların üzerinde bulunan protez dişlerin kullanım süresi implantların kendisi kadar uzun değildir ve 15 yıl gibi süreler boyunca kullanıldıktan sonra değiştirilmeleri gerekebilir."
+        },
+        {
+          "q": "All on four tedavisinden hemen sonra normal yemek yenebilir mi?",
+          "a": "All on four tedavisinden hemen sonra normal yemek yenilmez. All on four tedavisi de dahil olmak üzere lokal anestezinin kullanıldığı komplike bir diş tedavisinden hemen sonra normal bir şekilde yemek yemek iki durumdan dolayı oldukça sakıncalıdır. İlk durum halihazırda hassasiyetin söz konusu olduğu ağız içi durumunu daha kötü hale getirebilmektir. Bir diğer durum ise lokal anesteziden dolayı meydana gelen uyuşukluk hissi yüzünden çiğneyememekten boğulma gibi durumların söz konusu olabilmesidir. Bu yüzden all on four tedavisinden hemen sonra normal yemek yememek uyuşukluk geçene kadar bekledikten sonra çorba gibi yarı sıvı şeylerle beslenmek gerekiyor."
+        },
+        {
+          "q": "All on four implant tedavisinin iyileşme süreci ne kadar sürer?",
+          "a": "All on four implant tedavisi sonrasındaki iyileşme sürecinin ne kadar süreceği birden fazla faktöre bağlıdır. All on four implant da dahil olmak üzere herhangi bir implant tedavisi söz konusu olduğu zaman birkaç gün gibi ekstrem derecede kısa sürelerde iyileşmeyi beklememek gerekir. Ancak all on 4 implant oldukça yenilikçi ve avantajlı bir yöntem olduğu için bu yöntem kullanıldığı zaman klasik implant tedavilerinin aksine implantların takıldığı aynı günde geçici protezleri kullanmaya başlamak ve 4 – 6 aylık kısa bir sürede tamamen iyileşmek mümkündür."
+        },
+        {
+          "q": "All on four implant acıtır mı?",
+          "a": "All on four implant da dahil olmak üzere tüm implant tedavileri söz konusu olduğunda bireyler çok acı çekeceklerine dair derin bir endişe taşırlar. Ancak aslında günümüzde implant tedavileri sanıldığı kadar ekstrem derecede acı vermez. Özellikle de all on four implant gibi yenilikçi ve az sayıda yapay diş kökü ile uygulama yapılan bir tedavi söz konusu olduğu zaman acı en minimal düzeye düşürülür. İmplantlar takılırken zaten lokal anesteziye başvurulduğu için herhangi bir şey hissetmezsiniz ama tedavi sonrasındaki erken iyileşme sürecinde ağrı kesici ile kontrol altına alabileceğiniz minimal bir ağrı hissedebilirsiniz."
+        },
+        {
+          "q": "All on four implant tedavisi herkese uygulanabilir mi?",
+          "a": "All on four implant tedavisi birden fazla hasta profiline hitap edebilen nadide tedavi yöntemlerinden bir tanesidir. Ancak all on four implant tedavisi de diğer tüm tedaviler gibi herkese uygulanamaz. Kemik erimesi problemi çok ileri düzeylerde olan yani kemik yoğunluğunun çoğunluğunu kaybeden bireyler, hamile ya da emziren kadınlar, diyabet gibi kronik hastalıkları bulunan kişiler ve çok fazla sigara içen bireyler gibi birçok kişinin all on four implant tedavisine uygun bir aday olarak görülmemeleri söz konusu olabilir."
+        }
+      ]
+    },
+    {
+      "slug": "agiz-dis-ve-cene-cerrahisi",
+      "faqs": [
+        {
+          "q": "20 Yaş Dişi Nedir?",
+          "a": "Üçüncü büyük azı dişleri olan yirmi yaş dişleri, çoğunlukla 20’li ve 30’lu yaşlarda süren, diş dizisinin en erka bölümünde yer alan dişlerdir. Yirmi yaş dişlerinin gelişmesi, pek çok bireyde çenedeki darlık, sürme konumundaki sapma ve kemik yoğunluğu gibi nedenlerle tam olarak gerçekleşememekte ve gömülü olarak kalmaktadır."
+        },
+        {
+          "q": "Ağız içi Cerrahi İşlemler Nasıl Yapılır?",
+          "a": "Ağız içi cerrahi işlemleri, steril ameliyathane koşullarında, uzman diş hekimleri tarafından gerçekleştirilmektedir. Tedaviler bazı durumlarda ilgili bölgenin uyuşturulmasıyla (lokal anestezi), bazı durumlarda ise genel anestezi altında veya sedasyon ile yapılmaktadır."
+        },
+        {
+          "q": "Ağız, Yüz ve Çene Bölgesine Darbe Alındığında Ne Yapılmalıdır?",
+          "a": "Böyle bir durumda kişinin herhangi bir beyin yoksa çene cerrahisi uzmanına görünerek; ağız, çene ve yüz kemiklerinde kırık şüphesi araştırılmalıdır. Yapılan radyolojik incelemeler sonucunda kırık veya doku hasarı söz konusuysa, hekim gerekli tedavileri başlatır."
+        },
+        {
+          "q": "Çene Eklemi Ağrısı Neden Olur?",
+          "a": "Sinüs enfeksiyonları, kan damarları ve sinirlerle ilgili koşullara bağlı olarak gelişebilen çene ekmeği ağrısının pek çok nedeni olabilir. Yaygın nedenler arasında; darbe ve düşmelere bağlı meydana gelen kırık ve çıkıklar, diş ameliyatı işlemi, yaralanma, zorlanma, kas gerginliği, diş gıcırdatma, artrit, vasküler koşullar, obstrüktif uyku apsesi ve stres gibi faktörler bulunur."
+        },
+        {
+          "q": "Ağız diş ve çene cerrahisi randevu alma işlemi nasıl yapılır?",
+          "a": "Ağız diş ve çene cerrahisi randevu alma işlemleri farklı şekillerde yapılabilir. Dentaliva’nın güvenli ve kapsamlı hizmetlerinden yararlanarak ağız, diş ve çene cerrahisi uzmanları ile görüşmek adına randevu almak istiyorsanız info@dentaliva.com mail adresimizden, +90 212 555 5482 numaralı telefonumuzdan, https://www.dentaliva.com/iletisim/ sayfamızdan ya da WhatsApp destek hattımızdan randevu alma işlemlerinizi tamamlayabilirsiniz. Hastalarımızın memnuniyetini ve genel sağlık durumlarını önemsediğimiz için ağız diş ve çene cerrahisi randevusu almayı talep eden hastalarımıza en kısa sürede geri dönüş yapıyoruz."
+        },
+        {
+          "q": "Ağız, diş ve çene cerrahisine direkt randevu alınır mı?",
+          "a": "Ağız diş ve çene cerrahisine direkt randevu almak mümkündür. Ancak devlet hastanelerinde ağız, diş ve çene cerrahisi gibi bölümlere randevu bulabilmek için biraz beklemek gerekebilir. Bu durumun temel sebebi devlet hastanelerinde yaşanan yoğunluk durumlarıdır. Dentaliva gibi özel sağlık kuruluşlarında ve özellikle de diş hekimliği uzmanlık alanlarında hizmet sunan kliniklerde ise randevu alma işlemleri direkt olarak gerçekleştirilebilir. Bu yüzden ağız diş ve çene cerrahisine direkt randevu almak için Dentaliva gibi sağlık kuruluşları ile iletişime geçerek randevu işlemlerinizi hızlı ve sorunsuz bir şekilde tamamlayabilirsiniz."
+        },
+        {
+          "q": "Ağız, diş ve çene cerrahisi fiyatları ne kadar?",
+          "a": "Ağız diş ve çene cerrahisi fiyatları duruma göre değişkenlik gösterebilir. Ağız diş ve çene cerrahisi fiyatlarını etkileyen birkaç ana faktör bulunur. Bu faktörlerin her biri ağız, diş ve çene cerrahisi fiyatlarını ya da başka bir deyişe ağız, diş ve çene cerrahisi tedavi fiyatlarını doğrudan ya da dolaylı bir şekilde etkiler. Ağız, diş ve çene cerrahisi fiyatlarına etki eden ilk faktör söz konusu olan sağlık kuruluşunun bulunduğu bölgedir. Örnek olarak çene cerrahisi fiyatları İstanbul gibi büyük şehirlerde diğer illerden biraz daha yüksek olabilir çünkü giderlerin yüksek olması hizmet bedelini artırabilir. Bütün bunlara ek olarak tedavinin içeriği ve tedaviyi yapacak uzmanın tecrübesi de ağız, diş ve çene cerrahisi fiyatlarına etki eder."
+        },
+        {
+          "q": "20 Yaş Dişi Her Durumda Çekilmeli midir?",
+          "a": "Diş hekimleri, hastaların 20 yaş dişlerinin neden olduğu ağız, diş ve çene sorunlarını ele alırken hem mevcut şikayetleri hem de hastanın diş yapısını göz önünde bulundurmaktadır. Her durumda yirmi yaş dişleri çekilmez. Eğer dişler kapanış pozisyonunda ise (karşısında diş varsa), düzgün pozisyondaysa ve diş çürümesi belirli bir boyuta ulaşmamışsa yirmilik dişlerin çekilmesine gerek yoktur."
+        },
+        {
+          "q": "Hangi Durumlarda İmplant Gereklidir?",
+          "a": "Diş eksikliği durumunda çene kemiğinde zaman içerisinde erime meydana gelebilir. İmplant uygulamaları erime miktarını büyük oranda ortadan kaldırabilir. Ayrıca periodontal hastalık, travma ve çürük gibi nedenlerle dişlerini kaybetmiş olanlar için de implant ideal bir seçenektir."
+        },
+        {
+          "q": "Diş Apsesi Nedir, Neden Oluşur?",
+          "a": "Diş apsesi, enfeksiyon nedeniyle dişlerde ve diş etlerinde irin birikmesi olarak tanımlanmaktadır. Ağız ve diş bakımına özen gösterilmemesi, çürüklerin tedavi ettirilmemesi ve ağız içi hijyenin sağlanamaması gibi nedenlerden dolayı ortaya çıkar. Diş apsesi, uzman bir diş hekimi tarafından bekletilmeden tedavi edilmelidir."
+        },
+        {
+          "q": "Ağız diş ve çene cerrahisi çene ameliyatı yapar mı?",
+          "a": "Ağız, diş ve çene cerrahisi çene ameliyatı yapar. Çene ameliyatı denildiği zaman akıllara gelen ilk operasyon türü çene kemiği kırıklarını tedavi etme amacıyla yapılan komplike operasyonlar olmaktadır. Ağız, diş ve çene cerrahisi bölümünde bu ameliyatlara ek olarak gömülü dişlerin çıkarılması adına gerçekleştirilen operasyonlar ya da dental implant tedavisi gibi ameliyatlar da gerçekleştirilir. Bütün bunlardan dolayı çenenizle ilgili bir sorunun olduğunda ve çene ameliyatına ihtiyaç duyduğunuz saptanıldığında ağız, diş ve çene cerrahisi uzmanlarına başvurarak sorununuza uygun bir şekilde tedavi edilmeniz gerekir."
+        },
+        {
+          "q": "Ağız, diş ve çene cerrahisi ile diş hekimliği farkı nasıl açıklanır?",
+          "a": "Ağız, diş ve çene cerrahisi ile diş hekimliği farkını açıklarken öncelikle bu iki alanın birbirlerinden bağımsız olmadığını bilmek gerekir. Ağız, diş ve çene cerrahisi uzmanı olan bireyler aynı zamanda diş hekimi de olan bireylerdir. Ancak her diş hekimi ağız, diş ve çene cerrahisi uzmanı değildir. Diş hekimliği için yalnızca 5 yıllık diş hekimliği eğitimi almak yeterliyken ağız, diş ve çene cerrahisi uzmanlığı için ise 5 yıllık diş hekimliği eğitimine ek olarak 4 yıllık ağız, diş ve çene cerrahisi uzmanlığı eğitimi almak gerekir. Bu yüzden ağız, diş ve çene cerrahisi çene ameliyatları gibi komplike operasyonların da ele alındığı daha kapsamlı bir alandır."
+        },
+        {
+          "q": "Ağız, diş ve çene cerrahisi tedavileri zor mu?",
+          "a": "Ağız, diş ve çene cerrahisi tedavilerinin zorluğu duruma göre değişkenlik gösterir. Her türlü sağlık alanında yapılan tedavilerin zorluğu tedavi içeriğine ve tedaviyi yapan sağlık çalışanının benimsediği yöntemlere bağlı olarak değişkenlik gösterebilir. Ağız, diş ve çene cerrahisi tedavileri için de durum bu şekildedir. Bazı tedaviler oldukça zorlu iken bazıları ise kısa süreli ve kolay olabilmektedir. Örnek olarak çene ameliyatları esnasında zorlu işlemler yapılsa da bireyin herhangi bir zorluk ya da başka bir deyişle acı çekmesi söz konusu olmaz ama operasyon sonrasında bireyin ağrı çekmesi söz konusu olabilir. Özetle ağız, diş ve çene cerrahisi tedavilerinin zorluğu hakkında doktorunuz ile görüşerek doğru bilgilere erişmeniz gerekir."
+        }
+      ]
+    },
+    {
+      "slug": "20lik-dis-tedavisi",
+      "faqs": [
+        {
+          "q": "20’lik dişe kanal tedavisi yapılır mı?",
+          "a": "20’lik dişe kanal tedavisinin uygulanması mümkündür. Birçok kişi 20’lik dişlerin kanal tedavisi kapsamında olmadıklarını düşünür ama bu aslında her durumda geçerli olmayan bir düşüncedir. 20’lik dişler kanal tedavisi ihtiyacı ve dişlerin kanal tedavisine uygun bulunması sonucunda kanal tedavisi yapılabilecek olan dişlerdir. Ancak genel olarak birçok diş hekimi 20’lik dişlere kanal tedavisi yapılmasını tavsiye etmez çünkü bu dişler genel olarak fazla işlevi olmayan ve karışık bir yapıya sahip oldukları için kanal tedavisi yapılmasının zor olduğu dişlerdir. Bütün bunlardan dolayı birçok diş hekimi 20’lik dişlerin ilerlemiş çürükler gibi olumsuz durumlar söz konusu olduğu zaman kanal tedavisi ile tedavi edilmeleri yerine çekilmelerini tavsiye eder."
+        },
+        {
+          "q": "Diş hekimi 20’lik diş çeker mi?",
+          "a": "Diş hekimi ünvanını almış olan kişiler 20’lik diş çekebilirler. Ancak bu duruma göre değişkenlik gösterebilir. 20’lik dişlerin doğru bir şekilde çıktığı ya da en azından basit çekim ile çekilebilecek kadar çıktıkları durumlarda 20’lik diş çekimi işlemi diş hekimleri tarafından yapılabilir. Ancak söz konusu olan 20’lik diş tamamen gömülü kaldıysa ya da basit çekimle çekilemeyecek kadar yarı gömülü kaldıysa bu durumda çekim işleminin ağız, diş ve çene cerrahisi alanında uzmanlık yapan yani diş hekimliğinin yanı sıra ağız, diş ve çene cerrahisi alanında da eğitim almış kişiler tarafından gerçekleştirilmesi gerekiyor."
+        },
+        {
+          "q": "20’lik diş tedavisi çok acıyor mu?",
+          "a": "Birçok kişi 20’lik diş tedavisinin dayanılmayacak seviyede acı verici olduğunu düşünmektedir. Ancak bu düşünce genel olarak doğru değildir. 20’lik diş tedavileri günümüzde oldukça yenilikçi ve etkili yöntemlerle yapıldığı için çok fazla acı vermez. Buna ek olarak 20’lik diş çekim gibi 20’lik diş tedavisi kapsamında olan uygulamaların oldukça güçlü anestezi yöntemleri kullanılarak gerçekleştiriliyor olması da hastaların özellikle de tedavi esnasında ve tedaviden bir süre sonra da uyuşukluktan dolayı herhangi bir şey hissetmemelerini sağlar."
+        },
+        {
+          "q": "20’lik diş çekimi sonrası buz tedavisi ne işe yarar?",
+          "a": "20’lik diş çekimi sonrası buz tedavisi olarak bilinen soğuk uygulama birçok yönden faydalı ve gereklidir. 20’lik diş çekimi diğer diş çekimlerine oranla daha komplike işlemlerdir çünkü bu dişlerin kökleri oldukça güçlüdür ve bazı durumlarda cerrahi çekim gibi zorlu yöntemlerle çekilmeleri gerekebilir. Bu işlemler esnasında diş köklerinin bulunduğu bölge genelinde tahribat meydana gelir. Söz konusu olan tahribattan dolayı bölgede ağrı, kanama ve şişlik oluşabilir. Hem ağrı hem kanama hem de şişlik oluşumunu düşük seviyelere indirmek ve kontrol altında tutmak için soğuk uygulama ya da başka bir deyişle buz tedavisi yapmak gerekir. Soğuk uygulamanın birkaç gün boyunca günce en azından 5 – 6 kere yapılması gerekir."
+        },
+        {
+          "q": "20’lik dişe dolgu yapılır mı?",
+          "a": "Halk arasındaki yaygın bir inanışa göre birçok kişi 20’lik dişe dolgu yapılamayacağını düşünmektedir. Ancak aslında bu düşünce pek de doğru olmayan bir düşüncedir. 20’lik dişlere de tıpkı diğer dişler gibi dolgu uygulaması yapmak mümkündür. Ancak 20’lik dişlerin genellikle işlevsiz oluşu, ağızda rahatsızlık hissine yol açmaları ve çok kısa sürede çürümeleri gibi durumlar birçok diş hekiminin 20’lik dişlerin çürümesi halinde dolgu uygulaması yerine diş çekimi yapılmasını tavsiye etmelerine sebep olmuştur. Bütün bunlardan dolayı 20’lik dişe dolgu yapılabilir ama genellikle önerilmeyen bir durum olduğu için dolgu gerektiren sorunlarda dolgu yerine diş çekimi yaptırmayı düşünmek gerekebilir."
+        },
+        {
+          "q": "20’lik diş tedavisi fiyatları ne kadar?",
+          "a": "20’lik diş tedavisi fiyatı ya da başka bir deyişle 20’lik diş tedavi ücretleri duruma göre değişkenlik gösterebilir. 20’lik diş tedavisi kapsamında başvurulabilecek birden fazla yöntem vardır. Bu yöntemlerin her birinin maliyeti birbirlerinden farklı olduğu için 20’lik diş tedavisi fiyatı da net değil ve duruma göre değişkendir. Örnek olarak 20’lik diş tedavisi kapsamındaki basit 20’lik diş çekimi fiyatları cerrahi 20’lik diş çekimi fiyatına göre daha düşük değerler üzerinden belirlenebilir. Bütün bunlara ek olarak tedavinin yapılacağı sağlık kuruluşunun olanakları gibi etkenler de 20’lik diş tedavisi fiyatını etkiler."
+        }
+      ]
+    },
+    {
+      "slug": "cene-eklemi-tedavisi",
+      "faqs": [
+        {
+          "q": "Bruksizm Tedavisi için Hangi Doktora Başvurmalıyız?",
+          "a": "İlk olarak, dişlerinizin durumunu incelemek için bir ortodontist tarafından randevu edilmelisiniz. Ortodontist, dişlerinizi ve çene yapınızı inceledikten sonra gerekli tedavi yöntemlerini uygulayacaktır."
+        },
+        {
+          "q": "Bruksizm Ne Gibi Sorunlara Yol Açabilir?",
+          "a": "Bruksizm diş minesine zarar verebilir ve dişlerin çürümesine, kırılmasına, gevşemesine ve düşmesine neden olabilir. Ayrıca, çene bozukluklarına, baş ağrısına ve kulak ağrısına neden olabilir."
+        },
+        {
+          "q": "Bruksizm Hangi Vitamin Eksikliğine Yol Açar?",
+          "a": "Kalsiyum veya magnezyum gibi vitaminlerin eksikliği dişlerinizi istemsiz olarak gıcırdatmanıza neden olabilir. Bu nedenle bruksizm ek tedavisi için multivitamin takviyesi alınması önerilir. Kalsiyum açısından zengin bir diyet uygulamak, süt ve süt ürünleri tüketmek de çok önemlidir."
+        },
+        {
+          "q": "Şiddetli Bruksizm Tedavi Edilebilir Mi?",
+          "a": "Şiddetli bruksizm genellikle sadece gece plağı kullanmak gibi diş prosedürleri kullanılarak tedavi edilemez. Bir psikiyatriste gitmek, beslenme alışkanlıklarını ve yaşam tarzını değiştirmek de dahil olmak üzere diğer tedavi yöntemleri kullanılmalıdır."
+        },
+        {
+          "q": "Bruksizm Evde Nasıl Tedavi Edilir?",
+          "a": "İlk adım stresi azaltmaktır. Bunun için rahatlatıcı bir müzik dinleyebilirsiniz. Sıcak bir duş alın veya yoga yapın. Geceleri enerjik yiyecek veya içeceklerden kaçının. Uyku saatlerinizi düzenleyin ve her gece belirli bir saatte uyuyun. Düzenli olarak dişçiye gitmeyi unutmayın."
+        },
+        {
+          "q": "Solucanlar ve Parazitler Bruksizme Neden Olur Mu?",
+          "a": "Bazı gastroenterologlar, bağırsak solucanları gibi bazı sindirim hastalıklarının bruksizme neden olduğuna inanmaktadır. Bu nedenle bruksizmin kesin tedavisi için hastanın tüm sağlık faktörlerinin kontrol edilmesi gerekir."
+        },
+        {
+          "q": "Bruksizm Çocuklarda Nasıl Tedavi Edilir?",
+          "a": "Çocuklar, kötü beslenme alışkanlığı, stres ve sindirim sorunlarının bir sonucu olarak diş gıcırdatma yaşayabilir. Bu sorunlardan herhangi birini düzelterek çocuğunuzun bruksizmini tedavi edebilirsiniz. Çocuğunuzun özellikle geceleri sakin hissetmesine yardımcı olmak da çok önemlidir. Çocuğunuzun daha rahat hissetmesi için uyumadan önce yüzüne sıcak bir havlu koyabilirsiniz. Çocuklarda bruksizm tedavisi veya önlenmesi için düzenli olarak diş hekimine gidilmesi önerilir."
+        }
+      ]
+    }
+  ]
+}

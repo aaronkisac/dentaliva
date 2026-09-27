@@ -11,7 +11,13 @@ const ENV = {
   dataset: process.env.SANITY_DATASET ?? "production",
 };
 
-export function GallerySection({ images }: { images: GalleryImage[] }) {
+export function GallerySection({
+  images,
+  stats,
+}: {
+  images: GalleryImage[];
+  stats?: Array<{ value?: string; label?: { tr?: string } }>;
+}) {
   const rendered = images.filter((image) => image.asset?._ref).slice(0, 8);
   if (rendered.length === 0) return null;
   return (
@@ -19,6 +25,16 @@ export function GallerySection({ images }: { images: GalleryImage[] }) {
       <Heading level="h2" size="md">
         Galeri
       </Heading>
+      {(stats ?? []).length > 0 ? (
+        <div className="mt-6 flex flex-wrap gap-6">
+          {stats?.map((stat) => (
+            <div key={stat.value} className="border border-[var(--dvn-line-gold)] px-6 py-4">
+              <p className="font-serif text-3xl text-navy">{stat.value}</p>
+              <p className="mt-1 text-sm text-ink/70">{stat.label?.tr}</p>
+            </div>
+          ))}
+        </div>
+      ) : null}
       <div className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-4">
         {rendered.map((image, index) => {
           const ref = image.asset?._ref as string;

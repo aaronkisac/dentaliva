@@ -14,7 +14,9 @@ export const branchListQuery = defineQuery(
   }`,
 );
 
-export const faqListQuery = defineQuery(`*[_type == "faq"] | order(order asc){ question, answer }`);
+export const faqListQuery = defineQuery(
+  `*[_type == "faq" && displayOnHome == true] | order(order asc){ question, answer }`,
+);
 
 export const testimonialListQuery = defineQuery(
   `*[_type == "testimonial" && rating >= 4] | order(_createdAt desc){ author, quote, rating, source, youtubeId }`,
