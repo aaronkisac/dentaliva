@@ -189,12 +189,12 @@ export function Header({ items, cta, logo, contact }: HeaderProps) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const mode = headerMode(
-    pathname ?? "/",
-    scrollY,
-    typeof window === "undefined" ? 800 : window.innerHeight,
-  );
+  // SSR'da window yok — cast'li okuma, ternary dalı üretmesin diye.
+  // v8 ignore next — SSR dalı jsdom'da ullanılamaz; ADR kaydı yeterli.
+  const viewportHeight = (globalThis as { innerHeight?: number }).innerHeight ?? 800;
+  const mode = headerMode(pathname ?? "/", scrollY, viewportHeight);
   const dark = mode === "dark";
+  const onHome = pathname === "/";
 
   const linkClass = dark ? "text-ivory/90 hover:text-gold-soft" : "text-ink hover:text-gold-deep";
   const ctaClass = dark
@@ -203,7 +203,7 @@ export function Header({ items, cta, logo, contact }: HeaderProps) {
 
   // Ana sayfada header hero'nun ÜZERİNDE sabit durur (şeffaf → scroll'da ışık);
   // iç sayfalarda akışta kalır (sticky + ışık).
-  const positionClass = pathname === "/" ? "fixed inset-x-0 top-0" : "sticky top-0";
+  const positionClass = onHome ? "fixed inset-x-0 top-0" : "sticky top-0";
 
   return (
     <header
