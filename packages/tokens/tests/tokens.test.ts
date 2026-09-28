@@ -38,8 +38,9 @@ describe("WCAG contrast of approved token pairs", () => {
   });
 
   it("reads the exact approved brand colors", () => {
-    expect(color.navy).toBe("#0c1f38");
-    expect(color.gold).toBe("#c9a35c");
+    // ADR-008 (2026-09-28): warm ReoDental-inspired re-theme.
+    expect(color.navy).toBe("#1c1610");
+    expect(color.gold).toBe("#c09a55");
   });
 
   it("gold-on-navy has a documented ratio in AA-normal territory", () => {

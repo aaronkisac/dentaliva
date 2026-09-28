@@ -1,39 +1,45 @@
 /**
- * Single source of truth for design tokens (ADR-005).
- * Extracted verbatim from the approved navy/gold prototype (`css/style.css :root`).
- * Consumed as CSS custom properties (css/tokens.css, generated) and mapped into
- * Tailwind v4 via @dentaliva/config/tailwind/theme.css. No design values may
- * exist outside this package.
+ * Single source of truth for design tokens (ADR-005, amended by ADR-008).
+ * The structure (semantic names, scales) comes from the approved prototype;
+ * the palette was re-themed 2026-09-28 toward a warm, ReoDental-inspired
+ * identity (espresso darks, bronze accent, warm off-white) — ADR-005's
+ * "layout patterns only" rule still applies to the reference template.
+ * Consumed as CSS custom properties (css/tokens.css, generated) and mapped
+ * into Tailwind v4 via @dentaliva/config/tailwind/theme.css. No design
+ * values may exist outside this package.
+ *
+ * Legacy key names (navy/gold) are kept for stability — `navy` now holds
+ * the warm espresso dark, `gold` the bronze accent.
  */
 
 export const color = {
-  navy: "#0c1f38",
-  navy2: "#122b4a",
-  navy3: "#1a3a5f",
-  gold: "#c9a35c",
-  goldSoft: "#e6cfa0",
-  goldDeep: "#a8823d",
-  ivory: "#faf7f2",
-  ivory2: "#f3eee4",
+  navy: "#1c1610",
+  navy2: "#241d15",
+  navy3: "#322a1f",
+  gold: "#c09a55",
+  goldSoft: "#e3d2ab",
+  goldDeep: "#96733f",
+  ivory: "#faf9f6",
+  ivory2: "#f2efe7",
   white: "#ffffff",
-  ink: "#2a3648",
-  muted: "#6b7686",
+  ink: "#2b2620",
+  muted: "#7a746b",
 } as const;
 
 export const line = {
-  gold: "rgba(201, 163, 92, 0.35)",
-  soft: "rgba(12, 31, 56, 0.1)",
+  gold: "rgba(192, 154, 85, 0.35)",
+  soft: "rgba(28, 22, 16, 0.1)",
 } as const;
 
 export const gradient = {
-  gold: "linear-gradient(120deg, #a8823d 0%, #e6cfa0 45%, #c9a35c 100%)",
-  navy: "linear-gradient(160deg, #0c1f38 0%, #1a3a5f 100%)",
+  gold: "linear-gradient(120deg, #96733f 0%, #e3d2ab 45%, #c09a55 100%)",
+  navy: "linear-gradient(160deg, #1c1610 0%, #322a1f 100%)",
 } as const;
 
 export const shadow = {
-  soft: "0 10px 30px -12px rgba(12, 31, 56, 0.14)",
-  lift: "0 30px 60px -25px rgba(12, 31, 56, 0.3)",
-  gold: "0 18px 40px -18px rgba(201, 163, 92, 0.55)",
+  soft: "0 10px 30px -12px rgba(28, 22, 16, 0.14)",
+  lift: "0 30px 60px -25px rgba(28, 22, 16, 0.3)",
+  gold: "0 18px 40px -18px rgba(192, 154, 85, 0.55)",
 } as const;
 
 export const fontFamily = {
