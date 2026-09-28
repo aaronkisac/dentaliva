@@ -27,12 +27,23 @@ export function FaqSection({ items }: { items: FaqEntry[] }) {
   );
 }
 
-export function CtaSection({ title, phone }: { title?: LocalizedPair | null; phone: string }) {
+export function CtaSection({
+  title,
+  text,
+  phone,
+}: {
+  title?: LocalizedPair | null;
+  text?: LocalizedPair | null;
+  phone: string;
+}) {
   return (
     <Section className="bg-navy text-center">
       <Heading level="h2" size="md" className="text-white">
         {title?.tr ?? "Randevu Alın"}
       </Heading>
+      {text?.tr ? (
+        <p className="mx-auto mt-3 max-w-2xl font-sans text-lg text-white/80">{text.tr}</p>
+      ) : null}
       <p className="mt-4 font-sans text-lg text-gold-soft">{phone}</p>
     </Section>
   );

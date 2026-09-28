@@ -9,7 +9,7 @@ export const branchListQuery = defineQuery(
     hours,
     mapUrl,
     geo,
-    image,
+    image { "ref": asset._ref, alt },
     seo
   }`,
 );
@@ -39,7 +39,7 @@ export const blogBySlugQuery = defineQuery(
     body,
     heroImage { ..., alt, "ref": asset._ref },
     publishedAt,
-    author->{ name, slug, title, photo },
+    author->{ name, slug, title, photo { "ref": asset._ref, alt } },
     seo
   }`,
 );

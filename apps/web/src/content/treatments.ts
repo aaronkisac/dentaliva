@@ -26,7 +26,12 @@ export interface TreatmentDetail extends TreatmentListItem {
   steps?: TreatmentStep[];
   priceNote?: LocalizedPair;
   faqs?: Array<{ question?: LocalizedPair; answer?: LocalizedPair }>;
-  doctors?: Array<{ name?: string; slug?: string; title?: LocalizedPair }>;
+  doctors?: Array<{
+    name?: string;
+    slug?: string;
+    title?: LocalizedPair;
+    photo?: { ref?: string; alt?: LocalizedPair };
+  }>;
   seo?: SeoObject | null;
 }
 

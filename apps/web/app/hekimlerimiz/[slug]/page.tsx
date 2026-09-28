@@ -83,6 +83,21 @@ export default async function DoctorDetailPage({ params }: PageProps) {
         {doctor.bio?.tr ? (
           <Text className="max-w-3xl whitespace-pre-line">{pickLocalized(doctor.bio)}</Text>
         ) : null}
+
+        {/* DSN-9: hekimin ilgi alanları (schema: doctor.treatments). */}
+        {(doctor.treatments ?? []).length > 0 ? (
+          <div className="mt-8 flex flex-wrap gap-3">
+            {(doctor.treatments ?? []).map((treatment) => (
+              <a
+                key={treatment.slug}
+                href={`/hizmetlerimiz/${treatment.slug}`}
+                className="border border-[var(--dvn-line-gold)] px-4 py-2 font-sans text-sm text-navy transition-colors hover:bg-gold hover:text-navy"
+              >
+                {pickLocalized(treatment.name)}
+              </a>
+            ))}
+          </div>
+        ) : null}
       </Section>
     </>
   );

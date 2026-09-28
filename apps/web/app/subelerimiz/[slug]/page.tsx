@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 
+import Image from "next/image";
+
 import { pickLocalized } from "@dentaliva/sanity-schema/client";
 import { buildBreadcrumbJsonLd } from "@dentaliva/seo";
 
@@ -75,6 +77,28 @@ export default async function BranchDetailPage({ params }: PageProps) {
             ) : null}
             {branch.hours?.tr ? <Text className="mt-2">{pickLocalized(branch.hours)}</Text> : null}
           </div>
+          {branch.geo ? (
+            <div className="md:col-span-2">
+              <iframe
+                title={`${branch.name ?? "Şube"} konum haritası`}
+                src={`https://maps.google.com/maps?q=${branch.geo.lat},${branch.geo.lng}&z=15&output=embed`}
+                loading="lazy"
+                className="aspect-video w-full border border-[var(--dvn-line)]"
+              />
+            </div>
+          ) : null}
+          {branch.image?.ref ? (
+            <div className="md:col-span-2">
+              <Image
+                src={branch.image.ref}
+                alt={branch.name ?? ""}
+                width={1200}
+                height={600}
+                sizes="(max-width: 900px) 100vw, 1180px"
+                className="h-auto w-full border border-[var(--dvn-line)] object-cover"
+              />
+            </div>
+          ) : null}
           {branch.mapUrl ? (
             <div>
               <Heading level="h2" size="title">

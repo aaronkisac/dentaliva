@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 
+import Image from "next/image";
+
 import { pickLocalized } from "@dentaliva/sanity-schema/client";
 import { buildBreadcrumbJsonLd } from "@dentaliva/seo";
 
@@ -63,7 +65,20 @@ export default async function BlogPostPage({ params }: PageProps) {
       <Section>
         <Text tone="muted" size="small">
           {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString("tr-TR") : ""}
+          {post.author?.name
+            ? ` · ${post.author.name}${post.author.title?.tr ? ` — ${post.author.title.tr}` : ""}`
+            : ""}
         </Text>
+        {post.heroImage?.ref ? (
+          <Image
+            src={post.heroImage.ref}
+            alt={post.heroImage?.alt?.tr ?? pickLocalized(post.title)}
+            width={1200}
+            height={600}
+            sizes="(max-width: 900px) 100vw, 1180px"
+            className="mt-6 h-auto w-full border border-[var(--dvn-line)] object-cover"
+          />
+        ) : null}
         <Heading level="h1" size="lg" className="mt-2">
           {pickLocalized(post.title)}
         </Heading>
