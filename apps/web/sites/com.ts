@@ -25,6 +25,7 @@ export const site = {
   sections: {
     home: [
       "hero",
+      "ticker",
       "quickServices",
       "about",
       "videoTestimonials",

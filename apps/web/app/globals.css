@@ -10,6 +10,28 @@
     transform: none;
   }
 }
+@keyframes dvn-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.dvn-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: dvn-marquee 45s linear infinite;
+}
+.dvn-marquee-track:hover {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  .dvn-marquee-track {
+    animation: none;
+  }
+}
+
 @keyframes dvn-hero-zoom {
   from {
     transform: scale(1.05);

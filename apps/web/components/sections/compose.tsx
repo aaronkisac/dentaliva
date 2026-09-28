@@ -10,6 +10,7 @@ import { DoctorsSection } from "./doctors";
 import { GallerySection } from "./gallery";
 import { HeroSection } from "./hero";
 import { QuickServicesSection } from "./quick-services";
+import { ServiceTicker } from "./service-ticker";
 import { ReviewsSection, VideoTestimonialsSection } from "./testimonials";
 
 type SectionRenderer = (data: HomeData) => ReactNode;
@@ -22,6 +23,7 @@ function reveal(node: ReactNode): ReactNode {
 /** Registry: section id → renderer. Order comes from the site config. */
 export const sectionRegistry: Record<HomeSectionId, SectionRenderer> = {
   hero: (data) => <HeroSection data={data.homePage?.hero ?? null} />,
+  ticker: (data) => <ServiceTicker items={data.quickServices} />,
   quickServices: (data) => reveal(<QuickServicesSection items={data.quickServices} />),
   about: (data) => reveal(<AboutSection data={data.homePage?.about ?? null} />),
   videoTestimonials: (data) => reveal(<VideoTestimonialsSection items={data.testimonials} />),
