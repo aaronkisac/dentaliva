@@ -35,6 +35,7 @@ describe("site config (PGT-1)", () => {
   it("orders the home sections per the approved design", () => {
     expect(site.sections.home).toEqual([
       "hero",
+      "ticker",
       "quickServices",
       "about",
       "videoTestimonials",

@@ -22,6 +22,7 @@ export interface SiteFeatures {
 /** Home page section ids rendered by the composition engine (PGT-3). */
 export const homeSectionIds = [
   "hero",
+  "ticker",
   "quickServices",
   "about",
   "videoTestimonials",
