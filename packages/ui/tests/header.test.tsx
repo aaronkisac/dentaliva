@@ -1,5 +1,8 @@
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
+
+const { mockPathname } = vi.hoisted(() => ({ mockPathname: { value: "/" } }));
+vi.mock("next/navigation", () => ({ usePathname: () => mockPathname.value }));
 
 import { Header, type NavLink } from "../src/header";
 import { expectNoA11yViolations, renderUi, screen } from "./helpers";
@@ -118,5 +121,65 @@ describe("Header", () => {
 
   it("has no axe violations", async () => {
     await expectNoA11yViolations(<Header items={items} logo={<span>Dentaliva</span>} />);
+  });
+});
+
+describe("DSN-10 header variants", () => {
+  it("dark variant on home: espresso header, outlined CTA, phone link", () => {
+    mockPathname.value = "/";
+    renderHeader();
+    const header = screen.getByRole("banner");
+    expect(header.className).toContain("bg-navy");
+    expect(screen.getByRole("link", { name: "Randevu Al" })).toHaveAttribute("href", "/randevu");
+    expect(screen.getByRole("link", { name: "+90 212 555 54 82" })).toHaveAttribute(
+      "href",
+      "tel:+90 212 555 54 82",
+    );
+  });
+
+  it("light variant on inner routes: ivory header, blur, ink links", () => {
+    mockPathname.value = "/hakkimizda";
+    renderHeader();
+    const header = screen.getByRole("banner");
+    expect(header.className).toContain("bg-ivory");
+    expect(header.className).toContain("backdrop-blur");
+    expect(header.className).not.toContain("bg-navy");
+    const nav = screen.getByRole("navigation", { name: "Main" });
+    expect(nav.textContent).toContain("İletişim");
+  });
+
+  it("light variant dropdown opens", async () => {
+    mockPathname.value = "/hakkimizda";
+    renderHeader();
+    await userEvent.click(screen.getByRole("button", { name: "Hizmetlerimiz" }));
+    expect(
+      screen.getByRole("button", { name: "Hizmetlerimiz" }).getAttribute("aria-expanded"),
+    ).toBe("true");
+  });
+
+  it("mobile menu shows the phone entry when contact is given", async () => {
+    mockPathname.value = "/";
+    renderHeader();
+    await userEvent.click(screen.getByRole("button", { name: "Toggle menu" }));
+    expect(screen.getAllByText("+90 212 555 54 82").length).toBeGreaterThan(0);
+  });
+});
+
+describe("DSN-10 header variant branches", () => {
+  it("dark variant dropdown opens with light styling", async () => {
+    mockPathname.value = "/";
+    renderHeader();
+    await userEvent.click(screen.getByRole("button", { name: "Hizmetlerimiz" }));
+    expect(
+      screen.getByRole("button", { name: "Hizmetlerimiz" }).getAttribute("aria-expanded"),
+    ).toBe("true");
+    expect(screen.getByText("İmplant")).toBeInTheDocument();
+  });
+
+  it("light variant mobile menu uses ivory panel and hides dark phone", async () => {
+    mockPathname.value = "/hakkimizda";
+    renderHeader({ contact: undefined });
+    await userEvent.click(screen.getByRole("button", { name: "Toggle menu" }));
+    expect(screen.getByRole("navigation", { name: "Mobile" }).textContent).toContain("Hakkımızda");
   });
 });
