@@ -19,8 +19,8 @@ export const treatmentBySlugQuery = defineQuery(
     benefits,
     steps,
     priceNote,
-    faqs->{ question, answer },
-    doctors->{ name, slug, title, photo },
+    faqs[]->{ question, answer },
+    doctors[]->{ name, slug, title, photo },
     seo
   }`,
 );

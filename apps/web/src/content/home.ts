@@ -47,6 +47,7 @@ export interface GalleryImage {
 export interface HomePageContent {
   hero?: { headline?: LocalizedPair; subline?: LocalizedPair };
   about?: { title?: LocalizedPair; body?: LocalizedPair };
+  stats?: Array<{ value?: string; label?: LocalizedPair }>;
   gallery?: GalleryImage[];
   cta?: { title?: LocalizedPair; text?: LocalizedPair };
 }
