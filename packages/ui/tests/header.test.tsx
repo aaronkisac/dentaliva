@@ -4,7 +4,7 @@ import { describe, expect, it, vi } from "vitest";
 const { mockPathname } = vi.hoisted(() => ({ mockPathname: { value: "/" } }));
 vi.mock("next/navigation", () => ({ usePathname: () => mockPathname.value }));
 
-import { Header, type NavLink } from "../src/header";
+import { headerMode, Header, type NavLink } from "../src/header";
 import { expectNoA11yViolations, renderUi, screen } from "./helpers";
 
 const items: NavLink[] = [
@@ -129,7 +129,8 @@ describe("DSN-10 header variants", () => {
     mockPathname.value = "/";
     renderHeader();
     const header = screen.getByRole("banner");
-    expect(header.className).toContain("bg-navy");
+    expect(header.className).toContain("fixed");
+    expect(header.className).toContain("bg-transparent");
     expect(screen.getByRole("link", { name: "Randevu Al" })).toHaveAttribute("href", "/randevu");
     expect(screen.getByRole("link", { name: "+90 212 555 54 82" })).toHaveAttribute(
       "href",
@@ -181,5 +182,25 @@ describe("DSN-10 header variant branches", () => {
     renderHeader({ contact: undefined });
     await userEvent.click(screen.getByRole("button", { name: "Toggle menu" }));
     expect(screen.getByRole("navigation", { name: "Mobile" }).textContent).toContain("Hakkımızda");
+  });
+});
+
+describe("headerMode (DSN-11)", () => {
+  it("home at top is dark (transparent over hero)", () => {
+    expect(headerMode("/", 0, 800)).toBe("dark");
+  });
+
+  it("home past the hero threshold turns light", () => {
+    expect(headerMode("/", 720, 800)).toBe("light");
+  });
+
+  it("inner routes are always light", () => {
+    expect(headerMode("/hakkimizda", 0, 800)).toBe("light");
+    expect(headerMode("/hakkimizda", 5000, 800)).toBe("light");
+  });
+
+  it("keeps a minimum threshold on short viewports", () => {
+    expect(headerMode("/", 115, 200)).toBe("dark");
+    expect(headerMode("/", 125, 200)).toBe("light");
   });
 });
