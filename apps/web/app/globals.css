@@ -80,7 +80,9 @@
     U+A720-A7FF;
 }
 
-@import "tailwindcss";
+/* source(): kök dizine taşır — packages/ui sınıfları (header sticky vb.)
+   aksi halde sessizce taranmaz (monorepo kalıbı, DSN-10 düzeltmesi). */
+@import "tailwindcss" source("../../../");
 @source "../../packages/ui/src";
 @import "@dentaliva/tokens/css/tokens.css";
 @import "@dentaliva/config/tailwind/theme.css";
