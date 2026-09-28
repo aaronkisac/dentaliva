@@ -21,11 +21,11 @@ const ENV = {
 };
 
 /**
- * DSN-12: full-bleed hero — arka planda klinik fotoğrafı, üstünde sıcak
- * espresso overlay; içerik ortalanmış; altta güven satırı (gerçek veriler:
- * 2012 kuruluşu, 13+ yıl, Google puanı). Görsel yoksa düz espresso zemin
- * ile aynı içerik (boş-CMS güvenli). Fixed şeffaf header bu bölümün
- * üstünde durur (DSN-11).
+ * DSN-12/13: full-bleed hero — arka planda klinik fotoğrafı, üstünde sıcak
+ * espresso overlay; içerik SOLA hizalı (referans: align-items flex-start,
+ * 100vh); yüklemede staggered fade-up (saf CSS, reduced-motion duyarlı) ve
+ * arka planda yavaş zoom-out. Görsel yoksa düz espresso zemin (boş-CMS
+ * güvenli). Fixed şeffaf header bu bölümün üstünde durur (DSN-11).
  */
 export function HeroSection({ data }: { data: HeroData | null }) {
   const headline =
@@ -33,20 +33,24 @@ export function HeroSection({ data }: { data: HeroData | null }) {
   const subline = pickLocalized(data?.subline) || "İstanbul'da Diş Kliniği";
   const ref = data?.image?.asset?._ref;
   const dims = ref ? (refDimensions(ref) ?? { width: 2400, height: 1400 }) : null;
+  const rise = (delay: number) => ({ animationDelay: `${delay}ms` });
+
   return (
-    <section className="relative flex min-h-[92svh] items-center bg-navy text-white">
+    <section className="relative flex min-h-screen items-center overflow-clip bg-navy text-white">
       {ref && dims ? (
         <>
-          <Image
-            src={ref}
-            alt={pickLocalized(data?.image?.alt) || headline}
-            fill
-            priority
-            sizes="100vw"
-            placeholder="blur"
-            blurDataURL={lqipUrl(ref, ENV)}
-            className="object-cover"
-          />
+          <div aria-hidden="true" className="hero-zoom absolute inset-0">
+            <Image
+              src={ref}
+              alt=""
+              fill
+              priority
+              sizes="100vw"
+              placeholder="blur"
+              blurDataURL={lqipUrl(ref, ENV)}
+              className="object-cover"
+            />
+          </div>
           {/* Okunabilirlik overlay'i: marka espresso'sundan sıcak karartma. */}
           <div
             aria-hidden="true"
@@ -54,42 +58,47 @@ export function HeroSection({ data }: { data: HeroData | null }) {
           />
         </>
       ) : null}
-      <Container className="relative py-[var(--dvn-section-y)] text-center md:py-[var(--dvn-section-y-md)]">
-        <Heading level="h1" size="xl" className="mx-auto max-w-4xl text-white">
-          {headline}
-        </Heading>
-        <Text size="lg" tone="white" className="mx-auto mt-6 max-w-2xl text-white/85">
-          {subline}
-        </Text>
-        <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-          <Link href="/iletisim" className={buttonVariants({ size: "lg" })}>
-            Randevu Al
-          </Link>
-          <Link
-            href="/hizmetlerimiz"
-            className={buttonVariants({
-              variant: "outline",
-              size: "lg",
-              class: "border-ivory/50 text-white hover:border-gold-soft hover:text-gold-soft",
-            })}
+      <Container className="relative">
+        <div className="flex max-w-3xl flex-col items-start gap-9 py-[var(--dvn-section-y)] text-left md:py-[var(--dvn-section-y-md)]">
+          <Heading level="h1" size="xl" className="hero-rise text-white" style={rise(80)}>
+            {headline}
+          </Heading>
+          <Text size="lg" tone="white" className="hero-rise text-white/85" style={rise(220)}>
+            {subline}
+          </Text>
+          <div className="hero-rise flex flex-wrap items-center gap-4" style={rise(360)}>
+            <Link href="/iletisim" className={buttonVariants({ size: "lg" })}>
+              Randevu Al
+            </Link>
+            <Link
+              href="/hizmetlerimiz"
+              className={buttonVariants({
+                variant: "outline",
+                size: "lg",
+                class: "border-ivory/50 text-white hover:border-gold-soft hover:text-gold-soft",
+              })}
+            >
+              Hizmetlerimizi Keşfedin
+            </Link>
+          </div>
+          <div
+            className="hero-rise flex flex-wrap items-center gap-x-8 gap-y-2 font-sans text-sm text-ivory/80"
+            style={rise(480)}
           >
-            Hizmetlerimizi Keşfedin
-          </Link>
-        </div>
-        <div className="mt-12 flex flex-wrap items-center justify-center gap-x-8 gap-y-2 font-sans text-sm text-ivory/80">
-          <span>2012&apos;den beri</span>
-          <span aria-hidden="true" className="text-gold">
-            ·
-          </span>
-          <span>13+ yıl deneyim</span>
-          <span aria-hidden="true" className="text-gold">
-            ·
-          </span>
-          <span>Google değerlendirmesi: 5.0</span>
-          <span aria-hidden="true" className="text-gold">
-            ·
-          </span>
-          <span>{site.domain.replace("www.", "")}</span>
+            <span>2012&apos;den beri</span>
+            <span aria-hidden="true" className="text-gold">
+              ·
+            </span>
+            <span>13+ yıl deneyim</span>
+            <span aria-hidden="true" className="text-gold">
+              ·
+            </span>
+            <span>Google değerlendirmesi: 5.0</span>
+            <span aria-hidden="true" className="text-gold">
+              ·
+            </span>
+            <span>{site.domain.replace("www.", "")}</span>
+          </div>
         </div>
       </Container>
     </section>

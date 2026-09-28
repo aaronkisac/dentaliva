@@ -1,3 +1,36 @@
+/* DSN-13: hero yükleme animasyonu (ReoDental kalıbı) — saf CSS, LCP
+   güvenli (opacity/transform); reduced-motion'da ani görünüm. */
+@keyframes dvn-rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes dvn-hero-zoom {
+  from {
+    transform: scale(1.05);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+.hero-rise {
+  animation: dvn-rise 600ms var(--dvn-ease-out) both;
+}
+.hero-zoom {
+  animation: dvn-hero-zoom 1600ms var(--dvn-ease-out) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-rise,
+  .hero-zoom {
+    animation: none;
+  }
+}
+
 /* Variable bindings next/font used to emit — consumed by the token layer. */
 .dvn-fonts {
   --dvn-font-cormorant: "Cormorant Garamond";
