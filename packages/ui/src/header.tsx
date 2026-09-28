@@ -164,21 +164,55 @@ function MobileMenu({
  * home route (solid espresso, merging with the hero); light ivory/blur
  * variant elsewhere. Sticky on both.
  */
+/**
+ * DSN-11: header durumu — ana sayfada hero boyunca şeffaf (açık metin),
+ * hero bitince (scroll eşiği) ışık ivory + blur; iç sayfalarda her zaman ışık.
+ */
+export function headerMode(
+  pathname: string,
+  scrollY: number,
+  viewportHeight: number,
+): "dark" | "light" {
+  if (pathname !== "/") return "light";
+  return scrollY > Math.max(viewportHeight - 84, 120) ? "light" : "dark";
+}
+
 export function Header({ items, cta, logo, contact }: HeaderProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
-  const dark = pathname === "/";
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    const onScroll = () => setScrollY(window.scrollY);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const mode = headerMode(
+    pathname ?? "/",
+    scrollY,
+    typeof window === "undefined" ? 800 : window.innerHeight,
+  );
+  const dark = mode === "dark";
 
   const linkClass = dark ? "text-ivory/90 hover:text-gold-soft" : "text-ink hover:text-gold-deep";
   const ctaClass = dark
     ? "border-[1.5px] border-ivory/40 text-ivory hover:border-gold hover:text-gold-soft"
     : "border-[1.5px] border-ink/30 text-ink hover:border-gold-deep hover:text-gold-deep";
 
+  // Ana sayfada header hero'nun ÜZERİNDE sabit durur (şeffaf → scroll'da ışık);
+  // iç sayfalarda akışta kalır (sticky + ışık).
+  const positionClass = pathname === "/" ? "fixed inset-x-0 top-0" : "sticky top-0";
+
   return (
     <header
       className={cn(
-        "sticky top-0 z-[var(--dvn-z-header)] border-b",
-        dark ? "border-gold/20 bg-navy" : "border-[var(--dvn-line-soft)] bg-ivory/95 backdrop-blur",
+        positionClass,
+        "z-[var(--dvn-z-header)] border-b transition-colors duration-[var(--dvn-duration-base)]",
+        dark
+          ? "border-transparent bg-transparent"
+          : "border-[var(--dvn-line-soft)] bg-ivory/95 backdrop-blur",
       )}
     >
       <div className="mx-auto flex h-[var(--dvn-header-h)] max-w-[var(--dvn-container-max)] items-center justify-between gap-6 px-[var(--dvn-container-gutter)]">
