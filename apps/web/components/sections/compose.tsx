@@ -19,7 +19,9 @@ export const sectionRegistry: Record<HomeSectionId, SectionRenderer> = {
   about: (data) => <AboutSection data={data.homePage?.about ?? null} />,
   videoTestimonials: (data) => <VideoTestimonialsSection items={data.testimonials} />,
   reviews: (data) => <ReviewsSection items={data.testimonials} />,
-  gallery: (data) => <GallerySection images={data.homePage?.gallery ?? []} />,
+  gallery: (data) => (
+    <GallerySection images={data.homePage?.gallery ?? []} stats={data.homePage?.stats ?? []} />
+  ),
   doctors: (data) => <DoctorsSection items={data.doctors} />,
   faq: (data) => <FaqSection items={data.faqs} />,
   cta: (data) => (

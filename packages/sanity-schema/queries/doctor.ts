@@ -17,6 +17,6 @@ export const doctorBySlugQuery = defineQuery(
     photo { ..., alt, "ref": asset._ref },
     bio,
     seo,
-    "treatments": treatments->{ name, slug }
+    "treatments": treatments[]->{ name, slug }
   }`,
 );
