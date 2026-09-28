@@ -204,3 +204,14 @@ describe("headerMode (DSN-11)", () => {
     expect(headerMode("/", 125, 200)).toBe("light");
   });
 });
+
+describe("DSN-11 light mobile menu", () => {
+  it("opens with ink styling and phone entry", async () => {
+    mockPathname.value = "/hakkimizda";
+    renderHeader();
+    await userEvent.click(screen.getByRole("button", { name: "Toggle menu" }));
+    const mobile = screen.getByRole("navigation", { name: "Mobile" });
+    expect(mobile.textContent).toContain("İletişim");
+    expect(screen.getAllByText("+90 212 555 54 82").length).toBeGreaterThan(0);
+  });
+});
