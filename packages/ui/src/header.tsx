@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 
 import { Button } from "./button";
 import { cn } from "./cn";
@@ -20,7 +21,24 @@ export interface HeaderProps {
   contact?: { phone: string; email: string };
 }
 
-function DesktopDropdown({ item }: { item: NavLink }) {
+function PhoneIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={cn("h-4 w-4", className)}
+    >
+      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+    </svg>
+  );
+}
+
+function DesktopDropdown({ item, dark }: { item: NavLink; dark: boolean }) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -49,7 +67,10 @@ function DesktopDropdown({ item }: { item: NavLink }) {
         type="button"
         aria-expanded={open}
         onClick={() => setOpen((value) => !value)}
-        className="px-3 py-2 font-sans text-sm text-navy hover:text-gold-deep"
+        className={cn(
+          "px-3 py-2 font-sans text-sm",
+          dark ? "text-ivory/90 hover:text-gold-soft" : "text-ink hover:text-gold-deep",
+        )}
       >
         {item.label}
       </button>
@@ -71,19 +92,35 @@ function DesktopDropdown({ item }: { item: NavLink }) {
   );
 }
 
-function MobileMenu({ items, onClose }: { items: NavLink[]; onClose: () => void }) {
+function MobileMenu({
+  items,
+  phone,
+  dark,
+  onClose,
+}: {
+  items: NavLink[];
+  phone?: string;
+  dark: boolean;
+  onClose: () => void;
+}) {
   const ref = useRef<HTMLDivElement>(null);
   useFocusTrap(ref, true, onClose);
 
   return (
-    <div ref={ref} className="border-t border-[var(--dvn-line-gold)] bg-ivory md:hidden">
+    <div
+      ref={ref}
+      className={cn(
+        "border-t md:hidden",
+        dark ? "border-gold/30 bg-navy" : "border-[var(--dvn-line-soft)] bg-ivory",
+      )}
+    >
       <nav aria-label="Mobile" className="px-4 py-4">
         <ul className="space-y-1">
           {items.map((item) => (
             <li key={item.href}>
               <Link
                 href={item.href}
-                className="block px-2 py-3 text-base text-navy"
+                className={cn("block px-2 py-3 text-base", dark ? "text-ivory" : "text-navy")}
                 onClick={onClose}
               >
                 {item.label}
@@ -92,7 +129,7 @@ function MobileMenu({ items, onClose }: { items: NavLink[]; onClose: () => void 
                 <Link
                   key={child.href}
                   href={child.href}
-                  className="block px-6 py-2 text-sm text-muted"
+                  className={cn("block px-6 py-2 text-sm", dark ? "text-ivory/70" : "text-muted")}
                   onClick={onClose}
                 >
                   {child.label}
@@ -101,6 +138,18 @@ function MobileMenu({ items, onClose }: { items: NavLink[]; onClose: () => void 
             </li>
           ))}
         </ul>
+        {phone ? (
+          <a
+            href={`tel:${phone}`}
+            className={cn(
+              "mt-4 flex items-center gap-2 px-2 py-2 text-sm",
+              dark ? "text-ivory/80" : "text-ink",
+            )}
+          >
+            <PhoneIcon />
+            {phone}
+          </a>
+        ) : null}
         <Button className="mt-4 w-full" onClick={onClose}>
           Close menu
         </Button>
@@ -109,56 +158,84 @@ function MobileMenu({ items, onClose }: { items: NavLink[]; onClose: () => void 
   );
 }
 
-/** Site header: contact top bar, desktop nav with dropdown, mobile menu. */
+/**
+ * Site header — DSN-10: ReoDental-pattern navigation
+ * (logo mark | centered links | phone + outlined CTA). Dark variant on the
+ * home route (solid espresso, merging with the hero); light ivory/blur
+ * variant elsewhere. Sticky on both.
+ */
 export function Header({ items, cta, logo, contact }: HeaderProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const pathname = usePathname();
+  const dark = pathname === "/";
+
+  const linkClass = dark ? "text-ivory/90 hover:text-gold-soft" : "text-ink hover:text-gold-deep";
+  const ctaClass = dark
+    ? "border-[1.5px] border-ivory/40 text-ivory hover:border-gold hover:text-gold-soft"
+    : "border-[1.5px] border-ink/30 text-ink hover:border-gold-deep hover:text-gold-deep";
 
   return (
-    <header className="border-b border-[var(--dvn-line-soft)] bg-white">
-      {contact ? (
-        <div className="bg-navy px-4 py-2 text-center font-sans text-xs text-white">
-          <a href={`tel:${contact.phone}`} className="hover:text-gold-soft">
-            {contact.phone}
-          </a>
-          <span aria-hidden="true"> · </span>
-          <a href={`mailto:${contact.email}`} className="hover:text-gold-soft">
-            {contact.email}
-          </a>
+    <header
+      className={cn(
+        "sticky top-0 z-[var(--dvn-z-header)] border-b",
+        dark ? "border-gold/20 bg-navy" : "border-[var(--dvn-line-soft)] bg-ivory/95 backdrop-blur",
+      )}
+    >
+      <div className="mx-auto flex h-[var(--dvn-header-h)] max-w-[var(--dvn-container-max)] items-center justify-between gap-6 px-[var(--dvn-container-gutter)]">
+        <div className="flex items-center gap-3">
+          <span
+            aria-hidden="true"
+            className="flex h-9 w-9 items-center justify-center bg-gold font-serif text-xl font-bold text-navy"
+          >
+            D
+          </span>
+          {logo}
         </div>
-      ) : null}
-      <div className="mx-auto flex h-[var(--dvn-header-h)] max-w-[var(--dvn-container-max)] items-center justify-between px-[var(--dvn-container-gutter)]">
-        {logo}
         <nav aria-label="Main" className="hidden items-center gap-1 md:flex">
           {items.map((item) =>
             item.children ? (
-              <DesktopDropdown key={item.href} item={item} />
+              <DesktopDropdown key={item.href} item={item} dark={dark} />
             ) : (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="px-3 py-2 text-sm text-navy hover:text-gold-deep"
-              >
+              <Link key={item.href} href={item.href} className={cn("px-3 py-2 text-sm", linkClass)}>
                 {item.label}
               </Link>
             ),
           )}
+        </nav>
+        <div className="hidden items-center gap-5 md:flex">
+          {contact?.phone ? (
+            <a
+              href={`tel:${contact.phone}`}
+              className={cn("flex items-center gap-2 text-sm", linkClass)}
+            >
+              <PhoneIcon />
+              {contact.phone}
+            </a>
+          ) : null}
           {cta ? (
-            <Link href={cta.href} className="ml-3">
-              <Button>{cta.label}</Button>
+            <Link href={cta.href} className={cn("px-5 py-2.5 text-sm", ctaClass)}>
+              {cta.label}
             </Link>
           ) : null}
-        </nav>
+        </div>
         <button
           type="button"
           aria-expanded={mobileOpen}
           aria-label="Toggle menu"
           onClick={() => setMobileOpen((open) => !open)}
-          className={cn("px-2 py-3 text-navy md:hidden")}
+          className={cn("px-2 py-3 md:hidden", dark ? "text-ivory" : "text-navy")}
         >
           {mobileOpen ? "✕" : "☰"}
         </button>
       </div>
-      {mobileOpen ? <MobileMenu items={items} onClose={() => setMobileOpen(false)} /> : null}
+      {mobileOpen ? (
+        <MobileMenu
+          items={items}
+          phone={contact?.phone}
+          dark={dark}
+          onClose={() => setMobileOpen(false)}
+        />
+      ) : null}
     </header>
   );
 }

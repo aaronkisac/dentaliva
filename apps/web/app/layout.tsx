@@ -97,7 +97,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         </a>
         <Header
           items={site.nav}
-          logo={<span className="font-serif text-2xl text-navy">{siteName}</span>}
+          logo={<span className="font-serif text-2xl">{siteName}</span>}
+          cta={{ label: "Randevu Al", href: "/iletisim" }}
           contact={
             settings?.phone ? { phone: settings.phone, email: settings.email ?? "" } : undefined
           }
