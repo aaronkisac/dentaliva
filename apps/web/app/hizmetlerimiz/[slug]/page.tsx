@@ -167,6 +167,40 @@ export default async function TreatmentDetailPage({ params }: PageProps) {
         ) : null}
       </Section>
 
+      {/* DSN-9: tedavinin ilgili hekimleri (schema: treatment.doctors). */}
+      {(treatment.doctors ?? []).length > 0 ? (
+        <Section className="bg-white">
+          <Heading level="h2" size="md">
+            İlgili Hekimlerimiz
+          </Heading>
+          <div className="mt-8 grid gap-6 md:grid-cols-3">
+            {(treatment.doctors ?? []).map((doctor) => (
+              <Card key={doctor.slug} hover="lift">
+                {doctor.photo?.ref ? (
+                  <Image
+                    src={doctor.photo.ref}
+                    alt={doctor.name ?? ""}
+                    width={400}
+                    height={400}
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    className="h-48 w-full object-cover"
+                  />
+                ) : null}
+                <Heading level="h3" size="title" className="mt-4">
+                  {doctor.name}
+                </Heading>
+                {doctor.title?.tr ? (
+                  <Text className="mt-1">{pickLocalized(doctor.title)}</Text>
+                ) : null}
+                <Text tone="muted" size="small" className="mt-3 underline">
+                  <a href={`/hekimlerimiz/${doctor.slug}`}>Profile göz atın →</a>
+                </Text>
+              </Card>
+            ))}
+          </div>
+        </Section>
+      ) : null}
+
       {(treatment.faqs ?? []).length > 0 ? (
         <Section className="bg-white">
           <Heading level="h2" size="md">

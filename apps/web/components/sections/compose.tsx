@@ -25,7 +25,11 @@ export const sectionRegistry: Record<HomeSectionId, SectionRenderer> = {
   doctors: (data) => <DoctorsSection items={data.doctors} />,
   faq: (data) => <FaqSection items={data.faqs} />,
   cta: (data) => (
-    <CtaSection title={data.homePage?.cta?.title ?? null} phone={data.siteSettings?.phone ?? ""} />
+    <CtaSection
+      title={data.homePage?.cta?.title ?? null}
+      text={data.homePage?.cta?.text ?? null}
+      phone={data.siteSettings?.phone ?? ""}
+    />
   ),
 };
 

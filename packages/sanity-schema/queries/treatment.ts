@@ -20,7 +20,7 @@ export const treatmentBySlugQuery = defineQuery(
     steps,
     priceNote,
     faqs[]->{ question, answer },
-    doctors[]->{ name, slug, title, photo },
+    doctors[]->{ name, slug, title, photo { "ref": asset._ref, alt } },
     seo
   }`,
 );

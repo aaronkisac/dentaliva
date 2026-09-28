@@ -46,6 +46,7 @@ export interface GalleryImage {
 
 export interface HomePageContent {
   hero?: { headline?: LocalizedPair; subline?: LocalizedPair };
+  quickServiceLinks?: QuickServiceItem[];
   about?: { title?: LocalizedPair; body?: LocalizedPair };
   stats?: Array<{ value?: string; label?: LocalizedPair }>;
   gallery?: GalleryImage[];
@@ -87,7 +88,12 @@ export async function fetchHomeData(client: SanityClient): Promise<HomeData> {
   ]);
   return {
     homePage: homePage ?? null,
-    quickServices: quickServices ?? [],
+    // DSN-9: authored quickServiceLinks override the full treatment list;
+    // unauthored (fresh template) falls back to every treatment.
+    quickServices:
+      homePage?.quickServiceLinks && homePage.quickServiceLinks.length > 0
+        ? homePage.quickServiceLinks
+        : (quickServices ?? []),
     doctors: doctors ?? [],
     faqs: faqs ?? [],
     testimonials: testimonials ?? [],
