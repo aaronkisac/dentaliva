@@ -1,24 +1,24 @@
 /* GENERATED from src/tokens.ts — edit tokens.ts, then run:
      pnpm --filter @dentaliva/tokens test -- -u */
 :root {
-  --dvn-navy: #0c1f38;
-  --dvn-navy-2: #122b4a;
-  --dvn-navy-3: #1a3a5f;
-  --dvn-gold: #c9a35c;
-  --dvn-gold-soft: #e6cfa0;
-  --dvn-gold-deep: #a8823d;
-  --dvn-ivory: #faf7f2;
-  --dvn-ivory-2: #f3eee4;
+  --dvn-navy: #1c1610;
+  --dvn-navy-2: #241d15;
+  --dvn-navy-3: #322a1f;
+  --dvn-gold: #c09a55;
+  --dvn-gold-soft: #e3d2ab;
+  --dvn-gold-deep: #96733f;
+  --dvn-ivory: #faf9f6;
+  --dvn-ivory-2: #f2efe7;
   --dvn-white: #ffffff;
-  --dvn-ink: #2a3648;
-  --dvn-muted: #6b7686;
-  --dvn-line-gold: rgba(201, 163, 92, 0.35);
-  --dvn-line-soft: rgba(12, 31, 56, 0.1);
-  --dvn-grad-gold: linear-gradient(120deg, #a8823d 0%, #e6cfa0 45%, #c9a35c 100%);
-  --dvn-grad-navy: linear-gradient(160deg, #0c1f38 0%, #1a3a5f 100%);
-  --dvn-shadow-soft: 0 10px 30px -12px rgba(12, 31, 56, 0.14);
-  --dvn-shadow-lift: 0 30px 60px -25px rgba(12, 31, 56, 0.3);
-  --dvn-shadow-gold: 0 18px 40px -18px rgba(201, 163, 92, 0.55);
+  --dvn-ink: #2b2620;
+  --dvn-muted: #7a746b;
+  --dvn-line-gold: rgba(192, 154, 85, 0.35);
+  --dvn-line-soft: rgba(28, 22, 16, 0.1);
+  --dvn-grad-gold: linear-gradient(120deg, #96733f 0%, #e3d2ab 45%, #c09a55 100%);
+  --dvn-grad-navy: linear-gradient(160deg, #1c1610 0%, #322a1f 100%);
+  --dvn-shadow-soft: 0 10px 30px -12px rgba(28, 22, 16, 0.14);
+  --dvn-shadow-lift: 0 30px 60px -25px rgba(28, 22, 16, 0.3);
+  --dvn-shadow-gold: 0 18px 40px -18px rgba(192, 154, 85, 0.55);
   --dvn-font-serif: 'Cormorant Garamond', 'Georgia', serif;
   --dvn-font-sans: 'Montserrat', 'Segoe UI', sans-serif;
   --dvn-radius-none: 0px;
