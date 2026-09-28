@@ -144,6 +144,64 @@ const froms = ndjson.redirects.map((r) => r.from);
 const dupes = froms.filter((f, i) => froms.indexOf(f) !== i);
 if (dupes.length) fail(`duplicate redirect from-slugs: ${[...new Set(dupes)].join(", ")}`);
 
+// ===== CPT-7: junk corpus + completeness gates =====
+// Dataset'e karşı koşar; CPT-8 import'unun kalite kanıtıdır.
+const JUNK_CORPUS = [
+  "Hakkımızda İnsan Kaynakları",
+  "Tüm hakları saklıdır",
+  "Dentaliva Studio",
+  "Şubelerimiz Avcılar Başakşehir Altunizade",
+];
+
+const junkQuery = encodeURIComponent(
+  `*[_type in ["treatment","doctor","branch","blogPost","legalPage"]]{
+    _id, name, title, summary, body, excerpt, bio, address
+  }`,
+);
+const junkRes = await fetch(
+  `https://${PROJECT}.api.sanity.io/v1/data/query/${dataset}?query=${junkQuery}`,
+  { headers: { Authorization: `Bearer ${TOKEN}` } },
+);
+if (junkRes.ok) {
+  const docs2 = (await junkRes.json()).result ?? [];
+  for (const doc of docs2) {
+    const haystack = JSON.stringify(doc);
+    for (const junk of JUNK_CORPUS) {
+      if (haystack.includes(junk)) fail(`${doc._id}: junk corpus hit "${junk}"`);
+    }
+  }
+}
+
+// Completeness (CPT-2..4 çıktılarının kalıcılığı)
+const completeness = await groq(`{
+  "doctorsWithTitle": count(*[_type=="doctor" && defined(title) && title != ""]),
+  "doctors": count(*[_type=="doctor"]),
+  "doctorsWithBio": count(*[_type=="doctor" && defined(bio)]),
+  "branchesWithPhone": count(*[_type=="branch" && defined(phone) && phone != ""]),
+  "branchesWithAddress": count(*[_type=="branch" && defined(address)]),
+  "branches": count(*[_type=="branch"]),
+  "homePage": count(*[_type=="homePage" && defined(hero.headline) && defined(about.title) && defined(cta.title)]),
+  "videoTestimonials": count(*[_type=="testimonial" && defined(youtubeId)]),
+  "googleReviews": count(*[_type=="testimonial" && source=="Google"]),
+  "faqs": count(*[_type=="faq"]),
+  "homeFaqs": count(*[_type=="faq" && displayOnHome == true]),
+  "treatmentsWithFaqs": count(*[_type=="treatment" && defined(faqs)])
+}`);
+const expectAtLeast = (label, value, min) => {
+  if (value < min) fail(`${label}: ${value} < ${min}`);
+};
+expectAtLeast("doctorsWithTitle", completeness.doctorsWithTitle ?? 0, 19);
+expectAtLeast("doctorsWithBio", completeness.doctorsWithBio ?? 0, 19);
+expectAtLeast("branchesWithPhone", completeness.branchesWithPhone ?? 0, 3);
+expectAtLeast("branchesWithAddress", completeness.branchesWithAddress ?? 0, 3);
+expectAtLeast("homePage", completeness.homePage ?? 0, 1);
+expectAtLeast("videoTestimonials", completeness.videoTestimonials ?? 0, 6);
+expectAtLeast("googleReviews", completeness.googleReviews ?? 0, 8);
+expectAtLeast("faqs", completeness.faqs ?? 0, 30);
+expectAtLeast("homeFaqs", completeness.homeFaqs ?? 0, 6);
+expectAtLeast("treatmentsWithFaqs", completeness.treatmentsWithFaqs ?? 0, 20);
+info.push(`completeness: ${JSON.stringify(completeness)}`);
+
 console.log(`dataset: ${PROJECT}/${dataset}`);
 for (const line of info) console.log(`ℹ️  ${line}`);
 for (const line of warns) console.log(`⚠️  WARN ${line}`);
