@@ -50,26 +50,26 @@ export function DoctorsSection({ items }: { items: DoctorItem[] }) {
         <Reveal effect="scale" className="min-w-0">
           <Link
             href={`/hekimlerimiz/${featured.slug}`}
-            className="group relative block overflow-hidden border border-[var(--dvn-line)]"
+            className="group block overflow-hidden rounded-[4px]"
           >
-            {featured.photo?.ref ? (
-              <Image
-                src={featured.photo.ref}
-                alt={featured.name ?? ""}
-                width={800}
-                height={800}
-                sizes="(max-width: 1023px) 100vw, 40vw"
-                className="aspect-square h-auto w-full object-cover transition-transform duration-500 group-hover:scale-105"
-              />
-            ) : (
-              <div className="aspect-square w-full bg-ivory-2" />
-            )}
-            <div className="absolute inset-x-0 bottom-0 bg-navy/85 px-5 py-4">
-              <p className="font-serif text-xl text-white">{featured.name}</p>
-              {featured.title?.tr ? (
-                <p className="mt-1 font-sans text-sm text-ivory/80">{featured.title.tr}</p>
-              ) : null}
+            <div className="overflow-hidden rounded-[4px]">
+              {featured.photo?.ref ? (
+                <Image
+                  src={featured.photo.ref}
+                  alt={featured.name ?? ""}
+                  width={800}
+                  height={800}
+                  sizes="(max-width: 1023px) 100vw, 40vw"
+                  className="aspect-square h-auto w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+              ) : (
+                <div className="aspect-square w-full rounded-[4px] bg-ivory-2" />
+              )}
             </div>
+            <p className="mt-4 font-sans text-lg font-medium text-ink">{featured.name}</p>
+            {featured.title?.tr ? (
+              <p className="mt-1 font-sans text-sm text-ink/70">{featured.title.tr}</p>
+            ) : null}
           </Link>
         </Reveal>
 
@@ -110,26 +110,26 @@ export function DoctorsSection({ items }: { items: DoctorItem[] }) {
               >
                 <Link
                   href={`/hekimlerimiz/${doctor.slug}`}
-                  className="group block overflow-hidden border border-[var(--dvn-line)]"
+                  className="group block overflow-hidden rounded-[4px]"
                 >
-                  {doctor.photo?.ref ? (
-                    <Image
-                      src={doctor.photo.ref}
-                      alt={doctor.name ?? ""}
-                      width={400}
-                      height={400}
-                      sizes="220px"
-                      className="aspect-square w-full object-cover"
-                    />
-                  ) : (
-                    <div className="aspect-square w-full bg-ivory-2" />
-                  )}
-                  <div className="px-3 py-3">
-                    <p className="font-serif text-lg text-navy">{doctor.name}</p>
-                    {doctor.title?.tr ? (
-                      <p className="mt-1 font-sans text-xs text-ink/70">{doctor.title.tr}</p>
-                    ) : null}
+                  <div className="overflow-hidden rounded-[4px]">
+                    {doctor.photo?.ref ? (
+                      <Image
+                        src={doctor.photo.ref}
+                        alt={doctor.name ?? ""}
+                        width={400}
+                        height={400}
+                        sizes="220px"
+                        className="aspect-square w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                    ) : (
+                      <div className="aspect-square w-full rounded-[4px] bg-ivory-2" />
+                    )}
                   </div>
+                  <p className="mt-3 font-sans text-sm font-medium text-ink">{doctor.name}</p>
+                  {doctor.title?.tr ? (
+                    <p className="mt-0.5 font-sans text-xs text-ink/70">{doctor.title.tr}</p>
+                  ) : null}
                 </Link>
               </Reveal>
             ))}
