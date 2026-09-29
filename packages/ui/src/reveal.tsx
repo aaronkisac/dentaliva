@@ -9,6 +9,8 @@ export type RevealProps = {
   /** Stagger delay in ms (use the --dvn-stagger token value × index). */
   delay?: number;
   className?: string;
+  /** up = fade + translateY (varsayılan) · scale = fade + büyüyerek giriş. */
+  effect?: "up" | "scale";
 };
 
 /**
@@ -16,7 +18,7 @@ export type RevealProps = {
  * Immediately visible when the user prefers reduced motion (and when
  * IntersectionObserver reports the element is already on screen).
  */
-export function Reveal({ children, delay = 0, className }: RevealProps) {
+export function Reveal({ children, delay = 0, className, effect = "up" }: RevealProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [revealed, setRevealed] = useState(false);
 
@@ -46,8 +48,14 @@ export function Reveal({ children, delay = 0, className }: RevealProps) {
       ref={ref}
       style={delay > 0 ? { transitionDelay: `${delay}ms` } : undefined}
       className={cn(
-        "transition-[opacity,translate] ease-[var(--dvn-ease-out)] duration-[var(--dvn-duration-slow)] motion-reduce:transition-none",
-        revealed ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4",
+        "transition-[opacity,translate,scale] ease-[var(--dvn-ease-out)] duration-[var(--dvn-duration-slow)] motion-reduce:transition-none",
+        revealed
+          ? effect === "scale"
+            ? "opacity-100 scale-100"
+            : "opacity-100 translate-y-0"
+          : effect === "scale"
+            ? "opacity-0 scale-[0.92]"
+            : "opacity-0 translate-y-4",
         className,
       )}
     >

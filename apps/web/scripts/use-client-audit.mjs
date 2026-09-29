@@ -17,12 +17,14 @@ const ROOTS = [join(process.cwd()), join(process.cwd(), "..", "..", "packages", 
  * - ui/accordion: disclosure state
  * - ui/reveal: IntersectionObserver + prefers-reduced-motion
  * - ui/use-focus-trap: client hook
+ * - sections/doctors: carousel scroll state + entrance reveals
  * (ui/button was audited out — purely presentational, renders server-side.)
  */
 const ALLOWED = new Set(
   [
     "components/CallbackForm.tsx",
     "components/lightbox.tsx",
+    "components/sections/doctors.tsx",
     "src/header.tsx",
     "src/accordion.tsx",
     "src/reveal.tsx",
