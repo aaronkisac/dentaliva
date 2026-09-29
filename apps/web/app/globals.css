@@ -32,6 +32,25 @@
   }
 }
 
+@keyframes dvn-team-grow {
+  from {
+    opacity: 0.4;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.team-grow {
+  animation: dvn-team-grow 500ms var(--dvn-ease-out) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .team-grow {
+    animation: none;
+  }
+}
+
 @keyframes dvn-hero-zoom {
   from {
     transform: scale(1.05);
