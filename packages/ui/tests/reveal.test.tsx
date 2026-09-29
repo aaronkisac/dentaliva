@@ -102,3 +102,24 @@ describe("Reveal", () => {
     expect(screen.getByText("later").parentElement).toHaveStyle({ transitionDelay: "120ms" });
   });
 });
+
+describe("Reveal effect variants (DSN-15)", () => {
+  it("scale effect starts hidden with scale-92", () => {
+    render(
+      <Reveal effect="scale">
+        <p>content</p>
+      </Reveal>,
+    );
+    expect(screen.getByText("content").parentElement).toHaveClass("scale-[0.92]");
+  });
+
+  it("scale effect reveals to scale-100 when visible", async () => {
+    render(
+      <Reveal effect="scale">
+        <p>content</p>
+      </Reveal>,
+    );
+    FakeObserver.instances[0]?.callback([{ isIntersecting: true }]);
+    await waitFor(() => expect(screen.getByText("content").parentElement).toHaveClass("scale-100"));
+  });
+});

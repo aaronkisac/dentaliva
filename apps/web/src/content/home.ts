@@ -24,6 +24,7 @@ export interface DoctorItem {
   name?: string;
   slug?: string;
   title?: LocalizedPair;
+  photo?: { ref?: string; alt?: LocalizedPair };
 }
 
 export interface FaqEntry {
