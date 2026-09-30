@@ -13,44 +13,37 @@ export interface DoctorItem {
   photo?: { ref?: string; alt?: { tr?: string; en?: string } };
 }
 
-const PAGE_SIZE = 4;
+const VISIBLE = 4;
 const ROTATE_MS = 5000;
 
 /**
- * DSN-17: spot-ışık ekip bölümü — büyük kart her turda sıradaki hekimi
- * gösterir (gelen büyüyerek gelir); küçük şerit 4'lü gruplar halinde döner.
- * Hover/odakta otomatik dönüş durur; reduced-motion'da otomatik dönüş ve
- * büyüme animasyonu kapalıdır. Şeritteki bir karta tıklayınca o hekim
- * öne çıkar.
+ * DSN-18: tek carousel, 4 görünür hekim — SIRA 1'deki hekim BÜYÜK render
+ * edilir; carousel döndükçe 1. sıraya gelen hekim team-grow ile büyüyerek
+ * gelir; 2-3-4 küçük kalır. Otomatik dönüş 5 sn (hover/odakta durur,
+ * reduced-motion'da kapalı); ok butonları sırayı ±1 kaydırır.
  */
 export function DoctorsSection({ items }: { items: DoctorItem[] }) {
-  const [active, setActive] = useState(0);
-  const [page, setPage] = useState(0);
+  const [start, setStart] = useState(0);
   const [paused, setPaused] = useState(false);
 
   const count = items.length;
-  const featured = items[active] ?? items[0];
 
-  // Otomatik dönüş: 5 saniyede sıradaki hekimi öne çıkarır. Hover/odakta
-  // durur; reduced-motion'da hiç başlamaz.
   useEffect(() => {
-    if (paused || count < 2) return;
+    if (paused || count <= VISIBLE) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const timer = window.setTimeout(() => {
-      setActive((value) => (value + 1) % count);
+      setStart((value) => (value + 1) % count);
     }, ROTATE_MS);
     return () => window.clearTimeout(timer);
-  }, [active, paused, count]);
+  }, [start, paused, count]);
 
-  // Şerit: aktif hekimden sonraki 4 kişi (sayfa ile döner; mod ile sarmalar).
-  const others = items
-    .map((doctor, index) => ({ doctor, index }))
-    .filter(({ index }) => index !== active)
-    .sort(
-      (a, b) => ((a.index - active - 1 + count) % count) - ((b.index - active - 1 + count) % count),
-    );
-  const stripDoctors = others.slice(page * PAGE_SIZE, page * PAGE_SIZE + PAGE_SIZE);
-  const pageCount = Math.max(Math.ceil(others.length / PAGE_SIZE), 1);
+  // Görünür pencere: start'tan itibaren 4 hekim (mod ile sarmalar).
+  // İndeks her zaman aralıkta — TS daralması için cast.
+  const visible = Array.from({ length: Math.min(VISIBLE, count) }, (_v, k) => {
+    const index = (start + k) % count;
+    const doctor = items[index] as DoctorItem;
+    return { doctor, isBig: k === 0 };
+  });
 
   return (
     <Section
@@ -72,93 +65,66 @@ export function DoctorsSection({ items }: { items: DoctorItem[] }) {
         Deneyimli ve uzman hekimlerimiz, konforlu ve kaliteli hizmeti ilke edinmiştir.
       </Text>
 
-      <div className="mt-10 grid items-stretch gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
-        {/* Spot-ışık: aktif hekim büyük kartta; her değişimde büyüyerek gelir. */}
-        {featured ? (
-          <div key={active} className="team-grow min-w-0">
-            <Link
-              href={`/hekimlerimiz/${featured.slug}`}
-              className="group block overflow-hidden rounded-[4px]"
-            >
-              <div className="overflow-hidden rounded-[4px]">
-                {featured.photo?.ref ? (
-                  <Image
-                    src={featured.photo.ref}
-                    alt={featured.name ?? ""}
-                    width={800}
-                    height={800}
-                    sizes="(max-width: 1023px) 100vw, 40vw"
-                    className="aspect-square h-auto w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                ) : (
-                  <div className="aspect-square w-full rounded-[4px] bg-ivory-2" />
-                )}
-              </div>
-              <p className="mt-4 font-sans text-lg font-medium text-ink">{featured.name}</p>
-              {featured.title?.tr ? (
-                <p className="mt-1 font-sans text-sm text-ink/70">{featured.title.tr}</p>
-              ) : null}
-            </Link>
-          </div>
-        ) : null}
-
-        <div className="flex min-w-0 flex-col">
-          <div className="mb-4 flex items-center justify-between">
-            <p className="font-sans text-sm text-ink/70">
-              {count > 0 ? `${count} hekim — otomatik tanıtım` : ""}
-            </p>
-            <div className="flex gap-2">
-              <button
-                type="button"
-                aria-label="Önceki 4 hekim"
-                onClick={() => setPage((value) => (value - 1 + pageCount) % pageCount)}
-                className="flex h-10 w-10 items-center justify-center border border-[var(--dvn-line-gold)] text-navy hover:bg-gold hover:text-navy"
-              >
-                ←
-              </button>
-              <button
-                type="button"
-                aria-label="Sonraki 4 hekim"
-                onClick={() => setPage((value) => (value + 1) % pageCount)}
-                className="flex h-10 w-10 items-center justify-center border border-[var(--dvn-line-gold)] text-navy hover:bg-gold hover:text-navy"
-              >
-                →
-              </button>
+      <div className="mt-10 grid grid-cols-2 items-start gap-4 lg:grid-cols-5">
+        {visible.map(({ doctor, isBig }) => (
+          <Link
+            key={doctor.slug}
+            href={`/hekimlerimiz/${doctor.slug}`}
+            className={cn(
+              "group block overflow-hidden rounded-[4px]",
+              isBig ? "col-span-2 team-grow" : "",
+            )}
+          >
+            <div className="overflow-hidden rounded-[4px]">
+              {doctor.photo?.ref ? (
+                <Image
+                  src={doctor.photo.ref}
+                  alt={doctor.name ?? ""}
+                  width={isBig ? 800 : 400}
+                  height={isBig ? 800 : 400}
+                  sizes={isBig ? "(max-width: 1023px) 50vw, 40vw" : "220px"}
+                  className="aspect-square w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+              ) : (
+                <div className="aspect-square w-full bg-ivory-2" />
+              )}
             </div>
-          </div>
-          <div className="grid flex-1 grid-cols-2 gap-4 sm:grid-cols-4">
-            {stripDoctors.map(({ doctor, index }) => (
-              <button
-                key={doctor.slug ?? index}
-                type="button"
-                onClick={() => setActive(index)}
-                aria-label={`${doctor.name ?? "Hekim"} — öne çıkar`}
-                className="group block overflow-hidden rounded-[4px] text-left ring-gold transition-shadow hover:ring-2"
-              >
-                {doctor.photo?.ref ? (
-                  <Image
-                    src={doctor.photo.ref}
-                    alt=""
-                    width={400}
-                    height={400}
-                    sizes="220px"
-                    className="aspect-square w-full object-cover"
-                  />
-                ) : (
-                  <div className="aspect-square w-full bg-ivory-2" />
-                )}
-                <p className="mt-3 font-sans text-sm font-medium text-ink">{doctor.name}</p>
-                {doctor.title?.tr ? (
-                  <p className="mt-0.5 font-sans text-xs text-ink/70">{doctor.title.tr}</p>
-                ) : null}
-              </button>
-            ))}
-          </div>
-          <div className="mt-6">
-            <Link href="/hekimlerimiz" className={cn(buttonVariants({ size: "md" }))}>
-              Tüm Uzmanlarımız
-            </Link>
-          </div>
+            <p
+              className={cn(
+                "mt-3 text-ink",
+                isBig ? "font-sans text-lg font-medium" : "font-sans text-sm font-medium",
+              )}
+            >
+              {doctor.name}
+            </p>
+            {doctor.title?.tr ? (
+              <p className="mt-0.5 font-sans text-xs text-ink/70">{doctor.title.tr}</p>
+            ) : null}
+          </Link>
+        ))}
+      </div>
+
+      <div className="mt-8 flex items-center justify-between">
+        <Link href="/hekimlerimiz" className={cn(buttonVariants({ size: "md" }))}>
+          Tüm Uzmanlarımız
+        </Link>
+        <div className="flex gap-2">
+          <button
+            type="button"
+            aria-label="Önceki hekimler"
+            onClick={() => setStart((value) => (value - 1 + count) % count)}
+            className="flex h-10 w-10 items-center justify-center border border-[var(--dvn-line-gold)] text-navy hover:bg-gold hover:text-navy"
+          >
+            ←
+          </button>
+          <button
+            type="button"
+            aria-label="Sonraki hekimler"
+            onClick={() => setStart((value) => (value + 1) % count)}
+            className="flex h-10 w-10 items-center justify-center border border-[var(--dvn-line-gold)] text-navy hover:bg-gold hover:text-navy"
+          >
+            →
+          </button>
         </div>
       </div>
     </Section>
