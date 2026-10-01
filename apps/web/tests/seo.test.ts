@@ -11,6 +11,10 @@ describe("absoluteUrl", () => {
   it("keeps the root path bare", () => {
     expect(absoluteUrl("/")).toBe(siteUrl);
   });
+
+  it("prefixes a leading slash when the path lacks one", () => {
+    expect(absoluteUrl("hizmetlerimiz")).toBe(`${siteUrl}/hizmetlerimiz`);
+  });
 });
 
 describe("pageMetadata", () => {
@@ -68,6 +72,16 @@ describe("pageMetadata", () => {
     expect(image?.alt).toBe("İmplant tedavisi");
     const withImage = meta.twitter as { card?: string } | null | undefined;
     expect(withImage?.card).toBe("summary_large_image");
+  });
+
+  it("falls the OG alt back to the title when ogImageAlt is omitted", () => {
+    const meta = pageMetadata({
+      path: "/hizmetlerimiz/implant-tedavisi",
+      title: "İmplant",
+      ogImageRef: "image-bbe55cc642177ee3f0b29dbe6ca980f6946155a7-1024x1024-webp",
+    });
+    const images = meta.openGraph?.images as Array<{ url: string; alt?: string }>;
+    expect(images[0]?.alt).toBe("İmplant");
   });
 
   it("falls back to a summary twitter card without an image", () => {
