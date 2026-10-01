@@ -5,7 +5,8 @@ export const doctorListQuery = defineQuery(
     name,
     "slug": slug.current,
     title,
-    photo { "ref": asset._ref, alt }
+    photo { "ref": asset._ref, alt },
+    "lqip": photo.asset->metadata.lqip
   }`,
 );
 

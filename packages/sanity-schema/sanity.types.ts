@@ -472,12 +472,13 @@ export type AllSanitySchemaTypes =
 
 // Source: ../../packages/sanity-schema/queries/doctor.ts
 // Variable: doctorListQuery
-// Query: *[_type == "doctor"] | order(name asc){    name,    "slug": slug.current,    title,    photo  }
+// Query: *[_type == "doctor"] | order(name asc){    name,    "slug": slug.current,    title,    photo,    "lqip": photo.asset->metadata.lqip  }
 export type DoctorListQueryResult = Array<{
   name: string | null;
   slug: string | null;
   title: LocaleString | null;
   photo: ImageWithAlt | null;
+  lqip: string | null;
 }>;
 
 // Source: ../../packages/sanity-schema/queries/doctor.ts
