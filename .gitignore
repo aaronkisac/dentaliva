@@ -21,8 +21,10 @@ jl2.txt
 jobid.txt
 joblog.txt
 r.json
-*.log
 migration/assets/
 .wrangler/
 test-results/
 playwright-report/
+.DS_Store
+Thumbs.db
+desktop.ini

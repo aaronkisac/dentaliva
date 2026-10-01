@@ -27,6 +27,7 @@
     "react-hook-form": "^7.88.0"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
     "@dentaliva/config": "workspace:*",
     "@playwright/test": "^1.63.0",
     "@sanity/client": "^8.7.0",

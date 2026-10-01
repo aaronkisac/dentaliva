@@ -1,7 +1,6 @@
 # Dentaliva — Product Backlog (Phase 3)
 
-Status: **Proposed — awaiting Checkpoint 3 approval.** Nothing has been created on GitHub yet.
-On approval: create private repo `aaronkisac/dentaliva` → 10 milestones (epics) + labels + issues below + Projects board. One issue = one branch (`feat/<issue#>-short-name`) = one PR.
+Status: **Executed (Checkpoint 3 onaylandı, 2026-09-24).** Repo, milestone'lar, etiketler, #1–#55 issue'lar ve Projects board 2026-09-24'te kuruldu; Phase 4+ issue'lar (#56+) çalıştıkça açıldı. Bu dosya artık geçmiş kaydıdır — güncel durum AGENTS.md'dedir.
 
 Estimates: **S** ≤ ½ day · **M** ≈ 1–2 days · **L** = 3+ (split before creation — none below are L).
 

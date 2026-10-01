@@ -10,11 +10,17 @@ on:
 
 concurrency:
   group: ci-${{ github.ref }}
-  cancel-in-progress: true
+  # main'e hızlı üst üste push'ta kanarya build'i iptal etme; yalnız PR dalları.
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
 
 jobs:
   CI:
     runs-on: ubuntu-latest
+    # Lighthouse/chrome adımları askıda kalırsa runner'ı bloklamasın.
+    timeout-minutes: 30
     env:
       # Content fetches at build time need project access (access control
       # blocks anonymous reads). Viewer-role token, repo secret.
@@ -24,7 +30,7 @@ jobs:
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 24
+          node-version-file: .nvmrc
           cache: pnpm
       - name: Install
         run: pnpm install --frozen-lockfile
@@ -37,8 +43,8 @@ jobs:
       - name: Build
         run: pnpm build
       # PRF-4: bound the client bundle (Next 16 framework floor ≈165KB gzip
-      # documented in scripts/bundle-budget.mjs) and keep every "use client"
-      # surface reviewed.
+      # documented in apps/web/scripts/bundle-budget.mjs) and keep every "use
+      # client" surface reviewed.
       - name: Bundle budget + use-client audit
         run: pnpm --filter @dentaliva/web test:bundle
       - name: Install Playwright chromium
