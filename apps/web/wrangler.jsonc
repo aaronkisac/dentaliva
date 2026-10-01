@@ -16,9 +16,10 @@
     "MOCK_EXTERNAL": "0"
   },
   // Rate limit binding for POST /api/callback: 5 requests / 60 s per key,
-  // matching the in-isolate fallback in worker/index.ts. namespace_id is an
-  // account-wide counter id — prod (1001) and staging (1002) stay separate.
-  // ratelimits is NOT inherited by named environments, hence the duplication.
+  // matching the fallback limiter (packages/lib/src/worker/rate-limit.ts).
+  // namespace_id is an account-wide counter id — prod (1001) and staging
+  // (1002) stay separate. ratelimits is NOT inherited by named environments,
+  // hence the duplication.
   "ratelimits": [
     { "name": "RATE_LIMITER", "namespace_id": "1001", "simple": { "limit": 5, "period": 60 } }
   ],

@@ -35,6 +35,34 @@ describe("callbackFormSchema", () => {
     const parsed = callbackFormSchema.safeParse({ ...valid, name: "A" });
     expect(parsed.success).toBe(false);
   });
+
+  it("rejects names longer than 100 characters (SEC-1)", () => {
+    const parsed = callbackFormSchema.safeParse({ ...valid, name: "A".repeat(101) });
+    expect(parsed.success).toBe(false);
+  });
+
+  it("strips control characters from name (SEC-1)", () => {
+    const parsed = callbackFormSchema.safeParse({
+      ...valid,
+      name: "Ada\nBcc: x@y.z\u0000",
+    });
+    expect(parsed.success).toBe(true);
+    if (parsed.success) expect(parsed.data.name).toBe("Ada Bcc: x@y.z");
+  });
+
+  it("strips control characters from preferredTime (SEC-1)", () => {
+    const parsed = callbackFormSchema.safeParse({
+      ...valid,
+      preferredTime: "14:00\r\nSet: trap",
+    });
+    expect(parsed.success).toBe(true);
+    if (parsed.success) expect(parsed.data.preferredTime).toBe("14:00  Set: trap");
+  });
+
+  it("rejects preferredTime longer than 120 characters", () => {
+    const parsed = callbackFormSchema.safeParse({ ...valid, preferredTime: "x".repeat(121) });
+    expect(parsed.success).toBe(false);
+  });
 });
 
 describe("TR_PHONE_PATTERN", () => {

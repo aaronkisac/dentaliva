@@ -40,4 +40,23 @@ test.describe("DEP-2: güvenlik başlıkları", () => {
     // Turnstile widget'ı hidrasyondan sonra yüklenir; ihlaller console'a düşer.
     expect(violations.filter((v) => v.includes("Content-Security-Policy"))).toEqual([]);
   });
+
+  // SEC-1: not_found_handling=404-page, 404 HTML'ini rastgele path'lerde
+  // servis eder; o path'ler yalnızca /* kuralıyla eşleşir. Taban koruma
+  // (XFO + script-src içermeyen kısmi CSP) orada da devrede olmalı.
+  test("404 path: taban güvenlik koruması aktif", async ({ request }) => {
+    const res = await request.get("/bu-bir-404-yolu");
+    expect(res.status()).toBe(404);
+    const headers = res.headers();
+
+    expect(headers["strict-transport-security"]).toContain("max-age=63072000");
+    expect(headers["x-frame-options"]).toBe("DENY");
+
+    const csp = headers["content-security-policy"];
+    expect(csp).toBeTruthy();
+    expect(csp).toContain("frame-ancestors 'none'");
+    expect(csp).toContain("object-src 'none'");
+    expect(csp).toContain("base-uri 'self'");
+    expect(csp).toContain("form-action 'self'");
+  });
 });

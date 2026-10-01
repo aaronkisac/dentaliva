@@ -14,11 +14,25 @@ export interface CallbackWorkerDeps {
 const json = (status: number, body: Record<string, unknown>): Response =>
   Response.json(body, { status });
 
+/** Geçerli form yükü 1 KB'ın bile altında; daha büyüğü kötüye kullanımdır. */
+const MAX_BODY_BYTES = 10_000;
+
 export async function handleCallbackPost(
   request: Request,
   deps: CallbackWorkerDeps,
 ): Promise<Response> {
   const ip = request.headers.get("cf-connecting-ip");
+
+  // Limiter en başta: siteverify outbound çağrısı dahil doğrulama maliyeti,
+  // limiter'ı hiç görmeyen flood'lara açık kalmamalı.
+  if (!(await deps.rateLimit(ip))) {
+    return json(429, { error: "Çok fazla istek. Lütfen birazdan tekrar deneyin." });
+  }
+
+  const contentLength = Number(request.headers.get("content-length") ?? "0");
+  if (contentLength > MAX_BODY_BYTES) {
+    return json(413, { error: "İstek gövdesi çok büyük." });
+  }
 
   let body: Record<string, unknown>;
   try {
@@ -34,10 +48,11 @@ export async function handleCallbackPost(
 
   const parsed = callbackFormSchema.safeParse(body);
   if (!parsed.success) {
+    // Zod v4 alan başına kısa devre yapar; aynı path'e ikinci issue pratikte
+    // oluşmaz, oluşsa da mesajlar alan bazlı sabittir — sonuncusu yazılır.
     const fields: Record<string, string> = {};
     for (const issue of parsed.error.issues) {
-      const key = issue.path.join(".");
-      if (!fields[key]) fields[key] = issue.message;
+      fields[issue.path.join(".")] = issue.message;
     }
     return json(400, { error: "Doğrulama hatası.", fields });
   }
@@ -46,10 +61,6 @@ export async function handleCallbackPost(
   const token = typeof body.turnstileToken === "string" ? body.turnstileToken : "";
   if (!(await deps.verifyTurnstile(token, ip))) {
     return json(400, { error: "Doğrulama başarısız. Lütfen tekrar deneyin." });
-  }
-
-  if (!(await deps.rateLimit(ip))) {
-    return json(429, { error: "Çok fazla istek. Lütfen birazdan tekrar deneyin." });
   }
 
   try {
