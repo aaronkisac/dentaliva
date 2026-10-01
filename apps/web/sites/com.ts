@@ -17,10 +17,8 @@ export const site = {
     { label: "İletişim", href: "/iletisim" },
   ],
   features: {
-    callbackForm: true,
     chatbotApi: true,
     blog: true,
-    careers: false,
   },
   sections: {
     home: [

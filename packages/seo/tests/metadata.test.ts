@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { buildCanonical, buildMetadata, joinUrl } from "../src/metadata";
+import { buildMetadata, joinUrl } from "../src/metadata";
 
 const SITE = "https://www.dentaliva.com";
 
@@ -13,24 +13,6 @@ describe("joinUrl", () => {
 
   it("keeps the homepage path empty", () => {
     expect(joinUrl("https://x.com", "/")).toBe("https://x.com");
-  });
-});
-
-describe("buildCanonical", () => {
-  it("builds from site + path by default", () => {
-    expect(buildCanonical(SITE, "/hizmetlerimiz/implant/", undefined)).toBe(
-      "https://www.dentaliva.com/hizmetlerimiz/implant/",
-    );
-  });
-
-  it("prefers the CMS override", () => {
-    expect(buildCanonical(SITE, "/x/", "https://example.com/canonical")).toBe(
-      "https://example.com/canonical",
-    );
-  });
-
-  it("ignores whitespace-only overrides", () => {
-    expect(buildCanonical(SITE, "/x/", "  ")).toBe("https://www.dentaliva.com/x/");
   });
 });
 

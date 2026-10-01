@@ -49,10 +49,6 @@ export function joinUrl(base: string, path: string): string {
   return `${trimmedBase}${normalizedPath === "/" ? "" : normalizedPath}`;
 }
 
-export function buildCanonical(siteUrl: string, path: string, override?: string): string {
-  return override?.trim() || joinUrl(siteUrl, path);
-}
-
 export function buildMetadata(input: SeoBuilderInput): BuiltMetadata {
   const { siteUrl, path, fallbackTitle, fallbackDescription, seo, ogImageUrl, ogImageAlt } = input;
 
