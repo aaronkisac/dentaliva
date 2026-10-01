@@ -66,7 +66,8 @@ export function pageMetadata(input: PageSeoInput): Metadata {
       type: "website",
       images: built.openGraph.images.map((image) => ({
         url: image.url,
-        ...(image.alt ? { alt: image.alt } : {}),
+        // @dentaliva/seo alt'ı her zaman doldurur (fallback: başlık) — koşulsuz.
+        alt: image.alt,
       })),
     },
     twitter: {

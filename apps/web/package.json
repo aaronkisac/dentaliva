@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run",
+    "test": "vitest run --coverage",
     "test:perf": "node scripts/lighthouse-budget.mjs",
     "test:bundle": "node scripts/bundle-budget.mjs && node scripts/use-client-audit.mjs",
     "postbuild": "node scripts/generate-headers.mjs",
