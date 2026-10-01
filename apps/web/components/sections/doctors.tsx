@@ -6,10 +6,9 @@ import { useState } from "react";
 import { cn, Heading, Link, Section, Text } from "@dentaliva/ui";
 import { lqipUrl } from "@dentaliva/sanity-schema/image-url";
 
-const ENV = {
-  projectId: process.env.SANITY_PROJECT_ID ?? "86x2hbzv",
-  dataset: process.env.SANITY_DATASET ?? "production",
-};
+import { imageTarget } from "../../src/image-target";
+
+const ENV = imageTarget();
 
 export interface DoctorItem {
   name?: string;

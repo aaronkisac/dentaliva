@@ -6,7 +6,7 @@ import { pickLocalized } from "@dentaliva/sanity-schema/client";
 import { urlForImage } from "@dentaliva/sanity-schema/image-url";
 import { buildBreadcrumbJsonLd, buildFaqJsonLd } from "@dentaliva/seo";
 
-import { Accordion, Card, Heading, Section, Text } from "@dentaliva/ui";
+import { Accordion, Card, Heading, Link, Section, Text } from "@dentaliva/ui";
 import { JsonLd } from "../../../components/json-ld";
 import { fetchTreatmentBySlug, fetchTreatments } from "../../../src/content/treatments";
 import { site } from "../../../src/config";
@@ -194,7 +194,7 @@ export default async function TreatmentDetailPage({ params }: PageProps) {
                   <Text className="mt-1">{pickLocalized(doctor.title)}</Text>
                 ) : null}
                 <Text tone="muted" size="small" className="mt-3 underline">
-                  <a href={`/hekimlerimiz/${doctor.slug}`}>Profile göz atın →</a>
+                  <Link href={`/hekimlerimiz/${doctor.slug}`}>Profile göz atın →</Link>
                 </Text>
               </Card>
             ))}
