@@ -25,6 +25,8 @@ export interface DoctorItem {
   slug?: string;
   title?: LocalizedPair;
   photo?: { ref?: string; alt?: LocalizedPair };
+  /** Sanity metadata.lqip — inline base64 blur placeholder (build-time only). */
+  lqip?: string;
 }
 
 export interface FaqEntry {

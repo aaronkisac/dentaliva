@@ -27,13 +27,24 @@ test.describe("team carousel (manuel)", () => {
     await expect(cards.nth(0).locator("p").first()).not.toHaveText(before);
   });
 
-  test("prev arrow slides back", async ({ page }) => {
+  test("prev arrow slides back to the original doctor", async ({ page }) => {
     await page.goto("/");
+    const cards = page.locator('[data-section="doctors"]').locator("a[href^='/hekimlerimiz/']");
+    const original = (await cards0Name(page)) ?? "";
     await page.getByRole("button", { name: "Sonraki hekimler" }).click();
-    const afterNext = (await cards0Name(page)) ?? "";
+    await expect(cards.nth(0).locator("p").first()).not.toHaveText(original);
     await page.getByRole("button", { name: "Önceki hekimler" }).click();
-    const afterPrev = (await cards0Name(page)) ?? "";
-    expect(afterPrev).not.toBe(afterNext);
+    await expect(cards.nth(0).locator("p").first()).toHaveText(original);
+  });
+
+  // A11y (WCAG 4.1.3): slayt değişimi role="status" ile duyurulur —
+  // öne çıkan hekim ve konum göstergesi her ok tıklamasında güncellenir.
+  test("live region announces the featured doctor position", async ({ page }) => {
+    await page.goto("/");
+    const status = page.locator('[data-section="doctors"]').locator('[role="status"]');
+    await expect(status).toContainText("(1/");
+    await page.getByRole("button", { name: "Sonraki hekimler" }).click();
+    await expect(status).toContainText("(2/");
   });
 
   test("no auto-rotation - window stays until an arrow is used", async ({ page }) => {
