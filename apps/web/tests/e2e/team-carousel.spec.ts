@@ -47,6 +47,53 @@ test.describe("team carousel (manuel)", () => {
     await page.goto("/");
     await expect(page.getByText("Tüm Uzmanlarımız")).toHaveCount(0);
   });
+
+  // DSN-20: portre fotolar kareye sığmıyor — slaytlar %5 uzun (20/21).
+  test("slides are 5 percent taller than square", async ({ page }) => {
+    await page.goto("/");
+    const img = page
+      .locator('[data-section="doctors"]')
+      .locator("a[href^='/hekimlerimiz/']")
+      .nth(0)
+      .locator("img");
+    const box = await img.boundingBox();
+    expect((box?.height ?? 0) / (box?.width || 1)).toBeCloseTo(1.05, 1);
+  });
+
+  // DSN-20: büyük karta gelen görsel, gidiş yönünden küçük kart boyutunda
+  // başlayıp büyüyerek yerleşir (next -> sağdan, prev -> soldan).
+  test("featured image plays direction-aware grow-in", async ({ page }) => {
+    await page.goto("/");
+    const section = page.locator('[data-section="doctors"]');
+    await page.getByRole("button", { name: "Sonraki hekimler" }).click();
+    await expect(section.locator(".team-featured-next")).toHaveCount(1);
+    await page.getByRole("button", { name: "Önceki hekimler" }).click();
+    await expect(section.locator(".team-featured-prev")).toHaveCount(1);
+  });
+
+  // DSN-20: ok butonları desktop'ta küçük kartların üstündeki boşlukta,
+  // sağ kenarı son kartla aynı hizada.
+  test("arrow buttons sit above the small cards on desktop", async ({ page }) => {
+    await page.goto("/");
+    const section = page.locator('[data-section="doctors"]');
+    const prevBox = await page.getByRole("button", { name: "Önceki hekimler" }).boundingBox();
+    const nextBox = await page.getByRole("button", { name: "Sonraki hekimler" }).boundingBox();
+    const lastBox = await section.locator("a[href^='/hekimlerimiz/']").nth(3).boundingBox();
+    if (!prevBox || !nextBox || !lastBox) throw new Error("carousel boxes missing");
+    expect(prevBox.y + prevBox.height).toBeLessThanOrEqual(lastBox.y + 2);
+    expect(Math.abs(nextBox.x + nextBox.width - (lastBox.x + lastBox.width))).toBeLessThan(2);
+  });
+
+  // DSN-20: mobilde mutlak boşluk yok — butonlar akışta, sıranın altında.
+  test("arrow buttons stay in flow below the row on mobile", async ({ page }) => {
+    await page.setViewportSize({ width: 375, height: 800 });
+    await page.goto("/");
+    const section = page.locator('[data-section="doctors"]');
+    const nextBox = await page.getByRole("button", { name: "Sonraki hekimler" }).boundingBox();
+    const lastBox = await section.locator("a[href^='/hekimlerimiz/']").nth(3).boundingBox();
+    if (!nextBox || !lastBox) throw new Error("carousel boxes missing");
+    expect(nextBox.y).toBeGreaterThanOrEqual(lastBox.y + lastBox.height);
+  });
 });
 
 async function cards0Name(page: Page): Promise<string | null> {

@@ -22,17 +22,22 @@ export interface DoctorItem {
 const VISIBLE = 4;
 
 /**
- * DSN-19: tamamen manuel carousel — 4 görünür hekim; SIRA 1'deki hekim
- * BÜYÜK render edilir, 2-3-4 küçük kalır ve alt kenara hizalanır. Ok
- * butonları sırayı ±1 kaydırır ve kayma animasyonu görünür (DSN-11 ease).
- * LQIP blur placeholder sayesinde görsel değişiminde arkaplan flash'ı yok.
- * Otomatik dönüş yoktur.
+ * DSN-20: tamamen manuel carousel — 4 görünür hekim; SIRA 1'deki hekim
+ * BÜYÜK render edilir, 2-3-4 küçük kalır ve alt kenara hizalanır. Slaytlar
+ * portre fotolara göre %5 uzun (20/21). Ok butonları sırayı ±1 kaydırır:
+ * küçük kartlar yön bilinçli kayar; büyük kartın görsel çerçevesi gidiş
+ * yönünden, küçük kart boyutunda başlayıp büyüyerek ve kayarak yerleşir
+ * (DSN-11 ease; reduced-motion'da kapalı). Ok butonları desktop'ta küçük
+ * kartların üstündeki boşlukta, mobilde akışın altında. LQIP blur
+ * placeholder; otomatik dönüş yoktur.
  */
 export function DoctorsSection({ items }: { items: DoctorItem[] }) {
   const [start, setStart] = useState(0);
   const [dir, setDir] = useState<1 | -1>(1);
 
   const count = items.length;
+  const slideClass = dir === 1 ? "team-slide-next" : "team-slide-prev";
+  const featuredClass = dir === 1 ? "team-featured-next" : "team-featured-prev";
 
   // Ok butonları: sırayı ±1 kaydırır; kayma animasyonu yön bilinciyle oynar.
   const rotate = (delta: 1 | -1) => {
@@ -61,70 +66,69 @@ export function DoctorsSection({ items }: { items: DoctorItem[] }) {
         Deneyimli ve uzman hekimlerimiz, konforlu ve kaliteli hizmeti ilke edinmiştir.
       </Text>
 
-      <div
-        key={`${start}-${dir}`}
-        className={cn(
-          "mt-10 flex flex-wrap items-end gap-4",
-          dir === 1 ? "team-slide-next" : "team-slide-prev",
-        )}
-      >
-        {visible.map(({ doctor, isBig }) => (
-          <Link
-            key={doctor.slug}
-            href={`/hekimlerimiz/${doctor.slug}`}
-            className={cn(
-              "group block",
-              isBig ? "w-full sm:w-[38%]" : "w-[calc(50%-0.5rem)] sm:w-auto sm:flex-1",
-            )}
-          >
-            <div className="overflow-hidden rounded-[4px]">
-              {doctor.photo?.ref ? (
-                <Image
-                  src={doctor.photo.ref}
-                  alt={doctor.name ?? ""}
-                  width={isBig ? 800 : 400}
-                  height={isBig ? 800 : 400}
-                  sizes={isBig ? "(max-width: 1023px) 100vw, 38vw" : "220px"}
-                  placeholder="blur"
-                  blurDataURL={lqipUrl(doctor.photo.ref, ENV)}
-                  className="aspect-square w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-              ) : (
-                <div className="aspect-square w-full bg-ivory-2" />
-              )}
-            </div>
-            <p
+      {/* relative sarmalayıcı: ok butonları sm+ üstünde küçük kartların
+          üstündeki boşluğa mutlak konumlanır; mobilde akışta kalır. */}
+      <div className="relative mt-10">
+        <div key={`${start}-${dir}`} className="flex flex-wrap items-end gap-4">
+          {visible.map(({ doctor, isBig }) => (
+            <Link
+              key={doctor.slug}
+              href={`/hekimlerimiz/${doctor.slug}`}
               className={cn(
-                "mt-3 text-ink",
-                isBig ? "font-sans text-lg font-medium" : "font-sans text-sm font-medium",
+                "group block",
+                isBig ? "w-full sm:w-[38%]" : "w-[calc(50%-0.5rem)] sm:w-auto sm:flex-1",
+                !isBig && slideClass,
               )}
             >
-              {doctor.name}
-            </p>
-            {doctor.title?.tr ? (
-              <p className="mt-0.5 font-sans text-xs text-ink/70">{doctor.title.tr}</p>
-            ) : null}
-          </Link>
-        ))}
-      </div>
+              <div className={cn("overflow-hidden rounded-[4px]", isBig && featuredClass)}>
+                {doctor.photo?.ref ? (
+                  <Image
+                    src={doctor.photo.ref}
+                    alt={doctor.name ?? ""}
+                    width={isBig ? 800 : 400}
+                    height={isBig ? 840 : 420}
+                    sizes={isBig ? "(max-width: 1023px) 100vw, 38vw" : "220px"}
+                    placeholder="blur"
+                    blurDataURL={lqipUrl(doctor.photo.ref, ENV)}
+                    className="aspect-[20/21] w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                ) : (
+                  <div className="aspect-[20/21] w-full bg-ivory-2" />
+                )}
+              </div>
+              <p
+                className={cn(
+                  "mt-3 text-ink",
+                  isBig ? "font-sans text-lg font-medium" : "font-sans text-sm font-medium",
+                )}
+              >
+                {doctor.name}
+              </p>
+              {doctor.title?.tr ? (
+                <p className="mt-0.5 font-sans text-xs text-ink/70">{doctor.title.tr}</p>
+              ) : null}
+            </Link>
+          ))}
+        </div>
 
-      <div className="mt-8 flex justify-end gap-2">
-        <button
-          type="button"
-          aria-label="Önceki hekimler"
-          onClick={() => rotate(-1)}
-          className="flex h-10 w-10 items-center justify-center border border-[var(--dvn-line-gold)] text-navy hover:bg-gold hover:text-navy"
-        >
-          ←
-        </button>
-        <button
-          type="button"
-          aria-label="Sonraki hekimler"
-          onClick={() => rotate(1)}
-          className="flex h-10 w-10 items-center justify-center border border-[var(--dvn-line-gold)] text-navy hover:bg-gold hover:text-navy"
-        >
-          →
-        </button>
+        <div className="mt-8 flex justify-end gap-2 sm:absolute sm:right-0 sm:top-0 sm:mt-0">
+          <button
+            type="button"
+            aria-label="Önceki hekimler"
+            onClick={() => rotate(-1)}
+            className="flex h-10 w-10 items-center justify-center border border-[var(--dvn-line-gold)] text-navy hover:bg-gold hover:text-navy"
+          >
+            ←
+          </button>
+          <button
+            type="button"
+            aria-label="Sonraki hekimler"
+            onClick={() => rotate(1)}
+            className="flex h-10 w-10 items-center justify-center border border-[var(--dvn-line-gold)] text-navy hover:bg-gold hover:text-navy"
+          >
+            →
+          </button>
+        </div>
       </div>
     </Section>
   );
