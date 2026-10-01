@@ -27,6 +27,7 @@ function renderHeader(overrides: Partial<Parameters<typeof Header>[0]> = {}) {
       logo={<span>Dentaliva</span>}
       cta={{ label: "Randevu Al", href: "/randevu" }}
       contact={{ phone: "+90 212 555 54 82", email: "info@dentaliva.com" }}
+      labels={{ toggleMenu: "Menüyü aç/kapat", closeMenu: "Menüyü kapat" }}
       {...overrides}
     />,
   );
@@ -83,11 +84,11 @@ describe("Header", () => {
 
   it("opens the mobile menu, focuses inside it, and wraps Tab", async () => {
     const { container } = renderHeader();
-    await userEvent.click(screen.getByRole("button", { name: "Toggle menu" }));
+    await userEvent.click(screen.getByRole("button", { name: "Menüyü aç/kapat" }));
     expect(screen.getByRole("navigation", { name: "Mobile" })).toBeInTheDocument();
     await tick();
     expect(document.activeElement?.tagName).toBe("A");
-    const close = screen.getByRole("button", { name: "Close menu" });
+    const close = screen.getByRole("button", { name: "Menüyü kapat" });
     close.focus();
     await userEvent.tab();
     expect(container.ownerDocument.activeElement?.tagName).toBe("A");
@@ -95,16 +96,16 @@ describe("Header", () => {
 
   it("closes the mobile menu from its close button and restores focus to the burger", async () => {
     renderHeader();
-    await userEvent.click(screen.getByRole("button", { name: "Toggle menu" }));
-    await userEvent.click(screen.getByRole("button", { name: "Close menu" }));
+    await userEvent.click(screen.getByRole("button", { name: "Menüyü aç/kapat" }));
+    await userEvent.click(screen.getByRole("button", { name: "Menüyü kapat" }));
     expect(screen.queryByRole("navigation", { name: "Mobile" })).not.toBeInTheDocument();
     await tick();
-    expect(screen.getByRole("button", { name: "Toggle menu" })).toHaveFocus();
+    expect(screen.getByRole("button", { name: "Menüyü aç/kapat" })).toHaveFocus();
   });
 
   it("closes the mobile menu on Escape", async () => {
     renderHeader();
-    await userEvent.click(screen.getByRole("button", { name: "Toggle menu" }));
+    await userEvent.click(screen.getByRole("button", { name: "Menüyü aç/kapat" }));
     await userEvent.keyboard("{Escape}");
     await tick();
     expect(screen.queryByRole("navigation", { name: "Mobile" })).not.toBeInTheDocument();
@@ -112,15 +113,21 @@ describe("Header", () => {
 
   it("wraps Shift+Tab from the first item to the last in the mobile menu", async () => {
     renderHeader();
-    await userEvent.click(screen.getByRole("button", { name: "Toggle menu" }));
+    await userEvent.click(screen.getByRole("button", { name: "Menüyü aç/kapat" }));
     await tick();
     expect(document.activeElement?.tagName).toBe("A");
     await userEvent.keyboard("{Shift>}{Tab}");
-    expect(document.activeElement).toHaveTextContent("Close menu");
+    expect(document.activeElement).toHaveTextContent("Menüyü kapat");
   });
 
   it("has no axe violations", async () => {
-    await expectNoA11yViolations(<Header items={items} logo={<span>Dentaliva</span>} />);
+    await expectNoA11yViolations(
+      <Header
+        items={items}
+        logo={<span>Dentaliva</span>}
+        labels={{ toggleMenu: "Menüyü aç/kapat", closeMenu: "Menüyü kapat" }}
+      />,
+    );
   });
 });
 
@@ -161,7 +168,7 @@ describe("DSN-10 header variants", () => {
   it("mobile menu shows the phone entry when contact is given", async () => {
     mockPathname.value = "/";
     renderHeader();
-    await userEvent.click(screen.getByRole("button", { name: "Toggle menu" }));
+    await userEvent.click(screen.getByRole("button", { name: "Menüyü aç/kapat" }));
     expect(screen.getAllByText("+90 212 555 54 82").length).toBeGreaterThan(0);
   });
 });
@@ -180,7 +187,7 @@ describe("DSN-10 header variant branches", () => {
   it("light variant mobile menu uses ivory panel and hides dark phone", async () => {
     mockPathname.value = "/hakkimizda";
     renderHeader({ contact: undefined });
-    await userEvent.click(screen.getByRole("button", { name: "Toggle menu" }));
+    await userEvent.click(screen.getByRole("button", { name: "Menüyü aç/kapat" }));
     expect(screen.getByRole("navigation", { name: "Mobile" }).textContent).toContain("Hakkımızda");
   });
 });
@@ -209,7 +216,7 @@ describe("DSN-11 light mobile menu", () => {
   it("opens with ink styling and phone entry", async () => {
     mockPathname.value = "/hakkimizda";
     renderHeader();
-    await userEvent.click(screen.getByRole("button", { name: "Toggle menu" }));
+    await userEvent.click(screen.getByRole("button", { name: "Menüyü aç/kapat" }));
     const mobile = screen.getByRole("navigation", { name: "Mobile" });
     expect(mobile.textContent).toContain("İletişim");
     expect(screen.getAllByText("+90 212 555 54 82").length).toBeGreaterThan(0);

@@ -19,6 +19,8 @@ export interface HeaderProps {
   cta?: { label: string; href: string };
   logo: React.ReactNode;
   contact?: { phone: string; email: string };
+  /** Locale chrome copy — the package hardcodes no language (i18n-ready). */
+  labels: { toggleMenu: string; closeMenu: string };
 }
 
 function PhoneIcon({ className }: { className?: string }) {
@@ -97,11 +99,13 @@ function MobileMenu({
   phone,
   dark,
   onClose,
+  labels,
 }: {
   items: NavLink[];
   phone?: string;
   dark: boolean;
   onClose: () => void;
+  labels: HeaderProps["labels"];
 }) {
   const ref = useRef<HTMLDivElement>(null);
   useFocusTrap(ref, true, onClose);
@@ -151,7 +155,7 @@ function MobileMenu({
           </a>
         ) : null}
         <Button className="mt-4 w-full" onClick={onClose}>
-          Close menu
+          {labels.closeMenu}
         </Button>
       </nav>
     </div>
@@ -177,7 +181,7 @@ export function headerMode(
   return scrollY > Math.max(viewportHeight - 84, 120) ? "light" : "dark";
 }
 
-export function Header({ items, cta, logo, contact }: HeaderProps) {
+export function Header({ items, cta, logo, contact, labels }: HeaderProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
   // PRF-5: başlangıç değeri SSR ile aynı kuraldan gelir (scrollY=0, vh=800) —
@@ -265,7 +269,7 @@ export function Header({ items, cta, logo, contact }: HeaderProps) {
         <button
           type="button"
           aria-expanded={mobileOpen}
-          aria-label="Toggle menu"
+          aria-label={labels.toggleMenu}
           onClick={() => setMobileOpen((open) => !open)}
           className={cn("px-2 py-3 md:hidden", dark ? "text-ivory" : "text-navy")}
         >
@@ -273,7 +277,13 @@ export function Header({ items, cta, logo, contact }: HeaderProps) {
         </button>
       </div>
       {mobileOpen ? (
-        <MobileMenu items={items} phone={contact?.phone} dark={dark} onClose={closeMobileMenu} />
+        <MobileMenu
+          items={items}
+          phone={contact?.phone}
+          dark={dark}
+          onClose={closeMobileMenu}
+          labels={labels}
+        />
       ) : null}
     </header>
   );

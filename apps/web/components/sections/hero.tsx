@@ -9,16 +9,15 @@ import { lqipUrl, refDimensions } from "@dentaliva/sanity-schema/image-url";
 
 import { site } from "../../src/config";
 
+import { imageTarget } from "../../src/image-target";
+
 export interface HeroData {
   headline?: { tr?: string; en?: string };
   subline?: { tr?: string; en?: string };
   image?: { asset?: { _ref?: string }; alt?: { tr?: string; en?: string }; lqip?: string };
 }
 
-const ENV = {
-  projectId: process.env.SANITY_PROJECT_ID ?? "86x2hbzv",
-  dataset: process.env.SANITY_DATASET ?? "production",
-};
+const ENV = imageTarget();
 
 /**
  * DSN-12/13: full-bleed hero — arka planda klinik fotoğrafı, üstünde sıcak
@@ -56,7 +55,7 @@ export function HeroSection({ data }: { data: HeroData | null }) {
           {/* Okunabilirlik overlay'i: marka espresso'sundan sıcak karartma. */}
           <div
             aria-hidden="true"
-            className="absolute inset-0 bg-gradient-to-b from-[#1c1610]/80 via-[#1c1610]/55 to-[#1c1610]/85"
+            className="absolute inset-0 bg-gradient-to-b from-navy/80 via-navy/55 to-navy/85"
           />
         </>
       ) : null}

@@ -4,16 +4,15 @@ import { Heading, Section, Text } from "@dentaliva/ui";
 import { pickLocalized } from "@dentaliva/sanity-schema/client";
 import { lqipUrl, refDimensions } from "@dentaliva/sanity-schema/image-url";
 
+import { imageTarget } from "../../src/image-target";
+
 export interface AboutData {
   title?: { tr?: string; en?: string };
   body?: { tr?: string; en?: string };
   image?: { asset?: { _ref?: string }; alt?: { tr?: string; en?: string }; lqip?: string };
 }
 
-const ENV = {
-  projectId: process.env.SANITY_PROJECT_ID ?? "86x2hbzv",
-  dataset: process.env.SANITY_DATASET ?? "production",
-};
+const ENV = imageTarget();
 
 export function AboutSection({ data }: { data: AboutData | null }) {
   if (!data) return null;

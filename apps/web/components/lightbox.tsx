@@ -7,11 +7,9 @@ import { pickLocalized } from "@dentaliva/sanity-schema/client";
 import { lqipUrl, refDimensions } from "@dentaliva/sanity-schema/image-url";
 
 import type { GalleryImage } from "../src/content/home";
+import { imageTarget } from "../src/image-target";
 
-const ENV = {
-  projectId: process.env.SANITY_PROJECT_ID ?? "86x2hbzv",
-  dataset: process.env.SANITY_DATASET ?? "production",
-};
+const ENV = imageTarget();
 
 /**
  * Native <dialog>-based lightbox: Esc closes it, focus moves into the dialog
