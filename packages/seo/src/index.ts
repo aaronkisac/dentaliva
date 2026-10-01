@@ -7,9 +7,7 @@ export {
   type LocalBusinessInput,
 } from "./jsonld";
 export {
-  buildCanonical,
   buildMetadata,
-  joinUrl,
   type BuiltMetadata,
   type SeoBuilderInput,
   type SeoObject,

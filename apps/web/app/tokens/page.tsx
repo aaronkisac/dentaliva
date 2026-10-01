@@ -3,7 +3,11 @@ import { contrastPairs, color } from "@dentaliva/tokens";
 
 const swatches = Object.entries(color);
 
-export const metadata = { title: "Dentaliva · Tokens" };
+export const metadata = {
+  title: "Dentaliva · Tokens",
+  // İçsel QA sayfası (DSN-1 kabulü): hiçbir yerden linklenmez, indexlenmez.
+  robots: { index: false, follow: false },
+};
 
 export default function TokensPage() {
   return (

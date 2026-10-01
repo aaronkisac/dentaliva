@@ -13,10 +13,8 @@ export interface SanityTarget {
 }
 
 export interface SiteFeatures {
-  callbackForm: boolean;
   chatbotApi: boolean;
   blog: boolean;
-  careers: boolean;
 }
 
 /** Home page section ids rendered by the composition engine (PGT-3). */

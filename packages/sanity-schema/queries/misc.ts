@@ -43,20 +43,3 @@ export const blogBySlugQuery = defineQuery(
     seo
   }`,
 );
-
-export const legalPageBySlugQuery = defineQuery(
-  `*[_type == "legalPage" && slug.current == $slug][0]{ title, body, seo }`,
-);
-
-/** Chatbot JSON API (prototype contract) — static route handlers consume these. */
-export const chatbotServicesQuery = defineQuery(
-  `*[_type == "treatment"] | order(name.tr asc){ "id": slug.current, name, summary }`,
-);
-
-export const chatbotDoctorsQuery = defineQuery(
-  `*[_type == "doctor"]{ name, title, "photo": photo.asset->url }`,
-);
-
-export const chatbotFaqQuery = defineQuery(
-  `*[_type == "faq"] | order(order asc){ question, answer }`,
-);
