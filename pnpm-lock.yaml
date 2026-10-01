@@ -14,9 +14,6 @@ importers:
 
   .:
     devDependencies:
-      '@axe-core/playwright':
-        specifier: ^4.13.0
-        version: 4.13.0(playwright-core@1.63.0)
       '@commitlint/cli':
         specifier: ^21.2.3
         version: 21.2.3(@types/node@24.13.6)(conventional-commits-parser@7.1.2)(typescript@5.9.3)
@@ -26,9 +23,6 @@ importers:
       '@dentaliva/config':
         specifier: workspace:*
         version: link:packages/config
-      '@playwright/test':
-        specifier: ^1.63.0
-        version: 1.63.0
       '@types/node':
         specifier: ^24.0.0
         version: 24.13.6
@@ -118,6 +112,9 @@ importers:
         specifier: ^7.88.0
         version: 7.88.0(react@19.3.0)
     devDependencies:
+      '@axe-core/playwright':
+        specifier: ^4.13.0
+        version: 4.13.0(playwright-core@1.63.0)
       '@dentaliva/config':
         specifier: workspace:*
         version: link:../../packages/config
@@ -189,7 +186,7 @@ importers:
         specifier: ^7.37.0
         version: 7.37.5(eslint@9.39.5(jiti@2.7.0))
       eslint-plugin-react-hooks:
-        specifier: ^6.0.0-rc.0 || ^6.0.0
+        specifier: ^6.0.0
         version: 6.1.1(eslint@9.39.5(jiti@2.7.0))
       globals:
         specifier: ^16.0.0

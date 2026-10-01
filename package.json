@@ -14,11 +14,9 @@
     "prepare": "husky"
   },
   "devDependencies": {
-    "@axe-core/playwright": "^4.13.0",
     "@commitlint/cli": "^21.2.3",
     "@commitlint/config-conventional": "^21.2.3",
     "@dentaliva/config": "workspace:*",
-    "@playwright/test": "^1.63.0",
     "@types/node": "^24.0.0",
     "@vitest/coverage-v8": "^4.1.11",
     "eslint": "^9.0.0",

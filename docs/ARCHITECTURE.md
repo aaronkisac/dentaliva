@@ -1,7 +1,7 @@
 # Dentaliva — Architecture
 
-Status: **Proposed** — awaiting Checkpoint 2 approval (Aaron). Decisions are detailed in `docs/adr/ADR-001…007`.
-Verified against current docs 2026-09-23/24. Versions move; re-check before upgrading.
+Status: **Approved (Checkpoint 2, 2026-09-24) and shipped** — site live since 2026-09-27 on `dentaliva-com.dentaliva.workers.dev`. Decisions are detailed in `docs/adr/ADR-001…007`.
+Versions below were verified 2026-09-23/24 and have since moved (pnpm 11, Vitest 4, `@sanity/client` — see the lockfile for current pins).
 
 ---
 
@@ -15,16 +15,16 @@ Fixed: Next.js App Router + TS strict + Tailwind, `output: 'export'`, Sanity Con
 
 ## 2. Stack (verified 2026-09-23)
 
-| Layer | Choice | Version |
-|---|---|---|
-| Framework | Next.js (App Router, Turbopack) | 16.3.x |
-| Language/UI | TypeScript (strict + `noUncheckedIndexedAccess`), React | 19.x |
-| Styling | Tailwind CSS v4 (CSS-first `@theme`) + CSS custom properties from tokens | 4.x |
-| CMS | Sanity Studio v6 / Content Lake, TypeGen for typed GROQ | 6.16 / next-sanity 13 |
-| Hosting | Cloudflare Workers + static assets (1 project per domain), Worker for `/api/*` | wrangler 4.x |
-| Forms | React Hook Form + Zod, Cloudflare Turnstile, Resend | zod 4.x |
-| Monorepo | Turborepo + pnpm workspaces | turbo 2.11, pnpm 12, Node 24 LTS |
-| Testing | Vitest 5 + RTL + jest-axe; Playwright 1.63 + @axe-core/playwright; @lhci/cli (maintenance mode — see §9) | current |
+| Layer       | Choice                                                                                                   | Version                          |
+| ----------- | -------------------------------------------------------------------------------------------------------- | -------------------------------- |
+| Framework   | Next.js (App Router, Turbopack)                                                                          | 16.3.x                           |
+| Language/UI | TypeScript (strict + `noUncheckedIndexedAccess`), React                                                  | 19.x                             |
+| Styling     | Tailwind CSS v4 (CSS-first `@theme`) + CSS custom properties from tokens                                 | 4.x                              |
+| CMS         | Sanity Studio v6 / Content Lake, TypeGen for typed GROQ                                                  | 6.16 / next-sanity 13            |
+| Hosting     | Cloudflare Workers + static assets (1 project per domain), Worker for `/api/*`                           | wrangler 4.x                     |
+| Forms       | React Hook Form + Zod, Cloudflare Turnstile, Resend                                                      | zod 4.x                          |
+| Monorepo    | Turborepo + pnpm workspaces                                                                              | turbo 2.11, pnpm 12, Node 24 LTS |
+| Testing     | Vitest 5 + RTL + jest-axe; Playwright 1.63 + @axe-core/playwright; @lhci/cli (maintenance mode — see §9) | current                          |
 
 ## 3. Monorepo layout
 
@@ -60,12 +60,27 @@ Deviation from the brief's suggestion: added **`packages/clinic`** (approved Q11
 
 ```ts
 export const site = {
-  id: 'com', domain: 'www.dentaliva.com', locales: ['tr'], defaultLocale: 'tr',
-  sanity: { projectId: '…', dataset: 'production', stagingDataset: 'staging' },
-  i18n: { sisterDomains: ['dentaliva.eu', 'dentaliva.nl'] },   // feeds hreflang alternates
+  id: "com",
+  domain: "www.dentaliva.com",
+  locales: ["tr"],
+  defaultLocale: "tr",
+  sanity: { projectId: "…", dataset: "production", stagingDataset: "staging" },
+  i18n: { sisterDomains: ["dentaliva.eu", "dentaliva.nl"] }, // feeds hreflang alternates
   features: { callbackForm: true, chatbotApi: true, blog: true, careers: false },
-  sections: { home: ['hero','quickServices','about','videoTestimonials','reviews','gallery','doctors','faq','cta'] },
-} as const
+  sections: {
+    home: [
+      "hero",
+      "quickServices",
+      "about",
+      "videoTestimonials",
+      "reviews",
+      "gallery",
+      "doctors",
+      "faq",
+      "cta",
+    ],
+  },
+} as const;
 ```
 
 Build/deploy: one **Workers project per domain**, each built from the same app with `SITE_ID=com` (+ Sanity ids as env). Different sections per site = config + CMS-driven composition; campaigns = CMS documents with scheduling. Within-domain locale routing (`/en`) is **deferred**: EN ships as the .eu domain; the schema is localized from day one so adding a locale segment later is additive.
@@ -73,6 +88,7 @@ Build/deploy: one **Workers project per domain**, each built from the same app w
 **hreflang**: emitted per domain from `i18n.sisterDomains` in `app/sitemap.ts` (Google accepts sitemap hreflang) once ≥2 domains have translated equivalents; until then self-canonical only. robots.txt + sitemap.xml are per-domain build outputs.
 
 **New site in under 1 hour** (runbook target):
+
 1. `cp apps/web/sites/com.ts apps/web/sites/<id>.ts` + edit (~10 min)
 2. Sanity: create project + production/staging datasets, deploy Studio with env (MCP/CLI) (~15 min)
 3. Cloudflare: create Workers project + secrets, bind domain (DNS must be on CF nameservers), create deploy hook (~15 min)
@@ -130,15 +146,15 @@ Deploys: Cloudflare Workers Git integration per domain project — PR → previe
 
 ## 12. Risks & open questions
 
-| # | Risk / question | Mitigation / owner |
-|---|---|---|
-| 1 | **DNS on Cloudflare nameservers unconfirmed** for dentaliva.com | Blocker only at first deploy; confirm with client (Aaron) |
-| 2 | NAP conflicts (prototype vs live site) | Live wins by default; client confirms during content review |
-| 3 | ReoDental licence has no explicit terms | Layout patterns only; no asset/copy reuse (ADR-005) |
-| 4 | lhci ↔ Lighthouse 13 compatibility unverified | Fallback: plain lighthouse CLI + assertions, same budgets |
-| 5 | Free-plan **staging datasets are public** | Cloudflare Access on staging URLs; no sensitive drafts in staging |
-| 6 | Editors may expect visual editing | Set expectation at handoff; rebuild ~2–3 min; revisit stega/draft-preview later (ADR-003) |
-| 7 | ~100 blog URLs dropped | `redirect` docs → `_redirects` 301s; SEO manager reviews list |
-| 8 | Turkish slug transliteration | Slug helper with TR-aware transliteration, unit-tested |
-| 9 | Brand assets (logo vector) not yet provided | Extract from live site as interim; flag for client |
-| 10 | Form recipient email unconfirmed | Default `info@dentaliva.com`; confirm before Phase 4 form work |
+| #   | Risk / question                                                 | Mitigation / owner                                                                        |
+| --- | --------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| 1   | **DNS on Cloudflare nameservers unconfirmed** for dentaliva.com | Blocker only at first deploy; confirm with client (Aaron)                                 |
+| 2   | NAP conflicts (prototype vs live site)                          | Live wins by default; client confirms during content review                               |
+| 3   | ReoDental licence has no explicit terms                         | Layout patterns only; no asset/copy reuse (ADR-005)                                       |
+| 4   | lhci ↔ Lighthouse 13 compatibility unverified                   | Fallback: plain lighthouse CLI + assertions, same budgets                                 |
+| 5   | Free-plan **staging datasets are public**                       | Cloudflare Access on staging URLs; no sensitive drafts in staging                         |
+| 6   | Editors may expect visual editing                               | Set expectation at handoff; rebuild ~2–3 min; revisit stega/draft-preview later (ADR-003) |
+| 7   | ~100 blog URLs dropped                                          | `redirect` docs → `_redirects` 301s; SEO manager reviews list                             |
+| 8   | Turkish slug transliteration                                    | Slug helper with TR-aware transliteration, unit-tested                                    |
+| 9   | Brand assets (logo vector) not yet provided                     | Extract from live site as interim; flag for client                                        |
+| 10  | Form recipient email unconfirmed                                | Default `info@dentaliva.com`; confirm before Phase 4 form work                            |
