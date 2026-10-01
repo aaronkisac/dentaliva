@@ -37,7 +37,7 @@ export const blogBySlugQuery = defineQuery(
     title,
     "slug": slug.current,
     body,
-    heroImage { ..., alt, "ref": asset._ref },
+    heroImage { ..., alt, "ref": asset._ref, "lqip": asset->metadata.lqip },
     publishedAt,
     author->{ name, slug, title, photo { "ref": asset._ref, alt } },
     seo

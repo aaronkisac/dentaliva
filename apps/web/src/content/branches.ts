@@ -1,7 +1,8 @@
 import type { SanityClient } from "@sanity/client";
+import { cache } from "react";
 
 import type { SeoObject } from "@dentaliva/seo";
-import { branchListQuery } from "@dentaliva/sanity-schema/queries";
+import { branchBySlugQuery, branchListQuery } from "@dentaliva/sanity-schema/queries";
 import type { LocalizedPair } from "./home";
 
 export interface BranchItem {
@@ -26,10 +27,10 @@ export async function fetchBranches(client: SanityClient): Promise<BranchItem[]>
   return list ?? [];
 }
 
-export async function fetchBranchBySlug(
-  client: SanityClient,
-  slug: string,
-): Promise<BranchItem | null> {
-  const branches = await fetchBranches(client);
-  return branches.find((branch) => branch.slug === slug) ?? null;
-}
+/** PRF-5: tek doküman sorgusu + render-pass dedupe — tüm listeyi çekmez. */
+export const fetchBranchBySlug = cache(
+  async (client: SanityClient, slug: string): Promise<BranchItem | null> => {
+    const result: unknown = await client.fetch(branchBySlugQuery, { slug });
+    return (result as BranchItem | null) ?? null;
+  },
+);

@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { Heading, Section, Text } from "@dentaliva/ui";
 import { pickLocalized } from "@dentaliva/sanity-schema/client";
 
-import { fetchHomeData } from "../../src/content/home";
+import { fetchHomePageDocument } from "../../src/content/home";
 import { readClient } from "../../src/sanity";
 import { pageMetadata } from "../../src/seo";
 
@@ -14,8 +14,8 @@ export const metadata: Metadata = pageMetadata({
 });
 
 export default async function AboutPage() {
-  const data = await fetchHomeData(readClient);
-  const about = data.homePage?.about ?? null;
+  // PRF-5: yalnızca homePage dokümanı — liste sorguları çekilmez.
+  const about = (await fetchHomePageDocument(readClient))?.about ?? null;
 
   return (
     <Section>

@@ -1,4 +1,5 @@
 import type { SanityClient } from "@sanity/client";
+import { cache } from "react";
 
 import type { SeoObject } from "@dentaliva/seo";
 import { treatmentBySlugQuery, treatmentListQuery } from "@dentaliva/sanity-schema/queries";
@@ -35,12 +36,8 @@ export interface TreatmentDetail extends TreatmentListItem {
   seo?: SeoObject | null;
 }
 
-async function fetchJson<T>(
-  client: SanityClient,
-  query: string,
-  params?: Record<string, string>,
-): Promise<T> {
-  const result: unknown = await client.fetch(query, params);
+async function fetchJson<T>(client: SanityClient, query: string): Promise<T> {
+  const result: unknown = await client.fetch(query, {});
   return result as T;
 }
 
@@ -49,9 +46,10 @@ export async function fetchTreatments(client: SanityClient): Promise<TreatmentLi
   return list ?? [];
 }
 
-export async function fetchTreatmentBySlug(
-  client: SanityClient,
-  slug: string,
-): Promise<TreatmentDetail | null> {
-  return fetchJson<TreatmentDetail | null>(client, treatmentBySlugQuery, { slug });
-}
+/** PRF-5: generateMetadata + sayfa aynı isteği paylaşır (React cache). */
+export const fetchTreatmentBySlug = cache(
+  async (client: SanityClient, slug: string): Promise<TreatmentDetail | null> => {
+    const result: unknown = await client.fetch(treatmentBySlugQuery, { slug });
+    return (result as TreatmentDetail | null) ?? null;
+  },
+);

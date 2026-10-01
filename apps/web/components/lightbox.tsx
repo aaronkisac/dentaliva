@@ -53,7 +53,7 @@ export function GalleryLightbox({ images }: { images: GalleryImage[] }) {
                 height={dims.height}
                 sizes="(max-width: 768px) 50vw, 25vw"
                 placeholder="blur"
-                blurDataURL={lqipUrl(ref, ENV)}
+                blurDataURL={image.lqip ?? lqipUrl(ref, ENV)}
                 className="h-auto w-full object-cover"
               />
             </button>
@@ -87,7 +87,7 @@ export function GalleryLightbox({ images }: { images: GalleryImage[] }) {
                   height={dims.height}
                   sizes="80vw"
                   placeholder="blur"
-                  blurDataURL={lqipUrl(ref, ENV)}
+                  blurDataURL={items[active].lqip ?? lqipUrl(ref, ENV)}
                   className="h-auto max-h-[80vh] w-[80vw] max-w-3xl border border-[var(--dvn-line-gold)] object-contain"
                 />
               );

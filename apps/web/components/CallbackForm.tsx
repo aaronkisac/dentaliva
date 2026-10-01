@@ -10,6 +10,18 @@ import { Text } from "@dentaliva/ui";
 
 const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
+// PRF-5: saf modül sabitleri — her render'da yeni resolver/defaultValues
+// üretimi yerine tek kez kurulur.
+const resolver = zodResolver(callbackFormSchema);
+const emptyValues: CallbackFormInput = {
+  name: "",
+  phone: "",
+  preferredTime: "",
+  kvkkConsent: false,
+  website: "",
+  turnstileToken: "",
+};
+
 declare global {
   interface Window {
     turnstile?: {
@@ -19,7 +31,7 @@ declare global {
   }
 }
 
-type SubmitState = "idle" | "submitting" | "success" | "error";
+type SubmitState = "idle" | "success" | "error";
 
 export function CallbackForm({ endpoint = "/api/callback" }: { endpoint?: string }) {
   const {
@@ -29,15 +41,8 @@ export function CallbackForm({ endpoint = "/api/callback" }: { endpoint?: string
     setValue,
     formState: { errors, isSubmitting },
   } = useForm<CallbackFormInput>({
-    resolver: zodResolver(callbackFormSchema),
-    defaultValues: {
-      name: "",
-      phone: "",
-      preferredTime: "",
-      kvkkConsent: false,
-      website: "",
-      turnstileToken: "",
-    },
+    resolver,
+    defaultValues: emptyValues,
   });
 
   const [submitState, setSubmitState] = useState<SubmitState>("idle");
@@ -66,11 +71,13 @@ export function CallbackForm({ endpoint = "/api/callback" }: { endpoint?: string
       } catch {
         // widget zaten kaldırılmış
       }
+      // PRF-5: enjekte edilen script'i de kaldır — StrictMode çift
+      // çağrımda <head> tekrar etmesin.
+      script.remove();
     };
   }, [setValue]);
 
   const onSubmit = handleSubmit(async (values) => {
-    setSubmitState("submitting");
     setServerError("");
     try {
       const res = await fetch(endpoint, {
@@ -85,14 +92,7 @@ export function CallbackForm({ endpoint = "/api/callback" }: { endpoint?: string
         return;
       }
       setSubmitState("success");
-      reset({
-        name: "",
-        phone: "",
-        preferredTime: "",
-        kvkkConsent: false,
-        website: "",
-        turnstileToken: "",
-      });
+      reset(emptyValues);
     } catch {
       setServerError("Bağlantı hatası. Lütfen tekrar deneyin.");
       setSubmitState("error");

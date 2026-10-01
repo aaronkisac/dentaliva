@@ -7,7 +7,7 @@ import { lqipUrl, refDimensions } from "@dentaliva/sanity-schema/image-url";
 export interface AboutData {
   title?: { tr?: string; en?: string };
   body?: { tr?: string; en?: string };
-  image?: { asset?: { _ref?: string }; alt?: { tr?: string; en?: string } };
+  image?: { asset?: { _ref?: string }; alt?: { tr?: string; en?: string }; lqip?: string };
 }
 
 const ENV = {
@@ -37,7 +37,7 @@ export function AboutSection({ data }: { data: AboutData | null }) {
             height={dims.height}
             sizes="(max-width: 768px) 100vw, 50vw"
             placeholder="blur"
-            blurDataURL={lqipUrl(ref, ENV)}
+            blurDataURL={data.image?.lqip ?? lqipUrl(ref, ENV)}
             className="h-auto w-full border border-[var(--dvn-line-gold)] object-cover"
           />
         ) : null}

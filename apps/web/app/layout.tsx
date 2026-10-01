@@ -4,6 +4,7 @@ import { buildDentistJsonLd } from "@dentaliva/seo";
 
 import { JsonLd } from "../components/json-ld";
 import { site } from "../src/config";
+import { fetchSiteSettings } from "../src/content/home";
 import { readClient } from "../src/sanity";
 import { siteUrl } from "../src/seo";
 import { fontVariables } from "../src-fonts";
@@ -19,29 +20,11 @@ export const metadata: Metadata = {
   description: "Dentaliva Diş Kliniği — İstanbul'da implant, ortodonti ve estetik diş hekimliği",
 };
 
-interface SiteSettingsFetch {
-  siteName?: string;
-  phone?: string;
-  email?: string;
-  hours?: { tr?: string };
-  address?: { tr?: string };
-  social?: Array<{ platform?: string; url?: string }>;
-}
-
-async function fetchSiteSettings(): Promise<SiteSettingsFetch | null> {
-  try {
-    const data: SiteSettingsFetch | null = await readClient.fetch(`*[_type == "siteSettings"][0]`);
-    return data;
-  } catch (error) {
-    // Build resilience: an unreachable Sanity must not break the export;
-    // content lands on the next rebuild after the webhook fires.
-    console.warn("[layout] siteSettings fetch failed:", error);
-    return null;
-  }
-}
-
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const settings = await fetchSiteSettings();
+  // PRF-5: cache'li tekil fetcher — request scope'unda dedupe edilir ve
+  // fetchHomeData ile aynı isteği paylaşır; Sanity erişilemezse null (build
+  // resilience, içerik webhook yeniden derlemesinde gelir).
+  const settings = await fetchSiteSettings(readClient);
   const siteName = settings?.siteName ?? "Dentaliva";
   const contact: FooterContact | undefined = settings
     ? {
@@ -72,7 +55,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang={site.defaultLocale} className={fontVariables}>
       <body className="bg-ivory text-ink antialiased">
-        {/* PRF-3: display: optional only works with a preloaded font file. */}
+        {/* PRF-3/PRF-5: display: optional yalnızca preload ile çalışır —
+            başlık (Cormorant) ve gövde (Montserrat, tr için latin + latin-ext)
+            fontları ilk boyamadan önce hazırda bekler. */}
         <link
           rel="preload"
           href="/fonts/cormorant-latin.woff2"
@@ -83,6 +68,20 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <link
           rel="preload"
           href="/fonts/cormorant-latin-ext.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preload"
+          href="/fonts/montserrat-latin.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preload"
+          href="/fonts/montserrat-latin-ext.woff2"
           as="font"
           type="font/woff2"
           crossOrigin="anonymous"

@@ -29,7 +29,8 @@ export async function generateStaticParams(): Promise<Array<{ slug: string }>> {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const doctor = await fetchDoctorBySlug(readClient, slug);
-  if (!doctor) return { title: "Hekim" };
+  // PRF-5: _seed placeholder sayfaları dizine eklenmesin.
+  if (!doctor) return { title: "Hekim", robots: { index: false, follow: false } };
   return pageMetadata({
     path: `/hekimlerimiz/${slug}`,
     title: doctor.name ?? "Hekim",
@@ -64,6 +65,12 @@ export default async function DoctorDetailPage({ params }: PageProps) {
               alt={doctor.name ?? ""}
               width={192}
               height={192}
+              // PRF-5: sabit 192px kutu — sizes olmadan tarayıcı 100vw'e
+              // göre ~1920px kaynak seçiyordu; lqip varsa inline blur.
+              sizes="192px"
+              priority
+              placeholder={doctor.photo.lqip ? "blur" : "empty"}
+              blurDataURL={doctor.photo.lqip}
               className="h-48 w-48 shrink-0 rounded-full border-2 border-[var(--dvn-line-gold)] object-cover"
             />
           ) : null}

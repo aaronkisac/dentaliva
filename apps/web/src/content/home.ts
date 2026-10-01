@@ -1,4 +1,5 @@
 import type { SanityClient } from "@sanity/client";
+import { cache } from "react";
 
 import {
   doctorListQuery,
@@ -45,12 +46,20 @@ export interface TestimonialItem {
 export interface GalleryImage {
   asset?: { _ref?: string };
   alt?: LocalizedPair;
+  /** Sanity metadata.lqip — inline base64 blur placeholder (build-time only). */
+  lqip?: string;
+}
+
+interface HomeImage {
+  asset?: { _ref?: string };
+  alt?: LocalizedPair;
+  lqip?: string;
 }
 
 export interface HomePageContent {
-  hero?: { headline?: LocalizedPair; subline?: LocalizedPair };
+  hero?: { headline?: LocalizedPair; subline?: LocalizedPair; image?: HomeImage };
   quickServiceLinks?: QuickServiceItem[];
-  about?: { title?: LocalizedPair; body?: LocalizedPair };
+  about?: { title?: LocalizedPair; body?: LocalizedPair; image?: HomeImage };
   stats?: Array<{ value?: string; label?: LocalizedPair }>;
   gallery?: GalleryImage[];
   cta?: { title?: LocalizedPair; text?: LocalizedPair };
@@ -80,14 +89,39 @@ async function fetchJson<T>(client: SanityClient, query: string): Promise<T> {
   return result as T;
 }
 
+/**
+ * PRF-5: render-pass başına tek istek — layout, generateMetadata ve sayfa
+ * aynı isteği paylaşır (React cache, request scope'unda memoize eder).
+ */
+export const fetchSiteSettings = cache(
+  async (client: SanityClient): Promise<SiteSettingsLite | null> => {
+    try {
+      const data = await fetchJson<SiteSettingsLite | null>(client, siteSettingsQuery);
+      return data ?? null;
+    } catch (error) {
+      // Build resilience: an unreachable Sanity must not break the export;
+      // content lands on the next rebuild after the webhook fires.
+      console.warn("[sanity] siteSettings fetch failed:", error);
+      return null;
+    }
+  },
+);
+
+export const fetchHomePageDocument = cache(
+  async (client: SanityClient): Promise<HomePageContent | null> => {
+    const homePage = await fetchJson<HomePageContent | null>(client, homePageQuery);
+    return homePage ?? null;
+  },
+);
+
 export async function fetchHomeData(client: SanityClient): Promise<HomeData> {
   const [homePage, quickServices, doctors, faqs, testimonials, siteSettings] = await Promise.all([
-    fetchJson<HomePageContent | null>(client, homePageQuery),
+    fetchHomePageDocument(client),
     fetchJson<QuickServiceItem[]>(client, treatmentListQuery),
     fetchJson<DoctorItem[]>(client, doctorListQuery),
     fetchJson<FaqEntry[]>(client, faqListQuery),
     fetchJson<TestimonialItem[]>(client, testimonialListQuery),
-    fetchJson<SiteSettingsLite | null>(client, siteSettingsQuery),
+    fetchSiteSettings(client),
   ]);
   return {
     homePage: homePage ?? null,
