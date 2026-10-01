@@ -70,11 +70,22 @@ if (!existsSync(OUT)) {
   process.exit(1);
 }
 
+// Workers static-assets _headers semantiği: aynı header birden çok eşleşen
+// kuralda varsa değerler virgülle BİRLEŞİR ve tarayıcı iki CSP'yi de uygular
+// (developers.cloudflare.com/workers/static-assets/headers). Bu yüzden /*'a
+// script-src/default-src İÇERMEYEN, per-route CSP ile kesişimi kendisi olan
+// yönergeler konur: amaç, not_found_handling=404-page nedeniyle rastgele
+// path'lerde servis edilen 404 HTML'ine taban koruma vermektir.
+const WILDCARD_CSP =
+  "Content-Security-Policy: object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'";
+
 const COMMON = `  Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
   X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=()
   Cross-Origin-Opener-Policy: same-origin
+  ${WILDCARD_CSP}
 `;
 
 const sections = [`/*\n${COMMON}`];
