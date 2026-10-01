@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { CallbackForm } from "../../components/CallbackForm";
 import { Heading, Section, Text } from "@dentaliva/ui";
 
-import { fetchHomeData } from "../../src/content/home";
+import { fetchSiteSettings } from "../../src/content/home";
 import { readClient } from "../../src/sanity";
 import { pageMetadata } from "../../src/seo";
 
@@ -14,8 +14,9 @@ export const metadata: Metadata = pageMetadata({
 });
 
 export default async function ContactPage() {
-  const data = await fetchHomeData(readClient);
-  const settings = data.siteSettings;
+  // PRF-5: sayfa yalnızca site ayarlarını kullanır — 6 sorguluk
+  // fetchHomeData yerine tekil (cache'li) fetch.
+  const settings = await fetchSiteSettings(readClient);
   const phone = settings?.phone ?? "";
 
   return (

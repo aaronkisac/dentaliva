@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 
 import { Button } from "./button";
@@ -180,20 +180,30 @@ export function headerMode(
 export function Header({ items, cta, logo, contact }: HeaderProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
-  const [scrollY, setScrollY] = useState(0);
+  // PRF-5: başlangıç değeri SSR ile aynı kuraldan gelir (scrollY=0, vh=800) —
+  // render içinde window okunmaz, hidrasyon eşleşir.
+  const [dark, setDark] = useState(() => headerMode(pathname ?? "/", 0, 800) === "dark");
 
+  // PRF-5: state boolean — yalnızca eşik geçişinde render olur; her scroll
+  // karesi değil. Gerçek viewport ölçümü efekttedir (resize'da da güncellenir).
   useEffect(() => {
-    const onScroll = () => setScrollY(window.scrollY);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+    const update = () => {
+      setDark(headerMode(pathname ?? "/", window.scrollY, window.innerHeight) === "dark");
+    };
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
+  }, [pathname]);
 
-  // SSR'da window yok — cast'li okuma, ternary dalı üretmesin diye.
-  // v8 ignore next — SSR dalı jsdom'da ullanılamaz; ADR kaydı yeterli.
-  const viewportHeight = (globalThis as { innerHeight?: number }).innerHeight ?? 800;
-  const mode = headerMode(pathname ?? "/", scrollY, viewportHeight);
-  const dark = mode === "dark";
+  // PRF-5: stabil identity — aksi halde her Header render'ı (scroll'da)
+  // useFocusTrap efektini yeniden koşturup odağı menünün ilk bağlantısına
+  // çalar ve "restores focus" zincirini bozar.
+  const closeMobileMenu = useCallback(() => setMobileOpen(false), []);
+
   const onHome = pathname === "/";
 
   const linkClass = dark ? "text-ivory/90 hover:text-gold-soft" : "text-ink hover:text-gold-deep";
@@ -263,12 +273,7 @@ export function Header({ items, cta, logo, contact }: HeaderProps) {
         </button>
       </div>
       {mobileOpen ? (
-        <MobileMenu
-          items={items}
-          phone={contact?.phone}
-          dark={dark}
-          onClose={() => setMobileOpen(false)}
-        />
+        <MobileMenu items={items} phone={contact?.phone} dark={dark} onClose={closeMobileMenu} />
       ) : null}
     </header>
   );

@@ -33,9 +33,12 @@ describe("branch content fetchers (PGT-6)", () => {
     expect(await fetchBranches(mockClient([fixture]))).toEqual(fixture);
   });
 
-  it("finds a branch by slug and null-safes misses", async () => {
-    const client = mockClient([fixture]);
+  it("fetches a branch by slug (single-doc query) and null-safes misses", async () => {
+    const client = mockClient([fixture[0]]);
     expect((await fetchBranchBySlug(client, "avcilar"))?.name).toBe("Avcılar");
-    expect(await fetchBranchBySlug(mockClient([fixture]), "yok")).toBeNull();
+    expect((client.fetch as ReturnType<typeof vi.fn>).mock.calls[0]?.[1]).toEqual({
+      slug: "avcilar",
+    });
+    expect(await fetchBranchBySlug(mockClient([null]), "yok")).toBeNull();
   });
 });

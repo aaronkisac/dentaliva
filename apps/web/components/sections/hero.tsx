@@ -12,7 +12,7 @@ import { site } from "../../src/config";
 export interface HeroData {
   headline?: { tr?: string; en?: string };
   subline?: { tr?: string; en?: string };
-  image?: { asset?: { _ref?: string }; alt?: { tr?: string; en?: string } };
+  image?: { asset?: { _ref?: string }; alt?: { tr?: string; en?: string }; lqip?: string };
 }
 
 const ENV = {
@@ -47,7 +47,9 @@ export function HeroSection({ data }: { data: HeroData | null }) {
               priority
               sizes="100vw"
               placeholder="blur"
-              blurDataURL={lqipUrl(ref, ENV)}
+              // PRF-5: inline base64 lqip (HTML'le gelir) — uzak 32px URL
+              // isteği yalnızca fallback olarak kalır.
+              blurDataURL={data?.image?.lqip ?? lqipUrl(ref, ENV)}
               className="object-cover"
             />
           </div>

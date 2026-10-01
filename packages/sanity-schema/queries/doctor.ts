@@ -15,7 +15,7 @@ export const doctorBySlugQuery = defineQuery(
     name,
     "slug": slug.current,
     title,
-    photo { ..., alt, "ref": asset._ref },
+    photo { ..., alt, "ref": asset._ref, "lqip": asset->metadata.lqip },
     bio,
     seo,
     "treatments": treatments[]->{ name, slug }

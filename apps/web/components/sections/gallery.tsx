@@ -48,7 +48,7 @@ export function GallerySection({
               height={dims.height}
               sizes="(max-width: 768px) 50vw, 25vw"
               placeholder="blur"
-              blurDataURL={lqipUrl(ref, ENV)}
+              blurDataURL={image.lqip ?? lqipUrl(ref, ENV)}
               className="aspect-square h-auto w-full border border-[var(--dvn-line)] object-cover"
             />
           );

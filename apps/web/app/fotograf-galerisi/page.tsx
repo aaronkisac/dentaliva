@@ -4,7 +4,7 @@ import { Heading, Section } from "@dentaliva/ui";
 import { pickLocalized } from "@dentaliva/sanity-schema/client";
 
 import { GalleryLightbox } from "../../components/lightbox";
-import { fetchHomeData } from "../../src/content/home";
+import { fetchHomePageDocument } from "../../src/content/home";
 import { readClient } from "../../src/sanity";
 import { pageMetadata } from "../../src/seo";
 
@@ -15,8 +15,8 @@ export const metadata: Metadata = pageMetadata({
 });
 
 export default async function GalleryPage() {
-  const data = await fetchHomeData(readClient);
-  const images = data.homePage?.gallery ?? [];
+  // PRF-5: yalnızca homePage dokümanı — liste sorguları çekilmez.
+  const images = (await fetchHomePageDocument(readClient))?.gallery ?? [];
 
   return (
     <Section>

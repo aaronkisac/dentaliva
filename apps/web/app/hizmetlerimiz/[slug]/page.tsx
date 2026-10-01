@@ -33,7 +33,8 @@ export async function generateStaticParams(): Promise<Array<{ slug: string }>> {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const treatment = await fetchTreatmentBySlug(readClient, slug);
-  if (!treatment) return { title: "Tedavi" };
+  // PRF-5: _seed placeholder sayfaları dizine eklenmesin.
+  if (!treatment) return { title: "Tedavi", robots: { index: false, follow: false } };
   return pageMetadata({
     path: `/hizmetlerimiz/${slug}`,
     title: pickLocalized(treatment.name) || "Tedavi",

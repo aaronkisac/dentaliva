@@ -29,7 +29,8 @@ export async function generateStaticParams(): Promise<Array<{ slug: string }>> {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const branch = await fetchBranchBySlug(readClient, slug);
-  if (!branch) return { title: "Şube" };
+  // PRF-5: _seed placeholder sayfaları dizine eklenmesin.
+  if (!branch) return { title: "Şube", robots: { index: false, follow: false } };
   return pageMetadata({
     path: `/subelerimiz/${slug}`,
     title: branch.name ?? "Şube",

@@ -30,7 +30,8 @@ export async function generateStaticParams(): Promise<Array<{ slug: string }>> {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const post = await fetchBlogPostBySlug(readClient, slug);
-  if (!post) return { title: "Blog" };
+  // PRF-5: _seed placeholder sayfaları dizine eklenmesin.
+  if (!post) return { title: "Blog", robots: { index: false, follow: false } };
   return pageMetadata({
     path: `/blog/${slug}`,
     title: pickLocalized(post.title) || "Blog",
@@ -75,7 +76,12 @@ export default async function BlogPostPage({ params }: PageProps) {
             alt={post.heroImage?.alt?.tr ?? pickLocalized(post.title)}
             width={1200}
             height={600}
+            // PRF-5: hero görseli LCP adayı — priority (preload) + varsa
+            // CMS'ten gelen inline base64 lqip ile anında blur.
+            priority
             sizes="(max-width: 900px) 100vw, 1180px"
+            placeholder={post.heroImage.lqip ? "blur" : "empty"}
+            blurDataURL={post.heroImage.lqip}
             className="mt-6 h-auto w-full border border-[var(--dvn-line)] object-cover"
           />
         ) : null}
