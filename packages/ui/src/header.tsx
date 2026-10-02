@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 
-import { Button } from "./button";
+import { Button, buttonVariants } from "./button";
 import { cn } from "./cn";
 import { Link } from "./link";
 import { useFocusTrap } from "./use-focus-trap";
@@ -36,6 +36,38 @@ function PhoneIcon({ className }: { className?: string }) {
       className={cn("h-4 w-4", className)}
     >
       <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+    </svg>
+  );
+}
+
+function MenuIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      className={cn("h-6 w-6", className)}
+    >
+      <path d="M4 6h16M4 12h16M4 18h16" />
+    </svg>
+  );
+}
+
+function CloseIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      className={cn("h-6 w-6", className)}
+    >
+      <path d="M6 6l12 12M18 6L6 18" />
     </svg>
   );
 }
@@ -97,12 +129,14 @@ function DesktopDropdown({ item, dark }: { item: NavLink; dark: boolean }) {
 function MobileMenu({
   items,
   phone,
+  cta,
   dark,
   onClose,
   labels,
 }: {
   items: NavLink[];
   phone?: string;
+  cta?: HeaderProps["cta"];
   dark: boolean;
   onClose: () => void;
   labels: HeaderProps["labels"];
@@ -154,9 +188,20 @@ function MobileMenu({
             {phone}
           </a>
         ) : null}
-        <Button className="mt-4 w-full" onClick={onClose}>
-          {labels.closeMenu}
-        </Button>
+        {/* DSN-23: altın slot randevu aksiyonuna ait — kapatma burger/Escape ile. */}
+        {cta ? (
+          <Link
+            href={cta.href}
+            className={cn(buttonVariants({ variant: "gold", size: "md" }), "mt-4 w-full")}
+            onClick={onClose}
+          >
+            {cta.label}
+          </Link>
+        ) : (
+          <Button className="mt-4 w-full" onClick={onClose}>
+            {labels.closeMenu}
+          </Button>
+        )}
       </nav>
     </div>
   );
@@ -171,6 +216,9 @@ function MobileMenu({
 /**
  * DSN-11: header durumu — ana sayfada hero boyunca şeffaf (açık metin),
  * hero bitince (scroll eşiği) ışık ivory + blur; iç sayfalarda her zaman ışık.
+ * DSN-23: mobil menünün altın slotu randevu CTA'sıdır (cta prop'u varsa);
+ * menü burger toggle, Escape veya bağlantı tıklamasıyla kapanır. Burger
+ * unicode değil SVG ikondur; durum aria-expanded ile bildirilir (APG pattern).
  */
 export function headerMode(
   pathname: string,
@@ -273,13 +321,14 @@ export function Header({ items, cta, logo, contact, labels }: HeaderProps) {
           onClick={() => setMobileOpen((open) => !open)}
           className={cn("px-2 py-3 md:hidden", dark ? "text-ivory" : "text-navy")}
         >
-          {mobileOpen ? "✕" : "☰"}
+          {mobileOpen ? <CloseIcon /> : <MenuIcon />}
         </button>
       </div>
       {mobileOpen ? (
         <MobileMenu
           items={items}
           phone={contact?.phone}
+          cta={cta}
           dark={dark}
           onClose={closeMobileMenu}
           labels={labels}
