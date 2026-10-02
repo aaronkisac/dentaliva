@@ -7,6 +7,7 @@ import { buildBreadcrumbJsonLd } from "@dentaliva/seo";
 
 import { Heading, Section, Text } from "@dentaliva/ui";
 import { JsonLd } from "../../../components/json-ld";
+import { PageHero } from "../../../components/page-hero";
 import { fetchBranchBySlug, fetchBranches } from "../../../src/content/branches";
 import { readClient } from "../../../src/sanity";
 import { absoluteUrl, pageMetadata } from "../../../src/seo";
@@ -55,14 +56,12 @@ export default async function BranchDetailPage({ params }: PageProps) {
           { name: branch.name ?? "Şube", url: absoluteUrl(`/subelerimiz/${slug}`) },
         ])}
       />
-      <Section className="bg-navy">
-        <Heading level="h1" size="lg" className="text-white">
-          {branch.name}
-        </Heading>
-        <Text size="lg" tone="white" className="mt-4">
-          {pickLocalized(branch.address)}
-        </Text>
-      </Section>
+      <PageHero
+        eyebrow="Şubelerimiz"
+        eyebrowHref="/subelerimiz"
+        title={branch.name ?? "Şube"}
+        lead={branch.address?.tr ? pickLocalized(branch.address) : null}
+      />
       <Section>
         <div className="grid gap-8 md:grid-cols-2">
           <div>
