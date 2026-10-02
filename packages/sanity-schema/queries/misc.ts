@@ -9,7 +9,7 @@ export const branchListQuery = defineQuery(
     hours,
     mapUrl,
     geo,
-    image { "ref": asset._ref, alt },
+    image { "ref": asset._ref, alt, "lqip": asset->metadata.lqip },
     seo
   }`,
 );
@@ -28,7 +28,7 @@ export const blogListQuery = defineQuery(
     "slug": slug.current,
     excerpt,
     publishedAt,
-    heroImage
+    heroImage { "ref": asset._ref, alt, "lqip": asset->metadata.lqip }
   }`,
 );
 

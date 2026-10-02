@@ -13,7 +13,7 @@ export interface BranchItem {
   hours?: LocalizedPair;
   mapUrl?: string;
   geo?: { lat?: number; lng?: number };
-  image?: { ref?: string; alt?: LocalizedPair };
+  image?: { ref?: string; alt?: LocalizedPair; lqip?: string };
   seo?: SeoObject | null;
 }
 
