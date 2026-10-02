@@ -5,7 +5,7 @@ import Image from "next/image";
 import { pickLocalized } from "@dentaliva/sanity-schema/client";
 import { buildBreadcrumbJsonLd } from "@dentaliva/seo";
 
-import { Heading, Section, Text } from "@dentaliva/ui";
+import { Reveal, Heading, Section, Text } from "@dentaliva/ui";
 import { JsonLd } from "../../../components/json-ld";
 import { CtaBand } from "../../../components/cta-band";
 import { fetchDoctorBySlug, fetchDoctors } from "../../../src/content/doctors";
@@ -94,26 +94,28 @@ export default async function DoctorDetailPage({ params }: PageProps) {
           </div>
         </div>
       </Section>
-      <Section>
-        {doctor.bio?.tr ? (
-          <Text className="max-w-3xl whitespace-pre-line">{pickLocalized(doctor.bio)}</Text>
-        ) : null}
+      <Reveal>
+        <Section>
+          {doctor.bio?.tr ? (
+            <Text className="max-w-3xl whitespace-pre-line">{pickLocalized(doctor.bio)}</Text>
+          ) : null}
 
-        {/* DSN-9: hekimin ilgi alanları (schema: doctor.treatments). */}
-        {(doctor.treatments ?? []).length > 0 ? (
-          <div className="mt-8 flex flex-wrap gap-3">
-            {(doctor.treatments ?? []).map((treatment) => (
-              <a
-                key={treatment.slug}
-                href={`/hizmetlerimiz/${treatment.slug}`}
-                className="border border-[var(--dvn-line-gold)] px-4 py-2 font-sans text-sm text-navy transition-colors hover:bg-gold hover:text-navy"
-              >
-                {pickLocalized(treatment.name)}
-              </a>
-            ))}
-          </div>
-        ) : null}
-      </Section>
+          {/* DSN-9: hekimin ilgi alanları (schema: doctor.treatments). */}
+          {(doctor.treatments ?? []).length > 0 ? (
+            <div className="mt-8 flex flex-wrap gap-3">
+              {(doctor.treatments ?? []).map((treatment) => (
+                <a
+                  key={treatment.slug}
+                  href={`/hizmetlerimiz/${treatment.slug}`}
+                  className="border border-[var(--dvn-line-gold)] px-4 py-2 font-sans text-sm text-navy transition-colors hover:bg-gold hover:text-navy"
+                >
+                  {pickLocalized(treatment.name)}
+                </a>
+              ))}
+            </div>
+          ) : null}
+        </Section>
+      </Reveal>
 
       {/* DSN-24: sayfa sonu dönüşüm bandı. */}
       <CtaBand

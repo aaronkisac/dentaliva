@@ -6,7 +6,7 @@ import { pickLocalized } from "@dentaliva/sanity-schema/client";
 import { urlForImage } from "@dentaliva/sanity-schema/image-url";
 import { buildBreadcrumbJsonLd, buildFaqJsonLd } from "@dentaliva/seo";
 
-import { Accordion, Card, Heading, Link, Section, Text } from "@dentaliva/ui";
+import { Reveal, Accordion, Card, Heading, Link, Section, Text } from "@dentaliva/ui";
 import { JsonLd } from "../../../components/json-ld";
 import { CtaBand } from "../../../components/cta-band";
 import { PageHero } from "../../../components/page-hero";
@@ -133,98 +133,104 @@ export default async function TreatmentDetailPage({ params }: PageProps) {
         ) : null}
       </PageHero>
 
-      <Section>
-        {treatment.body?.tr ? (
-          <Text className="max-w-3xl whitespace-pre-line">{pickLocalized(treatment.body)}</Text>
-        ) : null}
+      <Reveal>
+        <Section>
+          {treatment.body?.tr ? (
+            <Text className="max-w-3xl whitespace-pre-line">{pickLocalized(treatment.body)}</Text>
+          ) : null}
 
-        {/* CPT-6: H2 "farklar/avantajlar" bölümlerinden gelen faydalar. */}
-        {(treatment.benefits ?? []).length > 0 ? (
-          <div className="mt-10">
-            <Heading level="h2" size="md">
-              Öne Çıkan Faydalar
-            </Heading>
-            <div className="mt-6 grid gap-4 md:grid-cols-3">
-              {(treatment.benefits ?? []).map((benefit, index) => (
+          {/* CPT-6: H2 "farklar/avantajlar" bölümlerinden gelen faydalar. */}
+          {(treatment.benefits ?? []).length > 0 ? (
+            <div className="mt-10">
+              <Heading level="h2" size="md">
+                Öne Çıkan Faydalar
+              </Heading>
+              <div className="mt-6 grid gap-4 md:grid-cols-3">
+                {(treatment.benefits ?? []).map((benefit, index) => (
+                  <Card key={index}>
+                    <Text>{benefit.tr}</Text>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          ) : null}
+
+          {steps.length > 0 ? (
+            <div className="mt-12 grid gap-6 md:grid-cols-3">
+              {steps.map((step, index) => (
                 <Card key={index}>
-                  <Text>{benefit.tr}</Text>
+                  <Heading level="h3" size="title">
+                    {pickLocalized(step.title) || `Adım ${index + 1}`}
+                  </Heading>
+                  <Text className="mt-2">{pickLocalized(step.description)}</Text>
                 </Card>
               ))}
             </div>
-          </div>
-        ) : null}
+          ) : null}
 
-        {steps.length > 0 ? (
-          <div className="mt-12 grid gap-6 md:grid-cols-3">
-            {steps.map((step, index) => (
-              <Card key={index}>
-                <Heading level="h3" size="title">
-                  {pickLocalized(step.title) || `Adım ${index + 1}`}
-                </Heading>
-                <Text className="mt-2">{pickLocalized(step.description)}</Text>
-              </Card>
-            ))}
-          </div>
-        ) : null}
-
-        {treatment.priceNote?.tr ? (
-          <div className="mt-12 border border-[var(--dvn-line-gold)] bg-ivory p-6">
-            <Text>{pickLocalized(treatment.priceNote)}</Text>
-          </div>
-        ) : null}
-      </Section>
+          {treatment.priceNote?.tr ? (
+            <div className="mt-12 border border-[var(--dvn-line-gold)] bg-ivory p-6">
+              <Text>{pickLocalized(treatment.priceNote)}</Text>
+            </div>
+          ) : null}
+        </Section>
+      </Reveal>
 
       {/* DSN-9: tedavinin ilgili hekimleri (schema: treatment.doctors). */}
       {(treatment.doctors ?? []).length > 0 ? (
-        <Section className="bg-white">
-          <Heading level="h2" size="md">
-            İlgili Hekimlerimiz
-          </Heading>
-          <div className="mt-8 grid gap-6 md:grid-cols-3">
-            {(treatment.doctors ?? []).map((doctor) => (
-              <Card key={doctor.slug} hover="lift">
-                {doctor.photo?.ref ? (
-                  <Image
-                    src={doctor.photo.ref}
-                    alt={doctor.name ?? ""}
-                    width={400}
-                    height={400}
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                    className="h-48 w-full object-cover"
-                  />
-                ) : null}
-                <Heading level="h3" size="title" className="mt-4">
-                  {doctor.name}
-                </Heading>
-                {doctor.title?.tr ? (
-                  <Text className="mt-1">{pickLocalized(doctor.title)}</Text>
-                ) : null}
-                <Text tone="muted" size="small" className="mt-3 underline">
-                  <Link href={`/hekimlerimiz/${doctor.slug}`}>Profile göz atın →</Link>
-                </Text>
-              </Card>
-            ))}
-          </div>
-        </Section>
+        <Reveal>
+          <Section className="bg-white">
+            <Heading level="h2" size="md">
+              İlgili Hekimlerimiz
+            </Heading>
+            <div className="mt-8 grid gap-6 md:grid-cols-3">
+              {(treatment.doctors ?? []).map((doctor) => (
+                <Card key={doctor.slug} hover="lift">
+                  {doctor.photo?.ref ? (
+                    <Image
+                      src={doctor.photo.ref}
+                      alt={doctor.name ?? ""}
+                      width={400}
+                      height={400}
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      className="h-48 w-full object-cover"
+                    />
+                  ) : null}
+                  <Heading level="h3" size="title" className="mt-4">
+                    {doctor.name}
+                  </Heading>
+                  {doctor.title?.tr ? (
+                    <Text className="mt-1">{pickLocalized(doctor.title)}</Text>
+                  ) : null}
+                  <Text tone="muted" size="small" className="mt-3 underline">
+                    <Link href={`/hekimlerimiz/${doctor.slug}`}>Profile göz atın →</Link>
+                  </Text>
+                </Card>
+              ))}
+            </div>
+          </Section>
+        </Reveal>
       ) : null}
 
       {(treatment.faqs ?? []).length > 0 ? (
-        <Section className="bg-white">
-          <Heading level="h2" size="md">
-            Sıkça Sorulan Sorular
-          </Heading>
-          <div className="mt-8 max-w-3xl">
-            <Accordion
-              items={(treatment.faqs ?? [])
-                .filter((f) => f.question?.tr && f.answer?.tr)
-                .map((f) => ({
-                  id: f.question?.tr ?? "",
-                  question: f.question?.tr ?? "",
-                  answer: f.answer?.tr ?? "",
-                }))}
-            />
-          </div>
-        </Section>
+        <Reveal>
+          <Section className="bg-white">
+            <Heading level="h2" size="md">
+              Sıkça Sorulan Sorular
+            </Heading>
+            <div className="mt-8 max-w-3xl">
+              <Accordion
+                items={(treatment.faqs ?? [])
+                  .filter((f) => f.question?.tr && f.answer?.tr)
+                  .map((f) => ({
+                    id: f.question?.tr ?? "",
+                    question: f.question?.tr ?? "",
+                    answer: f.answer?.tr ?? "",
+                  }))}
+              />
+            </div>
+          </Section>
+        </Reveal>
       ) : null}
 
       {/* DSN-24: sayfa sonu dönüşüm bandı. */}
