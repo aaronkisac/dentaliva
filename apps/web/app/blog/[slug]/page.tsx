@@ -8,8 +8,10 @@ import { buildBreadcrumbJsonLd } from "@dentaliva/seo";
 import { Heading, Section, Text } from "@dentaliva/ui";
 import { JsonLd } from "../../../components/json-ld";
 import { PortableText } from "../../../components/portable-text";
+import { CtaBand } from "../../../components/cta-band";
 import { SeedPlaceholder } from "../../../components/seed-placeholder";
 import { fetchBlogPostBySlug, fetchBlogPosts } from "../../../src/content/blog";
+import { fetchHomePageDocument, fetchSiteSettings } from "../../../src/content/home";
 import { readClient } from "../../../src/sanity";
 import { absoluteUrl, pageMetadata } from "../../../src/seo";
 
@@ -50,6 +52,12 @@ export default async function BlogPostPage({ params }: PageProps) {
   }
 
   const blocks = post.body?.tr ?? [];
+
+  // DSN-24: sayfa sonu bandının CMS içeriği; fetch hatasında sessizce düşer.
+  const [homePage, settings] = await Promise.all([
+    fetchHomePageDocument(readClient).catch(() => null),
+    fetchSiteSettings(readClient),
+  ]);
 
   return (
     <>
@@ -97,6 +105,13 @@ export default async function BlogPostPage({ params }: PageProps) {
           <PortableText blocks={blocks} />
         </div>
       </Section>
+
+      {/* DSN-24: sayfa sonu dönüşüm bandı. */}
+      <CtaBand
+        title={homePage?.cta?.title ?? null}
+        text={homePage?.cta?.text ?? null}
+        phone={settings?.phone}
+      />
     </>
   );
 }

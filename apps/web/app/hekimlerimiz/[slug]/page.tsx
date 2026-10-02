@@ -7,7 +7,9 @@ import { buildBreadcrumbJsonLd } from "@dentaliva/seo";
 
 import { Heading, Section, Text } from "@dentaliva/ui";
 import { JsonLd } from "../../../components/json-ld";
+import { CtaBand } from "../../../components/cta-band";
 import { fetchDoctorBySlug, fetchDoctors } from "../../../src/content/doctors";
+import { fetchHomePageDocument, fetchSiteSettings } from "../../../src/content/home";
 import { readClient } from "../../../src/sanity";
 import { absoluteUrl, pageMetadata } from "../../../src/seo";
 import { SeedPlaceholder } from "../../../components/seed-placeholder";
@@ -47,6 +49,12 @@ export default async function DoctorDetailPage({ params }: PageProps) {
   if (!doctor) {
     return <SeedPlaceholder title="Hekim" />;
   }
+
+  // DSN-24: sayfa sonu bandının CMS içeriği; fetch hatasında sessizce düşer.
+  const [homePage, settings] = await Promise.all([
+    fetchHomePageDocument(readClient).catch(() => null),
+    fetchSiteSettings(readClient),
+  ]);
 
   return (
     <>
@@ -106,6 +114,13 @@ export default async function DoctorDetailPage({ params }: PageProps) {
           </div>
         ) : null}
       </Section>
+
+      {/* DSN-24: sayfa sonu dönüşüm bandı. */}
+      <CtaBand
+        title={homePage?.cta?.title ?? null}
+        text={homePage?.cta?.text ?? null}
+        phone={settings?.phone}
+      />
     </>
   );
 }

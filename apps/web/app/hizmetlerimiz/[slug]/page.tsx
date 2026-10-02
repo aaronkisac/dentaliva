@@ -8,7 +8,9 @@ import { buildBreadcrumbJsonLd, buildFaqJsonLd } from "@dentaliva/seo";
 
 import { Accordion, Card, Heading, Link, Section, Text } from "@dentaliva/ui";
 import { JsonLd } from "../../../components/json-ld";
+import { CtaBand } from "../../../components/cta-band";
 import { fetchTreatmentBySlug, fetchTreatments } from "../../../src/content/treatments";
+import { fetchHomePageDocument, fetchSiteSettings } from "../../../src/content/home";
 import { site } from "../../../src/config";
 import { readClient } from "../../../src/sanity";
 import { absoluteUrl, pageMetadata } from "../../../src/seo";
@@ -56,6 +58,12 @@ export default async function TreatmentDetailPage({ params }: PageProps) {
 
   const steps = treatment.steps ?? [];
   const name = pickLocalized(treatment.name);
+  // DSN-24: sayfa sonu bandının CMS içeriği (cache'li fetcher'lar). Bant
+  // fetch hatasında sessizce düşer — detay sayfası içeriğini bloklamaz.
+  const [homePage, settings] = await Promise.all([
+    fetchHomePageDocument(readClient).catch(() => null),
+    fetchSiteSettings(readClient),
+  ]);
   const faqs = (treatment.faqs ?? []).filter((f) => f.question?.tr && f.answer?.tr);
   // SEO-5: breadcrumb trail + FAQ answers as structured data.
   const jsonLd = [
@@ -220,6 +228,13 @@ export default async function TreatmentDetailPage({ params }: PageProps) {
           </div>
         </Section>
       ) : null}
+
+      {/* DSN-24: sayfa sonu dönüşüm bandı. */}
+      <CtaBand
+        title={homePage?.cta?.title ?? null}
+        text={homePage?.cta?.text ?? null}
+        phone={settings?.phone}
+      />
     </>
   );
 }
