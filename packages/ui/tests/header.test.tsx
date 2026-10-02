@@ -1,4 +1,5 @@
 import userEvent from "@testing-library/user-event";
+import { within } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
 const { mockPathname } = vi.hoisted(() => ({ mockPathname: { value: "/" } }));
@@ -85,22 +86,43 @@ describe("Header", () => {
   it("opens the mobile menu, focuses inside it, and wraps Tab", async () => {
     const { container } = renderHeader();
     await userEvent.click(screen.getByRole("button", { name: "Menüyü aç/kapat" }));
-    expect(screen.getByRole("navigation", { name: "Mobile" })).toBeInTheDocument();
+    const mobileNav = within(screen.getByRole("navigation", { name: "Mobile" }));
+    expect(mobileNav.getByRole("link", { name: "Randevu Al" })).toHaveAttribute("href", "/randevu");
     await tick();
     expect(document.activeElement?.tagName).toBe("A");
-    const close = screen.getByRole("button", { name: "Menüyü kapat" });
-    close.focus();
+    mobileNav.getByRole("link", { name: "Randevu Al" }).focus();
     await userEvent.tab();
     expect(container.ownerDocument.activeElement?.tagName).toBe("A");
   });
 
-  it("closes the mobile menu from its close button and restores focus to the burger", async () => {
+  it("closes the mobile menu via the burger toggle and restores focus to the burger", async () => {
     renderHeader();
-    await userEvent.click(screen.getByRole("button", { name: "Menüyü aç/kapat" }));
-    await userEvent.click(screen.getByRole("button", { name: "Menüyü kapat" }));
+    const burger = screen.getByRole("button", { name: "Menüyü aç/kapat" });
+    await userEvent.click(burger);
+    expect(screen.getByRole("navigation", { name: "Mobile" })).toBeInTheDocument();
+    await userEvent.click(burger);
     expect(screen.queryByRole("navigation", { name: "Mobile" })).not.toBeInTheDocument();
     await tick();
     expect(screen.getByRole("button", { name: "Menüyü aç/kapat" })).toHaveFocus();
+  });
+
+  it("closes the mobile menu when the primary CTA link is clicked", async () => {
+    renderHeader();
+    await userEvent.click(screen.getByRole("button", { name: "Menüyü aç/kapat" }));
+    const mobileCta = within(screen.getByRole("navigation", { name: "Mobile" })).getByRole("link", {
+      name: "Randevu Al",
+    });
+    expect(mobileCta).toHaveAttribute("href", "/randevu");
+    await userEvent.click(mobileCta);
+    expect(screen.queryByRole("navigation", { name: "Mobile" })).not.toBeInTheDocument();
+  });
+
+  it("falls back to a close button in the mobile menu when no cta is given", async () => {
+    renderHeader({ cta: undefined });
+    await userEvent.click(screen.getByRole("button", { name: "Menüyü aç/kapat" }));
+    const close = screen.getByRole("button", { name: "Menüyü kapat" });
+    await userEvent.click(close);
+    expect(screen.queryByRole("navigation", { name: "Mobile" })).not.toBeInTheDocument();
   });
 
   it("closes the mobile menu on Escape", async () => {
@@ -117,7 +139,7 @@ describe("Header", () => {
     await tick();
     expect(document.activeElement?.tagName).toBe("A");
     await userEvent.keyboard("{Shift>}{Tab}");
-    expect(document.activeElement).toHaveTextContent("Menüyü kapat");
+    expect(document.activeElement).toHaveTextContent("Randevu Al");
   });
 
   it("has no axe violations", async () => {
