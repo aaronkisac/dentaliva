@@ -9,6 +9,7 @@ import { buildBreadcrumbJsonLd, buildFaqJsonLd } from "@dentaliva/seo";
 import { Accordion, Card, Heading, Link, Section, Text } from "@dentaliva/ui";
 import { JsonLd } from "../../../components/json-ld";
 import { CtaBand } from "../../../components/cta-band";
+import { PageHero } from "../../../components/page-hero";
 import { fetchTreatmentBySlug, fetchTreatments } from "../../../src/content/treatments";
 import { fetchHomePageDocument, fetchSiteSettings } from "../../../src/content/home";
 import { site } from "../../../src/config";
@@ -104,10 +105,12 @@ export default async function TreatmentDetailPage({ params }: PageProps) {
       {heroPreload ? (
         <link rel="preload" as="image" href={heroPreload} fetchPriority="high" />
       ) : null}
-      <Section className="bg-navy">
-        <Heading level="h1" size="lg" className="text-white">
-          {pickLocalized(treatment.name)}
-        </Heading>
+      <PageHero
+        eyebrow="Hizmetlerimiz"
+        eyebrowHref="/hizmetlerimiz"
+        title={name}
+        lead={treatment.summary?.tr ? pickLocalized(treatment.summary) : null}
+      >
         {treatment.heroImage?.ref ? (
           <div
             className="mt-8 border border-[var(--dvn-line-gold)]"
@@ -128,12 +131,7 @@ export default async function TreatmentDetailPage({ params }: PageProps) {
             />
           </div>
         ) : null}
-        {treatment.summary?.tr ? (
-          <Text size="lg" tone="white" className="mt-6 max-w-3xl">
-            {pickLocalized(treatment.summary)}
-          </Text>
-        ) : null}
-      </Section>
+      </PageHero>
 
       <Section>
         {treatment.body?.tr ? (
