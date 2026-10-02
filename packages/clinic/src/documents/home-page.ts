@@ -55,6 +55,15 @@ export const homePage = defineType({
       validation: (rule) => rule.max(24),
     }),
     defineField({
+      name: "onceSonraGallery",
+      title: "Önce/Sonra galerisi",
+      description:
+        "Hasta izinli tedavi öncesi/sonrası görselleri — dolunca galeri sayfasında sekme filtresi açılır.",
+      type: "array",
+      of: [{ type: "imageWithAlt" }],
+      validation: (rule) => rule.max(24),
+    }),
+    defineField({
       name: "cta",
       title: "CTA bandı",
       type: "object",

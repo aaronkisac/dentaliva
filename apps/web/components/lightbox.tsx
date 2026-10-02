@@ -11,13 +11,30 @@ import { imageTarget } from "../src/image-target";
 
 const ENV = imageTarget();
 
+const TABS = [
+  { id: "klinik", label: "Klinik" },
+  { id: "onceSonra", label: "Önce / Sonra" },
+] as const;
+
+type GalleryTab = (typeof TABS)[number]["id"];
+
 /**
  * Native <dialog>-based lightbox: Esc closes it, focus moves into the dialog
  * and returns to the opener (built into <dialog>.showModal/close).
+ * DSN-29: önce/sonra görseli (hasta izinli) CMS'e girince "Klinik /
+ * Önce-Sonra" sekme filtresi otomatik görünür; veri yoksa galeri tek grid
+ * olarak çizilir (boş bölüm render edilmez).
  */
-export function GalleryLightbox({ images }: { images: GalleryImage[] }) {
+export function GalleryLightbox({
+  images,
+  onceSonra,
+}: {
+  images: GalleryImage[];
+  onceSonra?: GalleryImage[];
+}) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [active, setActive] = useState<number | null>(null);
+  const [tab, setTab] = useState<GalleryTab>("klinik");
 
   useEffect(() => {
     const dialog = dialogRef.current;
@@ -28,10 +45,35 @@ export function GalleryLightbox({ images }: { images: GalleryImage[] }) {
     if (dialog && !dialog.open) dialog.showModal();
   }, [active]);
 
-  const items = images.filter((image) => image.asset?._ref);
+  const klinik = images.filter((image) => image.asset?._ref);
+  const after = (onceSonra ?? []).filter((image) => image.asset?._ref);
+  const items = after.length > 0 ? (tab === "klinik" ? klinik : after) : klinik;
 
   return (
     <>
+      {after.length > 0 ? (
+        <div role="group" aria-label="Galeri filtresi" className="mb-6 flex flex-wrap gap-2">
+          {TABS.map((t) => (
+            <button
+              key={t.id}
+              type="button"
+              aria-pressed={tab === t.id}
+              onClick={() => {
+                setTab(t.id);
+                setActive(null);
+              }}
+              className={
+                "px-4 py-2 font-sans text-xs font-semibold uppercase tracking-widest transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold " +
+                (tab === t.id
+                  ? "bg-navy text-white"
+                  : "border border-[var(--dvn-line-gold)] text-navy hover:bg-navy hover:text-white")
+              }
+            >
+              {t.label}
+            </button>
+          ))}
+        </div>
+      ) : null}
       <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
         {items.map((image, index) => {
           const ref = image.asset?._ref as string;
@@ -46,7 +88,7 @@ export function GalleryLightbox({ images }: { images: GalleryImage[] }) {
             >
               <Image
                 src={ref}
-                alt={pickLocalized(image.alt) || `Klinik görseli ${index + 1}`}
+                alt={pickLocalized(image.alt) || `Galeri görseli ${index + 1}`}
                 width={dims.width}
                 height={dims.height}
                 sizes="(max-width: 768px) 50vw, 25vw"

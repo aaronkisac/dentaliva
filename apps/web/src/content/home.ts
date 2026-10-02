@@ -62,6 +62,8 @@ export interface HomePageContent {
   about?: { title?: LocalizedPair; body?: LocalizedPair; image?: HomeImage };
   stats?: Array<{ value?: string; label?: LocalizedPair }>;
   gallery?: GalleryImage[];
+  /** DSN-29: hasta izinli önce/sonra görselleri — dolunca galeri sekmesi açılır. */
+  onceSonraGallery?: GalleryImage[];
   cta?: { title?: LocalizedPair; text?: LocalizedPair };
 }
 

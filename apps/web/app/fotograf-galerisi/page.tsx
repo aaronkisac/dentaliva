@@ -16,7 +16,11 @@ export const metadata: Metadata = pageMetadata({
 
 export default async function GalleryPage() {
   // PRF-5: yalnızca homePage dokümanı — liste sorguları çekilmez.
-  const images = (await fetchHomePageDocument(readClient))?.gallery ?? [];
+  const homePage = await fetchHomePageDocument(readClient);
+  const images = homePage?.gallery ?? [];
+  // DSN-29: önce/sonra görselleri müşteriden (hasta izinli) gelir;
+  // dolana kadar sekme filtresi hiç görünmez.
+  const onceSonra = homePage?.onceSonraGallery ?? [];
 
   return (
     <Section>
@@ -24,12 +28,12 @@ export default async function GalleryPage() {
         Fotoğraf Galerisi
       </Heading>
       <div className="mt-8">
-        {images.length === 0 ? (
+        {images.length === 0 && onceSonra.length === 0 ? (
           <p className="font-sans text-ink">Galeri hazırlanıyor.</p>
         ) : (
           <>
             <p className="sr-only">Galeri: {images.length} görsel, büyütmek için görsel seçin.</p>
-            <GalleryLightbox images={images} />
+            <GalleryLightbox images={images} onceSonra={onceSonra} />
           </>
         )}
       </div>
