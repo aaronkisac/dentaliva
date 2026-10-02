@@ -23,5 +23,6 @@ export const homePageQuery = defineQuery(`*[_type == "homePage"][0]{
   about { ..., image { ..., alt, "lqip": asset->metadata.lqip } },
   stats,
   gallery[]{ "asset": { "_ref": asset._ref }, "alt": alt, "lqip": asset->metadata.lqip },
+  onceSonraGallery[]{ "asset": { "_ref": asset._ref }, "alt": alt, "lqip": asset->metadata.lqip },
   cta
 }`);
