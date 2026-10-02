@@ -5,7 +5,7 @@ import Image from "next/image";
 import { pickLocalized } from "@dentaliva/sanity-schema/client";
 import { buildBreadcrumbJsonLd } from "@dentaliva/seo";
 
-import { Heading, Section, Text } from "@dentaliva/ui";
+import { Reveal, Heading, Section, Text } from "@dentaliva/ui";
 import { JsonLd } from "../../../components/json-ld";
 import { PortableText } from "../../../components/portable-text";
 import { CtaBand } from "../../../components/cta-band";
@@ -101,9 +101,11 @@ export default async function BlogPostPage({ params }: PageProps) {
             {pickLocalized(post.excerpt)}
           </Text>
         ) : null}
-        <div className="mt-10">
-          <PortableText blocks={blocks} />
-        </div>
+        <Reveal>
+          <div className="mt-10">
+            <PortableText blocks={blocks} />
+          </div>
+        </Reveal>
       </Section>
 
       {/* DSN-24: sayfa sonu dönüşüm bandı. */}
