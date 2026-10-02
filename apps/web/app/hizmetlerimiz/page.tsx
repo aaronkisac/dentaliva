@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 
+import Image from "next/image";
+
 import { Card, Heading, Section, Text } from "@dentaliva/ui";
 import { PageHero } from "../../components/page-hero";
 import { pickLocalized } from "@dentaliva/sanity-schema/client";
@@ -28,6 +30,18 @@ export default async function TreatmentsPage() {
           <div className="mt-8 grid gap-6 md:grid-cols-3">
             {treatments.map((treatment) => (
               <Card key={treatment.slug} hover="lift">
+                {treatment.heroImage?.ref ? (
+                  <Image
+                    src={treatment.heroImage.ref}
+                    alt={treatment.heroImage.alt?.tr ?? ""}
+                    width={600}
+                    height={400}
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    placeholder={treatment.heroImage.lqip ? "blur" : "empty"}
+                    blurDataURL={treatment.heroImage.lqip}
+                    className="h-48 w-full object-cover"
+                  />
+                ) : null}
                 <Heading level="h3" size="title">
                   {pickLocalized(treatment.name)}
                 </Heading>

@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 
+import Image from "next/image";
+
 import { Card, Heading, Section, Text } from "@dentaliva/ui";
 import { PageHero } from "../../components/page-hero";
 import { pickLocalized } from "@dentaliva/sanity-schema/client";
@@ -28,6 +30,18 @@ export default async function BranchesPage() {
           <div className="mt-8 grid gap-6 md:grid-cols-3">
             {branches.map((branch) => (
               <Card key={branch.slug} hover="lift">
+                {branch.image?.ref ? (
+                  <Image
+                    src={branch.image.ref}
+                    alt={branch.name ?? ""}
+                    width={600}
+                    height={400}
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    placeholder={branch.image.lqip ? "blur" : "empty"}
+                    blurDataURL={branch.image.lqip}
+                    className="h-48 w-full object-cover"
+                  />
+                ) : null}
                 <Heading level="h3" size="title">
                   {branch.name}
                 </Heading>

@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 
+import Image from "next/image";
+
 import { Card, Heading, Section, Text } from "@dentaliva/ui";
 import { PageHero } from "../../components/page-hero";
 import { pickLocalized } from "@dentaliva/sanity-schema/client";
@@ -28,6 +30,18 @@ export default async function BlogPage() {
           <div className="mt-8 grid gap-6 md:grid-cols-3">
             {posts.map((post) => (
               <Card key={post.slug} hover="lift">
+                {post.heroImage?.ref ? (
+                  <Image
+                    src={post.heroImage.ref}
+                    alt={post.heroImage.alt?.tr ?? ""}
+                    width={600}
+                    height={400}
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    placeholder={post.heroImage.lqip ? "blur" : "empty"}
+                    blurDataURL={post.heroImage.lqip}
+                    className="h-48 w-full object-cover"
+                  />
+                ) : null}
                 <Text tone="muted" size="small">
                   {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString("tr-TR") : ""}
                 </Text>

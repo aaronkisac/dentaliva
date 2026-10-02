@@ -10,7 +10,7 @@ export interface BlogListItem {
   slug?: string;
   excerpt?: LocalizedPair;
   publishedAt?: string;
-  heroImage?: unknown;
+  heroImage?: BlogImage;
 }
 
 export interface BlogImage {

@@ -5,7 +5,7 @@ export const treatmentListQuery = defineQuery(
     name,
     "slug": slug.current,
     summary,
-    heroImage
+    heroImage { "ref": asset._ref, alt, "lqip": asset->metadata.lqip }
   }`,
 );
 
