@@ -47,7 +47,10 @@ export const fontFamily = {
   sans: "'Montserrat', 'Segoe UI', sans-serif",
 } as const;
 
-/** Square corners are a brand trait; radius exists only for round avatars. */
+/**
+ * Square corners are a brand trait (DSN-32: the round avatar exception is
+ * retired — portraits use the 4px carousel radius in the app layer).
+ */
 export const radius = {
   none: "0px",
   full: "9999px",

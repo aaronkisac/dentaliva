@@ -5,9 +5,10 @@ import Image from "next/image";
 import { pickLocalized } from "@dentaliva/sanity-schema/client";
 import { buildBreadcrumbJsonLd } from "@dentaliva/seo";
 
-import { Reveal, Heading, Section, Text } from "@dentaliva/ui";
+import { Reveal, Section, Text } from "@dentaliva/ui";
 import { JsonLd } from "../../../components/json-ld";
 import { CtaBand } from "../../../components/cta-band";
+import { PageHero } from "../../../components/page-hero";
 import { fetchDoctorBySlug, fetchDoctors } from "../../../src/content/doctors";
 import { fetchHomePageDocument, fetchSiteSettings } from "../../../src/content/home";
 import { readClient } from "../../../src/sanity";
@@ -65,35 +66,29 @@ export default async function DoctorDetailPage({ params }: PageProps) {
           { name: doctor.name ?? "Hekim", url: absoluteUrl(`/hekimlerimiz/${slug}`) },
         ])}
       />
-      <Section className="bg-navy">
-        <div className="flex flex-col items-start gap-8 md:flex-row md:items-center">
-          {doctor.photo?.ref ? (
-            <Image
-              src={doctor.photo.ref}
-              alt={doctor.name ?? ""}
-              width={192}
-              height={192}
-              // PRF-5: sabit 192px kutu — sizes olmadan tarayıcı 100vw'e
-              // göre ~1920px kaynak seçiyordu; lqip varsa inline blur.
-              sizes="192px"
-              priority
-              placeholder={doctor.photo.lqip ? "blur" : "empty"}
-              blurDataURL={doctor.photo.lqip}
-              className="h-48 w-48 shrink-0 rounded-full border-2 border-[var(--dvn-line-gold)] object-cover"
-            />
-          ) : null}
-          <div>
-            <Heading level="h1" size="lg" className="text-white">
-              {doctor.name}
-            </Heading>
-            {doctor.title?.tr ? (
-              <Text size="lg" tone="white" className="mt-4">
-                {pickLocalized(doctor.title)}
-              </Text>
-            ) : null}
-          </div>
-        </div>
-      </Section>
+      {/* DSN-32: kare portre (carousel'la aynı dil, rounded-[4px]) + PageHero. */}
+      <PageHero
+        eyebrow="Hekimlerimiz"
+        eyebrowHref="/hekimlerimiz"
+        title={doctor.name ?? "Hekim"}
+        lead={doctor.title?.tr ? pickLocalized(doctor.title) : null}
+      >
+        {doctor.photo?.ref ? (
+          <Image
+            src={doctor.photo.ref}
+            alt={doctor.name ?? ""}
+            width={256}
+            height={256}
+            // PRF-5: sabit kutu — sizes olmadan tarayıcı 100vw'e göre ~1920px
+            // kaynak seçiyordu; lqip varsa inline blur.
+            sizes="256px"
+            priority
+            placeholder={doctor.photo.lqip ? "blur" : "empty"}
+            blurDataURL={doctor.photo.lqip}
+            className="mt-8 h-56 w-56 border border-[var(--dvn-line-gold)] object-cover md:h-64 md:w-64"
+          />
+        ) : null}
+      </PageHero>
       <Reveal>
         <Section>
           {doctor.bio?.tr ? (
