@@ -155,21 +155,34 @@ export default async function TreatmentDetailPage({ params }: PageProps) {
             </div>
           ) : null}
 
+          {/* DSN-31: adımlar numaralı ve başlıklı (eyebrow motif, copy sweep borçlu). */}
           {steps.length > 0 ? (
-            <div className="mt-12 grid gap-6 md:grid-cols-3">
-              {steps.map((step, index) => (
-                <Card key={index}>
-                  <Heading level="h3" size="title">
-                    {pickLocalized(step.title) || `Adım ${index + 1}`}
-                  </Heading>
-                  <Text className="mt-2">{pickLocalized(step.description)}</Text>
-                </Card>
-              ))}
+            <div className="mt-12">
+              <div className="flex items-center gap-3">
+                <span aria-hidden="true" className="h-px w-8 bg-gold" />
+                <p className="font-sans text-xs uppercase tracking-widest text-gold-deep">Süreç</p>
+              </div>
+              <Heading level="h2" size="md" className="mt-4">
+                Tedavi Süreci
+              </Heading>
+              <div className="mt-6 grid gap-6 md:grid-cols-3">
+                {steps.map((step, index) => (
+                  <Card key={index} hover="lift">
+                    <p aria-hidden="true" className="font-serif text-3xl text-gold">
+                      {String(index + 1).padStart(2, "0")}
+                    </p>
+                    <Heading level="h3" size="title" className="mt-3">
+                      {pickLocalized(step.title) || `Adım ${index + 1}`}
+                    </Heading>
+                    <Text className="mt-2">{pickLocalized(step.description)}</Text>
+                  </Card>
+                ))}
+              </div>
             </div>
           ) : null}
 
           {treatment.priceNote?.tr ? (
-            <div className="mt-12 border border-[var(--dvn-line-gold)] bg-ivory p-6">
+            <div className="mt-12 max-w-3xl border border-[var(--dvn-line-gold)] bg-white p-8 shadow-[var(--dvn-shadow-soft)]">
               <Text>{pickLocalized(treatment.priceNote)}</Text>
             </div>
           ) : null}
