@@ -18,6 +18,8 @@ const ROOTS = [join(process.cwd()), join(process.cwd(), "..", "..", "packages", 
  * - ui/reveal: IntersectionObserver + prefers-reduced-motion
  * - ui/use-focus-trap: client hook
  * - sections/doctors: carousel scroll state + entrance reveals
+ * - app/error.tsx: Next error boundary — client zorunluluğu (reset state)
+ * - app/global-error.tsx: root hata sınırı — client zorunluluğu (reset state)
  * (ui/button was audited out — purely presentational, renders server-side.)
  */
 const ALLOWED = new Set(
@@ -25,6 +27,8 @@ const ALLOWED = new Set(
     "components/CallbackForm.tsx",
     "components/lightbox.tsx",
     "components/sections/doctors.tsx",
+    "app/error.tsx",
+    "app/global-error.tsx",
     "src/header.tsx",
     "src/accordion.tsx",
     "src/reveal.tsx",
