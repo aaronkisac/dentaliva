@@ -57,6 +57,45 @@ describe("Footer", () => {
     expect(screen.queryByText("Her gün 09:00 – 23:00")).not.toBeInTheDocument();
   });
 
+  it("flattens nav columns into a single deduplicated link list (DSN-34)", () => {
+    renderUi(
+      <Footer
+        {...props}
+        columns={[
+          { title: "A", links: [{ label: "Şubeler", href: "/subelerimiz" }] },
+          {
+            title: "B",
+            links: [
+              { label: "Şubeler tekrar", href: "/subelerimiz" },
+              { label: "Blog", href: "/blog" },
+            ],
+          },
+        ]}
+      />,
+    );
+    expect(screen.getByRole("link", { name: "Şubeler" })).toHaveAttribute("href", "/subelerimiz");
+    expect(screen.queryByRole("link", { name: "Şubeler tekrar" })).not.toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Blog" })).toHaveAttribute("href", "/blog");
+  });
+
+  it("renders platform icons for known socials and falls back to plain text (DSN-34)", () => {
+    renderUi(
+      <Footer
+        {...props}
+        social={[
+          { label: "Instagram", href: "https://instagram.com/dentaliva" },
+          { label: "Facebook", href: "https://facebook.com/dentaliva" },
+          { label: "YouTube", href: "https://youtube.com/@dentaliva" },
+          { label: "TikTok", href: "https://tiktok.com/@dentaliva" },
+        ]}
+      />,
+    );
+    expect(screen.getByRole("link", { name: "Instagram" }).querySelector("svg")).not.toBeNull();
+    expect(screen.getByRole("link", { name: "Facebook" }).querySelector("svg")).not.toBeNull();
+    expect(screen.getByRole("link", { name: "YouTube" }).querySelector("svg")).not.toBeNull();
+    expect(screen.getByRole("link", { name: "TikTok" }).querySelector("svg")).toBeNull();
+  });
+
   it("has no axe violations", async () => {
     await expectNoA11yViolations(<Footer {...props} />);
   });
