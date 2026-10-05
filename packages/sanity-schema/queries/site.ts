@@ -24,5 +24,6 @@ export const homePageQuery = defineQuery(`*[_type == "homePage"][0]{
   stats,
   gallery[]{ "asset": { "_ref": asset._ref }, "alt": alt, "lqip": asset->metadata.lqip },
   onceSonraGallery[]{ "asset": { "_ref": asset._ref }, "alt": alt, "lqip": asset->metadata.lqip },
+  teamSection,
   cta
 }`);

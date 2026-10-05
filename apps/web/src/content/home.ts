@@ -64,6 +64,8 @@ export interface HomePageContent {
   gallery?: GalleryImage[];
   /** DSN-29: hasta izinli önce/sonra görselleri — dolunca galeri sekmesi açılır. */
   onceSonraGallery?: GalleryImage[];
+  /** Copy sweep: ekip bölümünün CMS'ten gelen başlık/copy bloğu. */
+  teamSection?: HomeTeamSection;
   cta?: { title?: LocalizedPair; text?: LocalizedPair };
 }
 
@@ -75,6 +77,12 @@ export interface SiteSettingsLite {
   whatsapp?: string;
   siteName?: string;
   social?: Array<{ platform?: string; url?: string }>;
+}
+
+export interface HomeTeamSection {
+  eyebrow?: LocalizedPair;
+  heading?: LocalizedPair;
+  text?: LocalizedPair;
 }
 
 export interface HomeData {

@@ -27,9 +27,9 @@ const ENV = imageTarget();
  * güvenli). Fixed şeffaf header bu bölümün üstünde durur (DSN-11).
  */
 export function HeroSection({ data }: { data: HeroData | null }) {
-  const headline =
-    pickLocalized(data?.headline) || "Dentaliva Göz Alıcı Bir Gülüşe Sahip Olmanızı Sağlıyor";
-  const subline = pickLocalized(data?.subline) || "İstanbul'da Diş Kliniği";
+  // Copy sweep: hero metni yalnızca CMS'ten gelir — fallback copy yok.
+  const headline = pickLocalized(data?.headline);
+  const subline = pickLocalized(data?.subline);
   const ref = data?.image?.asset?._ref;
   const dims = ref ? (refDimensions(ref) ?? { width: 2400, height: 1400 }) : null;
   const rise = (delay: number) => ({ animationDelay: `${delay}ms` });
@@ -61,12 +61,16 @@ export function HeroSection({ data }: { data: HeroData | null }) {
       ) : null}
       <Container className="relative">
         <div className="flex max-w-3xl flex-col items-start gap-9 py-[var(--dvn-section-y)] text-left md:py-[var(--dvn-section-y-md)]">
-          <Heading level="h1" size="xl" className="hero-rise text-white" style={rise(80)}>
-            {headline}
-          </Heading>
-          <Text size="lg" tone="white" className="hero-rise text-white/85" style={rise(220)}>
-            {subline}
-          </Text>
+          {headline ? (
+            <Heading level="h1" size="xl" className="hero-rise text-white" style={rise(80)}>
+              {headline}
+            </Heading>
+          ) : null}
+          {subline ? (
+            <Text size="lg" tone="white" className="hero-rise text-white/85" style={rise(220)}>
+              {subline}
+            </Text>
+          ) : null}
           <div className="hero-rise flex flex-wrap items-center gap-4" style={rise(360)}>
             <Link href="/iletisim" className={buttonVariants({ size: "lg" })}>
               Randevu Al
