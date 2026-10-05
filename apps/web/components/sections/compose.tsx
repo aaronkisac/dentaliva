@@ -32,7 +32,8 @@ export const sectionRegistry: Record<HomeSectionId, SectionRenderer> = {
     reveal(
       <GallerySection images={data.homePage?.gallery ?? []} stats={data.homePage?.stats ?? []} />,
     ),
-  doctors: (data) => reveal(<DoctorsSection items={data.doctors} />),
+  doctors: (data) =>
+    reveal(<DoctorsSection items={data.doctors} team={data.homePage?.teamSection ?? null} />),
   faq: (data) => reveal(<FaqSection items={data.faqs} />),
   cta: (data) =>
     reveal(

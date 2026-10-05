@@ -36,10 +36,11 @@ export function CtaSection({
   text?: LocalizedPair | null;
   phone: string;
 }) {
+  if (!title?.tr) return null;
   return (
     <Section className="bg-navy text-center">
       <Heading level="h2" size="md" className="text-white">
-        {title?.tr ?? "Randevu Alın"}
+        {title.tr}
       </Heading>
       {text?.tr ? (
         <p className="mx-auto mt-3 max-w-2xl font-sans text-lg text-white/80">{text.tr}</p>

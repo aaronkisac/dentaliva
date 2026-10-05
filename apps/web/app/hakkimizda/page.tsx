@@ -46,13 +46,19 @@ export default async function AboutPage() {
       {doctors.length > 0 ? (
         <Reveal>
           <Section className="bg-white">
-            <div className="flex items-center gap-3">
-              <span aria-hidden="true" className="h-px w-8 bg-gold" />
-              <p className="font-sans text-xs uppercase tracking-widest text-gold-deep">Ekibimiz</p>
-            </div>
-            <Heading level="h2" size="md" className="mt-4">
-              Uzmanlarımızla Tanışın
-            </Heading>
+            {pickLocalized(homePage?.teamSection?.heading) ? (
+              <>
+                <div className="flex items-center gap-3">
+                  <span aria-hidden="true" className="h-px w-8 bg-gold" />
+                  <p className="font-sans text-xs uppercase tracking-widest text-gold-deep">
+                    {pickLocalized(homePage?.teamSection?.eyebrow)}
+                  </p>
+                </div>
+                <Heading level="h2" size="md" className="mt-4">
+                  {pickLocalized(homePage?.teamSection?.heading)}
+                </Heading>
+              </>
+            ) : null}
             <div className="mt-8 grid gap-6 md:grid-cols-3">
               {doctors.map((doctor) => (
                 <Card key={doctor.slug} hover="lift">

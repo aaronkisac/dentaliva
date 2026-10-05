@@ -4,8 +4,10 @@ import Image from "next/image";
 import { useState } from "react";
 
 import { cn, Heading, Link, Section, Text } from "@dentaliva/ui";
+import { pickLocalized } from "@dentaliva/sanity-schema/client";
 import { lqipUrl } from "@dentaliva/sanity-schema/image-url";
 
+import type { HomeTeamSection } from "../../src/content/home";
 import { imageTarget } from "../../src/image-target";
 
 const ENV = imageTarget();
@@ -33,7 +35,13 @@ const VISIBLE = 4;
  * ok butonları yalnız birden fazla hekimde çıkar; slayt değişimi
  * role="status" ile duyurulur (WCAG 4.1.3).
  */
-export function DoctorsSection({ items }: { items: DoctorItem[] }) {
+export function DoctorsSection({
+  items,
+  team,
+}: {
+  items: DoctorItem[];
+  team?: HomeTeamSection | null;
+}) {
   const [start, setStart] = useState(0);
   const [dir, setDir] = useState<1 | -1>(1);
   // Yön animasyonları yalnız gezinmede oynar; ilk boyamada değil (bölüm
@@ -65,16 +73,22 @@ export function DoctorsSection({ items }: { items: DoctorItem[] }) {
 
   return (
     <Section className="bg-white">
-      <div className="flex items-center gap-3">
-        <span aria-hidden="true" className="h-px w-8 bg-gold" />
-        <p className="font-sans text-xs uppercase tracking-widest text-gold-deep">Ekibimiz</p>
-      </div>
-      <Heading level="h2" size="md" className="mt-4 max-w-2xl">
-        Uzmanlarımızla Tanışın
-      </Heading>
-      <Text className="mt-3 max-w-2xl text-ink/70">
-        Deneyimli ve uzman hekimlerimiz, konforlu ve kaliteli hizmeti ilke edinmiştir.
-      </Text>
+      {pickLocalized(team?.heading) ? (
+        <>
+          <div className="flex items-center gap-3">
+            <span aria-hidden="true" className="h-px w-8 bg-gold" />
+            <p className="font-sans text-xs uppercase tracking-widest text-gold-deep">
+              {pickLocalized(team?.eyebrow)}
+            </p>
+          </div>
+          <Heading level="h2" size="md" className="mt-4 max-w-2xl">
+            {pickLocalized(team?.heading)}
+          </Heading>
+        </>
+      ) : null}
+      {pickLocalized(team?.text) ? (
+        <Text className="mt-3 max-w-2xl text-ink/70">{pickLocalized(team?.text)}</Text>
+      ) : null}
 
       {/* relative sarmalayıcı: ok butonları sm+ üstünde küçük kartların
           üstündeki boşluğa mutlak konumlanır; mobilde akışta kalır. */}

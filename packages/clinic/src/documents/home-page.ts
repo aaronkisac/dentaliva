@@ -64,6 +64,16 @@ export const homePage = defineType({
       validation: (rule) => rule.max(24),
     }),
     defineField({
+      name: "teamSection",
+      title: "Ekip bölümü",
+      type: "object",
+      fields: [
+        { name: "eyebrow", type: "localeString" },
+        { name: "heading", type: "localeString" },
+        { name: "text", type: "localeText" },
+      ],
+    }),
+    defineField({
       name: "cta",
       title: "CTA bandı",
       type: "object",
