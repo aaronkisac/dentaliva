@@ -58,6 +58,11 @@ describe("Heading", () => {
     expect(ref.current).toBeInstanceOf(HTMLHeadingElement);
   });
 
+  it("balances multi-line headings (DSN-42)", () => {
+    renderUi(<Heading level="h2">T</Heading>);
+    expect(screen.getByRole("heading")).toHaveClass("[text-wrap:balance]");
+  });
+
   it("has no axe violations", async () => {
     await expectNoA11yViolations(
       <>
