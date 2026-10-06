@@ -30,6 +30,11 @@ export function Reveal({ children, delay = 0, className, effect = "up" }: Reveal
       setRevealed(true);
       return;
     }
+    // Element boyundan bağımsız eşik: %15 threshold, viewport'tan uzun
+    // sarmalayıcılarda (ör. 5061px ana sayfa tedavi gridi, listeleme gövdeleri)
+    // hiçbir ekran boyutunda tetiklenemez ve bölüm kalıcı olarak gizli kalır.
+    // threshold 0 + alt kenardan -15% rootMargin, elemanın tepesi viewport'un
+    // alt %15 çizgisine girdiği anda tetikler — kartlarda da aynı his.
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries.some((entry) => entry.isIntersecting)) {
@@ -37,7 +42,7 @@ export function Reveal({ children, delay = 0, className, effect = "up" }: Reveal
           observer.disconnect();
         }
       },
-      { threshold: 0.15 },
+      { threshold: 0, rootMargin: "0px 0px -15% 0px" },
     );
     observer.observe(element);
     return () => observer.disconnect();
