@@ -23,6 +23,28 @@ export interface DoctorItem {
 
 const VISIBLE = 4;
 
+/** DSN-38: ok ikonu unicode değil stroke SVG (DSN-23 burger kararıyla aynı ikon dili). */
+function ArrowIcon({ direction }: { direction: "left" | "right" }) {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="h-4 w-4"
+    >
+      {direction === "left" ? (
+        <path d="M19 12H5m0 0 6-6m-6 6 6 6" />
+      ) : (
+        <path d="M5 12h14m0 0-6-6m6 6-6 6" />
+      )}
+    </svg>
+  );
+}
+
 /**
  * DSN-20: tamamen manuel carousel — 4 görünür hekim; SIRA 1'deki hekim
  * BÜYÜK render edilir, 2-3-4 küçük kalır ve alt kenara hizalanır. Slaytlar
@@ -152,17 +174,17 @@ export function DoctorsSection({
               type="button"
               aria-label="Önceki hekimler"
               onClick={() => rotate(-1)}
-              className="flex h-10 w-10 items-center justify-center border border-[var(--dvn-line-gold)] text-navy hover:bg-gold hover:text-navy"
+              className="flex h-11 w-11 items-center justify-center border border-[var(--dvn-line-gold)] text-navy hover:bg-gold hover:text-navy"
             >
-              ←
+              <ArrowIcon direction="left" />
             </button>
             <button
               type="button"
               aria-label="Sonraki hekimler"
               onClick={() => rotate(1)}
-              className="flex h-10 w-10 items-center justify-center border border-[var(--dvn-line-gold)] text-navy hover:bg-gold hover:text-navy"
+              className="flex h-11 w-11 items-center justify-center border border-[var(--dvn-line-gold)] text-navy hover:bg-gold hover:text-navy"
             >
-              →
+              <ArrowIcon direction="right" />
             </button>
           </div>
         )}
