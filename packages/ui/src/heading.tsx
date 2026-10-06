@@ -26,6 +26,13 @@ export const Heading = forwardRef<HTMLHeadingElement, HeadingProps>(function Hea
 ) {
   const Tag = level;
   return (
-    <Tag ref={ref} className={cn("font-serif text-navy", headingSize[size], className)} {...rest} />
+    <Tag
+      ref={ref}
+      // text-wrap: balance — çok satıra düşen serif başlıklar satırlara
+      // dengeli dağılır (design audit P-01: mobil hero'da tek kelimelik
+      // kısa son satır oluyordu).
+      className={cn("font-serif text-navy [text-wrap:balance]", headingSize[size], className)}
+      {...rest}
+    />
   );
 });
