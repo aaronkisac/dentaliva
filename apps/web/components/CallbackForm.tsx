@@ -188,7 +188,7 @@ export function CallbackForm({ endpoint = "/api/callback" }: { endpoint?: string
             type="checkbox"
             aria-invalid={Boolean(errors.kvkkConsent)}
             aria-describedby={errors.kvkkConsent ? "cb-kvkk-error" : undefined}
-            className="mt-0.5 size-4 accent-[var(--dvn-gold)]"
+            className="mt-0.5 size-5 accent-[var(--dvn-gold)]"
             {...register("kvkkConsent")}
           />
           <span>

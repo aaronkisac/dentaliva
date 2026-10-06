@@ -54,7 +54,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Che
       <input
         ref={ref}
         type="checkbox"
-        className="mt-0.5 size-4 accent-[var(--dvn-gold)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
+        className="mt-0.5 size-5 accent-[var(--dvn-gold)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
         {...rest}
       />
       <span>{label}</span>
