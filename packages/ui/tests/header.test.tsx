@@ -178,6 +178,16 @@ describe("DSN-10 header variants", () => {
     expect(nav.textContent).toContain("İletişim");
   });
 
+  it("wordmark follows the dark/light state (DSN-37): ivory over hero, navy when lit", () => {
+    mockPathname.value = "/";
+    const { unmount } = renderHeader();
+    expect(screen.getByText("Dentaliva").parentElement).toHaveClass("text-ivory");
+    unmount();
+    mockPathname.value = "/hakkimizda";
+    renderHeader();
+    expect(screen.getByText("Dentaliva").parentElement).toHaveClass("text-navy");
+  });
+
   it("light variant dropdown opens", async () => {
     mockPathname.value = "/hakkimizda";
     renderHeader();
