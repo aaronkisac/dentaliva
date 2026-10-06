@@ -9,9 +9,11 @@ class FakeObserver implements IntersectionObserver {
   static instances: FakeObserver[] = [];
   callback: ObserverCallback;
   element: Element | undefined;
+  options: IntersectionObserverInit | undefined;
   disconnected = false;
-  constructor(callback: ObserverCallback) {
+  constructor(callback: ObserverCallback, options?: IntersectionObserverInit) {
     this.callback = callback;
+    this.options = options;
     FakeObserver.instances.push(this);
   }
   observe(element: Element) {
@@ -80,6 +82,18 @@ describe("Reveal", () => {
     );
     FakeObserver.instances[0]?.callback([{ isIntersecting: false }]);
     expect(screen.getByText("content").parentElement).toHaveClass("opacity-0");
+  });
+
+  it("observes with a viewport-line margin so wrappers taller than the viewport can still reveal (DSN-36)", () => {
+    render(
+      <Reveal>
+        <p>tall wrapper content</p>
+      </Reveal>,
+    );
+    expect(FakeObserver.instances[0]?.options).toEqual({
+      threshold: 0,
+      rootMargin: "0px 0px -15% 0px",
+    });
   });
 
   it("shows content immediately under prefers-reduced-motion", () => {
