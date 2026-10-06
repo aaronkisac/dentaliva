@@ -23,6 +23,12 @@ export const Link = forwardRef<HTMLAnchorElement, LinkProps>(function Link(
       <NextLink
         ref={ref}
         href={href}
+        // output:export build'lerinde Next 16'nın istediği
+        // __next.*.__PAGE__.txt prefetch dosyaları üretilmiyor; her iç link
+        // 404'e düşüyor (design audit FINDING-003). Statik CF edge sitesinde
+        // prefetch kazancı minimal — kapat; gezinme doküman yüklemesiyle
+        // çalışmaya devam eder.
+        prefetch={false}
         className={cn(
           "font-sans underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold",
           className,
