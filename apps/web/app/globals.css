@@ -219,6 +219,19 @@ body {
   font-family: var(--dvn-font-sans);
 }
 
+/* Tarayıcı yüzeyleri marka dilinde: metin seçimi bronze/espresso, scrollbar
+   ince ve altın tonlu (design audit FINDING-006 — varsayılan mavi seçim
+   markayla çatışıyordu). */
+::selection {
+  background-color: var(--dvn-gold);
+  color: var(--dvn-navy);
+}
+
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--dvn-gold) transparent;
+}
+
 h1,
 h2,
 h3,
