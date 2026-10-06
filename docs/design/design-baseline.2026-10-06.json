@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 2,
+  "date": "2026-10-06",
+  "runId": "100537-7251",
+  "url": "https://dentaliva-com-staging.dentaliva.workers.dev",
+  "designScore": "B",
+  "aiSlopScore": "A",
+  "categoryGrades": {
+    "hierarchy": "B+",
+    "typography": "A-",
+    "color": "B",
+    "spacing": "B+",
+    "interaction": "C+",
+    "responsive": "B",
+    "motion": "C",
+    "content": "B",
+    "aiSlop": "A",
+    "performance": "B"
+  },
+  "detector": { "mode": "none" },
+  "findings": [
+    {
+      "id": "FINDING-001",
+      "title": "Reveal threshold 0.15 permanently hides tall sections (home grid, hizmetlerimiz/blog listings, treatment detail body)",
+      "impact": "high",
+      "category": "motion"
+    },
+    {
+      "id": "FINDING-002",
+      "title": "Header wordmark stays dark over dark hero in transparent state",
+      "impact": "medium",
+      "category": "color"
+    },
+    {
+      "id": "FINDING-003",
+      "title": "RSC prefetch .txt 404s on every internal route (Next 16 export)",
+      "impact": "medium",
+      "category": "performance"
+    },
+    {
+      "id": "FINDING-004",
+      "title": "KVKK checkbox 16px, submit 40px, carousel arrows 40px below 44px target",
+      "impact": "medium",
+      "category": "interaction"
+    },
+    {
+      "id": "FINDING-005",
+      "title": "Carousel arrows unicode glyphs, inconsistent with SVG icon decision",
+      "impact": "medium",
+      "category": "interaction"
+    },
+    {
+      "id": "FINDING-006",
+      "title": "No ::selection/scrollbar/caret theming",
+      "impact": "polish",
+      "category": "color"
+    },
+    {
+      "id": "FINDING-007",
+      "title": "Iletisim page off PageHero pattern + dead left column",
+      "impact": "medium",
+      "category": "consistency"
+    },
+    {
+      "id": "FINDING-008",
+      "title": "Font preload unused warnings (cormorant-ext, montserrat)",
+      "impact": "medium",
+      "category": "performance"
+    },
+    {
+      "id": "FINDING-009",
+      "title": "CMS data: wrong doctor photo (Saygin), Dr. Dr. duplication, title casing",
+      "impact": "medium",
+      "category": "content"
+    },
+    {
+      "id": "FINDING-010",
+      "title": "Form input focus ring not visible; nav target heights 36px",
+      "impact": "medium",
+      "category": "interaction"
+    }
+  ]
+}
