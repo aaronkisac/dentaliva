@@ -285,7 +285,10 @@ export function Header({ items, cta, logo, contact, labels }: HeaderProps) {
           >
             D
           </span>
-          {logo}
+          {/* Wordmark, dark/light durumuna uyan diğer başlık öğeleriyle birlikte
+              renk değiştirir — logo düğümü renksiz geldiği için buradan miras
+              alır (şeffaf hero üstünde koyu wordmark okunmuyordu). */}
+          <span className={cn(dark ? "text-ivory" : "text-navy")}>{logo}</span>
         </div>
         <nav aria-label="Main" className="hidden items-center gap-1 md:flex">
           {items.map((item) =>
