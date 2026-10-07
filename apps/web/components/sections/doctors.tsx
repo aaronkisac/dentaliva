@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useState } from "react";
 
 import { cn, Heading, Link, Section, Text } from "@dentaliva/ui";
@@ -9,6 +8,7 @@ import { lqipUrl } from "@dentaliva/sanity-schema/image-url";
 
 import type { HomeTeamSection } from "../../src/content/home";
 import { imageTarget } from "../../src/image-target";
+import { DoctorPortrait } from "../doctor-portrait";
 
 const ENV = imageTarget();
 
@@ -138,20 +138,22 @@ export function DoctorsSection({
               )}
             >
               <div className={cn("overflow-hidden rounded-[4px]", isBig && featuredClass)}>
-                {doctor.photo?.ref ? (
-                  <Image
-                    src={doctor.photo.ref}
-                    alt={doctor.photo?.alt?.tr ?? doctor.name ?? ""}
-                    width={isBig ? 800 : 400}
-                    height={isBig ? 840 : 420}
-                    sizes={isBig ? "(max-width: 1023px) 100vw, 38vw" : "220px"}
-                    placeholder="blur"
-                    blurDataURL={doctor.lqip ?? lqipUrl(doctor.photo.ref, ENV)}
-                    className="aspect-[20/21] w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                ) : (
-                  <div className="aspect-[20/21] w-full bg-ivory-2" />
-                )}
+                {/* DSN-43: foto yoksa boş alan yerine markalı baş harf monogramı. */}
+                <DoctorPortrait
+                  name={doctor.name}
+                  photo={{
+                    ref: doctor.photo?.ref,
+                    lqip:
+                      doctor.lqip ??
+                      (doctor.photo?.ref ? lqipUrl(doctor.photo.ref, ENV) : undefined),
+                  }}
+                  alt={doctor.photo?.alt?.tr ?? doctor.name ?? ""}
+                  frameClassName="aspect-[20/21] w-full"
+                  width={isBig ? 800 : 400}
+                  height={isBig ? 840 : 420}
+                  sizes={isBig ? "(max-width: 1023px) 100vw, 38vw" : "220px"}
+                  imageClassName="transition-transform duration-500 group-hover:scale-105"
+                />
               </div>
               <p
                 className={cn(

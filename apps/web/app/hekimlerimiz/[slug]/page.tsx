@@ -1,13 +1,12 @@
 import type { Metadata } from "next";
 
-import Image from "next/image";
-
 import { pickLocalized } from "@dentaliva/sanity-schema/client";
 import { buildBreadcrumbJsonLd } from "@dentaliva/seo";
 
 import { Reveal, Section, Text } from "@dentaliva/ui";
 import { JsonLd } from "../../../components/json-ld";
 import { CtaBand } from "../../../components/cta-band";
+import { DoctorPortrait } from "../../../components/doctor-portrait";
 import { PageHero } from "../../../components/page-hero";
 import { fetchDoctorBySlug, fetchDoctors } from "../../../src/content/doctors";
 import { fetchHomePageDocument, fetchSiteSettings } from "../../../src/content/home";
@@ -66,28 +65,25 @@ export default async function DoctorDetailPage({ params }: PageProps) {
           { name: doctor.name ?? "Hekim", url: absoluteUrl(`/hekimlerimiz/${slug}`) },
         ])}
       />
-      {/* DSN-32: kare portre (carousel'la aynı dil, rounded-[4px]) + PageHero. */}
+      {/* DSN-32: kare portre (carousel'la aynı dil, rounded-[4px]) + PageHero.
+            DSN-43: foto yoksa markalı baş harf monogramı — boş hero değil. */}
       <PageHero
         eyebrow="Hekimlerimiz"
         eyebrowHref="/hekimlerimiz"
         title={doctor.name ?? "Hekim"}
         lead={doctor.title?.tr ? pickLocalized(doctor.title) : null}
       >
-        {doctor.photo?.ref ? (
-          <Image
-            src={doctor.photo.ref}
-            alt={doctor.name ?? ""}
-            width={256}
-            height={256}
-            // PRF-5: sabit kutu — sizes olmadan tarayıcı 100vw'e göre ~1920px
-            // kaynak seçiyordu; lqip varsa inline blur.
-            sizes="256px"
-            priority
-            placeholder={doctor.photo.lqip ? "blur" : "empty"}
-            blurDataURL={doctor.photo.lqip}
-            className="mt-8 h-56 w-56 border border-[var(--dvn-line-gold)] object-cover md:h-64 md:w-64"
-          />
-        ) : null}
+        <DoctorPortrait
+          name={doctor.name}
+          photo={{ ref: doctor.photo?.ref, lqip: doctor.photo?.lqip }}
+          alt={doctor.name ?? ""}
+          frameClassName="mt-8 h-56 w-56 rounded-[4px] border border-[var(--dvn-line-gold)] md:h-64 md:w-64"
+          width={256}
+          height={256}
+          sizes="256px"
+          priority
+          initialsClassName="text-[length:var(--dvn-text-display-lg-size)]"
+        />
       </PageHero>
       <Reveal>
         <Section>
