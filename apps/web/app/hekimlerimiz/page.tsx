@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 
-import Image from "next/image";
-
 import { Reveal, Card, Heading, Section, Text } from "@dentaliva/ui";
 import { PageHero } from "../../components/page-hero";
+import { DoctorPortrait } from "../../components/doctor-portrait";
 import { pickLocalized } from "@dentaliva/sanity-schema/client";
 
 import { Link } from "@dentaliva/ui";
@@ -31,18 +30,14 @@ export default async function DoctorsPage() {
             <div className="mt-8 grid gap-6 md:grid-cols-3">
               {doctors.map((doctor) => (
                 <Card key={doctor.slug} hover="lift">
-                  {doctor.photo?.ref ? (
-                    <Image
-                      src={doctor.photo.ref}
-                      alt={doctor.name ?? ""}
-                      width={600}
-                      height={400}
-                      sizes="(max-width: 768px) 100vw, 33vw"
-                      placeholder={doctor.lqip ? "blur" : "empty"}
-                      blurDataURL={doctor.lqip}
-                      className="h-48 w-full object-cover"
-                    />
-                  ) : null}
+                  {/* DSN-43: foto yoksa markalı baş harf monogramı. */}
+                  <DoctorPortrait
+                    name={doctor.name}
+                    photo={{ ref: doctor.photo?.ref, lqip: doctor.lqip }}
+                    alt={doctor.name ?? ""}
+                    frameClassName="h-48 w-full"
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                  />
                   <Heading level="h3" size="title">
                     {doctor.name}
                   </Heading>
