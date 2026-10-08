@@ -6,7 +6,7 @@ import { pickLocalized } from "@dentaliva/sanity-schema/client";
 import type { TreatmentListItem } from "../src/content/treatments";
 
 /**
- * DSN-47: hizmet kartı — Dentiva referansındaki görsel-baskın overlay kartın
+ * DSN-48: hizmet kartı — Dentiva referansındaki görsel-baskın overlay kartın
  * Dentaliva diline uyarlaması. Tam-kanama hero görseli (6/7), üstte başlık
  * chip'i, altta scrim üzerinde özet; kartın tamamı detay sayfasına giden tek
  * link ("Detay →" copy'si böylece kalktı). Referansın 58px hap başlığı
@@ -45,7 +45,10 @@ export function TreatmentCard({ item }: { item: TreatmentListItem }) {
         </div>
       ) : null}
       {summary ? (
-        <p className="absolute inset-x-0 bottom-0 p-4 font-sans text-sm leading-relaxed text-white/95 [text-wrap:pretty] line-clamp-3">
+        // text-wrap pretty/balance burada YOK: Chromium'da -webkit-line-clamp'i
+        // sessizce bozuyor (clamp'siz metin kart altından taşıyor). Alt kenara
+        // lokal navy degrade — scrim'in oraya inmeden kontrast garantisi.
+        <p className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-navy/95 via-navy/60 to-transparent p-4 pt-8 font-sans text-sm leading-relaxed text-white/95 line-clamp-3">
           {summary}
         </p>
       ) : null}
