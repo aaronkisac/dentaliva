@@ -41,7 +41,9 @@ export function FaqSection({
   const ctaHref = copy?.ctaHref;
   return (
     <Section>
-      <div className="grid gap-8 md:grid-cols-[1fr_auto] md:items-end">
+      {/* DSN-49: tasarım deseni iki sütun — solda başlık bloğu + CTA, sağda
+          liste; mobilde tek sütun (lg altı stack). */}
+      <div className="grid gap-10 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] lg:gap-16">
         <div>
           {eyebrow ? (
             <div className="flex items-center gap-3">
@@ -52,21 +54,20 @@ export function FaqSection({
             </div>
           ) : null}
           {heading ? (
-            <Heading level="h2" size="md" className={eyebrow ? "mt-4 max-w-2xl" : "max-w-2xl"}>
+            <Heading level="h2" size="md" className={eyebrow ? "mt-4 max-w-xl" : "max-w-xl"}>
               {heading}
             </Heading>
           ) : null}
-          {support ? (
-            <p className="mt-4 max-w-xl font-sans text-lg text-ink/70">{support}</p>
+          {support ? <p className="mt-4 font-sans text-lg text-ink/70">{support}</p> : null}
+          {ctaLabel && ctaHref ? (
+            <Link
+              href={ctaHref}
+              className={buttonVariants({ variant: "outline", size: "lg" }) + " mt-8"}
+            >
+              {ctaLabel}
+            </Link>
           ) : null}
         </div>
-        {ctaLabel && ctaHref ? (
-          <Link href={ctaHref} className={buttonVariants({ variant: "outline", size: "lg" })}>
-            {ctaLabel}
-          </Link>
-        ) : null}
-      </div>
-      <div className="mt-10">
         <Accordion items={accordionItems} variant="flush" />
       </div>
     </Section>
