@@ -15,6 +15,19 @@ import type { TreatmentListItem } from "../src/content/treatments";
  * listesi paylaşır. Görsel yoksa kart navy zeminde okunur; slug yoksa
  * link'siz article olarak basılır.
  */
+
+/**
+ * DSN-48: özet kesimi CSS line-clamp yerine veri seviyesinde — yeni Chromium
+ * (153+) display:-webkit-box'ı flow-root'a çevirip -webkit-line-clamp'i
+ * öldürüyor (standart line-clamp henüz yok); kelime sınırında kesmek tüm
+ * tarayıcılarda deterministik.
+ */
+export function clampWords(text: string, max = 20): string {
+  const words = text.split(/\s+/).filter(Boolean);
+  if (words.length <= max) return text;
+  return `${words.slice(0, max).join(" ")}…`;
+}
+
 export function TreatmentCard({ item }: { item: TreatmentListItem }) {
   const name = pickLocalized(item.name);
   const summary = pickLocalized(item.summary);
@@ -45,11 +58,10 @@ export function TreatmentCard({ item }: { item: TreatmentListItem }) {
         </div>
       ) : null}
       {summary ? (
-        // text-wrap pretty/balance burada YOK: Chromium'da -webkit-line-clamp'i
-        // sessizce bozuyor (clamp'siz metin kart altından taşıyor). Alt kenara
-        // lokal navy degrade — scrim'in oraya inmeden kontrast garantisi.
-        <p className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-navy/95 via-navy/60 to-transparent p-4 pt-8 font-sans text-sm leading-relaxed text-white/95 line-clamp-3">
-          {summary}
+        // Alt kenara lokal navy degrade — scrim'in oraya inmeden kontrast garantisi.
+        // line-clamp kasıtlı YOK: güvenilir kesim yukarıdaki clampWords'te.
+        <p className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-navy/95 via-navy/60 to-transparent p-4 pt-8 font-sans text-sm leading-relaxed text-white/95">
+          {clampWords(summary)}
         </p>
       ) : null}
     </>
