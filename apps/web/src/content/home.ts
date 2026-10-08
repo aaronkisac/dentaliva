@@ -21,6 +21,11 @@ export interface QuickServiceItem {
   name?: LocalizedPair;
   slug?: string;
   summary?: LocalizedPair;
+  heroImage?: {
+    ref?: string;
+    lqip?: string;
+    alt?: LocalizedPair;
+  };
 }
 
 export interface DoctorItem {
@@ -90,6 +95,8 @@ export interface HomeTeamSection {
 export interface HomeData {
   homePage: HomePageContent | null;
   quickServices: QuickServiceItem[];
+  /** DSN-45: hizmet grid'inin göstereceği kesim — curated ise tam liste, değilse ilk 6. */
+  servicesGrid: QuickServiceItem[];
   doctors: DoctorItem[];
   faqs: FaqEntry[];
   testimonials: TestimonialItem[];
@@ -139,14 +146,17 @@ export async function fetchHomeData(client: SanityClient): Promise<HomeData> {
       fetchSiteSettings(client),
       fetchSiteCopy(client),
     ]);
+  // DSN-9: authored quickServiceLinks override the full treatment list;
+  // unauthored (fresh template) falls back to every treatment. GROQ returns
+  // null (not undefined) for the unset field, hence the ?? [].
+  // DSN-45: servicesGrid caps the fallback at 6 cards so the homepage grid
+  // stays compact; the ticker keeps announcing every service.
+  const curatedLinks = homePage?.quickServiceLinks ?? [];
+  const allServices = curatedLinks.length > 0 ? curatedLinks : (quickServices ?? []);
   return {
     homePage: homePage ?? null,
-    // DSN-9: authored quickServiceLinks override the full treatment list;
-    // unauthored (fresh template) falls back to every treatment.
-    quickServices:
-      homePage?.quickServiceLinks && homePage.quickServiceLinks.length > 0
-        ? homePage.quickServiceLinks
-        : (quickServices ?? []),
+    quickServices: allServices,
+    servicesGrid: curatedLinks.length > 0 ? allServices : allServices.slice(0, 6),
     doctors: doctors ?? [],
     faqs: faqs ?? [],
     testimonials: testimonials ?? [],

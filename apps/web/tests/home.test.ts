@@ -27,6 +27,7 @@ describe("build resilience (home content)", () => {
     const data = await fetchHomeData(mockClient([null, null, null, null, null, null, null]));
     expect(data.homePage).toBeNull();
     expect(data.quickServices).toEqual([]);
+    expect(data.servicesGrid).toEqual([]);
     expect(data.doctors).toEqual([]);
     expect(data.faqs).toEqual([]);
     expect(data.testimonials).toEqual([]);
@@ -34,11 +35,49 @@ describe("build resilience (home content)", () => {
   });
 
   it("authored quickServiceLinks override the full treatment list", async () => {
-    const links = [{ name: { tr: "İmplant" }, slug: "implant", summary: { tr: "X" } }];
+    const links = [
+      {
+        name: { tr: "İmplant" },
+        slug: "implant",
+        summary: { tr: "X" },
+        heroImage: { ref: "image-abc-600x400-jpg", lqip: "data:image/jpeg;base64,abc" },
+      },
+    ];
     const data = await fetchHomeData(
       mockClient([{ quickServiceLinks: links }, null, null, null, null, null]),
     );
     expect(data.quickServices).toEqual(links);
+    expect(data.servicesGrid).toEqual(links);
+  });
+
+  it("caps the fallback treatment list at 6 cards for the grid (DSN-45)", async () => {
+    const list = Array.from({ length: 7 }, (_, i) => ({
+      name: { tr: `Tedavi ${i + 1}` },
+      slug: `tedavi-${i + 1}`,
+      summary: { tr: "X" },
+    }));
+    const data = await fetchHomeData(mockClient([null, list, null, null, null, null, null]));
+    expect(data.quickServices).toHaveLength(7);
+    expect(data.servicesGrid).toHaveLength(6);
+    expect(data.servicesGrid[0]?.slug).toBe("tedavi-1");
+  });
+
+  it("treats an empty quickServiceLinks array as unauthored (fallback)", async () => {
+    const list = [{ name: { tr: "İmplant" }, slug: "implant", summary: { tr: "X" } }];
+    const data = await fetchHomeData(
+      mockClient([{ quickServiceLinks: [] }, list, null, null, null, null, null]),
+    );
+    expect(data.quickServices).toEqual(list);
+    expect(data.servicesGrid).toEqual(list);
+  });
+
+  it("treats a null quickServiceLinks field as unauthored (live dataset)", async () => {
+    const list = [{ name: { tr: "İmplant" }, slug: "implant", summary: { tr: "X" } }];
+    const data = await fetchHomeData(
+      mockClient([{ quickServiceLinks: null }, list, null, null, null, null, null]),
+    );
+    expect(data.quickServices).toEqual(list);
+    expect(data.servicesGrid).toEqual(list);
   });
 
   it("null-safes a missing homePage document", async () => {

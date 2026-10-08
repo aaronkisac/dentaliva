@@ -23,6 +23,9 @@ export interface SiteCopy {
     callbackForm?: LocalizedPair;
     galleryPage?: LocalizedPair;
     galleryEmpty?: LocalizedPair;
+    servicesEyebrow?: LocalizedPair;
+    servicesHeading?: LocalizedPair;
+    allServicesCta?: LocalizedPair;
   } | null;
   heroTrust?: {
     since?: LocalizedPair;
