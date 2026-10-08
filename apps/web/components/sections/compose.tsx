@@ -26,7 +26,15 @@ export const sectionRegistry: Record<HomeSectionId, SectionRenderer> = {
     <HeroSection data={data.homePage?.hero ?? null} trust={data.siteCopy?.heroTrust ?? null} />
   ),
   ticker: (data) => <ServiceTicker items={data.quickServices} />,
-  quickServices: (data) => reveal(<QuickServicesSection items={data.quickServices} />),
+  quickServices: (data) =>
+    reveal(
+      <QuickServicesSection
+        items={data.servicesGrid}
+        eyebrow={data.siteCopy?.sectionHeadings?.servicesEyebrow?.tr}
+        heading={data.siteCopy?.sectionHeadings?.servicesHeading?.tr}
+        ctaLabel={data.siteCopy?.sectionHeadings?.allServicesCta?.tr}
+      />,
+    ),
   about: (data) => reveal(<AboutSection data={data.homePage?.about ?? null} />),
   videoTestimonials: (data) => reveal(<VideoTestimonialsSection items={data.testimonials} />),
   reviews: (data) => reveal(<ReviewsSection items={data.testimonials} />),

@@ -35,6 +35,13 @@ export const siteCopy = defineType({
         { name: "callbackForm", title: "Geri arama formu başlığı", type: "localeText" },
         { name: "galleryPage", title: "Galeri sayfası başlığı", type: "localeText" },
         { name: "galleryEmpty", title: "Galeri boş durumu", type: "localeText" },
+        {
+          name: "servicesEyebrow",
+          title: "Hizmetlerimiz üst etiketi (ana sayfa)",
+          type: "localeText",
+        },
+        { name: "servicesHeading", title: "Hizmetlerimiz başlığı (ana sayfa)", type: "localeText" },
+        { name: "allServicesCta", title: "Tüm hizmetler butonu (ana sayfa)", type: "localeText" },
       ],
     }),
     defineField({
