@@ -56,6 +56,22 @@ export const siteCopy = defineType({
       ],
     }),
     defineField({
+      name: "faq",
+      title: "SSS bölümü (ana sayfa)",
+      type: "object",
+      fields: [
+        { name: "eyebrow", title: "Üst etiket", type: "localeText" },
+        { name: "support", title: "Destek metni", type: "localeText" },
+        { name: "ctaLabel", title: "CTA buton metni", type: "localeText" },
+        {
+          name: "ctaHref",
+          title: "CTA hedefi (dahili yol veya tam URL)",
+          type: "string",
+          description: "Örn. /iletisim",
+        },
+      ],
+    }),
+    defineField({
       name: "ui",
       title: "Arayüz metinleri",
       type: "object",

@@ -15,6 +15,9 @@ export type AccordionProps = {
   /** Uncontrolled: opens the first item initially. Pass [] to start collapsed. */
   defaultOpenId?: string | null;
   className?: string;
+  /** boxed = çerçeveli kutu (varsayılan) · flush = satır ayraçlı tam genişlik
+      (ReoDental düzen deseni, DSN-47 — ana sayfa SSS). */
+  variant?: "boxed" | "flush";
 };
 
 /**
@@ -26,14 +29,17 @@ export function Accordion({
   items,
   defaultOpenId = items[0]?.id ?? null,
   className,
+  variant = "boxed",
 }: AccordionProps) {
   const baseId = useId();
   const [openId, setOpenId] = useState<string | null>(defaultOpenId);
+  const flush = variant === "flush";
 
   return (
     <div
       className={cn(
-        "divide-y divide-[var(--dvn-line-soft)] border border-[var(--dvn-line-soft)]",
+        "divide-y divide-[var(--dvn-line-soft)]",
+        flush ? "border-y-0" : "border border-[var(--dvn-line-soft)]",
         className,
       )}
     >
@@ -52,7 +58,10 @@ export function Accordion({
                 aria-expanded={isOpen}
                 aria-controls={panelId}
                 onClick={() => setOpenId(isOpen ? null : item.id)}
-                className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left font-sans text-[length:var(--dvn-text-body-size)] font-semibold text-ink transition-colors duration-300 hover:text-navy focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-gold"
+                className={cn(
+                  "flex w-full items-center justify-between gap-4 text-left font-sans text-[length:var(--dvn-text-body-size)] font-semibold text-ink transition-colors duration-300 hover:text-navy focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-gold",
+                  flush ? "px-0 py-5" : "px-5 py-4",
+                )}
               >
                 {item.question}
                 <span aria-hidden="true" className="text-gold">
@@ -65,7 +74,10 @@ export function Accordion({
               role="region"
               aria-labelledby={buttonId}
               hidden={!isOpen}
-              className="px-5 pb-4 font-sans text-[length:var(--dvn-text-body-size)] leading-[var(--dvn-text-body-lh)] text-ink"
+              className={cn(
+                "font-sans text-[length:var(--dvn-text-body-size)] leading-[var(--dvn-text-body-lh)] text-ink",
+                flush ? "pb-5 pr-10" : "px-5 pb-4",
+              )}
             >
               {item.answer}
             </div>

@@ -28,6 +28,14 @@ export interface SiteCopy {
     servicesHeading?: LocalizedPair;
     allServicesCta?: LocalizedPair;
   } | null;
+  /** DSN-47: ana sayfa SSS bölümü — eyebrow, destek metni ve CTA. */
+  faq?: {
+    eyebrow?: LocalizedPair;
+    support?: LocalizedPair;
+    ctaLabel?: LocalizedPair;
+    /** Dahili yol (/iletisim) veya tam URL. */
+    ctaHref?: string;
+  } | null;
   heroTrust?: {
     since?: LocalizedPair;
     experience?: LocalizedPair;
