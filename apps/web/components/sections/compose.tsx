@@ -40,7 +40,13 @@ export const sectionRegistry: Record<HomeSectionId, SectionRenderer> = {
   reviews: (data) => reveal(<ReviewsSection items={data.testimonials} />),
   gallery: (data) =>
     reveal(
-      <GallerySection images={data.homePage?.gallery ?? []} stats={data.homePage?.stats ?? []} />,
+      <GallerySection
+        images={data.homePage?.gallery ?? []}
+        stats={data.homePage?.stats ?? []}
+        onceSonra={data.homePage?.onceSonraGallery ?? []}
+        heading={data.siteCopy?.sectionHeadings?.galleryHome?.tr}
+        closeLabel={data.siteCopy?.ui?.lightboxClose?.tr}
+      />,
     ),
   doctors: (data) =>
     reveal(<DoctorsSection items={data.doctors} team={data.homePage?.teamSection ?? null} />),

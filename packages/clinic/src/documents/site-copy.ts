@@ -34,6 +34,7 @@ export const siteCopy = defineType({
         { name: "routeLink", title: "Yol tarifi bağlantısı", type: "localeText" },
         { name: "callbackForm", title: "Geri arama formu başlığı", type: "localeText" },
         { name: "galleryPage", title: "Galeri sayfası başlığı", type: "localeText" },
+        { name: "galleryHome", title: "Ana sayfa galeri başlığı", type: "localeText" },
         { name: "galleryEmpty", title: "Galeri boş durumu", type: "localeText" },
         {
           name: "servicesEyebrow",

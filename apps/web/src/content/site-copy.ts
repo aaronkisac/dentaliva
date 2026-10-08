@@ -22,6 +22,7 @@ export interface SiteCopy {
     routeLink?: LocalizedPair;
     callbackForm?: LocalizedPair;
     galleryPage?: LocalizedPair;
+    galleryHome?: LocalizedPair;
     galleryEmpty?: LocalizedPair;
     servicesEyebrow?: LocalizedPair;
     servicesHeading?: LocalizedPair;
