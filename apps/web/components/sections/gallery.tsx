@@ -1,31 +1,40 @@
-import Image from "next/image";
-
 import { Heading, Section } from "@dentaliva/ui";
-import { pickLocalized } from "@dentaliva/sanity-schema/client";
-import { lqipUrl, refDimensions } from "@dentaliva/sanity-schema/image-url";
 
 import type { GalleryImage } from "../../src/content/home";
-import { imageTarget } from "../../src/image-target";
+import { GalleryLightbox } from "../lightbox";
 
-const ENV = imageTarget();
-
+/**
+ * DSN-46: ana sayfa galerisi — başlık siteCopy'den (yoksa render edilmez),
+ * istatistik bandı en az 2 kartta görünür (tek kart kafa karıştırır), grid
+ * GalleryLightbox'a devredilir: fotoğrafa tıklayınca büyütme + CMS'ten
+ * "Kapat". Fotoğraflar geçici (müşteri CMS'ten değiştirir) — yapı sabit.
+ */
 export function GallerySection({
   images,
   stats,
+  onceSonra,
+  heading,
+  closeLabel,
 }: {
   images: GalleryImage[];
   stats?: Array<{ value?: string; label?: { tr?: string } }>;
+  onceSonra?: GalleryImage[];
+  heading?: string;
+  closeLabel?: string;
 }) {
   const rendered = images.filter((image) => image.asset?._ref).slice(0, 8);
   if (rendered.length === 0) return null;
+  const visibleStats = (stats ?? []).filter((stat) => stat.value);
   return (
     <Section>
-      <Heading level="h2" size="md">
-        Galeri
-      </Heading>
-      {(stats ?? []).length > 0 ? (
+      {heading ? (
+        <Heading level="h2" size="md">
+          {heading}
+        </Heading>
+      ) : null}
+      {visibleStats.length >= 2 ? (
         <div className="mt-6 flex flex-wrap gap-6">
-          {stats?.map((stat) => (
+          {visibleStats.map((stat) => (
             <div key={stat.value} className="border border-[var(--dvn-line-gold)] px-6 py-4">
               <p className="font-serif text-3xl text-navy">{stat.value}</p>
               <p className="mt-1 text-sm text-ink/70">{stat.label?.tr}</p>
@@ -33,24 +42,12 @@ export function GallerySection({
           ))}
         </div>
       ) : null}
-      <div className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-4">
-        {rendered.map((image, index) => {
-          const ref = image.asset?._ref as string;
-          const dims = refDimensions(ref) ?? { width: 800, height: 800 };
-          return (
-            <Image
-              key={ref}
-              src={ref}
-              alt={pickLocalized(image.alt) || `Klinik görseli ${index + 1}`}
-              width={dims.width}
-              height={dims.height}
-              sizes="(max-width: 768px) 50vw, 25vw"
-              placeholder="blur"
-              blurDataURL={image.lqip ?? lqipUrl(ref, ENV)}
-              className="aspect-square h-auto w-full border border-[var(--dvn-line)] object-cover"
-            />
-          );
-        })}
+      <div className="mt-8">
+        <GalleryLightbox
+          images={rendered}
+          onceSonra={onceSonra?.filter((image) => image.asset?._ref)}
+          closeLabel={closeLabel}
+        />
       </div>
     </Section>
   );
