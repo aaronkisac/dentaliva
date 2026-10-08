@@ -1,43 +1,69 @@
 import Image from "next/image";
 
-import { Card, Heading, Link, Text } from "@dentaliva/ui";
+import { Link } from "@dentaliva/ui";
 import { pickLocalized } from "@dentaliva/sanity-schema/client";
 
 import type { TreatmentListItem } from "../src/content/treatments";
 
 /**
- * DSN-45: hizmet kartı — ana sayfa hizmet grid'i ile /hizmetlerimiz listesi
- * tek kalıbı paylaşır (DSN-26 kart dili: üstte hero görseli + lqip blur,
- * başlık, özet, Detay bağlantısı). Görsel yoksa alan basılmaz; slug yoksa
- * bağlantı render edilmez.
+ * DSN-47: hizmet kartı — Dentiva referansındaki görsel-baskın overlay kartın
+ * Dentaliva diline uyarlaması. Tam-kanama hero görseli (6/7), üstte başlık
+ * chip'i, altta scrim üzerinde özet; kartın tamamı detay sayfasına giden tek
+ * link ("Detay →" copy'si böylece kalktı). Referansın 58px hap başlığı
+ * yerine 4px çerçeveli chip + eyebrow tipografisi (DSN-32 kare dili);
+ * scrims saf siyah yerine navy. Ana sayfa grid'i ile /hizmetlerimiz
+ * listesi paylaşır. Görsel yoksa kart navy zeminde okunur; slug yoksa
+ * link'siz article olarak basılır.
  */
 export function TreatmentCard({ item }: { item: TreatmentListItem }) {
-  return (
-    <Card hover="lift">
+  const name = pickLocalized(item.name);
+  const summary = pickLocalized(item.summary);
+
+  const content = (
+    <>
       {item.heroImage?.ref ? (
         <Image
           src={item.heroImage.ref}
           alt={item.heroImage.alt?.tr ?? ""}
-          width={600}
-          height={400}
+          fill
           sizes="(max-width: 768px) 100vw, 33vw"
           placeholder={item.heroImage.lqip ? "blur" : "empty"}
           blurDataURL={item.heroImage.lqip}
-          className="h-48 w-full object-cover"
+          className="object-cover transition-transform duration-500 group-hover:scale-[1.04] motion-reduce:transform-none"
         />
       ) : null}
-      <Heading level="h3" size="title">
-        {pickLocalized(item.name)}
-      </Heading>
-      <Text className="mt-2 line-clamp-3">{pickLocalized(item.summary)}</Text>
-      {item.slug ? (
-        <Link
-          href={`/hizmetlerimiz/${item.slug}`}
-          className="mt-4 inline-block font-sans text-sm font-semibold text-navy hover:text-gold-deep"
-        >
-          Detay →
-        </Link>
+      {/* Referanstaki çift scrim (üst/alt) tek degradeyle — beyaz metin için kontrast zemini. */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 bg-gradient-to-b from-navy/70 via-transparent to-navy/90"
+      />
+      {name ? (
+        <div className="absolute left-4 top-4 rounded-[4px] border border-white/70 px-3 py-1.5">
+          <h3 className="font-sans text-xs font-semibold uppercase tracking-widest text-white">
+            {name}
+          </h3>
+        </div>
       ) : null}
-    </Card>
+      {summary ? (
+        <p className="absolute inset-x-0 bottom-0 p-4 font-sans text-sm leading-relaxed text-white/95 [text-wrap:pretty] line-clamp-3">
+          {summary}
+        </p>
+      ) : null}
+    </>
+  );
+
+  const shell = "group relative block aspect-[6/7] overflow-hidden rounded-[4px] bg-navy";
+
+  if (!item.slug) {
+    return <article className={shell}>{content}</article>;
+  }
+
+  return (
+    <Link
+      href={`/hizmetlerimiz/${item.slug}`}
+      className={`${shell} hover:no-underline hover:shadow-[var(--dvn-shadow-lift)]`}
+    >
+      {content}
+    </Link>
   );
 }

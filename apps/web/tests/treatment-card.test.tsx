@@ -18,44 +18,53 @@ const base: TreatmentListItem = {
   summary: { tr: "Uzun bir özet metni." },
 };
 
-describe("TreatmentCard (DSN-45)", () => {
-  it("renders image, name, clamped summary and the detail link", () => {
-    const html = renderToStaticMarkup(
-      <TreatmentCard
-        item={{
-          ...base,
-          heroImage: {
-            ref: "image-abc-600x400-jpg",
-            lqip: "data:image/jpeg;base64,abc",
-            alt: { tr: "İmplant" },
-          },
-        }}
-      />,
-    );
+const render = (item: TreatmentListItem) => renderToStaticMarkup(<TreatmentCard item={item} />);
+
+describe("TreatmentCard (DSN-47 overlay)", () => {
+  it("wraps the whole card in a single link to the detail page", () => {
+    const html = render({
+      ...base,
+      heroImage: {
+        ref: "image-abc-600x400-jpg",
+        lqip: "data:image/jpeg;base64,abc",
+        alt: { tr: "İmplant" },
+      },
+    });
+    expect(html).toContain('href="/hizmetlerimiz/implant"');
     expect(html).toContain('src="image-abc-600x400-jpg"');
     expect(html).toContain('alt="İmplant"');
-    expect(html).toContain("İmplant");
     expect(html).toContain("line-clamp-3");
-    expect(html).toContain("Detay →");
-    expect(html).toContain('href="/hizmetlerimiz/implant"');
   });
 
-  it("renders no image area without heroImage", () => {
-    const html = renderToStaticMarkup(<TreatmentCard item={base} />);
-    expect(html).not.toContain("<img");
-    expect(html).toContain('href="/hizmetlerimiz/implant"');
-  });
-
-  it("omits the detail link without a slug", () => {
-    const html = renderToStaticMarkup(<TreatmentCard item={{ ...base, slug: undefined }} />);
+  it("styles the name as the bordered top chip with eyebrow typography", () => {
+    const html = render(base);
+    expect(html).toContain("uppercase tracking-widest");
     expect(html).toContain("İmplant");
+    expect(html).toContain("<h3");
+    expect(html).toContain("aspect-[6/7]");
+  });
+
+  it("keeps the legacy Detay link out (the card itself is the link)", () => {
+    const html = render(base);
     expect(html).not.toContain("Detay →");
   });
 
+  it("renders on the navy surface without an image area when heroImage is missing", () => {
+    const html = render(base);
+    expect(html).not.toContain("<img");
+    expect(html).toContain("bg-navy");
+    expect(html).toContain('href="/hizmetlerimiz/implant"');
+  });
+
+  it("renders a plain article without a link when the slug is missing", () => {
+    const html = render({ ...base, slug: undefined });
+    expect(html).toContain("İmplant");
+    expect(html).not.toContain('href="/hizmetlerimiz/implant"');
+    expect(html).toContain("<article");
+  });
+
   it("falls back to an empty alt text", () => {
-    const html = renderToStaticMarkup(
-      <TreatmentCard item={{ ...base, heroImage: { ref: "image-abc-600x400-jpg" } }} />,
-    );
+    const html = render({ ...base, heroImage: { ref: "image-abc-600x400-jpg" } });
     expect(html).toContain('alt=""');
   });
 });
