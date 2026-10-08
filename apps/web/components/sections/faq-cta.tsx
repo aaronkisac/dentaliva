@@ -6,7 +6,7 @@ export interface FaqEntry {
   answer?: { tr?: string };
 }
 
-export function FaqSection({ items }: { items: FaqEntry[] }) {
+export function FaqSection({ items, heading }: { items: FaqEntry[]; heading?: string }) {
   const accordionItems = items
     .filter((item) => item.question?.tr && item.answer?.tr)
     .map((item) => ({
@@ -17,9 +17,13 @@ export function FaqSection({ items }: { items: FaqEntry[] }) {
   if (accordionItems.length === 0) return null;
   return (
     <Section>
-      <Heading level="h2" size="md">
-        Sıkça Sorulan Sorular
-      </Heading>
+      {/* DSN-44: başlık siteCopy'den — copy'siz bölüm başlıksız kalmaz, sorma
+          listesi aynen çalışır. */}
+      {heading ? (
+        <Heading level="h2" size="md">
+          {heading}
+        </Heading>
+      ) : null}
       <div className="mt-8 max-w-3xl">
         <Accordion items={accordionItems} />
       </div>

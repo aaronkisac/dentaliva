@@ -10,6 +10,8 @@ import {
   treatmentListQuery,
 } from "@dentaliva/sanity-schema/queries";
 
+import { fetchSiteCopy, type SiteCopy } from "./site-copy";
+
 export interface LocalizedPair {
   tr?: string;
   en?: string;
@@ -92,6 +94,8 @@ export interface HomeData {
   faqs: FaqEntry[];
   testimonials: TestimonialItem[];
   siteSettings: SiteSettingsLite | null;
+  /** DSN-44: arayüz metinleri singleton'u — bölümler copy'sizse render etmez. */
+  siteCopy: SiteCopy | null;
 }
 
 async function fetchJson<T>(client: SanityClient, query: string): Promise<T> {
@@ -125,14 +129,16 @@ export const fetchHomePageDocument = cache(
 );
 
 export async function fetchHomeData(client: SanityClient): Promise<HomeData> {
-  const [homePage, quickServices, doctors, faqs, testimonials, siteSettings] = await Promise.all([
-    fetchHomePageDocument(client),
-    fetchJson<QuickServiceItem[]>(client, treatmentListQuery),
-    fetchJson<DoctorItem[]>(client, doctorListQuery),
-    fetchJson<FaqEntry[]>(client, faqListQuery),
-    fetchJson<TestimonialItem[]>(client, testimonialListQuery),
-    fetchSiteSettings(client),
-  ]);
+  const [homePage, quickServices, doctors, faqs, testimonials, siteSettings, siteCopy] =
+    await Promise.all([
+      fetchHomePageDocument(client),
+      fetchJson<QuickServiceItem[]>(client, treatmentListQuery),
+      fetchJson<DoctorItem[]>(client, doctorListQuery),
+      fetchJson<FaqEntry[]>(client, faqListQuery),
+      fetchJson<TestimonialItem[]>(client, testimonialListQuery),
+      fetchSiteSettings(client),
+      fetchSiteCopy(client),
+    ]);
   return {
     homePage: homePage ?? null,
     // DSN-9: authored quickServiceLinks override the full treatment list;
@@ -145,5 +151,6 @@ export async function fetchHomeData(client: SanityClient): Promise<HomeData> {
     faqs: faqs ?? [],
     testimonials: testimonials ?? [],
     siteSettings: siteSettings ?? null,
+    siteCopy: siteCopy ?? null,
   };
 }

@@ -12,6 +12,7 @@ import { CtaBand } from "../../../components/cta-band";
 import { PageHero } from "../../../components/page-hero";
 import { fetchTreatmentBySlug, fetchTreatments } from "../../../src/content/treatments";
 import { fetchHomePageDocument, fetchSiteSettings } from "../../../src/content/home";
+import { fetchSiteCopy } from "../../../src/content/site-copy";
 import { site } from "../../../src/config";
 import { readClient } from "../../../src/sanity";
 import { absoluteUrl, pageMetadata } from "../../../src/seo";
@@ -61,10 +62,12 @@ export default async function TreatmentDetailPage({ params }: PageProps) {
   const name = pickLocalized(treatment.name);
   // DSN-24: sayfa sonu bandının CMS içeriği (cache'li fetcher'lar). Bant
   // fetch hatasında sessizce düşer — detay sayfası içeriğini bloklamaz.
-  const [homePage, settings] = await Promise.all([
+  const [homePage, settings, copy] = await Promise.all([
     fetchHomePageDocument(readClient).catch(() => null),
     fetchSiteSettings(readClient),
+    fetchSiteCopy(readClient),
   ]);
+  const headings = copy?.sectionHeadings;
   const faqs = (treatment.faqs ?? []).filter((f) => f.question?.tr && f.answer?.tr);
   // SEO-5: breadcrumb trail + FAQ answers as structured data.
   const jsonLd = [
@@ -142,9 +145,11 @@ export default async function TreatmentDetailPage({ params }: PageProps) {
           {/* CPT-6: H2 "farklar/avantajlar" bölümlerinden gelen faydalar. */}
           {(treatment.benefits ?? []).length > 0 ? (
             <div className="mt-10">
-              <Heading level="h2" size="md">
-                Öne Çıkan Faydalar
-              </Heading>
+              {headings?.keyBenefits?.tr ? (
+                <Heading level="h2" size="md">
+                  {headings.keyBenefits.tr}
+                </Heading>
+              ) : null}
               <div className="mt-6 grid gap-4 md:grid-cols-3">
                 {(treatment.benefits ?? []).map((benefit, index) => (
                   <Card key={index}>
@@ -158,13 +163,19 @@ export default async function TreatmentDetailPage({ params }: PageProps) {
           {/* DSN-31: adımlar numaralı ve başlıklı (eyebrow motif, copy sweep borçlu). */}
           {steps.length > 0 ? (
             <div className="mt-12">
-              <div className="flex items-center gap-3">
-                <span aria-hidden="true" className="h-px w-8 bg-gold" />
-                <p className="font-sans text-xs uppercase tracking-widest text-gold-deep">Süreç</p>
-              </div>
-              <Heading level="h2" size="md" className="mt-4">
-                Tedavi Süreci
-              </Heading>
+              {headings?.treatmentProcessEyebrow?.tr ? (
+                <div className="flex items-center gap-3">
+                  <span aria-hidden="true" className="h-px w-8 bg-gold" />
+                  <p className="font-sans text-xs uppercase tracking-widest text-gold-deep">
+                    {headings.treatmentProcessEyebrow.tr}
+                  </p>
+                </div>
+              ) : null}
+              {headings?.treatmentProcess?.tr ? (
+                <Heading level="h2" size="md" className="mt-4">
+                  {headings.treatmentProcess.tr}
+                </Heading>
+              ) : null}
               <div className="mt-6 grid gap-6 md:grid-cols-3">
                 {steps.map((step, index) => (
                   <Card key={index} hover="lift">
@@ -193,9 +204,11 @@ export default async function TreatmentDetailPage({ params }: PageProps) {
       {(treatment.doctors ?? []).length > 0 ? (
         <Reveal>
           <Section className="bg-white">
-            <Heading level="h2" size="md">
-              İlgili Hekimlerimiz
-            </Heading>
+            {headings?.relatedDoctors?.tr ? (
+              <Heading level="h2" size="md">
+                {headings.relatedDoctors.tr}
+              </Heading>
+            ) : null}
             <div className="mt-8 grid gap-6 md:grid-cols-3">
               {(treatment.doctors ?? []).map((doctor) => (
                 <Card key={doctor.slug} hover="lift">
@@ -216,7 +229,9 @@ export default async function TreatmentDetailPage({ params }: PageProps) {
                     <Text className="mt-1">{pickLocalized(doctor.title)}</Text>
                   ) : null}
                   <Text tone="muted" size="small" className="mt-3 underline">
-                    <Link href={`/hekimlerimiz/${doctor.slug}`}>Profile göz atın →</Link>
+                    <Link href={`/hekimlerimiz/${doctor.slug}`}>
+                      {headings?.doctorProfileLink?.tr}
+                    </Link>
                   </Text>
                 </Card>
               ))}
@@ -228,9 +243,11 @@ export default async function TreatmentDetailPage({ params }: PageProps) {
       {(treatment.faqs ?? []).length > 0 ? (
         <Reveal>
           <Section className="bg-white">
-            <Heading level="h2" size="md">
-              Sıkça Sorulan Sorular
-            </Heading>
+            {headings?.faq?.tr ? (
+              <Heading level="h2" size="md">
+                {headings.faq.tr}
+              </Heading>
+            ) : null}
             <div className="mt-8 max-w-3xl">
               <Accordion
                 items={(treatment.faqs ?? [])

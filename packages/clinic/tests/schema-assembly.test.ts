@@ -17,6 +17,7 @@ describe("schema assembly (SAN-4)", () => {
       "redirect",
       "homePage",
       "siteSettings",
+      "siteCopy",
     ]) {
       expect(names).toContain(name);
     }
@@ -39,7 +40,7 @@ describe("schema assembly (SAN-4)", () => {
   });
 
   it("marks exactly the two content singletons", () => {
-    expect(singletonTypes).toEqual(["siteSettings", "homePage"]);
+    expect(singletonTypes).toEqual(["siteCopy", "siteSettings", "homePage"]);
   });
 
   it("gives every document type a preview config", () => {

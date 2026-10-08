@@ -7,6 +7,7 @@ import { pickLocalized } from "@dentaliva/sanity-schema/client";
 
 import { fetchBranches } from "../../src/content/branches";
 import { fetchSiteSettings } from "../../src/content/home";
+import { fetchSiteCopy } from "../../src/content/site-copy";
 import { readClient } from "../../src/sanity";
 import { pageMetadata } from "../../src/seo";
 
@@ -19,9 +20,10 @@ export const metadata: Metadata = pageMetadata({
 export default async function ContactPage() {
   // PRF-5: sayfa yalnızca site ayarlarını + şube NAP verisini kullanır —
   // 6 sorguluk fetchHomeData yerine tekil (cache'li) fetch'ler.
-  const [settings, branches] = await Promise.all([
+  const [settings, branches, copy] = await Promise.all([
     fetchSiteSettings(readClient),
     fetchBranches(readClient),
+    fetchSiteCopy(readClient),
   ]);
   const phone = settings?.phone ?? "";
 
@@ -61,9 +63,11 @@ export default async function ContactPage() {
             ) : null}
           </div>
           <div className="border border-[var(--dvn-line-gold)] bg-white p-6">
-            <Heading level="h2" size="title">
-              Geri arama talebi
-            </Heading>
+            {copy?.sectionHeadings?.callbackForm?.tr ? (
+              <Heading level="h2" size="title">
+                {copy.sectionHeadings.callbackForm.tr}
+              </Heading>
+            ) : null}
             <div className="mt-4">
               <CallbackForm />
             </div>

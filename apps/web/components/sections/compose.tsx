@@ -22,7 +22,9 @@ function reveal(node: ReactNode): ReactNode {
 
 /** Registry: section id → renderer. Order comes from the site config. */
 export const sectionRegistry: Record<HomeSectionId, SectionRenderer> = {
-  hero: (data) => <HeroSection data={data.homePage?.hero ?? null} />,
+  hero: (data) => (
+    <HeroSection data={data.homePage?.hero ?? null} trust={data.siteCopy?.heroTrust ?? null} />
+  ),
   ticker: (data) => <ServiceTicker items={data.quickServices} />,
   quickServices: (data) => reveal(<QuickServicesSection items={data.quickServices} />),
   about: (data) => reveal(<AboutSection data={data.homePage?.about ?? null} />),
@@ -34,7 +36,8 @@ export const sectionRegistry: Record<HomeSectionId, SectionRenderer> = {
     ),
   doctors: (data) =>
     reveal(<DoctorsSection items={data.doctors} team={data.homePage?.teamSection ?? null} />),
-  faq: (data) => reveal(<FaqSection items={data.faqs} />),
+  faq: (data) =>
+    reveal(<FaqSection items={data.faqs} heading={data.siteCopy?.sectionHeadings?.faq?.tr} />),
   cta: (data) =>
     reveal(
       <CtaSection

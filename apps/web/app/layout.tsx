@@ -5,6 +5,7 @@ import { buildDentistJsonLd } from "@dentaliva/seo";
 import { JsonLd } from "../components/json-ld";
 import { site } from "../src/config";
 import { fetchSiteSettings } from "../src/content/home";
+import { fetchSiteCopy } from "../src/content/site-copy";
 import { readClient } from "../src/sanity";
 import { siteUrl } from "../src/seo";
 import { fontVariables } from "../src-fonts";
@@ -25,6 +26,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   // fetchHomeData ile aynı isteği paylaşır; Sanity erişilemezse null (build
   // resilience, içerik webhook yeniden derlemesinde gelir).
   const settings = await fetchSiteSettings(readClient);
+  // DSN-44: footer sütun başlıkları siteCopy singleton'dan (sıfır-hardcoded-copy).
+  const siteCopy = await fetchSiteCopy(readClient);
   const siteName = settings?.siteName ?? "Dentaliva";
   const contact: FooterContact | undefined = settings
     ? {
@@ -113,6 +116,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             .filter((s): s is { platform: string; url: string } => Boolean(s.platform && s.url))
             .map((s) => ({ label: s.platform, href: s.url }))}
           copyright={`© Copyright ${siteName} ${new Date().getFullYear()}`}
+          labels={{
+            contact: siteCopy?.footer?.contactHeading?.tr,
+            quickLinks: siteCopy?.footer?.quickLinksHeading?.tr,
+            follow: siteCopy?.footer?.followHeading?.tr,
+          }}
         />
       </body>
     </html>
