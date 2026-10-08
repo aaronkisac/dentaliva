@@ -36,7 +36,7 @@ describe("TreatmentCard (DSN-45)", () => {
     expect(html).toContain('alt="İmplant"');
     expect(html).toContain("İmplant");
     expect(html).toContain("line-clamp-3");
-    expect(html).toContain("Detay →");
+    // DSN-45: kartın tamamı link — "Detay →" etiketi kalktı, href kalır.
     expect(html).toContain('href="/hizmetlerimiz/implant"');
   });
 
@@ -46,10 +46,10 @@ describe("TreatmentCard (DSN-45)", () => {
     expect(html).toContain('href="/hizmetlerimiz/implant"');
   });
 
-  it("omits the detail link without a slug", () => {
+  it("renders the card without a link when there is no slug", () => {
     const html = renderToStaticMarkup(<TreatmentCard item={{ ...base, slug: undefined }} />);
     expect(html).toContain("İmplant");
-    expect(html).not.toContain("Detay →");
+    expect(html).not.toContain('href="/hizmetlerimiz');
   });
 
   it("falls back to an empty alt text", () => {
