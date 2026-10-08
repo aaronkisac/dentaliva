@@ -9,7 +9,7 @@ vi.mock("next/image", () => ({
   },
 }));
 
-import { TreatmentCard } from "../components/treatment-card";
+import { TreatmentCard, clampWords } from "../components/treatment-card";
 import type { TreatmentListItem } from "../src/content/treatments";
 
 const base: TreatmentListItem = {
@@ -20,7 +20,20 @@ const base: TreatmentListItem = {
 
 const render = (item: TreatmentListItem) => renderToStaticMarkup(<TreatmentCard item={item} />);
 
-describe("TreatmentCard (DSN-47 overlay)", () => {
+describe("clampWords (DSN-48)", () => {
+  it("truncates long summaries at the word boundary with an ellipsis", () => {
+    const long = Array.from({ length: 30 }, (_, i) => `kelime${i + 1}`).join(" ");
+    const out = clampWords(long);
+    expect(out.endsWith("kelime20…")).toBe(true);
+    expect(out).not.toContain("kelime21");
+  });
+
+  it("keeps short summaries untouched", () => {
+    expect(clampWords("kısa özet")).toBe("kısa özet");
+  });
+});
+
+describe("TreatmentCard (DSN-48 overlay)", () => {
   it("wraps the whole card in a single link to the detail page", () => {
     const html = render({
       ...base,
@@ -33,7 +46,7 @@ describe("TreatmentCard (DSN-47 overlay)", () => {
     expect(html).toContain('href="/hizmetlerimiz/implant"');
     expect(html).toContain('src="image-abc-600x400-jpg"');
     expect(html).toContain('alt="İmplant"');
-    expect(html).toContain("line-clamp-3");
+    expect(html).toContain("from-navy/95");
   });
 
   it("styles the name as the bordered top chip with eyebrow typography", () => {
