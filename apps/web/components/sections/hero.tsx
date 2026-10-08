@@ -1,3 +1,5 @@
+import { Fragment } from "react";
+
 import Image from "next/image";
 
 import { buttonVariants, Link } from "@dentaliva/ui";
@@ -8,6 +10,7 @@ import { pickLocalized } from "@dentaliva/sanity-schema/client";
 import { lqipUrl, refDimensions } from "@dentaliva/sanity-schema/image-url";
 
 import { site } from "../../src/config";
+import type { LocalizedPair } from "../../src/content/home";
 
 import { imageTarget } from "../../src/image-target";
 
@@ -15,6 +18,12 @@ export interface HeroData {
   headline?: { tr?: string; en?: string };
   subline?: { tr?: string; en?: string };
   image?: { asset?: { _ref?: string }; alt?: { tr?: string; en?: string }; lqip?: string };
+}
+
+export interface HeroTrust {
+  since?: LocalizedPair | null;
+  experience?: LocalizedPair | null;
+  googleRating?: LocalizedPair | null;
 }
 
 const ENV = imageTarget();
@@ -26,10 +35,20 @@ const ENV = imageTarget();
  * arka planda yavaş zoom-out. Görsel yoksa düz espresso zemin (boş-CMS
  * güvenli). Fixed şeffaf header bu bölümün üstünde durur (DSN-11).
  */
-export function HeroSection({ data }: { data: HeroData | null }) {
+export function HeroSection({
+  data,
+  trust,
+}: {
+  data: HeroData | null;
+  /** DSN-44: güven satırı siteCopy'den — parça yoksa satır hiç render edilmez. */
+  trust?: HeroTrust | null;
+}) {
   // Copy sweep: hero metni yalnızca CMS'ten gelir — fallback copy yok.
   const headline = pickLocalized(data?.headline);
   const subline = pickLocalized(data?.subline);
+  const trustItems = [trust?.since?.tr, trust?.experience?.tr, trust?.googleRating?.tr].filter(
+    (item): item is string => Boolean(item),
+  );
   const ref = data?.image?.asset?._ref;
   const dims = ref ? (refDimensions(ref) ?? { width: 2400, height: 1400 }) : null;
   const rise = (delay: number) => ({ animationDelay: `${delay}ms` });
@@ -86,24 +105,28 @@ export function HeroSection({ data }: { data: HeroData | null }) {
               Hizmetlerimizi Keşfedin
             </Link>
           </div>
-          <div
-            className="hero-rise flex flex-wrap items-center gap-x-8 gap-y-2 font-sans text-sm text-ivory/80"
-            style={rise(480)}
-          >
-            <span>2012&apos;den beri</span>
-            <span aria-hidden="true" className="text-gold">
-              ·
-            </span>
-            <span>13+ yıl deneyim</span>
-            <span aria-hidden="true" className="text-gold">
-              ·
-            </span>
-            <span>Google değerlendirmesi: 5.0</span>
-            <span aria-hidden="true" className="text-gold">
-              ·
-            </span>
-            <span>{site.domain.replace("www.", "")}</span>
-          </div>
+          {/* DSN-44: güven satırı siteCopy'den; tek parça bile yoksa satır basılmaz. */}
+          {trustItems.length > 0 ? (
+            <div
+              className="hero-rise flex flex-wrap items-center gap-x-8 gap-y-2 font-sans text-sm text-ivory/80"
+              style={rise(480)}
+            >
+              {trustItems.map((item, index) => (
+                <Fragment key={item}>
+                  {index > 0 ? (
+                    <span aria-hidden="true" className="text-gold">
+                      ·
+                    </span>
+                  ) : null}
+                  <span>{item}</span>
+                </Fragment>
+              ))}
+              <span aria-hidden="true" className="text-gold">
+                ·
+              </span>
+              <span>{site.domain.replace("www.", "")}</span>
+            </div>
+          ) : null}
         </div>
       </Container>
     </section>

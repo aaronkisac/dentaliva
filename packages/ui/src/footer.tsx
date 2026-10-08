@@ -20,6 +20,13 @@ export interface FooterProps extends HTMLAttributes<HTMLElement> {
   contact: FooterContact;
   social: Array<{ label: string; href: string }>;
   copyright: string;
+  /** DSN-44: sütun başlıkları CMS'ten (siteCopy) gelir — pakette copy yok;
+      başlığı olmayan sütun render edilmez ("boş bölüm canlıya çıkmaz"). */
+  labels?: {
+    contact?: string;
+    quickLinks?: string;
+    follow?: string;
+  };
 }
 
 function SocialIcon({ platform, className }: { platform: string; className?: string }) {
@@ -63,7 +70,7 @@ function SocialIcon({ platform, className }: { platform: string; className?: str
 
 /** Site footer: NAP block, link columns, socials, copyright (CMS-driven). */
 export const Footer = forwardRef<HTMLElement, FooterProps>(function Footer(
-  { columns, contact, social, copyright, className, ...rest },
+  { columns, contact, social, copyright, labels, className, ...rest },
   ref,
 ) {
   // DSN-34: tek linkli nav sütunları tek düz listeye indirgenir (href dedupe).
@@ -88,9 +95,11 @@ export const Footer = forwardRef<HTMLElement, FooterProps>(function Footer(
           >
             D
           </span>
-          <h2 className="mt-6 font-serif text-[length:var(--dvn-text-title-size)] text-gold-soft">
-            İletişim
-          </h2>
+          {labels?.contact ? (
+            <h2 className="mt-6 font-serif text-[length:var(--dvn-text-title-size)] text-gold-soft">
+              {labels.contact}
+            </h2>
+          ) : null}
           <address className="mt-3 space-y-2 font-sans text-sm not-italic">
             {/* Render the anchor only when a value exists — an empty tel:/mailto:
                 link has no accessible name (axe link-name) and dials nothing. */}
@@ -109,9 +118,11 @@ export const Footer = forwardRef<HTMLElement, FooterProps>(function Footer(
           </address>
         </div>
         <div>
-          <h2 className="font-serif text-[length:var(--dvn-text-title-size)] text-gold-soft">
-            Hızlı Erişim
-          </h2>
+          {labels?.quickLinks ? (
+            <h2 className="font-serif text-[length:var(--dvn-text-title-size)] text-gold-soft">
+              {labels.quickLinks}
+            </h2>
+          ) : null}
           <ul className="mt-3 space-y-2 font-sans text-sm">
             {links.map((link) => (
               <li key={link.href}>
@@ -123,9 +134,11 @@ export const Footer = forwardRef<HTMLElement, FooterProps>(function Footer(
           </ul>
         </div>
         <div>
-          <h2 className="font-serif text-[length:var(--dvn-text-title-size)] text-gold-soft">
-            Bizi takip edin
-          </h2>
+          {labels?.follow ? (
+            <h2 className="font-serif text-[length:var(--dvn-text-title-size)] text-gold-soft">
+              {labels.follow}
+            </h2>
+          ) : null}
           <ul className="mt-3 space-y-2 font-sans text-sm">
             {social.map((item) => (
               <li key={item.href}>

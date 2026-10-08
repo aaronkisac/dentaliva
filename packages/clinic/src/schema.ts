@@ -7,13 +7,14 @@ import { faq } from "./documents/faq";
 import { homePage } from "./documents/home-page";
 import { legalPage } from "./documents/legal-page";
 import { redirect } from "./documents/redirect";
+import { siteCopy } from "./documents/site-copy";
 import { siteSettings } from "./documents/site-settings";
 import { testimonial } from "./documents/testimonial";
 import { treatment } from "./documents/treatment";
 import { localeBlockContent } from "./objects/locale-block-content";
 
 /** Singletons: fixed documents, not creatable from the Studio "new" menu. */
-export const singletonTypes = ["siteSettings", "homePage"];
+export const singletonTypes = ["siteCopy", "siteSettings", "homePage"];
 
 /**
  * Full schema for a clinic site: kernel objects + clinic documents.
@@ -33,4 +34,5 @@ export const schemaTypes = [
   redirect,
   homePage,
   siteSettings,
+  siteCopy,
 ];

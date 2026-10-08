@@ -9,6 +9,7 @@ import { Reveal, Heading, Section, Text } from "@dentaliva/ui";
 import { JsonLd } from "../../../components/json-ld";
 import { PageHero } from "../../../components/page-hero";
 import { fetchBranchBySlug, fetchBranches } from "../../../src/content/branches";
+import { fetchSiteCopy } from "../../../src/content/site-copy";
 import { readClient } from "../../../src/sanity";
 import { absoluteUrl, pageMetadata } from "../../../src/seo";
 import { SeedPlaceholder } from "../../../components/seed-placeholder";
@@ -42,7 +43,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function BranchDetailPage({ params }: PageProps) {
   const { slug } = await params;
-  const branch = await fetchBranchBySlug(readClient, slug);
+  const [branch, copy] = await Promise.all([
+    fetchBranchBySlug(readClient, slug),
+    fetchSiteCopy(readClient),
+  ]);
   if (!branch) {
     return <SeedPlaceholder title="Şube" />;
   }
@@ -104,9 +108,11 @@ export default async function BranchDetailPage({ params }: PageProps) {
             ) : null}
             {branch.mapUrl ? (
               <div>
-                <Heading level="h2" size="title">
-                  Yol Tarifi
-                </Heading>
+                {copy?.sectionHeadings?.routeLink?.tr ? (
+                  <Heading level="h2" size="title">
+                    {copy.sectionHeadings.routeLink.tr}
+                  </Heading>
+                ) : null}
                 <Text className="mt-3">
                   <a
                     href={branch.mapUrl}

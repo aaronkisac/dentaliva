@@ -4,6 +4,10 @@
  * DSN-33: runtime hata sınırı — not-found ile aynı marka dili (serif başlık,
  * altın çizgili kurtarma butonu). Static export'ta sayfalar anında yüklendiği
  * için loading.tsx bilinçli olarak eklenmedi.
+ *
+ * DSN-44 istisna (bilgelenmiş): copy'ler hardcoded — client hata sınırı
+ * Sanity fetch edemez; uygulama kırılmışken kurtarma UI'sı CMS'e bağımlı
+ * olamaz (global-error'daki inline renk istisnasıyla aynı gerekçe).
  */
 export default function ErrorPage({
   error,

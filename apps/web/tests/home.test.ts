@@ -24,7 +24,7 @@ describe("build resilience (home content)", () => {
   });
 
   it("null-safes missing documents and lists (fetchHomeData)", async () => {
-    const data = await fetchHomeData(mockClient([null, null, null, null, null, null]));
+    const data = await fetchHomeData(mockClient([null, null, null, null, null, null, null]));
     expect(data.homePage).toBeNull();
     expect(data.quickServices).toEqual([]);
     expect(data.doctors).toEqual([]);
@@ -43,5 +43,21 @@ describe("build resilience (home content)", () => {
 
   it("null-safes a missing homePage document", async () => {
     expect(await fetchHomePageDocument(mockClient([null]))).toBeNull();
+  });
+});
+
+describe("siteCopy resilience (DSN-44)", () => {
+  it("returns null and warns when siteCopy is unreachable", async () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const { fetchSiteCopy } = await import("../src/content/site-copy");
+    expect(await fetchSiteCopy(failingClient())).toBeNull();
+    expect(warn).toHaveBeenCalledWith("[sanity] siteCopy fetch failed:", expect.any(Error));
+    warn.mockRestore();
+  });
+
+  it("fetchHomeData carries siteCopy through", async () => {
+    const copy = { footer: { contactHeading: { tr: "İletişim" } } };
+    const data = await fetchHomeData(mockClient([null, null, null, null, null, null, copy]));
+    expect(data.siteCopy?.footer?.contactHeading?.tr).toBe("İletişim");
   });
 });

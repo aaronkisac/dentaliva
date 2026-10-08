@@ -106,3 +106,23 @@ describe("Footer", () => {
     );
   });
 });
+
+describe("footer labels (DSN-44)", () => {
+  it("renders column headings from labels when provided", () => {
+    renderUi(
+      <Footer
+        {...props}
+        labels={{ contact: "İletişim", quickLinks: "Hızlı Erişim", follow: "Bizi takip edin" }}
+      />,
+    );
+    expect(screen.getByRole("heading", { name: "İletişim" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Hızlı Erişim" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Bizi takip edin" })).toBeInTheDocument();
+  });
+
+  it("renders no h2 headings and keeps columns when labels are absent", () => {
+    renderUi(<Footer {...props} />);
+    expect(screen.queryByRole("heading")).not.toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "İmplant" })).toBeInTheDocument();
+  });
+});

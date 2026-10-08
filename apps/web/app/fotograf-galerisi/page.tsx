@@ -5,6 +5,7 @@ import { pickLocalized } from "@dentaliva/sanity-schema/client";
 
 import { GalleryLightbox } from "../../components/lightbox";
 import { fetchHomePageDocument } from "../../src/content/home";
+import { fetchSiteCopy } from "../../src/content/site-copy";
 import { readClient } from "../../src/sanity";
 import { pageMetadata } from "../../src/seo";
 
@@ -16,7 +17,11 @@ export const metadata: Metadata = pageMetadata({
 
 export default async function GalleryPage() {
   // PRF-5: yalnızca homePage dokümanı — liste sorguları çekilmez.
-  const homePage = await fetchHomePageDocument(readClient);
+  const [homePage, copy] = await Promise.all([
+    fetchHomePageDocument(readClient),
+    fetchSiteCopy(readClient),
+  ]);
+  const headings = copy?.sectionHeadings;
   const images = homePage?.gallery ?? [];
   // DSN-29: önce/sonra görselleri müşteriden (hasta izinli) gelir;
   // dolana kadar sekme filtresi hiç görünmez.
@@ -24,16 +29,22 @@ export default async function GalleryPage() {
 
   return (
     <Section>
-      <Heading level="h1" size="lg">
-        Fotoğraf Galerisi
-      </Heading>
+      {headings?.galleryPage?.tr ? (
+        <Heading level="h1" size="lg">
+          {headings.galleryPage.tr}
+        </Heading>
+      ) : null}
       <div className="mt-8">
         {images.length === 0 && onceSonra.length === 0 ? (
-          <p className="font-sans text-ink">Galeri hazırlanıyor.</p>
+          <p className="font-sans text-ink">{headings?.galleryEmpty?.tr}</p>
         ) : (
           <>
             <p className="sr-only">Galeri: {images.length} görsel, büyütmek için görsel seçin.</p>
-            <GalleryLightbox images={images} onceSonra={onceSonra} />
+            <GalleryLightbox
+              images={images}
+              onceSonra={onceSonra}
+              closeLabel={copy?.ui?.lightboxClose?.tr}
+            />
           </>
         )}
       </div>

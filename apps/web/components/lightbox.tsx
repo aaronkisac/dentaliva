@@ -28,9 +28,13 @@ type GalleryTab = (typeof TABS)[number]["id"];
 export function GalleryLightbox({
   images,
   onceSonra,
+  closeLabel,
 }: {
   images: GalleryImage[];
   onceSonra?: GalleryImage[];
+  /** DSN-44: kapat düğmesi metni siteCopy'den — copy'siz düğme render edilmez
+      (klavye kullanıcısı için Esc zaten native dialog davranışı). */
+  closeLabel?: string;
 }) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [active, setActive] = useState<number | null>(null);
@@ -132,13 +136,15 @@ export function GalleryLightbox({
                 />
               );
             })()}
-            <button
-              type="button"
-              onClick={() => setActive(null)}
-              className="mt-4 font-sans text-sm font-semibold uppercase tracking-widest text-navy hover:text-gold-deep"
-            >
-              Kapat
-            </button>
+            {closeLabel ? (
+              <button
+                type="button"
+                onClick={() => setActive(null)}
+                className="mt-4 font-sans text-sm font-semibold uppercase tracking-widest text-navy hover:text-gold-deep"
+              >
+                {closeLabel}
+              </button>
+            ) : null}
           </div>
         ) : null}
       </dialog>
