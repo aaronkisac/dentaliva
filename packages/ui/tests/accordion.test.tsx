@@ -81,3 +81,25 @@ describe("Accordion", () => {
     await expectNoA11yViolations(<Accordion items={items} />);
   });
 });
+
+describe("Accordion flush variant (DSN-47)", () => {
+  const flushItems = [
+    { id: "f1", question: "Soru 1", answer: "Yanıt 1" },
+    { id: "f2", question: "Soru 2", answer: "Yanıt 2" },
+  ];
+
+  it("renders full-width divider rows without the outer border", () => {
+    renderUi(<Accordion items={flushItems} variant="flush" />);
+    const wrapper = screen.getByRole("button", { name: "Soru 1" }).closest("[class*=divide-y]");
+    expect(wrapper?.className).not.toContain("border border-[var(--dvn-line-soft)]");
+    expect(wrapper?.className).toContain("divide-y");
+    expect(screen.getByRole("button", { name: "Soru 1" }).className).toContain("px-0 py-5");
+  });
+
+  it("keeps the boxed frame for the default variant", () => {
+    renderUi(<Accordion items={flushItems} />);
+    const wrapper = screen.getByRole("button", { name: "Soru 1" }).closest("[class*=divide-y]");
+    expect(wrapper?.className).toContain("border border-[var(--dvn-line-soft)]");
+    expect(screen.getByRole("button", { name: "Soru 1" }).className).toContain("px-5 py-4");
+  });
+});

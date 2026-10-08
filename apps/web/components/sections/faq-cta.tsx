@@ -1,4 +1,4 @@
-import { Accordion, Heading, Section } from "@dentaliva/ui";
+import { Accordion, Heading, Section, Link, buttonVariants } from "@dentaliva/ui";
 import type { LocalizedPair } from "../../src/content/home";
 
 export interface FaqEntry {
@@ -6,7 +6,27 @@ export interface FaqEntry {
   answer?: { tr?: string };
 }
 
-export function FaqSection({ items, heading }: { items: FaqEntry[]; heading?: string }) {
+export interface FaqSectionCopy {
+  eyebrow?: LocalizedPair;
+  support?: LocalizedPair;
+  ctaLabel?: LocalizedPair;
+  ctaHref?: string;
+}
+
+/**
+ * DSN-47: ReoDental düzen deseni — eyebrow motifli başlık bloğu + destek
+ * metni + sağda CTA; liste accordion'un flush varyantıyla tam genişlik.
+ * Tüm metinler siteCopy.faq'tan; parça yoksa o öğe render edilmez.
+ */
+export function FaqSection({
+  items,
+  heading,
+  copy,
+}: {
+  items: FaqEntry[];
+  heading?: string;
+  copy?: FaqSectionCopy | null;
+}) {
   const accordionItems = items
     .filter((item) => item.question?.tr && item.answer?.tr)
     .map((item) => ({
@@ -15,17 +35,39 @@ export function FaqSection({ items, heading }: { items: FaqEntry[]; heading?: st
       answer: item.answer?.tr ?? "",
     }));
   if (accordionItems.length === 0) return null;
+  const eyebrow = copy?.eyebrow?.tr;
+  const support = copy?.support?.tr;
+  const ctaLabel = copy?.ctaLabel?.tr;
+  const ctaHref = copy?.ctaHref;
   return (
     <Section>
-      {/* DSN-44: başlık siteCopy'den — copy'siz bölüm başlıksız kalmaz, sorma
-          listesi aynen çalışır. */}
-      {heading ? (
-        <Heading level="h2" size="md">
-          {heading}
-        </Heading>
-      ) : null}
-      <div className="mt-8 max-w-3xl">
-        <Accordion items={accordionItems} />
+      <div className="grid gap-8 md:grid-cols-[1fr_auto] md:items-end">
+        <div>
+          {eyebrow ? (
+            <div className="flex items-center gap-3">
+              <span aria-hidden="true" className="h-px w-8 bg-gold" />
+              <p className="font-sans text-xs uppercase tracking-widest text-gold-deep">
+                {eyebrow}
+              </p>
+            </div>
+          ) : null}
+          {heading ? (
+            <Heading level="h2" size="md" className={eyebrow ? "mt-4 max-w-2xl" : "max-w-2xl"}>
+              {heading}
+            </Heading>
+          ) : null}
+          {support ? (
+            <p className="mt-4 max-w-xl font-sans text-lg text-ink/70">{support}</p>
+          ) : null}
+        </div>
+        {ctaLabel && ctaHref ? (
+          <Link href={ctaHref} className={buttonVariants({ variant: "outline", size: "lg" })}>
+            {ctaLabel}
+          </Link>
+        ) : null}
+      </div>
+      <div className="mt-10">
+        <Accordion items={accordionItems} variant="flush" />
       </div>
     </Section>
   );

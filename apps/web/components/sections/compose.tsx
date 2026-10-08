@@ -51,7 +51,13 @@ export const sectionRegistry: Record<HomeSectionId, SectionRenderer> = {
   doctors: (data) =>
     reveal(<DoctorsSection items={data.doctors} team={data.homePage?.teamSection ?? null} />),
   faq: (data) =>
-    reveal(<FaqSection items={data.faqs} heading={data.siteCopy?.sectionHeadings?.faq?.tr} />),
+    reveal(
+      <FaqSection
+        items={data.faqs}
+        heading={data.siteCopy?.sectionHeadings?.faq?.tr}
+        copy={data.siteCopy?.faq ?? null}
+      />,
+    ),
   cta: (data) =>
     reveal(
       <CtaSection
