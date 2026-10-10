@@ -135,7 +135,7 @@ export function QuickServicesSection({
         {items.map((item) => (
           <div
             key={item.slug ?? item.name?.tr}
-            className="w-[82%] shrink-0 snap-start sm:w-[calc((100%-1.5rem)/2)] md:w-[calc((100%-3rem)/3)]"
+            className="w-[82%] shrink-0 snap-start sm:w-[calc((100%_-_1.5rem)/2)] md:w-[calc((100%_-_3rem)/3)]"
           >
             <TreatmentCard item={item} />
           </div>
