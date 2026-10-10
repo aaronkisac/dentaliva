@@ -44,7 +44,7 @@ export function OnceSonraSection({
           </Heading>
         </div>
       ) : null}
-      <div className="mt-10 grid gap-6 md:grid-cols-2">
+      <div className="mt-10 grid gap-6 md:grid-cols-3">
         {cards.map((item, index) => {
           const title = pickLocalized(item.title);
           const text = pickLocalized(item.text);

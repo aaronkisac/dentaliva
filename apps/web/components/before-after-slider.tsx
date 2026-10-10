@@ -90,7 +90,7 @@ export function BeforeAfterSlider({
         src={after.ref}
         alt={after.alt}
         fill
-        sizes="(max-width: 768px) 100vw, 50vw"
+        sizes="(max-width: 768px) 100vw, 33vw"
         placeholder={after.lqip ? "blur" : "empty"}
         blurDataURL={after.lqip}
         className="object-cover"
@@ -100,7 +100,7 @@ export function BeforeAfterSlider({
         src={before.ref}
         alt={before.alt}
         fill
-        sizes="(max-width: 768px) 100vw, 50vw"
+        sizes="(max-width: 768px) 100vw, 33vw"
         placeholder={before.lqip ? "blur" : "empty"}
         blurDataURL={before.lqip}
         className="object-cover"
