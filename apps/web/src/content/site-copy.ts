@@ -27,6 +27,8 @@ export interface SiteCopy {
     servicesEyebrow?: LocalizedPair;
     servicesHeading?: LocalizedPair;
     allServicesCta?: LocalizedPair;
+    onceSonraEyebrow?: LocalizedPair;
+    onceSonraHeading?: LocalizedPair;
   } | null;
   /** DSN-47: ana sayfa SSS bölümü — eyebrow, destek metni ve CTA. */
   faq?: {
@@ -46,6 +48,8 @@ export interface SiteCopy {
     notFoundTitle?: LocalizedPair;
     notFoundBody?: LocalizedPair;
     notFoundBackLink?: LocalizedPair;
+    onceSonraBefore?: LocalizedPair;
+    onceSonraAfter?: LocalizedPair;
   } | null;
 }
 

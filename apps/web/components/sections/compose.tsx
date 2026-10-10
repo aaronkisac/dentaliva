@@ -9,6 +9,7 @@ import { CtaSection, FaqSection } from "./faq-cta";
 import { DoctorsSection } from "./doctors";
 import { GallerySection } from "./gallery";
 import { HeroSection } from "./hero";
+import { OnceSonraSection } from "./once-sonra";
 import { QuickServicesSection } from "./quick-services";
 import { ServiceTicker } from "./service-ticker";
 import { ReviewsSection, VideoTestimonialsSection } from "./testimonials";
@@ -46,6 +47,16 @@ export const sectionRegistry: Record<HomeSectionId, SectionRenderer> = {
         onceSonra={data.homePage?.onceSonraGallery ?? []}
         heading={data.siteCopy?.sectionHeadings?.galleryHome?.tr}
         closeLabel={data.siteCopy?.ui?.lightboxClose?.tr}
+      />,
+    ),
+  onceSonra: (data) =>
+    reveal(
+      <OnceSonraSection
+        items={data.homePage?.onceSonraCases ?? []}
+        eyebrow={data.siteCopy?.sectionHeadings?.onceSonraEyebrow?.tr}
+        heading={data.siteCopy?.sectionHeadings?.onceSonraHeading?.tr}
+        beforeLabel={data.siteCopy?.ui?.onceSonraBefore?.tr}
+        afterLabel={data.siteCopy?.ui?.onceSonraAfter?.tr}
       />,
     ),
   doctors: (data) =>

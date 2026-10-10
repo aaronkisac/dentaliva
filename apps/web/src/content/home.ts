@@ -71,6 +71,8 @@ export interface HomePageContent {
   gallery?: GalleryImage[];
   /** DSN-29: hasta izinli önce/sonra görselleri — dolunca galeri sekmesi açılır. */
   onceSonraGallery?: GalleryImage[];
+  /** DSN-50: anasayfa önce/sonra karşılaştırma kartları — boşken bölüm render edilmez. */
+  onceSonraCases?: BeforeAfterCase[];
   /** Copy sweep: ekip bölümünün CMS'ten gelen başlık/copy bloğu. */
   teamSection?: HomeTeamSection;
   cta?: { title?: LocalizedPair; text?: LocalizedPair };
@@ -90,6 +92,21 @@ export interface HomeTeamSection {
   eyebrow?: LocalizedPair;
   heading?: LocalizedPair;
   text?: LocalizedPair;
+}
+
+/** DSN-50: önce/sonra karşılaştırma kartı — slider için görsel çifti. */
+export interface BeforeAfterImage {
+  ref?: string;
+  alt?: LocalizedPair;
+  lqip?: string;
+}
+
+export interface BeforeAfterCase {
+  before?: BeforeAfterImage;
+  after?: BeforeAfterImage;
+  title?: LocalizedPair;
+  text?: LocalizedPair;
+  treatment?: { name?: LocalizedPair; slug?: string };
 }
 
 export interface HomeData {

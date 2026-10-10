@@ -26,6 +26,7 @@ const ALLOWED = new Set(
   [
     "components/CallbackForm.tsx",
     "components/lightbox.tsx",
+    "components/before-after-slider.tsx",
     "components/sections/doctors.tsx",
     "app/error.tsx",
     "app/global-error.tsx",

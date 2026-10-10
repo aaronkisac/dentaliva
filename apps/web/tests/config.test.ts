@@ -41,6 +41,7 @@ describe("site config (PGT-1)", () => {
       "videoTestimonials",
       "reviews",
       "gallery",
+      "onceSonra",
       "doctors",
       "faq",
       "cta",
