@@ -133,10 +133,7 @@ export function QuickServicesSection({
         className="-mx-[var(--dvn-container-gutter)] mt-8 flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-pl-[var(--dvn-container-gutter)] px-[var(--dvn-container-gutter)] pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
         {items.map((item) => (
-          <div
-            key={item.slug ?? item.name?.tr}
-            className="w-[82%] shrink-0 snap-start sm:w-[calc((100%_-_1.5rem)/2)] md:w-[calc((100%_-_3rem)/3)]"
-          >
+          <div key={item.slug ?? item.name?.tr} className="dvn-service-card shrink-0 snap-start">
             <TreatmentCard item={item} />
           </div>
         ))}

@@ -202,6 +202,24 @@
     U+A720-A7FF;
 }
 
+/* DSN-50: hizmet carousel kart genişlikleri — Tailwind v4, calc içindeki
+   bölme işaretli arbitrary width'i derlemiyor; deterministik utility.
+   Kesim noktaları token ölçeğinden (md 900px): mobil 82% (peek), 2 kart,
+   900px üstü 3 kart. */
+.dvn-service-card {
+  width: 82%;
+}
+@media (min-width: 640px) {
+  .dvn-service-card {
+    width: calc((100% - 1.5rem) / 2);
+  }
+}
+@media (min-width: 900px) {
+  .dvn-service-card {
+    width: calc((100% - 3rem) / 3);
+  }
+}
+
 /* source(): kök dizine taşır — packages/ui sınıfları (header sticky vb.)
    aksi halde sessizce taranmaz (monorepo kalıbı, DSN-10 düzeltmesi). */
 @import "tailwindcss" source("../../../");
