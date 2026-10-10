@@ -19,37 +19,35 @@ const items: QuickServiceItem[] = [
 const render = (props: Parameters<typeof QuickServicesSection>[0]) =>
   renderToStaticMarkup(<QuickServicesSection {...props} />);
 
-describe("QuickServicesSection (DSN-45)", () => {
+describe("QuickServicesSection carousel (DSN-50)", () => {
   it("renders nothing without items", () => {
     expect(render({ items: [], heading: "Hizmetlerimiz" })).toBe("");
   });
 
-  it("renders the grid without heading or button when copy is absent", () => {
-    const html = render({ items });
-    expect(html).toContain("İmplant");
-    expect(html).toContain("Ortodonti");
-    expect(html).not.toContain("<h2");
-    expect(html).not.toContain('href="/hizmetlerimiz"');
-  });
-
-  it("renders the CMS eyebrow, heading and the all-services button", () => {
+  it("renders the snap track, cards, arrows and the CTA text link", () => {
     const html = render({
       items,
       eyebrow: "Dentaliva",
       heading: "Hizmetlerimiz",
       ctaLabel: "Tüm Hizmetlerimiz",
     });
-    expect(html).toContain("Dentaliva");
-    expect(html).toContain("<h2");
-    expect(html).toContain("Hizmetlerimiz");
+    expect(html).toContain("snap-x");
+    expect(html).toContain('href="/hizmetlerimiz/implant"');
+    expect(html).toContain('aria-label="Önceki hizmetler"');
+    expect(html).toContain('aria-label="Sonraki hizmetler"');
     expect(html).toContain("Tüm Hizmetlerimiz");
-    expect(html).toContain('href="/hizmetlerimiz"');
+    expect(html).toContain("Özet.");
   });
 
-  it("hides the eyebrow and button independently", () => {
+  it("keeps arrows but drops the text link when ctaLabel is absent", () => {
+    const html = render({ items });
+    expect(html).toContain("İmplant");
+    expect(html).toContain("Önceki hizmetler");
+    expect(html).not.toContain(">Tüm Hizmetlerimiz");
+  });
+
+  it("marks the previous arrow disabled at the start of the track", () => {
     const html = render({ items, heading: "Hizmetlerimiz" });
-    expect(html).toContain("<h2");
-    expect(html).not.toContain("text-xs uppercase");
-    expect(html).not.toContain('href="/hizmetlerimiz"');
+    expect(html).toMatch(/aria-label="Önceki hizmetler"[^>]*disabled/);
   });
 });
