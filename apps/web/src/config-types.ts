@@ -26,6 +26,7 @@ export const homeSectionIds = [
   "videoTestimonials",
   "reviews",
   "gallery",
+  "onceSonra",
   "doctors",
   "faq",
   "cta",

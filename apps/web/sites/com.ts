@@ -29,6 +29,7 @@ export const site = {
       "videoTestimonials",
       "reviews",
       "gallery",
+      "onceSonra",
       "doctors",
       "faq",
       "cta",

@@ -43,6 +43,12 @@ export const siteCopy = defineType({
         },
         { name: "servicesHeading", title: "Hizmetlerimiz başlığı (ana sayfa)", type: "localeText" },
         { name: "allServicesCta", title: "Tüm hizmetler butonu (ana sayfa)", type: "localeText" },
+        {
+          name: "onceSonraEyebrow",
+          title: "Önce/Sonra üst etiketi (ana sayfa)",
+          type: "localeText",
+        },
+        { name: "onceSonraHeading", title: "Önce/Sonra başlığı (ana sayfa)", type: "localeText" },
       ],
     }),
     defineField({
@@ -80,6 +86,8 @@ export const siteCopy = defineType({
         { name: "notFoundTitle", title: "404 başlık", type: "localeText" },
         { name: "notFoundBody", title: "404 açıklama", type: "localeText" },
         { name: "notFoundBackLink", title: "404 ana sayfa bağlantısı", type: "localeText" },
+        { name: "onceSonraBefore", title: "Önce/Sonra 'Önce' rozeti", type: "localeText" },
+        { name: "onceSonraAfter", title: "Önce/Sonra 'Sonra' rozeti", type: "localeText" },
       ],
     }),
   ],

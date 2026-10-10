@@ -64,6 +64,32 @@ export const homePage = defineType({
       validation: (rule) => rule.max(24),
     }),
     defineField({
+      name: "onceSonraCases",
+      title: "Önce/Sonra vakalar",
+      description:
+        "Anasayfa önce/sonra karşılaştırma kartları — sürüklenebilir slider'lı. Boşken bölüm render edilmez. Örnek fotoğraflar geçicidir; hasta izinli çiftlerle değiştirilir.",
+      type: "array",
+      of: [
+        {
+          type: "object",
+          name: "beforeAfterCase",
+          fields: [
+            { name: "before", title: "Önce fotoğrafı", type: "imageWithAlt" },
+            { name: "after", title: "Sonra fotoğrafı", type: "imageWithAlt" },
+            { name: "title", title: "Başlık", type: "localeString" },
+            { name: "text", title: "Açıklama", type: "localeText" },
+            {
+              name: "treatment",
+              title: "İlgili hizmet",
+              type: "reference",
+              to: [{ type: "treatment" }],
+            },
+          ],
+        },
+      ],
+      validation: (rule) => rule.max(12),
+    }),
+    defineField({
       name: "teamSection",
       title: "Ekip bölümü",
       type: "object",

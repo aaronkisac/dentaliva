@@ -26,6 +26,13 @@ export const homePageQuery = defineQuery(`*[_type == "homePage"][0]{
   stats,
   gallery[]{ "asset": { "_ref": asset._ref }, "alt": alt, "lqip": asset->metadata.lqip },
   onceSonraGallery[]{ "asset": { "_ref": asset._ref }, "alt": alt, "lqip": asset->metadata.lqip },
+  onceSonraCases[]{
+    before { "ref": asset._ref, alt, "lqip": asset->metadata.lqip },
+    after { "ref": asset._ref, alt, "lqip": asset->metadata.lqip },
+    title,
+    text,
+    treatment->{ name, "slug": slug.current }
+  },
   teamSection,
   cta
 }`);
