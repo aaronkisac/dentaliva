@@ -63,4 +63,16 @@ describe("AboutSection (DSN-52)", () => {
   it("renders nothing without about data", () => {
     expect(render({ data: null })).toBe("");
   });
+
+  it("renders the dark tone with white copy on navy (DSN-52 ana sayfa denemesi)", () => {
+    const html = render({
+      data,
+      stats: [{ value: "13+", label: { tr: "Yıllık Deneyim" } }],
+      tone: "dark",
+    });
+    expect(html).toContain("bg-navy");
+    expect(html).toContain("text-white");
+    expect(html).toContain("divide-white/15");
+    expect(html).toContain("text-gold-soft");
+  });
 });
