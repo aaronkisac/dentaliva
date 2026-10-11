@@ -7,7 +7,6 @@ import { sectionRegistry } from "../components/sections/compose";
 const emptyData: HomeData = {
   homePage: null,
   quickServices: [],
-  servicesGrid: [],
   doctors: [],
   faqs: [],
   testimonials: [],

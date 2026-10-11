@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { Heading, Link, Section } from "@dentaliva/ui";
 
@@ -31,13 +31,23 @@ function ArrowIcon({ direction }: { direction: "left" | "right" }) {
 const arrowClass =
   "flex h-11 w-11 items-center justify-center border border-[var(--dvn-line-gold)] text-navy transition-colors duration-300 hover:bg-gold hover:text-navy disabled:pointer-events-none disabled:opacity-40";
 
+/** Kart arası gap-6 (24px) — kaydırma adımı kart genişliği + bu boşluk. */
+const GAP = 24;
+
 /**
- * DSN-50: ana sayfa hizmet carousel'i — 3'lü overlay kartlar tek sırada;
- * masaüstünde oklarla kart kaydırma, mobilde yerleşik swipe (scroll-snap).
- * Bölüm yüksekliği iki sıralı grid'in ~ yarısına iner; 6 curated hizmetin
- * tamamı carousel'de ulaşılabilir kalır. Başlık bloğu solda, sağda CMS'ten
- * gelen "Tüm Hizmetlerimiz" metin bağlantısı + oklar (DSN-44 copy'siz
- * render edilmez).
+ * DSN-50: ana sayfa hizmet carousel'i — TÜM hizmetler tek sırada (DSN-51:
+ * eski 6 kartlık servicesGrid kesimi grid dönemiyle öldü); masaüstünde
+ * oklarla kart kaydırma, mobilde yerleşik swipe (scroll-snap).
+ *
+ * DSN-51 düzeltmeleri:
+ * - Kaydırma scrollBy yerine İNDEKS tabanlı scrollTo: hedef her zaman bir
+ *   kartın başına hizalanır ve son indeks track sonuna flush sıkıştırılır —
+ *   kenarda yarım slayt kalıntısı kalmaz.
+ * - Slaytların altında nokta göstergeleri: her slayt bir nokta; aktif nokta
+ *   görünürdeki ilk kartı gösterir (aria-current), tıklanabilir.
+ * - Resize'da yeniden ölçüm; swipe sırasında noktalar/oklar senkron.
+ * Başlık bloğu solda, sağda CMS'ten gelen "Tüm Hizmetlerimiz" metin
+ * bağlantısı + oklar (DSN-44 copy'siz render edilmez).
  */
 export function QuickServicesSection({
   items,
@@ -51,32 +61,57 @@ export function QuickServicesSection({
   ctaLabel?: string;
 }) {
   const trackRef = useRef<HTMLDivElement>(null);
-  const [atStart, setAtStart] = useState(true);
-  const [atEnd, setAtEnd] = useState(false);
+  const [index, setIndex] = useState(0);
+  const [maxIndex, setMaxIndex] = useState(0);
+
+  const cardStep = () => {
+    const track = trackRef.current;
+    const card = track?.querySelector<HTMLElement>("a,article");
+    if (!track || !card) return 0;
+    return card.getBoundingClientRect().width + GAP;
+  };
+
+  const goTo = (target: number) => {
+    const track = trackRef.current;
+    if (!track) return;
+    const step = cardStep();
+    const clamped = Math.min(Math.max(target, 0), maxIndex);
+    setIndex(clamped);
+    track.scrollTo({
+      left: Math.min(clamped * step, track.scrollWidth - track.clientWidth),
+      behavior: "smooth",
+    });
+  };
+
+  /** Swipe/scroll sonrası nokta ve ok durumunu gerçek konumdan senkronla. */
+  const syncFromScroll = useCallback(() => {
+    const track = trackRef.current;
+    const step = cardStep();
+    if (!track || step <= 0) return;
+    const atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
+    setIndex(
+      atEnd ? maxIndex : Math.min(maxIndex, Math.max(0, Math.round(track.scrollLeft / step))),
+    );
+  }, [maxIndex]);
+
+  /** Görünür kart sayısından son geçerli indeksi hesapla (resize'da da). */
+  const measure = useCallback(() => {
+    const track = trackRef.current;
+    const step = cardStep();
+    if (!track || step <= 0) return;
+    const visible = Math.max(1, Math.round(track.clientWidth / step));
+    const last = Math.max(0, items.length - visible);
+    setMaxIndex(last);
+    setIndex((value) => Math.min(value, last));
+  }, [items.length]);
+
+  useEffect(() => {
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, [measure]);
 
   if (items.length === 0) return null;
-
-  const scrollByCard = (direction: 1 | -1) => {
-    const track = trackRef.current;
-    if (!track) return;
-    const card = track.querySelector("a,article");
-    if (!card) return;
-    const step = card.getBoundingClientRect().width + 24; // gap-6
-    track.scrollBy({ left: step * direction, behavior: "smooth" });
-  };
-
-  const updateEdges = () => {
-    const track = trackRef.current;
-    if (!track) return;
-    setAtStart(track.scrollLeft <= 4);
-    setAtEnd(track.scrollLeft + track.clientWidth >= track.scrollWidth - 4);
-  };
-
-  // İlk boyamada kenar durumunu kur: görünürden az öğe varsa "sonraki" baştan
-  // pasif olmalı (yalnız onScroll'a bırakılırsa ok ölü görünür).
-  useEffect(() => {
-    updateEdges();
-  }, []);
 
   return (
     <Section>
@@ -109,8 +144,8 @@ export function QuickServicesSection({
             <button
               type="button"
               aria-label="Önceki hizmetler"
-              onClick={() => scrollByCard(-1)}
-              disabled={atStart}
+              onClick={() => goTo(index - 1)}
+              disabled={index === 0}
               className={arrowClass}
             >
               <ArrowIcon direction="left" />
@@ -118,8 +153,8 @@ export function QuickServicesSection({
             <button
               type="button"
               aria-label="Sonraki hizmetler"
-              onClick={() => scrollByCard(1)}
-              disabled={atEnd}
+              onClick={() => goTo(index + 1)}
+              disabled={index >= maxIndex}
               className={arrowClass}
             >
               <ArrowIcon direction="right" />
@@ -129,7 +164,7 @@ export function QuickServicesSection({
       </div>
       <div
         ref={trackRef}
-        onScroll={updateEdges}
+        onScroll={syncFromScroll}
         className="-mx-[var(--dvn-container-gutter)] mt-8 flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-pl-[var(--dvn-container-gutter)] px-[var(--dvn-container-gutter)] pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
         {items.map((item) => (
@@ -138,6 +173,27 @@ export function QuickServicesSection({
           </div>
         ))}
       </div>
+      {items.length > 1 ? (
+        <div className="mt-4 flex flex-wrap items-center justify-center gap-1">
+          {items.map((item, i) => (
+            <button
+              key={item.slug ?? item.name?.tr ?? i}
+              type="button"
+              aria-label={`${i + 1}. hizmet`}
+              aria-current={i === index ? "true" : undefined}
+              onClick={() => goTo(Math.min(i, maxIndex))}
+              className="p-1.5"
+            >
+              <span
+                aria-hidden="true"
+                className={`block h-1.5 w-1.5 rounded-full transition-colors duration-300 ${
+                  i === index ? "bg-gold-deep" : "bg-ink/20 hover:bg-ink/40"
+                }`}
+              />
+            </button>
+          ))}
+        </div>
+      ) : null}
     </Section>
   );
 }
