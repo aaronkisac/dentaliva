@@ -15,12 +15,15 @@ export function CarouselTrack({
   ariaLabelPrefix,
   children,
   className,
+  arrows = false,
 }: {
   count: number;
-  /** Nokta aria etiketi öneki: "yorum" -> "3. yorum". */
+  /** Nokta aria etiketi öneki: "yorum" -> "3. yorum". Oklar da bu önekiyi kullanır. */
   ariaLabelPrefix: string;
   children: React.ReactNode;
   className?: string;
+  /** DSN-53: masaüstünde overlay oklar — koyu bölümlerde kullanılır. */
+  arrows?: boolean;
 }) {
   const trackRef = useRef<HTMLDivElement>(null);
   const [index, setIndex] = useState(0);
@@ -94,17 +97,64 @@ export function CarouselTrack({
 
   return (
     <>
-      <div
-        ref={trackRef}
-        onScroll={syncFromScroll}
-        onPointerDown={markUserScroll}
-        onWheel={markUserScroll}
-        className={
-          "-mx-[var(--dvn-container-gutter)] flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-pl-[var(--dvn-container-gutter)] px-[var(--dvn-container-gutter)] pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden " +
-          (className ?? "")
-        }
-      >
-        {children}
+      <div className="relative">
+        {/* DSN-53: masaüstünde oklar (mobilde swipe + noktalar yeterli — md altı gizli). */}
+        {arrows ? (
+          <>
+            <button
+              type="button"
+              aria-label={`Önceki ${ariaLabelPrefix}`}
+              onClick={() => goTo(index - 1)}
+              disabled={index === 0}
+              className="absolute left-6 top-1/2 z-[var(--dvn-z-raised)] flex h-11 w-11 -translate-y-1/2 items-center justify-center border border-white/40 bg-navy3/90 text-white transition-colors duration-300 hover:bg-gold hover:text-navy disabled:pointer-events-none disabled:opacity-40"
+            >
+              <svg
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="h-4 w-4"
+              >
+                <path d="M19 12H5m0 0 6-6m-6 6 6 6" />
+              </svg>
+            </button>
+            <button
+              type="button"
+              aria-label={`Sonraki ${ariaLabelPrefix}`}
+              onClick={() => goTo(index + 1)}
+              disabled={index >= maxIndex}
+              className="absolute right-6 top-1/2 z-[var(--dvn-z-raised)] flex h-11 w-11 -translate-y-1/2 items-center justify-center border border-white/40 bg-navy3/90 text-white transition-colors duration-300 hover:bg-gold hover:text-navy disabled:pointer-events-none disabled:opacity-40"
+            >
+              <svg
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="h-4 w-4"
+              >
+                <path d="M5 12h14m0 0-6-6m6 6-6 6" />
+              </svg>
+            </button>
+          </>
+        ) : null}
+        <div
+          ref={trackRef}
+          onScroll={syncFromScroll}
+          onPointerDown={markUserScroll}
+          onWheel={markUserScroll}
+          className={
+            "-mx-[var(--dvn-container-gutter)] flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-pl-[var(--dvn-container-gutter)] px-[var(--dvn-container-gutter)] pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden " +
+            (className ?? "")
+          }
+        >
+          {children}
+        </div>
       </div>
       {count > 1 ? (
         <div className="mt-4 flex flex-wrap items-center justify-center gap-1">

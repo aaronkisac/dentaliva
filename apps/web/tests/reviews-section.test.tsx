@@ -32,6 +32,7 @@ describe("ReviewsSection carousel (DSN-52)", () => {
     expect(html).toContain("Ayşe Yılmaz · Google");
     expect(html).toContain("snap-x");
     expect(html).toContain('aria-label="1. yorum"');
+    expect(html).toContain('aria-label="Sonraki yorum"');
   });
 
   it("omits the heading without CMS copy and keeps the carousel", () => {
