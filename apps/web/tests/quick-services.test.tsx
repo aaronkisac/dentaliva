@@ -63,4 +63,15 @@ describe("QuickServicesSection carousel (DSN-50)", () => {
     const html = render({ items: [items[0]!] });
     expect(html).not.toContain("1. hizmet");
   });
+
+  it("renders only the first six cards server-side; dots stay complete (DSN-51 perf)", () => {
+    const many = Array.from({ length: 10 }, (_, i) => ({
+      name: { tr: `Hizmet ${i + 1}` },
+      slug: `hizmet-${i + 1}`,
+      summary: { tr: "Özet." },
+    }));
+    const html = render({ items: many });
+    expect(html.match(/hizmet-\d+"/g)?.length).toBe(6);
+    expect(html.match(/aria-label="\d+\. hizmet"/g)?.length).toBe(10);
+  });
 });
