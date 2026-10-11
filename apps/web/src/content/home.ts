@@ -66,7 +66,13 @@ interface HomeImage {
 export interface HomePageContent {
   hero?: { headline?: LocalizedPair; subline?: LocalizedPair; image?: HomeImage };
   quickServiceLinks?: QuickServiceItem[];
-  about?: { title?: LocalizedPair; body?: LocalizedPair; image?: HomeImage };
+  about?: {
+    title?: LocalizedPair;
+    body?: LocalizedPair;
+    /** DSN-52: numaralı fayda listesi — boşsa liste gizlenir. */
+    benefits?: LocalizedPair[];
+    image?: HomeImage;
+  };
   stats?: Array<{ value?: string; label?: LocalizedPair }>;
   gallery?: GalleryImage[];
   /** DSN-29: hasta izinli önce/sonra görselleri — dolunca galeri sekmesi açılır. */
