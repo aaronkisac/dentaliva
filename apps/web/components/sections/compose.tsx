@@ -38,7 +38,13 @@ export const sectionRegistry: Record<HomeSectionId, SectionRenderer> = {
     ),
   about: (data) => reveal(<AboutSection data={data.homePage?.about ?? null} />),
   videoTestimonials: (data) => reveal(<VideoTestimonialsSection items={data.testimonials} />),
-  reviews: (data) => reveal(<ReviewsSection items={data.testimonials} />),
+  reviews: (data) =>
+    reveal(
+      <ReviewsSection
+        items={data.testimonials}
+        heading={data.siteCopy?.sectionHeadings?.reviews?.tr}
+      />,
+    ),
   gallery: (data) =>
     reveal(
       <GallerySection
