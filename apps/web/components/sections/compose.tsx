@@ -30,7 +30,7 @@ export const sectionRegistry: Record<HomeSectionId, SectionRenderer> = {
   quickServices: (data) =>
     reveal(
       <QuickServicesSection
-        items={data.servicesGrid}
+        items={data.quickServices}
         eyebrow={data.siteCopy?.sectionHeadings?.servicesEyebrow?.tr}
         heading={data.siteCopy?.sectionHeadings?.servicesHeading?.tr}
         ctaLabel={data.siteCopy?.sectionHeadings?.allServicesCta?.tr}

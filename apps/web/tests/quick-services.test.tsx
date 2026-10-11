@@ -50,4 +50,17 @@ describe("QuickServicesSection carousel (DSN-50)", () => {
     const html = render({ items, heading: "Hizmetlerimiz" });
     expect(html).toMatch(/aria-label="Önceki hizmetler"[^>]*disabled/);
   });
+
+  it("renders one clickable dot per slide with the first active (DSN-51)", () => {
+    const html = render({ items });
+    expect(html).toContain('aria-label="1. hizmet"');
+    expect(html).toContain('aria-label="2. hizmet"');
+    expect(html).toContain('aria-current="true"');
+    expect(html.match(/aria-label="\d+\. hizmet"/g)?.length).toBe(2);
+  });
+
+  it("skips the dots for a single slide", () => {
+    const html = render({ items: [items[0]!] });
+    expect(html).not.toContain("1. hizmet");
+  });
 });

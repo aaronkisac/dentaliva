@@ -112,8 +112,6 @@ export interface BeforeAfterCase {
 export interface HomeData {
   homePage: HomePageContent | null;
   quickServices: QuickServiceItem[];
-  /** DSN-45: hizmet grid'inin göstereceği kesim — curated ise tam liste, değilse ilk 6. */
-  servicesGrid: QuickServiceItem[];
   doctors: DoctorItem[];
   faqs: FaqEntry[];
   testimonials: TestimonialItem[];
@@ -166,14 +164,13 @@ export async function fetchHomeData(client: SanityClient): Promise<HomeData> {
   // DSN-9: authored quickServiceLinks override the full treatment list;
   // unauthored (fresh template) falls back to every treatment. GROQ returns
   // null (not undefined) for the unset field, hence the ?? [].
-  // DSN-45: servicesGrid caps the fallback at 6 cards so the homepage grid
-  // stays compact; the ticker keeps announcing every service.
+  // DSN-51: the carousel shows EVERY service — the old 6-card cap
+  // (servicesGrid) died with the grid era.
   const curatedLinks = homePage?.quickServiceLinks ?? [];
   const allServices = curatedLinks.length > 0 ? curatedLinks : (quickServices ?? []);
   return {
     homePage: homePage ?? null,
     quickServices: allServices,
-    servicesGrid: curatedLinks.length > 0 ? allServices : allServices.slice(0, 6),
     doctors: doctors ?? [],
     faqs: faqs ?? [],
     testimonials: testimonials ?? [],
