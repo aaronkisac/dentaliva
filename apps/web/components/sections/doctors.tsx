@@ -191,6 +191,33 @@ export function DoctorsSection({
           </div>
         )}
       </div>
+
+      {/* DSN-54: altta nokta göstergeleri — tüm carousel'lerde aynı düzen. */}
+      {count > 1 ? (
+        <div className="mt-6 flex flex-wrap items-center justify-center gap-1">
+          {items.map((doctor, i) => (
+            <button
+              key={doctor.slug ?? i}
+              type="button"
+              aria-label={`${i + 1}. hekim`}
+              aria-current={i === start ? "true" : undefined}
+              onClick={() => {
+                setDir(i > start ? 1 : -1);
+                setMoved(true);
+                setStart(i);
+              }}
+              className="p-1.5"
+            >
+              <span
+                aria-hidden="true"
+                className={`block h-1.5 w-1.5 rounded-full transition-colors duration-300 ${
+                  i === start ? "bg-gold-deep" : "bg-ink/20 hover:bg-ink/40"
+                }`}
+              />
+            </button>
+          ))}
+        </div>
+      ) : null}
     </Section>
   );
 }

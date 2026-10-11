@@ -1,148 +1,112 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useTrackCarousel } from "./use-track-carousel";
+
+function ArrowButton({
+  direction,
+  label,
+  onClick,
+  disabled,
+}: {
+  direction: "left" | "right";
+  label: string;
+  onClick: () => void;
+  disabled: boolean;
+}) {
+  return (
+    <button
+      type="button"
+      aria-label={label}
+      onClick={onClick}
+      disabled={disabled}
+      className="flex h-11 w-11 items-center justify-center border border-[var(--dvn-line-gold)] text-navy transition-colors duration-300 hover:bg-gold hover:text-navy disabled:pointer-events-none disabled:opacity-40"
+    >
+      <svg
+        aria-hidden="true"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="h-4 w-4"
+      >
+        {direction === "left" ? (
+          <path d="M19 12H5m0 0 6-6m-6 6 6 6" />
+        ) : (
+          <path d="M5 12h14m0 0-6-6m6 6-6 6" />
+        )}
+      </svg>
+    </button>
+  );
+}
 
 /**
- * DSN-52: yatay scroll-snap carousel iskeleti — kart içerikleri SERVER'da
- * render edilip children olarak geçilir (client JS yalnız kaydırma + nokta
- * mantığı; kart verisi hydrate edilmez). Hizmetler carousel'indeki indeks
- * tabanlı desenin genelleştirilmiş hali: indeks tabanlı scrollTo hedefi her
- * zaman bir kartın başına hizalanır, son indeks track sonuna sıkıştırılır;
- * noktalar tıklanabilir (aria-current) ve swipe ile senkron kalır.
+ * DSN-54: standart carousel iskeleti — TÜM carousel'ler aynı düzende:
+ * oklar sağ üstte (header slot'unun sağına hizalı), track, altta noktalar.
+ * Kart içerikleri SERVER'da render edilip children olarak geçilir (client JS
+ * yalnız kaydırma + nokta mantığı — DSN-52 perf dersi). header verilmezse
+ * oklar track üzerinde overlay olarak çıkar (galeri sekmeleri gibi özel
+ * başlık satırı olan yüzeyler header'ı kendisi kurar).
  */
 export function CarouselTrack({
   count,
   ariaLabelPrefix,
   children,
   className,
-  arrows = false,
+  tone = "light",
+  header,
+  headerClassName,
+  trackClassName,
 }: {
   count: number;
-  /** Nokta aria etiketi öneki: "yorum" -> "3. yorum". Oklar da bu önekiyi kullanır. */
+  /** Nokta/ok aria etiketi öneki: "yorum" -> "3. yorum", "Önceki yorum". */
   ariaLabelPrefix: string;
   children: React.ReactNode;
   className?: string;
-  /** DSN-53: masaüstünde overlay oklar — koyu bölümlerde kullanılır. */
-  arrows?: boolean;
+  /** Başlık bloğu (eyebrow/başlık/rozet vb.) — oklar bu bloğun sağına gelir. */
+  header?: React.ReactNode;
+  headerClassName?: string;
+  /** Track'e ek sınıf (bölüm üst/alt boşlukları buradan verilir). */
+  trackClassName?: string;
+  /** Nokta renkleri: light (açık zemin, varsayılan) | dark (espresso zemin). */
+  tone?: "light" | "dark";
 }) {
-  const trackRef = useRef<HTMLDivElement>(null);
-  const [index, setIndex] = useState(0);
-  const [maxIndex, setMaxIndex] = useState(0);
-  /** Senkron sayaç — hızlı tıklamalar React commit'inden hızlı akabilir. */
-  const indexRef = useRef(0);
-  /** Programatik scrollTo hedefi — animasyon ortasında scroll-sync'i kilitler. */
-  const programmaticLeft = useRef<number | null>(null);
+  const { trackRef, index, maxIndex, goTo, syncFromScroll, markUserScroll } =
+    useTrackCarousel(count);
+  const dark = tone === "dark";
 
-  const cardStep = () => {
-    const track = trackRef.current;
-    const card = track?.querySelector<HTMLElement>("a,article,div");
-    if (!track || !card) return 0;
-    const style = getComputedStyle(track);
-    const gap = parseFloat(style.columnGap || style.gap || "0") || 0;
-    return card.getBoundingClientRect().width + gap;
-  };
-
-  const applyIndex = (value: number) => {
-    indexRef.current = value;
-    setIndex(value);
-  };
-
-  const goTo = (target: number) => {
-    const track = trackRef.current;
-    if (!track) return;
-    const step = cardStep();
-    const clamped = Math.min(Math.max(target, 0), maxIndex);
-    applyIndex(clamped);
-    const left = Math.min(clamped * step, track.scrollWidth - track.clientWidth);
-    programmaticLeft.current = left;
-    track.scrollTo({ left, behavior: "smooth" });
-  };
-
-  /** Kullanıcı girişimi (swipe/trackpad) — programatik kilidi aç. */
-  const markUserScroll = () => {
-    programmaticLeft.current = null;
-  };
-
-  /** Swipe/scroll sonrası nokta durumunu gerçek konumdan senkronla. */
-  const syncFromScroll = useCallback(() => {
-    const track = trackRef.current;
-    const step = cardStep();
-    if (!track || step <= 0) return;
-    if (programmaticLeft.current !== null) {
-      if (Math.abs(track.scrollLeft - programmaticLeft.current) > step / 2) return;
-      programmaticLeft.current = null;
-    }
-    const atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
-    applyIndex(
-      atEnd ? maxIndex : Math.min(maxIndex, Math.max(0, Math.round(track.scrollLeft / step))),
-    );
-  }, [maxIndex]);
-
-  /** Görünür kart sayısından son geçerli indeksi hesapla (resize'da da). */
-  const measure = useCallback(() => {
-    const track = trackRef.current;
-    const step = cardStep();
-    if (!track || step <= 0) return;
-    const visible = Math.max(1, Math.round(track.clientWidth / step));
-    const last = Math.max(0, count - visible);
-    setMaxIndex(last);
-    applyIndex(Math.min(indexRef.current, last));
-  }, [count]);
-
-  useEffect(() => {
-    measure();
-    window.addEventListener("resize", measure);
-    return () => window.removeEventListener("resize", measure);
-  }, [measure]);
+  const arrows = (
+    <div className="hidden gap-2 md:flex">
+      <ArrowButton
+        direction="left"
+        label={`Önceki ${ariaLabelPrefix}`}
+        onClick={() => goTo(index - 1)}
+        disabled={index === 0}
+      />
+      <ArrowButton
+        direction="right"
+        label={`Sonraki ${ariaLabelPrefix}`}
+        onClick={() => goTo(index + 1)}
+        disabled={index >= maxIndex}
+      />
+    </div>
+  );
 
   return (
     <>
+      {header ? (
+        <div className={headerClassName ?? "grid gap-6 md:grid-cols-[1fr_auto] md:items-end"}>
+          {header}
+          {arrows}
+        </div>
+      ) : null}
       <div className="relative">
-        {/* DSN-53: masaüstünde oklar (mobilde swipe + noktalar yeterli — md altı gizli). */}
-        {arrows ? (
-          <>
-            <button
-              type="button"
-              aria-label={`Önceki ${ariaLabelPrefix}`}
-              onClick={() => goTo(index - 1)}
-              disabled={index === 0}
-              className="absolute left-6 top-1/2 z-[var(--dvn-z-raised)] flex h-11 w-11 -translate-y-1/2 items-center justify-center border border-white/40 bg-navy3/90 text-white transition-colors duration-300 hover:bg-gold hover:text-navy disabled:pointer-events-none disabled:opacity-40"
-            >
-              <svg
-                aria-hidden="true"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="h-4 w-4"
-              >
-                <path d="M19 12H5m0 0 6-6m-6 6 6 6" />
-              </svg>
-            </button>
-            <button
-              type="button"
-              aria-label={`Sonraki ${ariaLabelPrefix}`}
-              onClick={() => goTo(index + 1)}
-              disabled={index >= maxIndex}
-              className="absolute right-6 top-1/2 z-[var(--dvn-z-raised)] flex h-11 w-11 -translate-y-1/2 items-center justify-center border border-white/40 bg-navy3/90 text-white transition-colors duration-300 hover:bg-gold hover:text-navy disabled:pointer-events-none disabled:opacity-40"
-            >
-              <svg
-                aria-hidden="true"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="h-4 w-4"
-              >
-                <path d="M5 12h14m0 0-6-6m6 6-6 6" />
-              </svg>
-            </button>
-          </>
-        ) : null}
+        {header ? null : (
+          <div className="absolute right-0 top-0 z-[var(--dvn-z-raised)] hidden gap-2 md:flex">
+            {arrows}
+          </div>
+        )}
         <div
           ref={trackRef}
           onScroll={syncFromScroll}
@@ -150,7 +114,9 @@ export function CarouselTrack({
           onWheel={markUserScroll}
           className={
             "-mx-[var(--dvn-container-gutter)] flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-pl-[var(--dvn-container-gutter)] px-[var(--dvn-container-gutter)] pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden " +
-            (className ?? "")
+            (className ?? "") +
+            " " +
+            (trackClassName ?? "")
           }
         >
           {children}
@@ -170,7 +136,11 @@ export function CarouselTrack({
               <span
                 aria-hidden="true"
                 className={`block h-1.5 w-1.5 rounded-full transition-colors duration-300 ${
-                  i === index ? "bg-gold" : "bg-white/25 hover:bg-white/50"
+                  i === index
+                    ? "bg-gold"
+                    : dark
+                      ? "bg-white/25 hover:bg-white/50"
+                      : "bg-ink/20 hover:bg-ink/40"
                 }`}
               />
             </button>
