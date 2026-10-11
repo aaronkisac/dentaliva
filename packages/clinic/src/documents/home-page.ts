@@ -41,16 +41,29 @@ export const homePage = defineType({
     }),
     defineField({
       name: "stats",
-      title: "İstatistikler",
+      title: "İstatistik rozetleri (Hakkında fotoğrafı)",
+      description: "Fotoğrafın alt kenarındaki rozetler — en fazla 2 istatistik gösterilir.",
       type: "array",
+      validation: (rule) => rule.max(2),
       of: [
         {
           type: "object",
           name: "statPair",
           fields: [
-            { name: "value", title: "Değer", type: "string" },
-            { name: "label", type: "localeString" },
+            {
+              name: "value",
+              title: "Değer (örn. 13+)",
+              type: "string",
+              validation: (rule) => rule.required(),
+            },
+            {
+              name: "label",
+              title: "Etiket (örn. Yıllık Deneyim)",
+              type: "localeString",
+              validation: (rule) => rule.required(),
+            },
           ],
+          preview: { select: { title: "value", subtitle: "label.tr" } },
         },
       ],
     }),

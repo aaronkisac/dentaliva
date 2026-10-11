@@ -13,9 +13,12 @@ type ClinicField = {
   name?: string;
   validation?: unknown;
   initialValue?: unknown;
+  preview?: { prepare?: unknown };
+  fields?: readonly unknown[];
+  of?: readonly unknown[];
 };
 
-type ClinicType = { name: string; fields?: readonly unknown[] };
+type ClinicType = { name: string; fields?: readonly unknown[]; preview?: { prepare?: unknown } };
 
 function chainableRule(): unknown {
   const rule: unknown = new Proxy(
@@ -30,12 +33,21 @@ function chainableRule(): unknown {
   return rule;
 }
 
+/** Nesne alanların "fields"ını ve dizi alanların "of" üyelerini özyinelemeli gez. */
+function* walkFields(fields: readonly unknown[]): Generator<ClinicField> {
+  for (const raw of fields) {
+    const field = raw as ClinicField;
+    yield field;
+    if (Array.isArray(field.of)) yield* walkFields(field.of);
+    if (Array.isArray(field.fields)) yield* walkFields(field.fields);
+  }
+}
+
 describe("schema field callbacks (TEST coverage gate)", () => {
   it("every validation rule chains against a Rule instance", () => {
     let checked = 0;
     for (const type of schemaTypes as ClinicType[]) {
-      for (const raw of type.fields ?? []) {
-        const field = raw as ClinicField;
+      for (const field of walkFields(type.fields ?? [])) {
         if (typeof field.validation === "function") {
           const validate = field.validation as (rule: unknown) => unknown;
           expect(validate(chainableRule()), `${type.name}.${field.name}`).toBeDefined();
@@ -49,8 +61,7 @@ describe("schema field callbacks (TEST coverage gate)", () => {
   it("every initialValue resolves without touching the clock", () => {
     let checked = 0;
     for (const type of schemaTypes as ClinicType[]) {
-      for (const raw of type.fields ?? []) {
-        const field = raw as ClinicField;
+      for (const field of walkFields(type.fields ?? [])) {
         if (typeof field.initialValue === "function") {
           const initial = field.initialValue as () => unknown;
           expect(initial(), `${type.name}.${field.name}`).toBeDefined();
@@ -61,10 +72,39 @@ describe("schema field callbacks (TEST coverage gate)", () => {
     expect(checked).toBeGreaterThan(0);
   });
 
-  it("field names are unique inside every document", () => {
+  it("every preview prepare resolves (document and field level)", () => {
+    let checked = 0;
     for (const type of schemaTypes as ClinicType[]) {
-      const names = (type.fields ?? []).map((raw) => (raw as ClinicField).name);
-      expect(new Set(names).size, type.name).toBe(names.length);
+      if (typeof type.preview?.prepare === "function") {
+        expect((type.preview.prepare as () => unknown)(), `${type.name}.preview`).toBeDefined();
+        checked += 1;
+      }
+      for (const field of walkFields(type.fields ?? [])) {
+        if (typeof field.preview?.prepare === "function") {
+          expect(
+            (field.preview.prepare as () => unknown)(),
+            `${type.name}.${field.name}.preview`,
+          ).toBeDefined();
+          checked += 1;
+        }
+      }
+    }
+    expect(checked).toBeGreaterThan(0);
+  });
+
+  it("field names are unique among siblings at every nesting level", () => {
+    for (const type of schemaTypes as ClinicType[]) {
+      const check = (scope: string, fields: readonly unknown[]) => {
+        const names = fields.map((raw) => (raw as ClinicField).name);
+        expect(new Set(names).size, scope).toBe(names.length);
+        for (const raw of fields) {
+          const field = raw as ClinicField;
+          if (Array.isArray(field.of))
+            field.of.forEach((member, i) => check(`${scope}.${field.name}[${i}]`, [member]));
+          if (Array.isArray(field.fields)) check(`${scope}.${field.name}`, field.fields);
+        }
+      };
+      check(type.name, type.fields ?? []);
     }
   });
 });
