@@ -88,7 +88,14 @@ const COMMON = `  Strict-Transport-Security: max-age=63072000; includeSubDomains
   ${WILDCARD_CSP}
 `;
 
-const sections = [`/*\n${COMMON}`];
+// DSN-51 perf denetimi: içerik-hash'li statik varlıklar değişmez — uzun
+// ömürlü cache tarayıcıyı tekrar ziyaretlerde doğrulama isteğinden kurtarır.
+// HTML'e dokunulmaz: platformun max-age=0 must-revalidate + ETag akışı
+// deploy tazeliğini taşır (birleşme kuralı yüzünden wildcard Cache-Control
+// ile çakışma da açılmaz — COMMON'da Cache-Control bilinçli yok).
+const STATIC_CACHE = "/_next/static/*\n  Cache-Control: public, max-age=31536000, immutable\n";
+
+const sections = [`/*\n${COMMON}`, STATIC_CACHE];
 const routes = [];
 for await (const file of walk(OUT)) {
   const hashes = await hashesOf(file);
