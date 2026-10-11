@@ -45,8 +45,8 @@ function GoogleMark({ className }: { className?: string }) {
  */
 export function ReviewsSection({ items, heading }: { items: TestimonialItem[]; heading?: string }) {
   if (items.length === 0) return null;
-  return (
-    <Section className="bg-navy">
+  const header = (
+    <div>
       {heading ? (
         <Heading level="h2" size="md" className="text-white">
           {heading}
@@ -63,13 +63,24 @@ export function ReviewsSection({ items, heading }: { items: TestimonialItem[]; h
           <p className="mt-1 font-sans text-sm text-white/85">Google Değerlendirmeleri · 5,0</p>
         </div>
       </div>
-      <CarouselTrack count={items.length} ariaLabelPrefix="yorum" arrows className="mt-8">
+    </div>
+  );
+  return (
+    <Section className="bg-navy">
+      <CarouselTrack
+        count={items.length}
+        ariaLabelPrefix="yorum"
+        tone="dark"
+        header={header}
+        className="mt-8 items-stretch"
+      >
         {items.map((item, index) => (
           <div
             key={`${item.author ?? index}-${index}`}
             className="dvn-carousel-card shrink-0 snap-start"
           >
-            <Card tone="dark">
+            {/* DSN-54: kartlar track yüksekliğine esner — tüm slaytlar eşit. */}
+            <Card tone="dark" className="h-full">
               <Text tone="gold" size="small">
                 {"★".repeat(Math.min(item.rating ?? 5, 5))}
               </Text>

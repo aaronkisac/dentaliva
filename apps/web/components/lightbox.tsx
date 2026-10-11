@@ -61,7 +61,7 @@ export function GalleryLightbox({
   // DSN-51: önce/sonra kümesi 3'ü aşarsa o sekme 3'lü carousel'e dönüşür;
   // 3 ve altında statik satır kalır.
   const afterCarousel = galleryMode(after.length, tab) === "carousel";
-  const carousel = useTrackCarousel();
+  const carousel = useTrackCarousel(afterCarousel ? after.length : 0);
 
   const galleryCard = (image: GalleryImage, index: number) => {
     const ref = image.asset?._ref as string;
@@ -94,78 +94,108 @@ export function GalleryLightbox({
   return (
     <>
       {after.length > 0 ? (
-        <div role="group" aria-label="Galeri filtresi" className="mb-6 flex flex-wrap gap-2">
-          {TABS.map((t) => (
-            <button
-              key={t.id}
-              type="button"
-              aria-pressed={tab === t.id}
-              onClick={() => {
-                setTab(t.id);
-                setActive(null);
-              }}
-              className={
-                "px-4 py-2 font-sans text-xs font-semibold uppercase tracking-widest transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold " +
-                (tab === t.id
-                  ? "bg-navy text-white"
-                  : "border border-[var(--dvn-line-gold)] text-navy hover:bg-navy hover:text-white")
-              }
-            >
-              {t.label}
-            </button>
-          ))}
+        /* DSN-54: standart düzen — sekmeler solda, oklar sağ üstte. */
+        <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
+          <div role="group" aria-label="Galeri filtresi" className="flex flex-wrap gap-2">
+            {TABS.map((t) => (
+              <button
+                key={t.id}
+                type="button"
+                aria-pressed={tab === t.id}
+                onClick={() => {
+                  setTab(t.id);
+                  setActive(null);
+                }}
+                className={
+                  "px-4 py-2 font-sans text-xs font-semibold uppercase tracking-widest transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold " +
+                  (tab === t.id
+                    ? "bg-navy text-white"
+                    : "border border-[var(--dvn-line-gold)] text-navy hover:bg-navy hover:text-white")
+                }
+              >
+                {t.label}
+              </button>
+            ))}
+          </div>
+          {afterCarousel ? (
+            <div className="hidden gap-2 md:flex">
+              <button
+                type="button"
+                aria-label="Önceki görseller"
+                onClick={() => carousel.goTo(carousel.index - 1)}
+                disabled={carousel.index === 0}
+                className="flex h-11 w-11 items-center justify-center border border-[var(--dvn-line-gold)] text-navy transition-colors duration-300 hover:bg-gold hover:text-navy disabled:pointer-events-none disabled:opacity-40"
+              >
+                <svg
+                  aria-hidden="true"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="h-4 w-4"
+                >
+                  <path d="M19 12H5m0 0 6-6m-6 6 6 6" />
+                </svg>
+              </button>
+              <button
+                type="button"
+                aria-label="Sonraki görseller"
+                onClick={() => carousel.goTo(carousel.index + 1)}
+                disabled={carousel.index >= carousel.maxIndex}
+                className="flex h-11 w-11 items-center justify-center border border-[var(--dvn-line-gold)] text-navy transition-colors duration-300 hover:bg-gold hover:text-navy disabled:pointer-events-none disabled:opacity-40"
+              >
+                <svg
+                  aria-hidden="true"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="h-4 w-4"
+                >
+                  <path d="M5 12h14m0 0-6-6m6 6-6 6" />
+                </svg>
+              </button>
+            </div>
+          ) : null}
         </div>
       ) : null}
       {afterCarousel ? (
-        <div className="relative">
+        <>
           <div
             ref={carousel.trackRef}
-            onScroll={carousel.updateEdges}
+            onScroll={carousel.syncFromScroll}
+            onPointerDown={carousel.markUserScroll}
+            onWheel={carousel.markUserScroll}
             className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           >
             {after.map((image, index) => galleryCard(image, index))}
           </div>
-          <button
-            type="button"
-            aria-label="Önceki görseller"
-            onClick={() => carousel.scrollByCard(-1)}
-            disabled={carousel.atStart}
-            className="absolute left-3 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center border border-white/70 bg-navy/80 text-white transition-colors duration-300 hover:bg-gold hover:text-navy disabled:pointer-events-none disabled:opacity-40"
-          >
-            <svg
-              aria-hidden="true"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="h-4 w-4"
-            >
-              <path d="M19 12H5m0 0 6-6m-6 6 6 6" />
-            </svg>
-          </button>
-          <button
-            type="button"
-            aria-label="Sonraki görseller"
-            onClick={() => carousel.scrollByCard(1)}
-            disabled={carousel.atEnd}
-            className="absolute right-3 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center border border-white/70 bg-navy/80 text-white transition-colors duration-300 hover:bg-gold hover:text-navy disabled:pointer-events-none disabled:opacity-40"
-          >
-            <svg
-              aria-hidden="true"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="h-4 w-4"
-            >
-              <path d="M5 12h14m0 0-6-6m6 6-6 6" />
-            </svg>
-          </button>
-        </div>
+          {after.length > 1 ? (
+            <div className="mt-4 flex flex-wrap items-center justify-center gap-1">
+              {after.map((image, i) => (
+                <button
+                  key={image.asset?._ref ?? i}
+                  type="button"
+                  aria-label={`${i + 1}. görsel`}
+                  aria-current={carousel.index === i ? "true" : undefined}
+                  onClick={() => carousel.goTo(Math.min(i, carousel.maxIndex))}
+                  className="p-1.5"
+                >
+                  <span
+                    aria-hidden="true"
+                    className={`block h-1.5 w-1.5 rounded-full transition-colors duration-300 ${
+                      carousel.index === i ? "bg-gold-deep" : "bg-ink/20 hover:bg-ink/40"
+                    }`}
+                  />
+                </button>
+              ))}
+            </div>
+          ) : null}
+        </>
       ) : (
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
           {items.map((image, index) => galleryCard(image, index))}
