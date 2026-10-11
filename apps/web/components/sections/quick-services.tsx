@@ -35,6 +35,13 @@ const arrowClass =
 const GAP = 24;
 
 /**
+ * DSN-51 perf: ilk boyamada sunucuda basılan kart sayısı. Görünür 3 slayt +
+ * peek payı; kalan kartlar ilk yükleme bitince boşta kasma penceresinde
+ * DOM'a eklenir (aşağıda renderAll efekti) — 24 kartlık DOM ilk yüke binmez.
+ */
+const INITIAL_CARDS = 6;
+
+/**
  * DSN-50: ana sayfa hizmet carousel'i — TÜM hizmetler tek sırada (DSN-51:
  * eski 6 kartlık servicesGrid kesimi grid dönemiyle öldü); masaüstünde
  * oklarla kart kaydırma, mobilde yerleşik swipe (scroll-snap).
@@ -63,6 +70,7 @@ export function QuickServicesSection({
   const trackRef = useRef<HTMLDivElement>(null);
   const [index, setIndex] = useState(0);
   const [maxIndex, setMaxIndex] = useState(0);
+  const [renderAll, setRenderAll] = useState(false);
   /** Senkron sayaç — hızlı tıklamalar React commit'inden hızlı akabilir. */
   const indexRef = useRef(0);
   /** Programatik scrollTo hedefi — animasyon ortasında scroll-sync'i kilitler. */
@@ -128,7 +136,21 @@ export function QuickServicesSection({
     measure();
     window.addEventListener("resize", measure);
     return () => window.removeEventListener("resize", measure);
-  }, [measure]);
+  }, [measure, renderAll]);
+
+  // Erteleme: ilk yükleme sonrası boşta kasma penceresinde kalan slaytları bas.
+  useEffect(() => {
+    if (renderAll) return;
+    const start = () => setRenderAll(true);
+    const handle =
+      typeof window.requestIdleCallback === "function"
+        ? window.requestIdleCallback(start)
+        : window.setTimeout(start, 2000);
+    return () => {
+      if (typeof window.cancelIdleCallback === "function") window.cancelIdleCallback(handle);
+      else window.clearTimeout(handle);
+    };
+  }, [renderAll]);
 
   if (items.length === 0) return null;
 
@@ -188,7 +210,7 @@ export function QuickServicesSection({
         onWheel={markUserScroll}
         className="-mx-[var(--dvn-container-gutter)] mt-8 flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-pl-[var(--dvn-container-gutter)] px-[var(--dvn-container-gutter)] pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
-        {items.map((item) => (
+        {(renderAll ? items : items.slice(0, INITIAL_CARDS)).map((item) => (
           <div key={item.slug ?? item.name?.tr} className="dvn-service-card shrink-0 snap-start">
             <TreatmentCard item={item} />
           </div>
