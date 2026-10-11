@@ -36,7 +36,8 @@ export const sectionRegistry: Record<HomeSectionId, SectionRenderer> = {
         ctaLabel={data.siteCopy?.sectionHeadings?.allServicesCta?.tr}
       />,
     ),
-  about: (data) => reveal(<AboutSection data={data.homePage?.about ?? null} />),
+  about: (data) =>
+    reveal(<AboutSection data={data.homePage?.about ?? null} stats={data.homePage?.stats ?? []} />),
   videoTestimonials: (data) => reveal(<VideoTestimonialsSection items={data.testimonials} />),
   reviews: (data) =>
     reveal(
@@ -49,7 +50,6 @@ export const sectionRegistry: Record<HomeSectionId, SectionRenderer> = {
     reveal(
       <GallerySection
         images={data.homePage?.gallery ?? []}
-        stats={data.homePage?.stats ?? []}
         onceSonra={data.homePage?.onceSonraGallery ?? []}
         heading={data.siteCopy?.sectionHeadings?.galleryHome?.tr}
         closeLabel={data.siteCopy?.ui?.lightboxClose?.tr}

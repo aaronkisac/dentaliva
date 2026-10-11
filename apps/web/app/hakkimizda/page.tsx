@@ -37,10 +37,10 @@ export default async function AboutPage() {
     <>
       <PageHero eyebrow="Dentaliva" title="Hakkımızda" lead={homePage?.about?.title?.tr ?? null} />
       <Reveal>
-        <AboutSection data={homePage?.about ?? null} />
+        <AboutSection data={homePage?.about ?? null} stats={homePage?.stats ?? []} />
       </Reveal>
       <Reveal>
-        <GallerySection images={homePage?.gallery ?? []} stats={homePage?.stats ?? []} />
+        <GallerySection images={homePage?.gallery ?? []} />
       </Reveal>
       {doctors.length > 0 ? (
         <Reveal>

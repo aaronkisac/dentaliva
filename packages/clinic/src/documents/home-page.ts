@@ -29,6 +29,13 @@ export const homePage = defineType({
       fields: [
         { name: "title", type: "localeString" },
         { name: "body", type: "localeText" },
+        {
+          name: "benefits",
+          title: "Fayda maddeleri (numaralı liste)",
+          type: "array",
+          of: [{ type: "localeString" }],
+          validation: (rule) => rule.max(6),
+        },
         { name: "image", type: "imageWithAlt" },
       ],
     }),
