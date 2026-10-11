@@ -63,7 +63,7 @@ export function ReviewsSection({ items, heading }: { items: TestimonialItem[]; h
           <p className="mt-1 font-sans text-sm text-white/85">Google Değerlendirmeleri · 5,0</p>
         </div>
       </div>
-      <CarouselTrack count={items.length} ariaLabelPrefix="yorum" className="mt-8">
+      <CarouselTrack count={items.length} ariaLabelPrefix="yorum" arrows className="mt-8">
         {items.map((item, index) => (
           <div
             key={`${item.author ?? index}-${index}`}
