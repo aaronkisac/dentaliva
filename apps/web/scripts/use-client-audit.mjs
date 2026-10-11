@@ -19,7 +19,7 @@ const ROOTS = [join(process.cwd()), join(process.cwd(), "..", "..", "packages", 
  * - ui/use-focus-trap: client hook
  * - sections/doctors: carousel scroll state + entrance reveals
  * - sections/quick-services: carousel scroll state + arrow edge state (DSN-50)
- * - components/use-track-carousel: shared carousel edge/scroll hook (DSN-51)
+ * - sections/testimonials: reviews carousel scroll/index state (DSN-52)
  * - app/error.tsx: Next error boundary — client zorunluluğu (reset state)
  * - app/global-error.tsx: root hata sınırı — client zorunluluğu (reset state)
  * (ui/button was audited out — purely presentational, renders server-side.)
@@ -32,6 +32,7 @@ const ALLOWED = new Set(
     "components/sections/doctors.tsx",
     "components/sections/quick-services.tsx",
     "components/use-track-carousel.ts",
+    "components/carousel-track.tsx",
     "app/error.tsx",
     "app/global-error.tsx",
     "src/header.tsx",

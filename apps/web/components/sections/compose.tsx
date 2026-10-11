@@ -44,8 +44,20 @@ export const sectionRegistry: Record<HomeSectionId, SectionRenderer> = {
         tone="dark"
       />,
     ),
-  videoTestimonials: (data) => reveal(<VideoTestimonialsSection items={data.testimonials} />),
-  reviews: (data) => reveal(<ReviewsSection items={data.testimonials} />),
+  videoTestimonials: (data) =>
+    reveal(
+      <VideoTestimonialsSection
+        items={data.testimonials}
+        heading={data.siteCopy?.sectionHeadings?.videoReviews?.tr}
+      />,
+    ),
+  reviews: (data) =>
+    reveal(
+      <ReviewsSection
+        items={data.testimonials}
+        heading={data.siteCopy?.sectionHeadings?.reviews?.tr}
+      />,
+    ),
   gallery: (data) =>
     reveal(
       <GallerySection

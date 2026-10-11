@@ -14,6 +14,8 @@ export interface SiteCopy {
   } | null;
   sectionHeadings?: {
     relatedDoctors?: LocalizedPair;
+    reviews?: LocalizedPair;
+    videoReviews?: LocalizedPair;
     faq?: LocalizedPair;
     keyBenefits?: LocalizedPair;
     treatmentProcess?: LocalizedPair;

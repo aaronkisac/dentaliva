@@ -26,6 +26,8 @@ export const siteCopy = defineType({
       type: "object",
       fields: [
         { name: "relatedDoctors", title: "İlgili hekimler", type: "localeText" },
+        { name: "reviews", title: "Hasta yorumları (ana sayfa)", type: "localeText" },
+        { name: "videoReviews", title: "Hasta videoları (ana sayfa)", type: "localeText" },
         { name: "faq", title: "Sıkça sorulan sorular", type: "localeText" },
         { name: "keyBenefits", title: "Öne çıkan faydalar", type: "localeText" },
         { name: "treatmentProcess", title: "Tedavi süreci", type: "localeText" },

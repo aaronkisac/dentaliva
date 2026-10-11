@@ -1,6 +1,9 @@
 import { Card, Heading, Section, Text } from "@dentaliva/ui";
 import { pickLocalized } from "@dentaliva/sanity-schema/client";
 
+import { clampWords } from "../treatment-card";
+import { CarouselTrack } from "../carousel-track";
+
 export interface TestimonialItem {
   author?: string;
   quote?: { tr?: string; en?: string };
@@ -32,13 +35,23 @@ function GoogleMark({ className }: { className?: string }) {
   );
 }
 
-export function ReviewsSection({ items }: { items: TestimonialItem[] }) {
+/**
+ * DSN-52: yorum carousel'i — hizmetler carousel'iyle (DSN-50/51) aynı nokta
+ * deseni; kartlar SERVER'da render edilip CarouselTrack'e children olarak
+ * geçilir (client JS yalnız kaydırma + nokta mantığı — ilk denemede tüm
+ * bölüm client'a alınca ana sayfa Lighthouse perf bütçesi aşılmıştı).
+ * Quote'lar veri seviyesinde kısaltılır (TreatmentCard'taki Chromium
+ * line-clamp dersi). Başlık siteCopy'den; copy'siz render edilmez.
+ */
+export function ReviewsSection({ items, heading }: { items: TestimonialItem[]; heading?: string }) {
   if (items.length === 0) return null;
   return (
     <Section className="bg-navy">
-      <Heading level="h2" size="md" className="text-white">
-        Hastalarımızın Yorumları
-      </Heading>
+      {heading ? (
+        <Heading level="h2" size="md" className="text-white">
+          {heading}
+        </Heading>
+      ) : null}
       {/* DSN-30: statik Google güven rozeti — Trustindex embed yok (v1 kararı);
           puan elle güncellenen statik veridir. */}
       <div className="mt-6 flex flex-wrap items-center gap-4">
@@ -50,21 +63,26 @@ export function ReviewsSection({ items }: { items: TestimonialItem[] }) {
           <p className="mt-1 font-sans text-sm text-white/85">Google Değerlendirmeleri · 5,0</p>
         </div>
       </div>
-      <div className="mt-8 grid gap-6 md:grid-cols-3">
+      <CarouselTrack count={items.length} ariaLabelPrefix="yorum" className="mt-8">
         {items.map((item, index) => (
-          <Card key={`${item.author ?? index}-${index}`} tone="dark">
-            <Text tone="gold" size="small">
-              {"★".repeat(Math.min(item.rating ?? 5, 5))}
-            </Text>
-            <Text tone="white" className="mt-3">
-              {pickLocalized(item.quote)}
-            </Text>
-            <Text tone="white" size="small" className="mt-4">
-              {item.author} · {item.source}
-            </Text>
-          </Card>
+          <div
+            key={`${item.author ?? index}-${index}`}
+            className="dvn-carousel-card shrink-0 snap-start"
+          >
+            <Card tone="dark">
+              <Text tone="gold" size="small">
+                {"★".repeat(Math.min(item.rating ?? 5, 5))}
+              </Text>
+              <Text tone="white" className="mt-3">
+                {clampWords(pickLocalized(item.quote) ?? "", 30)}
+              </Text>
+              <Text tone="white" size="small" className="mt-4">
+                {item.author} · {item.source}
+              </Text>
+            </Card>
+          </div>
         ))}
-      </div>
+      </CarouselTrack>
     </Section>
   );
 }
@@ -74,14 +92,23 @@ export interface VideoTestimonial {
   youtubeId?: string;
 }
 
-export function VideoTestimonialsSection({ items }: { items: VideoTestimonial[] }) {
+export function VideoTestimonialsSection({
+  items,
+  heading,
+}: {
+  items: VideoTestimonial[];
+  heading?: string;
+}) {
   const videos = items.filter((item) => item.youtubeId);
   if (videos.length === 0) return null;
   return (
     <Section>
-      <Heading level="h2" size="md">
-        Hastalarımızın Görüşleri
-      </Heading>
+      {/* DSN-52: başlık siteCopy'den — copy'siz render edilmez. */}
+      {heading ? (
+        <Heading level="h2" size="md">
+          {heading}
+        </Heading>
+      ) : null}
       <div className="mt-8 grid gap-6 md:grid-cols-3">
         {videos.map((item) => (
           <a
