@@ -32,7 +32,7 @@ const ALLOWED = new Set(
     "components/sections/doctors.tsx",
     "components/sections/quick-services.tsx",
     "components/use-track-carousel.ts",
-    "components/sections/testimonials.tsx",
+    "components/carousel-track.tsx",
     "app/error.tsx",
     "app/global-error.tsx",
     "src/header.tsx",

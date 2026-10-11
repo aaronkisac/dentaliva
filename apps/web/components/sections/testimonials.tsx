@@ -1,11 +1,8 @@
-"use client";
-
-import { useCallback, useEffect, useRef, useState } from "react";
-
 import { Card, Heading, Section, Text } from "@dentaliva/ui";
 import { pickLocalized } from "@dentaliva/sanity-schema/client";
 
 import { clampWords } from "../treatment-card";
+import { CarouselTrack } from "../carousel-track";
 
 export interface TestimonialItem {
   author?: string;
@@ -38,84 +35,15 @@ function GoogleMark({ className }: { className?: string }) {
   );
 }
 
-/** Kart arası gap-6 (24px) — kaydırma adımı kart genişliği + bu boşluk. */
-const GAP = 24;
-
 /**
- * DSN-52: yorum carousel'i — hizmetler carousel'iyle (DSN-50/51) aynı indeks
- * tabanlı kaydırma + nokta deseni. Kartlar kompakt: quote veri seviyesinde
- * kısaltılır (TreatmentCard'taki Chromium line-clamp dersi); tüm yorumlar
- * noktalarla ulaşılabilir. Başlık siteCopy'den (sıfır-hardcoded-copy).
+ * DSN-52: yorum carousel'i — hizmetler carousel'iyle (DSN-50/51) aynı nokta
+ * deseni; kartlar SERVER'da render edilip CarouselTrack'e children olarak
+ * geçilir (client JS yalnız kaydırma + nokta mantığı — ilk denemede tüm
+ * bölüm client'a alınca ana sayfa Lighthouse perf bütçesi aşılmıştı).
+ * Quote'lar veri seviyesinde kısaltılır (TreatmentCard'taki Chromium
+ * line-clamp dersi). Başlık siteCopy'den; copy'siz render edilmez.
  */
 export function ReviewsSection({ items, heading }: { items: TestimonialItem[]; heading?: string }) {
-  const trackRef = useRef<HTMLDivElement>(null);
-  const [index, setIndex] = useState(0);
-  const [maxIndex, setMaxIndex] = useState(0);
-  /** Senkron sayaç — hızlı tıklamalar React commit'inden hızlı akabilir. */
-  const indexRef = useRef(0);
-  /** Programatik scrollTo hedefi — animasyon ortasında scroll-sync'i kilitler. */
-  const programmaticLeft = useRef<number | null>(null);
-
-  const cardStep = () => {
-    const track = trackRef.current;
-    const card = track?.querySelector<HTMLElement>("article");
-    if (!track || !card) return 0;
-    return card.getBoundingClientRect().width + GAP;
-  };
-
-  const applyIndex = (value: number) => {
-    indexRef.current = value;
-    setIndex(value);
-  };
-
-  const goTo = (target: number) => {
-    const track = trackRef.current;
-    if (!track) return;
-    const step = cardStep();
-    const clamped = Math.min(Math.max(target, 0), maxIndex);
-    applyIndex(clamped);
-    const left = Math.min(clamped * step, track.scrollWidth - track.clientWidth);
-    programmaticLeft.current = left;
-    track.scrollTo({ left, behavior: "smooth" });
-  };
-
-  /** Kullanıcı girişimi (swipe/trackpad) — programatik kilidi aç. */
-  const markUserScroll = () => {
-    programmaticLeft.current = null;
-  };
-
-  /** Swipe/scroll sonrası nokta durumunu gerçek konumdan senkronla. */
-  const syncFromScroll = useCallback(() => {
-    const track = trackRef.current;
-    const step = cardStep();
-    if (!track || step <= 0) return;
-    if (programmaticLeft.current !== null) {
-      if (Math.abs(track.scrollLeft - programmaticLeft.current) > step / 2) return;
-      programmaticLeft.current = null;
-    }
-    const atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
-    applyIndex(
-      atEnd ? maxIndex : Math.min(maxIndex, Math.max(0, Math.round(track.scrollLeft / step))),
-    );
-  }, [maxIndex]);
-
-  /** Görünür kart sayısından son geçerli indeksi hesapla (resize'da da). */
-  const measure = useCallback(() => {
-    const track = trackRef.current;
-    const step = cardStep();
-    if (!track || step <= 0) return;
-    const visible = Math.max(1, Math.round(track.clientWidth / step));
-    const last = Math.max(0, items.length - visible);
-    setMaxIndex(last);
-    applyIndex(Math.min(indexRef.current, last));
-  }, [items.length]);
-
-  useEffect(() => {
-    measure();
-    window.addEventListener("resize", measure);
-    return () => window.removeEventListener("resize", measure);
-  }, [measure]);
-
   if (items.length === 0) return null;
   return (
     <Section className="bg-navy">
@@ -135,13 +63,7 @@ export function ReviewsSection({ items, heading }: { items: TestimonialItem[]; h
           <p className="mt-1 font-sans text-sm text-white/85">Google Değerlendirmeleri · 5,0</p>
         </div>
       </div>
-      <div
-        ref={trackRef}
-        onScroll={syncFromScroll}
-        onPointerDown={markUserScroll}
-        onWheel={markUserScroll}
-        className="-mx-[var(--dvn-container-gutter)] mt-8 flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-pl-[var(--dvn-container-gutter)] px-[var(--dvn-container-gutter)] pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-      >
+      <CarouselTrack count={items.length} ariaLabelPrefix="yorum" className="mt-8">
         {items.map((item, index) => (
           <div
             key={`${item.author ?? index}-${index}`}
@@ -160,28 +82,7 @@ export function ReviewsSection({ items, heading }: { items: TestimonialItem[]; h
             </Card>
           </div>
         ))}
-      </div>
-      {items.length > 1 ? (
-        <div className="mt-4 flex flex-wrap items-center justify-center gap-1">
-          {items.map((item, i) => (
-            <button
-              key={`${item.author ?? i}-${i}`}
-              type="button"
-              aria-label={`${i + 1}. yorum`}
-              aria-current={i === index ? "true" : undefined}
-              onClick={() => goTo(Math.min(i, maxIndex))}
-              className="p-1.5"
-            >
-              <span
-                aria-hidden="true"
-                className={`block h-1.5 w-1.5 rounded-full transition-colors duration-300 ${
-                  i === index ? "bg-gold" : "bg-white/25 hover:bg-white/50"
-                }`}
-              />
-            </button>
-          ))}
-        </div>
-      ) : null}
+      </CarouselTrack>
     </Section>
   );
 }
@@ -191,14 +92,23 @@ export interface VideoTestimonial {
   youtubeId?: string;
 }
 
-export function VideoTestimonialsSection({ items }: { items: VideoTestimonial[] }) {
+export function VideoTestimonialsSection({
+  items,
+  heading,
+}: {
+  items: VideoTestimonial[];
+  heading?: string;
+}) {
   const videos = items.filter((item) => item.youtubeId);
   if (videos.length === 0) return null;
   return (
     <Section>
-      <Heading level="h2" size="md">
-        Hastalarımızın Görüşleri
-      </Heading>
+      {/* DSN-52: başlık siteCopy'den — copy'siz render edilmez. */}
+      {heading ? (
+        <Heading level="h2" size="md">
+          {heading}
+        </Heading>
+      ) : null}
       <div className="mt-8 grid gap-6 md:grid-cols-3">
         {videos.map((item) => (
           <a

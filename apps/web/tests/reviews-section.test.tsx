@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { renderToStaticMarkup } from "react-dom/server";
 
-import { ReviewsSection } from "../components/sections/testimonials";
+import { ReviewsSection, VideoTestimonialsSection } from "../components/sections/testimonials";
 import type { TestimonialItem } from "../components/sections/testimonials";
 
 const items: TestimonialItem[] = [
@@ -49,5 +49,25 @@ describe("ReviewsSection carousel (DSN-52)", () => {
 
   it("renders nothing without items", () => {
     expect(render({ items: [], heading: "Hastalarımızın Yorumları" })).toBe("");
+  });
+});
+
+describe("VideoTestimonialsSection heading (DSN-52)", () => {
+  it("renders the CMS heading when provided", () => {
+    const html = renderToStaticMarkup(
+      <VideoTestimonialsSection
+        items={[{ author: "Ali", youtubeId: "abc123" }]}
+        heading={"Hastalarımızın Görüşleri"}
+      />,
+    );
+    expect(html).toContain("Hastalarımızın Görüşleri");
+  });
+
+  it("omits the heading without CMS copy but keeps the video row", () => {
+    const html = renderToStaticMarkup(
+      <VideoTestimonialsSection items={[{ author: "Ali", youtubeId: "abc123" }]} />,
+    );
+    expect(html).not.toContain("Hastalarımızın Görüşleri");
+    expect(html).toContain("youtube-nocookie.com/embed/abc123");
   });
 });
