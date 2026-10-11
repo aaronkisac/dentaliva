@@ -17,7 +17,7 @@ const data: AboutData = {
   image: { asset: { _ref: `image-${"a".repeat(40)}-2400x1400-webp` }, alt: { tr: "Klinik" } },
 };
 
-const render = (props: { data: AboutData | null; stats?: AboutStat[] }) =>
+const render = (props: { data: AboutData | null; stats?: AboutStat[]; tone?: "light" | "dark" }) =>
   renderToStaticMarkup(<AboutSection {...props} />);
 
 describe("AboutSection (DSN-52)", () => {
@@ -62,5 +62,17 @@ describe("AboutSection (DSN-52)", () => {
 
   it("renders nothing without about data", () => {
     expect(render({ data: null })).toBe("");
+  });
+
+  it("renders the dark tone with white copy on navy (DSN-52 ana sayfa denemesi)", () => {
+    const html = render({
+      data: { ...data, benefits: [{ tr: "Uzman hekim kadrosu" }] },
+      stats: [{ value: "13+", label: { tr: "Yıllık Deneyim" } }],
+      tone: "dark",
+    });
+    expect(html).toContain("bg-navy");
+    expect(html).toContain("text-white");
+    expect(html).toContain("divide-white/15");
+    expect(html).toContain("text-gold-soft");
   });
 });

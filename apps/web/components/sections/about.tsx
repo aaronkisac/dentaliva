@@ -29,7 +29,17 @@ const ENV = imageTarget();
  * numaralar — ikon-daire kalıbı bilinçli yok). Faydalar ve istatistikler
  * CMS'ten; boş parçalar gizlenir, about yine render edilir.
  */
-export function AboutSection({ data, stats }: { data: AboutData | null; stats?: AboutStat[] }) {
+export function AboutSection({
+  data,
+  stats,
+  tone = "light",
+}: {
+  data: AboutData | null;
+  stats?: AboutStat[];
+  /** DSN-52: ana sayfa denemesi koyu zeminde; hakkımızda sayfası açık kalır. */
+  tone?: "light" | "dark";
+}) {
+  const dark = tone === "dark";
   if (!data) return null;
   const ref = data.image?.asset?._ref;
   // Copy sweep: başlık yalnızca CMS'ten — fallback copy yok.
@@ -38,7 +48,7 @@ export function AboutSection({ data, stats }: { data: AboutData | null; stats?: 
   const benefits = (data.benefits ?? []).map((item) => pickLocalized(item)).filter(Boolean);
   const visibleStats = (stats ?? []).filter((stat) => stat.value).slice(0, 2);
   return (
-    <Section className="bg-white">
+    <Section className={dark ? "bg-navy text-white" : "bg-white"}>
       <div className="grid items-center gap-10 md:grid-cols-2">
         {ref ? (
           <div className="relative aspect-[4/3] overflow-hidden rounded-[4px] border border-[var(--dvn-line-gold)]">
@@ -72,19 +82,28 @@ export function AboutSection({ data, stats }: { data: AboutData | null; stats?: 
         ) : null}
         <div>
           {title ? (
-            <Heading level="h2" size="md">
+            <Heading level="h2" size="md" className={dark ? "text-white" : undefined}>
               {title}
             </Heading>
           ) : null}
-          {body ? <Text className="mt-4 max-w-3xl">{body}</Text> : null}
+          {body ? (
+            <Text className={dark ? "mt-4 max-w-3xl text-white/80" : "mt-4 max-w-3xl"}>{body}</Text>
+          ) : null}
           {benefits.length > 0 ? (
-            <ul className="mt-8 divide-y divide-[var(--dvn-line-soft)]">
+            <ul
+              className={`mt-8 divide-y ${
+                dark ? "divide-white/15" : "divide-[var(--dvn-line-soft)]"
+              }`}
+            >
               {benefits.map((benefit, i) => (
                 <li key={`${i}-${benefit}`} className="flex items-baseline gap-3 py-3">
-                  <span aria-hidden="true" className="font-serif text-sm text-gold-deep">
+                  <span
+                    aria-hidden="true"
+                    className={`font-serif text-sm ${dark ? "text-gold-soft" : "text-gold-deep"}`}
+                  >
                     {String(i + 1).padStart(2, "0")}
                   </span>
-                  <Text>{benefit}</Text>
+                  <Text className={dark ? "text-white/90" : undefined}>{benefit}</Text>
                 </li>
               ))}
             </ul>
