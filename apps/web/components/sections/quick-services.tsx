@@ -63,6 +63,10 @@ export function QuickServicesSection({
   const trackRef = useRef<HTMLDivElement>(null);
   const [index, setIndex] = useState(0);
   const [maxIndex, setMaxIndex] = useState(0);
+  /** Senkron sayaç — hızlı tıklamalar React commit'inden hızlı akabilir. */
+  const indexRef = useRef(0);
+  /** Programatik scrollTo hedefi — animasyon ortasında scroll-sync'i kilitler. */
+  const programmaticLeft = useRef<number | null>(null);
 
   const cardStep = () => {
     const track = trackRef.current;
@@ -71,16 +75,25 @@ export function QuickServicesSection({
     return card.getBoundingClientRect().width + GAP;
   };
 
+  const applyIndex = (value: number) => {
+    indexRef.current = value;
+    setIndex(value);
+  };
+
   const goTo = (target: number) => {
     const track = trackRef.current;
     if (!track) return;
     const step = cardStep();
     const clamped = Math.min(Math.max(target, 0), maxIndex);
-    setIndex(clamped);
-    track.scrollTo({
-      left: Math.min(clamped * step, track.scrollWidth - track.clientWidth),
-      behavior: "smooth",
-    });
+    applyIndex(clamped);
+    const left = Math.min(clamped * step, track.scrollWidth - track.clientWidth);
+    programmaticLeft.current = left;
+    track.scrollTo({ left, behavior: "smooth" });
+  };
+
+  /** Kullanıcı girişimi (swipe/trackpad) — programatik kilidi aç. */
+  const markUserScroll = () => {
+    programmaticLeft.current = null;
   };
 
   /** Swipe/scroll sonrası nokta ve ok durumunu gerçek konumdan senkronla. */
@@ -88,8 +101,14 @@ export function QuickServicesSection({
     const track = trackRef.current;
     const step = cardStep();
     if (!track || step <= 0) return;
+    // Programatik animasyon sürerken ara konumlar indeksi geri çekmesin —
+    // hedefe yarım kart yakınına varınca tek sefer senkronla.
+    if (programmaticLeft.current !== null) {
+      if (Math.abs(track.scrollLeft - programmaticLeft.current) > step / 2) return;
+      programmaticLeft.current = null;
+    }
     const atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
-    setIndex(
+    applyIndex(
       atEnd ? maxIndex : Math.min(maxIndex, Math.max(0, Math.round(track.scrollLeft / step))),
     );
   }, [maxIndex]);
@@ -102,7 +121,7 @@ export function QuickServicesSection({
     const visible = Math.max(1, Math.round(track.clientWidth / step));
     const last = Math.max(0, items.length - visible);
     setMaxIndex(last);
-    setIndex((value) => Math.min(value, last));
+    applyIndex(Math.min(indexRef.current, last));
   }, [items.length]);
 
   useEffect(() => {
@@ -165,6 +184,8 @@ export function QuickServicesSection({
       <div
         ref={trackRef}
         onScroll={syncFromScroll}
+        onPointerDown={markUserScroll}
+        onWheel={markUserScroll}
         className="-mx-[var(--dvn-container-gutter)] mt-8 flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-pl-[var(--dvn-container-gutter)] px-[var(--dvn-container-gutter)] pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
         {items.map((item) => (
