@@ -8,6 +8,7 @@ import { lqipUrl, refDimensions } from "@dentaliva/sanity-schema/image-url";
 
 import type { GalleryImage } from "../src/content/home";
 import { imageTarget } from "../src/image-target";
+import { useTrackCarousel } from "./use-track-carousel";
 
 const ENV = imageTarget();
 
@@ -17,6 +18,11 @@ const TABS = [
 ] as const;
 
 type GalleryTab = (typeof TABS)[number]["id"];
+
+/** DSN-51: önce/sonra kümesi 3'ü aşınca o sekme carousel, aksi halde grid. */
+export function galleryMode(onceSonraCount: number, tab: GalleryTab): "carousel" | "grid" {
+  return tab === "onceSonra" && onceSonraCount > 3 ? "carousel" : "grid";
+}
 
 /**
  * Native <dialog>-based lightbox: Esc closes it, focus moves into the dialog
@@ -52,6 +58,38 @@ export function GalleryLightbox({
   const klinik = images.filter((image) => image.asset?._ref);
   const after = (onceSonra ?? []).filter((image) => image.asset?._ref);
   const items = after.length > 0 ? (tab === "klinik" ? klinik : after) : klinik;
+  // DSN-51: önce/sonra kümesi 3'ü aşarsa o sekme 3'lü carousel'e dönüşür;
+  // 3 ve altında statik satır kalır.
+  const afterCarousel = galleryMode(after.length, tab) === "carousel";
+  const carousel = useTrackCarousel();
+
+  const galleryCard = (image: GalleryImage, index: number) => {
+    const ref = image.asset?._ref as string;
+    const dims = refDimensions(ref) ?? { width: 800, height: 800 };
+    return (
+      <button
+        key={ref}
+        type="button"
+        onClick={() => setActive(index)}
+        className={
+          "aspect-square bg-ivory-2 transition-shadow duration-300 hover:shadow-[var(--dvn-shadow-lift)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold" +
+          (afterCarousel ? " dvn-carousel-card shrink-0 snap-start" : "")
+        }
+        aria-label={`Görsel ${index + 1} — büyüt`}
+      >
+        <Image
+          src={ref}
+          alt={pickLocalized(image.alt) || `Galeri görseli ${index + 1}`}
+          width={dims.width}
+          height={dims.height}
+          sizes={afterCarousel ? "(max-width: 640px) 82vw, 33vw" : "(max-width: 768px) 50vw, 25vw"}
+          placeholder="blur"
+          blurDataURL={image.lqip ?? lqipUrl(ref, ENV)}
+          className="h-auto w-full object-cover"
+        />
+      </button>
+    );
+  };
 
   return (
     <>
@@ -78,32 +116,61 @@ export function GalleryLightbox({
           ))}
         </div>
       ) : null}
-      <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-        {items.map((image, index) => {
-          const ref = image.asset?._ref as string;
-          const dims = refDimensions(ref) ?? { width: 800, height: 800 };
-          return (
-            <button
-              key={ref}
-              type="button"
-              onClick={() => setActive(index)}
-              className="aspect-square bg-ivory-2 transition-shadow duration-300 hover:shadow-[var(--dvn-shadow-lift)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
-              aria-label={`Görsel ${index + 1} — büyüt`}
+      {afterCarousel ? (
+        <div className="relative">
+          <div
+            ref={carousel.trackRef}
+            onScroll={carousel.updateEdges}
+            className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          >
+            {after.map((image, index) => galleryCard(image, index))}
+          </div>
+          <button
+            type="button"
+            aria-label="Önceki görseller"
+            onClick={() => carousel.scrollByCard(-1)}
+            disabled={carousel.atStart}
+            className="absolute left-3 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center border border-white/70 bg-navy/80 text-white transition-colors duration-300 hover:bg-gold hover:text-navy disabled:pointer-events-none disabled:opacity-40"
+          >
+            <svg
+              aria-hidden="true"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="h-4 w-4"
             >
-              <Image
-                src={ref}
-                alt={pickLocalized(image.alt) || `Galeri görseli ${index + 1}`}
-                width={dims.width}
-                height={dims.height}
-                sizes="(max-width: 768px) 50vw, 25vw"
-                placeholder="blur"
-                blurDataURL={image.lqip ?? lqipUrl(ref, ENV)}
-                className="h-auto w-full object-cover"
-              />
-            </button>
-          );
-        })}
-      </div>
+              <path d="M19 12H5m0 0 6-6m-6 6 6 6" />
+            </svg>
+          </button>
+          <button
+            type="button"
+            aria-label="Sonraki görseller"
+            onClick={() => carousel.scrollByCard(1)}
+            disabled={carousel.atEnd}
+            className="absolute right-3 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center border border-white/70 bg-navy/80 text-white transition-colors duration-300 hover:bg-gold hover:text-navy disabled:pointer-events-none disabled:opacity-40"
+          >
+            <svg
+              aria-hidden="true"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="h-4 w-4"
+            >
+              <path d="M5 12h14m0 0-6-6m6 6-6 6" />
+            </svg>
+          </button>
+        </div>
+      ) : (
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+          {items.map((image, index) => galleryCard(image, index))}
+        </div>
+      )}
       {/* Native dialog covers keyboard (Esc) — the click handler only closes
           on backdrop taps, which keyboard users reach via the Kapat button. */}
       <dialog

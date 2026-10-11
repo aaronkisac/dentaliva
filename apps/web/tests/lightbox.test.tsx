@@ -9,7 +9,7 @@ vi.mock("next/image", () => ({
   },
 }));
 
-import { GalleryLightbox } from "../components/lightbox";
+import { GalleryLightbox, galleryMode } from "../components/lightbox";
 import type { GalleryImage } from "../src/content/home";
 
 const img = (ref: string): GalleryImage => ({
@@ -48,5 +48,28 @@ describe("GalleryLightbox (DSN-29)", () => {
     const html = render({ images: [img("image-a1b2c3d4e5-800x600-jpg"), { asset: {} }] });
     expect(html).toContain("image-a1b2c3d4e5-800x600-jpg");
     expect(html).not.toContain("undefined");
+  });
+});
+
+describe("GalleryLightbox once/sonra carousel (DSN-51)", () => {
+  const many = Array.from({ length: 5 }, (_, i) => ({
+    asset: { _ref: `image-${String(i + 1).padStart(40, "4")}-800x800-jpg` },
+    alt: { tr: `Önce sonra ${i + 1}` },
+    lqip: undefined,
+  }));
+
+  it("goes carousel over three images on the once/sonra tab only", () => {
+    expect(galleryMode(5, "onceSonra")).toBe("carousel");
+    expect(galleryMode(3, "onceSonra")).toBe("grid");
+    expect(galleryMode(5, "klinik")).toBe("grid");
+  });
+
+  it("renders the tab filter and keeps the klinik grid on first paint", () => {
+    const list = many.slice(0, 1);
+    const html = renderToStaticMarkup(
+      <GalleryLightbox images={list} onceSonra={list} closeLabel="Kapat" />,
+    );
+    expect(html).toContain("Önce / Sonra");
+    expect(html).toContain("grid grid-cols-2");
   });
 });
