@@ -1,5 +1,5 @@
 import { Heading, Section, Text } from "@dentaliva/ui";
-import { uiString } from "../src/ui-strings";
+import { pageString } from "../src/page-strings";
 
 /**
  * Placeholder for dynamic routes when the Sanity project has no documents yet
@@ -14,7 +14,7 @@ export function SeedPlaceholder({ title }: { title: string }) {
         {title}
       </Heading>
       <Text size="lg" className="mt-6 max-w-3xl">
-        {uiString("seedPlaceholder")}
+        {pageString("seedPlaceholder")}
       </Text>
     </Section>
   );

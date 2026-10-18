@@ -9,11 +9,11 @@ import { Link } from "@dentaliva/ui";
 import { fetchDoctors } from "../../src/content/doctors";
 import { readClient } from "../../src/sanity";
 import { pageMetadata } from "../../src/seo";
-import { uiString } from "../../src/ui-strings";
+import { pageString } from "../../src/page-strings";
 
 export const metadata: Metadata = pageMetadata({
   path: "/hekimlerimiz",
-  title: uiString("doctorsTitle"),
+  title: pageString("doctorsTitle"),
   description: "Dentaliva hekim kadrosu",
 });
 
@@ -22,11 +22,11 @@ export default async function DoctorsPage() {
 
   return (
     <>
-      <PageHero eyebrow="Dentaliva" title={uiString("doctorsTitle")} />
+      <PageHero eyebrow="Dentaliva" title={pageString("doctorsTitle")} />
       <Reveal>
         <Section>
           {doctors.length === 0 ? (
-            <Text className="mt-6">{uiString("doctorsEmpty")}</Text>
+            <Text className="mt-6">{pageString("doctorsEmpty")}</Text>
           ) : (
             <div className="mt-8 grid gap-6 md:grid-cols-3">
               {doctors.map((doctor) => (

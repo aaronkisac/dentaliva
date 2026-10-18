@@ -8,12 +8,12 @@ import { fetchHomePageDocument } from "../../src/content/home";
 import { fetchSiteCopy } from "../../src/content/site-copy";
 import { readClient } from "../../src/sanity";
 import { pageMetadata } from "../../src/seo";
-import { uiString } from "../../src/ui-strings";
+import { pageString } from "../../src/page-strings";
 
 export const metadata: Metadata = pageMetadata({
   path: "/fotograf-galerisi",
-  title: uiString("galleryTitle"),
-  description: uiString("galleryDescription"),
+  title: pageString("galleryTitle"),
+  description: pageString("galleryDescription"),
 });
 
 export default async function GalleryPage() {
@@ -40,7 +40,7 @@ export default async function GalleryPage() {
           <p className="font-sans text-ink">{t(headings?.galleryEmpty)}</p>
         ) : (
           <>
-            <p className="sr-only">{uiString("gallerySrSummary")(images.length)}</p>
+            <p className="sr-only">{pageString("gallerySrSummary")(images.length)}</p>
             <GalleryLightbox
               images={images}
               onceSonra={onceSonra}
@@ -50,7 +50,7 @@ export default async function GalleryPage() {
         )}
       </div>
       {images[0]?.alt ? (
-        <p className="sr-only">{uiString("galleryFirstAltSr")(t(images[0]?.alt))}</p>
+        <p className="sr-only">{pageString("galleryFirstAltSr")(t(images[0]?.alt))}</p>
       ) : null}
     </Section>
   );

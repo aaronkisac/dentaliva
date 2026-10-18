@@ -13,7 +13,7 @@ import { fetchSiteCopy } from "../../../src/content/site-copy";
 import { readClient } from "../../../src/sanity";
 import { absoluteUrl, pageMetadata } from "../../../src/seo";
 import { SeedPlaceholder } from "../../../components/seed-placeholder";
-import { uiString } from "../../../src/ui-strings";
+import { pageString } from "../../../src/page-strings";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -56,13 +56,13 @@ export default async function BranchDetailPage({ params }: PageProps) {
     <>
       <JsonLd
         data={buildBreadcrumbJsonLd([
-          { name: uiString("breadcrumbHome"), url: absoluteUrl("/") },
-          { name: uiString("branchesTitle"), url: absoluteUrl("/subelerimiz") },
+          { name: pageString("breadcrumbHome"), url: absoluteUrl("/") },
+          { name: pageString("branchesTitle"), url: absoluteUrl("/subelerimiz") },
           { name: branch.name ?? "Şube", url: absoluteUrl(`/subelerimiz/${slug}`) },
         ])}
       />
       <PageHero
-        eyebrow={uiString("branchesTitle")}
+        eyebrow={pageString("branchesTitle")}
         eyebrowHref="/subelerimiz"
         title={branch.name ?? "Şube"}
         lead={t(branch.address) ? t(branch.address) : null}

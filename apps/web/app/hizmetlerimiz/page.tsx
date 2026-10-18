@@ -7,11 +7,11 @@ import { TreatmentCard } from "../../components/treatment-card";
 import { fetchTreatments } from "../../src/content/treatments";
 import { readClient } from "../../src/sanity";
 import { pageMetadata } from "../../src/seo";
-import { uiString } from "../../src/ui-strings";
+import { pageString } from "../../src/page-strings";
 
 export const metadata: Metadata = pageMetadata({
   path: "/hizmetlerimiz",
-  title: uiString("servicesTitle"),
+  title: pageString("servicesTitle"),
   description: "Dentaliva tedavileri",
 });
 
@@ -20,7 +20,7 @@ export default async function TreatmentsPage() {
 
   return (
     <>
-      <PageHero eyebrow="Dentaliva" title={uiString("servicesTitle")} />
+      <PageHero eyebrow="Dentaliva" title={pageString("servicesTitle")} />
       <Reveal>
         <Section>
           {treatments.length === 0 ? (

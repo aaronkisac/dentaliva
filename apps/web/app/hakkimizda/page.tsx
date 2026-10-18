@@ -12,12 +12,12 @@ import { fetchDoctors } from "../../src/content/doctors";
 import { fetchHomePageDocument, fetchSiteSettings } from "../../src/content/home";
 import { readClient } from "../../src/sanity";
 import { pageMetadata } from "../../src/seo";
-import { uiString } from "../../src/ui-strings";
+import { pageString } from "../../src/page-strings";
 
 export const metadata: Metadata = pageMetadata({
   path: "/hakkimizda",
-  title: uiString("aboutTitle"),
-  description: uiString("aboutDescription"),
+  title: pageString("aboutTitle"),
+  description: pageString("aboutDescription"),
 });
 
 /**
@@ -38,7 +38,7 @@ export default async function AboutPage() {
     <>
       <PageHero
         eyebrow="Dentaliva"
-        title={uiString("aboutTitle")}
+        title={pageString("aboutTitle")}
         lead={t(homePage?.about?.title) || null}
       />
       <Reveal>

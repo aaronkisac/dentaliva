@@ -13,7 +13,7 @@ import { fetchHomePageDocument, fetchSiteSettings } from "../../../src/content/h
 import { readClient } from "../../../src/sanity";
 import { absoluteUrl, pageMetadata } from "../../../src/seo";
 import { SeedPlaceholder } from "../../../components/seed-placeholder";
-import { uiString } from "../../../src/ui-strings";
+import { pageString } from "../../../src/page-strings";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -61,15 +61,15 @@ export default async function DoctorDetailPage({ params }: PageProps) {
     <>
       <JsonLd
         data={buildBreadcrumbJsonLd([
-          { name: uiString("breadcrumbHome"), url: absoluteUrl("/") },
-          { name: uiString("doctorsTitle"), url: absoluteUrl("/hekimlerimiz") },
+          { name: pageString("breadcrumbHome"), url: absoluteUrl("/") },
+          { name: pageString("doctorsTitle"), url: absoluteUrl("/hekimlerimiz") },
           { name: doctor.name ?? "Hekim", url: absoluteUrl(`/hekimlerimiz/${slug}`) },
         ])}
       />
       {/* DSN-32: kare portre (carousel'la aynı dil, rounded-[4px]) + PageHero.
             DSN-43: foto yoksa markalı baş harf monogramı — boş hero değil. */}
       <PageHero
-        eyebrow={uiString("doctorsTitle")}
+        eyebrow={pageString("doctorsTitle")}
         eyebrowHref="/hekimlerimiz"
         title={doctor.name ?? "Hekim"}
         lead={t(doctor.title) ? t(doctor.title) : null}

@@ -5,12 +5,12 @@ import { fetchHomeData } from "../src/content/home";
 import { site } from "../src/config";
 import { readClient } from "../src/sanity";
 import { pageMetadata } from "../src/seo";
-import { uiString } from "../src/ui-strings";
+import { pageString } from "../src/page-strings";
 
 export const metadata: Metadata = pageMetadata({
   path: "/",
-  title: uiString("homeTitle"),
-  description: uiString("homeDescription"),
+  title: pageString("homeTitle"),
+  description: pageString("homeDescription"),
   absoluteTitle: true,
 });
 

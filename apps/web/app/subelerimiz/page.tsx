@@ -10,11 +10,11 @@ import { Link } from "@dentaliva/ui";
 import { fetchBranches } from "../../src/content/branches";
 import { readClient } from "../../src/sanity";
 import { pageMetadata } from "../../src/seo";
-import { uiString } from "../../src/ui-strings";
+import { pageString } from "../../src/page-strings";
 
 export const metadata: Metadata = pageMetadata({
   path: "/subelerimiz",
-  title: uiString("branchesTitle"),
+  title: pageString("branchesTitle"),
   description: "Dentaliva şubeleri",
 });
 
@@ -23,7 +23,7 @@ export default async function BranchesPage() {
 
   return (
     <>
-      <PageHero eyebrow="Dentaliva" title={uiString("branchesTitle")} />
+      <PageHero eyebrow="Dentaliva" title={pageString("branchesTitle")} />
       <Reveal>
         <Section>
           {branches.length === 0 ? (
