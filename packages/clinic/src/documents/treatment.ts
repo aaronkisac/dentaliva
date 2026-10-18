@@ -1,4 +1,5 @@
 import { defineField, defineType } from "sanity";
+import { studioLocale } from "@dentaliva/sanity-schema";
 
 /** A dental treatment (hizmet) — one routable page per treatment. */
 export const treatment = defineType({
@@ -16,7 +17,7 @@ export const treatment = defineType({
       name: "slug",
       title: "URL",
       type: "slug",
-      options: { source: "name.tr" },
+      options: { source: `name.${studioLocale}` },
       validation: (rule) => rule.required(),
     }),
     defineField({
@@ -63,5 +64,7 @@ export const treatment = defineType({
     defineField({ name: "priceNote", title: "Fiyat notu", type: "localeString" }),
     defineField({ name: "seo", title: "SEO", type: "seo" }),
   ],
-  preview: { select: { title: "name.tr", subtitle: "slug.current", media: "heroImage" } },
+  preview: {
+    select: { title: `name.${studioLocale}`, subtitle: "slug.current", media: "heroImage" },
+  },
 });

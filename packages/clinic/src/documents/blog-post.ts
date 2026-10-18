@@ -1,4 +1,5 @@
 import { defineField, defineType } from "sanity";
+import { studioLocale } from "@dentaliva/sanity-schema";
 
 /** Blog post. Body is locale-aware portable text. */
 export const blogPost = defineType({
@@ -16,7 +17,7 @@ export const blogPost = defineType({
       name: "slug",
       title: "URL",
       type: "slug",
-      options: { source: "title.tr" },
+      options: { source: `title.${studioLocale}` },
       validation: (rule) => rule.required(),
     }),
     defineField({ name: "excerpt", title: "Özet", type: "localeText" }),
@@ -37,5 +38,7 @@ export const blogPost = defineType({
     defineField({ name: "tags", title: "Etiketler", type: "array", of: [{ type: "string" }] }),
     defineField({ name: "seo", title: "SEO", type: "seo" }),
   ],
-  preview: { select: { title: "title.tr", subtitle: "publishedAt", media: "heroImage" } },
+  preview: {
+    select: { title: `title.${studioLocale}`, subtitle: "publishedAt", media: "heroImage" },
+  },
 });

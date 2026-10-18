@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { imageWithAlt } from "../src/objects/image-with-alt";
 import { localeString, localeText } from "../src/objects/locale-text";
@@ -102,5 +102,38 @@ describe("validation wiring on schema objects", () => {
       const { rule } = fakeRule();
       expect(() => (field.validation as (rule: unknown) => unknown)(rule)).not.toThrow();
     }
+  });
+});
+
+describe("studioLocale parameterization (INT-7)", () => {
+  // The required/optional branch union erases `validation` on the inferred
+  // type; cast to the runtime shape that the Rule walker already pins down.
+  type Loose = { name: string; title?: string; validation?: unknown };
+  const fieldsOf = (t: { fields: unknown[] }) => t.fields as Loose[];
+
+  it("defaults to the tr studio: tr required and first, en optional", () => {
+    const fields = fieldsOf(localeString);
+    expect(fields.map((f) => f.name)).toEqual(["tr", "en"]);
+    expect(fields[0]?.validation).toBeDefined();
+    expect(fields[1]?.validation).toBeUndefined();
+  });
+
+  it("builds the en studio when SANITY_STUDIO_DEFAULT_LOCALE=en", async () => {
+    vi.stubEnv("SANITY_STUDIO_DEFAULT_LOCALE", "en");
+    vi.resetModules();
+    const {
+      localeString: enString,
+      localeText: enText,
+      studioLocale,
+    } = await import("../src/objects/locale-text");
+    expect(studioLocale).toBe("en");
+    const strFields = fieldsOf(enString);
+    expect(strFields.map((f) => f.name)).toEqual(["en", "tr"]);
+    expect(strFields[0]?.title).toBe("English");
+    expect(strFields[0]?.validation).toBeDefined();
+    expect(strFields[1]?.validation).toBeUndefined();
+    expect(fieldsOf(enText).map((f) => f.name)).toEqual(["en", "tr"]);
+    vi.unstubAllEnvs();
+    vi.resetModules();
   });
 });
