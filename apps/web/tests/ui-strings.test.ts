@@ -51,5 +51,22 @@ describe("uiString chrome tables (INT-3)", () => {
     ] as const) {
       expect(typeof ui(key)).toBe("function");
     }
+    // Call every function entry so both tables' bodies stay covered and
+    // runtime regressions (typos, bad interpolation) fail loudly.
+    expect(ui("gallerySrSummary")(12)).toBe("Gallery: 12 images, select one to enlarge.");
+    expect(ui("galleryFirstAltSr")("Clinic interior")).toBe(
+      "First image description: Clinic interior",
+    );
+    expect(ui("doctorsLive")("Dr. Example", 1, 19)).toBe("Featured: Dr. Example (1/19)");
+    expect(ui("doctorSlideAria")(4)).toBe("Doctor 4");
+    expect(ui("serviceSlideAria")(7)).toBe("Service 7");
+    expect(ui("lightboxImageAria")(2)).toBe("Image 2 — enlarge");
+    expect(ui("galleryImageAria")(5)).toBe("Image 5");
+    expect(uiString("gallerySrSummary")(12)).toBe("Galeri: 12 görsel, büyütmek için görsel seçin.");
+    expect(uiString("galleryFirstAltSr")("Klinik içi")).toBe("İlk görsel açıklaması: Klinik içi");
+    expect(uiString("doctorsLive")("Dr. Örnek", 1, 19)).toBe("Öne çıkan: Dr. Örnek (1/19)");
+    expect(uiString("serviceSlideAria")(7)).toBe("7. hizmet");
+    expect(uiString("lightboxImageAria")(2)).toBe("Görsel 2 — büyüt");
+    expect(uiString("galleryImageAria")(5)).toBe("5. görsel");
   });
 });

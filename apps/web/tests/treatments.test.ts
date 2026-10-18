@@ -26,6 +26,22 @@ describe("treatment content fetchers (PGT-4)", () => {
     expect(await fetchTreatments(mockClient([fixture]))).toEqual(fixture);
   });
 
+  it("sorts alphabetically by the active locale (locale-aware Collator)", async () => {
+    const unsorted = [
+      { name: { tr: "Zirkonyum Kron", en: "Zirconium crown" }, slug: "zirkonyum" },
+      { name: { tr: "İmplant Tedavisi", en: "Implant treatment" }, slug: "implant" },
+      { name: { tr: "Diş Taşı Temizliği", en: "Scaling" }, slug: "dis-tasi" },
+    ];
+    const sorted = await fetchTreatments(mockClient([unsorted]));
+    expect(sorted.map((item) => item.slug)).toEqual(["dis-tasi", "implant", "zirkonyum"]);
+    // single-item list: comparator-free path
+    expect(
+      (await fetchTreatments(mockClient([[{ name: { tr: "Tek" }, slug: "tek" }]]))).map(
+        (i) => i.slug,
+      ),
+    ).toEqual(["tek"]);
+  });
+
   it("fetches a detail by slug param and null-safes misses", async () => {
     const detail = { name: { tr: "İmplant" }, slug: "implant-tedavisi", steps: [] };
     const client = mockClient([detail]);
