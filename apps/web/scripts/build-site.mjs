@@ -35,8 +35,12 @@ env.NEXT_PUBLIC_SITE_ID = site.id;
 env.SANITY_PROJECT_ID = site.sanity.projectId;
 env.SANITY_DATASET = envName === "staging" ? site.sanity.stagingDataset : site.sanity.dataset;
 
-if (envName === "staging" && !env.SANITY_READ_TOKEN) {
-  env.SANITY_READ_TOKEN = process.env[`SANITY_READ_TOKEN_${site.id.toUpperCase()}`] ?? "";
+// Token: SANITY_READ_TOKEN passthrough; else the site-specific
+// SANITY_READ_TOKEN_<SITE> (CI secret / local session token); else blank
+// (anonymous — anonymous v1 reads omit documents, so real content builds
+// need the site token).
+if (!env.SANITY_READ_TOKEN) {
+  env.SANITY_READ_TOKEN = env[`SANITY_READ_TOKEN_${site.id.toUpperCase()}`] ?? "";
 }
 if (!env.SANITY_READ_TOKEN) env.SANITY_READ_TOKEN = "";
 

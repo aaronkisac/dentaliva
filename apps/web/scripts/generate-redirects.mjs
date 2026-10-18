@@ -43,7 +43,9 @@ const lines = docs
   .filter((doc) => doc.from && doc.to)
   .map((doc) => `${doc.from}  ${doc.to}  ${doc.permanent === false ? "302" : "301"}`);
 
-const target = path.join("public", "_redirects");
-await mkdir("public", { recursive: true });
+// INT-11: default writes the repo record (public/_redirects); the postbuild
+// chain passes out/_redirects so the deploy serves the CMS redirect docs.
+const target = process.argv[2] ?? path.join("public", "_redirects");
+await mkdir(path.dirname(target), { recursive: true });
 await writeFile(target, lines.length > 0 ? lines.join("\n") + "\n" : "");
-console.log(`_redirects: ${lines.length} rules`);
+console.log(`_redirects (${siteId}): ${lines.length} rules -> ${target}`);

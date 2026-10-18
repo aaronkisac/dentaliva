@@ -17,7 +17,9 @@ export const metadata: Metadata = pageMetadata({
 });
 
 export default async function KvkkPage() {
-  const page = await fetchLegalPageBySlug(readClient, "kvkk");
+  // INT-11: the legal document's CMS slug matches the site's legal segment
+  // by convention (com: /kvkk → "kvkk", eu: /privacy → "privacy").
+  const page = await fetchLegalPageBySlug(readClient, routes.legal.replace(/^\//, ""));
   if (!page) notFound();
 
   // DSN-35: hukuki metin tipografisi — çift satır sonlarına göre paragraf
