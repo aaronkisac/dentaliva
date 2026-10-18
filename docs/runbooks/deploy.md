@@ -100,6 +100,23 @@ Risk #1 — registrar-side change, the one step outside this repo).
 > in `apps/web/wrangler.jsonc` (`name`, Access domain, deploy hooks) — repeat
 > steps 1–3 for each new client.
 
+## 3b. Studio hostnames (canonical — one per domain)
+
+A Sanity project can hold MULTIPLE deployed studio hostnames; redeploying
+with a different `--url` silently creates a new one (com ended up with two:
+`dentaliva.sanity.studio` + the older `dentaliva-com.sanity.studio`). Pin
+the canonical hosts and always pass `--url`:
+
+- **dentaliva (com)** → `https://dentaliva.sanity.studio`
+  (`SANITY_STUDIO_PROJECT_ID=86x2hbzv SANITY_STUDIO_DATASET=production
+SANITY_STUDIO_DEFAULT_LOCALE=tr npx sanity deploy --url dentaliva`)
+- **dentaliva-eu** → `https://dentaliva-eu.sanity.studio`
+  (`..._PROJECT_ID=84n9qnfg ..._DEFAULT_LOCALE=en npx sanity deploy --url
+dentaliva-eu`)
+
+The stale duplicate (`dentaliva-com.sanity.studio`) is removed from the
+Sanity dashboard (Studios → ⋯ → Delete) — 2026-10-18.
+
 ## 4. Second instance: dentaliva.eu (INT milestone 12)
 
 Same codebase, second site — ADR-002/004 delivered end to end (2026-10-18):
