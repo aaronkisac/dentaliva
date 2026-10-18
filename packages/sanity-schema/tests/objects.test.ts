@@ -144,7 +144,8 @@ describe("nl studio (NL-1)", () => {
     vi.resetModules();
     const { localeString: nlString, studioLocale } = await import("../src/objects/locale-text");
     expect(studioLocale).toBe("nl");
-    const fields = fieldsOf(nlString);
+    // Local cast: the describe-scope helper above is not visible here.
+    const fields = nlString.fields as Array<{ name: string; title?: string; validation?: unknown }>;
     expect(fields.map((f) => f.name)).toEqual(["nl", "tr", "en"]);
     expect(fields[0]?.title).toBe("Nederlands");
     expect(fields[0]?.validation).toBeDefined();
