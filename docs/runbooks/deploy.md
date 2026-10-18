@@ -149,3 +149,29 @@ Same codebase, second site — ADR-002/004 delivered end to end (2026-10-18):
   Cloudflare nameservers + custom domains.
 - **Studio**: `https://dentaliva-eu.sanity.studio` (built with
   `SANITY_STUDIO_DEFAULT_LOCALE=en` → en-required, tr-optional fields).
+
+## 5. Third instance: dentaliva.nl (milestone 13)
+
+Identical playbook to §4, recorded 2026-10-18:
+
+- **Site config**: `apps/web/sites/nl.ts` (projectId `x8kdvsh2`, domain
+  `www.dentaliva.nl`, nl locale, Dutch segments `/behandelingen`,
+  `/onze-tandartsen`, `/onze-filialen`, `/over-ons`, `/fotogalerij`,
+  `/privacybeleid`; blog OFF — the source has none).
+- **Locale**: the machinery now speaks tr/en/nl (`{tr,en,nl}` localized
+  shape; nl fallback nl→en→tr). Every new site MUST touch: `sites/<id>.ts`,
+  `src/i18n.ts` fold, `src/ui-strings.ts` + `src/page-strings.ts` tables +
+  folds, form/worker message packs, `worker/index.ts` fold — missing the
+  i18n fold renders all CMS text empty (NL-3 lesson).
+- **Workers**: `wrangler.nl.jsonc` → `dentaliva-nl` (+ `-staging`),
+  namespaces 1005/1006, `LOCALE=nl`, `NOTIFY_FALLBACK=info@dentaliva.nl`.
+- **Deploy**: `pnpm --filter @dentaliva/web deploy:nl:staging` /
+  `deploy:nl:prod`; CI matrix `SITES [eu, nl]`.
+- **Recorded**: staging live at
+  `https://dentaliva-nl-staging.dentaliva.workers.dev` — 11 page types 200
+  (cache-bust on first verification: the edge caches the pre-content 404s),
+  tr/en segments + /blog 404, Dutch hero/team/gallery in HTML, 86 redirects.
+- **Studio**: `https://dentaliva-nl.sanity.studio` (nl-required fields).
+- **Secrets pending (account owner)**: `SANITY_READ_TOKEN_NL`, Resend
+  dentaliva.nl domain + key, Turnstile nl widget, DNS → Cloudflare NS,
+  deploy hooks + Sanity webhook.
