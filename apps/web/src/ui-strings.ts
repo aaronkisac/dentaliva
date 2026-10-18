@@ -39,6 +39,19 @@ const tr = {
   nextImages: "Sonraki görseller",
   galleryImageAria: (n: number) => `${n}. görsel`,
   galleryImageAlt: "Galeri görseli",
+
+  // callback form (client — INT-4)
+  nameLabel: "Ad Soyad *",
+  phoneLabel: "Telefon *",
+  phonePlaceholder: "0532 000 00 00",
+  preferredTimeLabel: "Tercih edilen arama saati (opsiyonel)",
+  consentLabel:
+    "KVKK aydınlatma metnini okudum; kişisel verilerimin geri arama amacıyla işlenmesine onay veriyorum. *",
+  submitting: "Gönderiliyor…",
+  submitCta: "Geri arama talep et",
+  successMessage: "Talebiniz alındı. En kısa sürede size dönüş yapacağız.",
+  submitErrorFallback: "Gönderim başarısız oldu. Lütfen tekrar deneyin.",
+  connectionError: "Bağlantı hatası. Lütfen tekrar deneyin.",
 };
 
 const en: typeof tr = {
@@ -67,6 +80,18 @@ const en: typeof tr = {
   nextImages: "Next images",
   galleryImageAria: (n) => `Image ${n}`,
   galleryImageAlt: "Gallery image",
+
+  nameLabel: "Full Name *",
+  phoneLabel: "Phone *",
+  phonePlaceholder: "+90 532 000 00 00",
+  preferredTimeLabel: "Preferred call time (optional)",
+  consentLabel:
+    "I have read the Privacy Policy and consent to my personal data being processed for the purpose of a callback. *",
+  submitting: "Sending…",
+  submitCta: "Request a callback",
+  successMessage: "We've received your request. We'll get back to you as soon as possible.",
+  submitErrorFallback: "Submission failed. Please try again.",
+  connectionError: "Connection error. Please try again.",
 };
 
 const strings = { tr, en } as const;

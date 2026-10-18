@@ -4,14 +4,20 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 
-import { callbackFormSchema, type CallbackFormInput } from "@dentaliva/lib/forms/callback-schema";
+import { createCallbackSchema, type CallbackFormInput } from "@dentaliva/lib/forms/callback-schema";
 import { Button } from "@dentaliva/ui";
 import { Text } from "@dentaliva/ui";
+
+import { uiString } from "../src/ui-strings";
 
 const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
 // PRF-5: saf modül sabitleri — her render'da yeni resolver/defaultValues
-// üretimi yerine tek kez kurulur.
+// üretimi yerine tek kez kurulur. INT-4: şema + etiketler aktif sitenin
+// dilinden gelir (NEXT_PUBLIC_SITE_ID build'de literal inline edilir —
+// tr/en paketlerinin öbürürü bundle'dan elenir).
+const formLocale = process.env.NEXT_PUBLIC_SITE_ID === "eu" ? "en" : "tr";
+const callbackFormSchema = createCallbackSchema(formLocale);
 const resolver = zodResolver(callbackFormSchema);
 const emptyValues: CallbackFormInput = {
   name: "",
@@ -87,14 +93,14 @@ export function CallbackForm({ endpoint = "/api/callback" }: { endpoint?: string
       });
       if (!res.ok) {
         const body = (await res.json().catch(() => ({}))) as { error?: string };
-        setServerError(body.error ?? "Gönderim başarısız oldu. Lütfen tekrar deneyin.");
+        setServerError(body.error ?? uiString("submitErrorFallback"));
         setSubmitState("error");
         return;
       }
       setSubmitState("success");
       reset(emptyValues);
     } catch {
-      setServerError("Bağlantı hatası. Lütfen tekrar deneyin.");
+      setServerError(uiString("connectionError"));
       setSubmitState("error");
     }
   });
@@ -103,7 +109,7 @@ export function CallbackForm({ endpoint = "/api/callback" }: { endpoint?: string
     return (
       <div className="border border-[var(--dvn-line-gold)] bg-white p-8 text-center" role="status">
         <Text size="lg" className="font-semibold">
-          Talebiniz alındı. En kısa sürede size dönüş yapacağız.
+          {uiString("successMessage")}
         </Text>
       </div>
     );
@@ -127,7 +133,7 @@ export function CallbackForm({ endpoint = "/api/callback" }: { endpoint?: string
 
       <div>
         <label htmlFor="cb-name" className="mb-1 block text-sm font-semibold text-navy">
-          Ad Soyad *
+          {uiString("nameLabel")}
         </label>
         <input
           id="cb-name"
@@ -147,13 +153,13 @@ export function CallbackForm({ endpoint = "/api/callback" }: { endpoint?: string
 
       <div>
         <label htmlFor="cb-phone" className="mb-1 block text-sm font-semibold text-navy">
-          Telefon *
+          {uiString("phoneLabel")}
         </label>
         <input
           id="cb-phone"
           type="tel"
           autoComplete="tel"
-          placeholder="0532 000 00 00"
+          placeholder={uiString("phonePlaceholder")}
           aria-invalid={Boolean(errors.phone)}
           aria-describedby={errors.phone ? "cb-phone-error" : undefined}
           className="w-full border border-[var(--dvn-line-soft)] bg-white px-4 py-3 text-ink focus:border-gold focus:outline-2 focus:outline-offset-0 focus:outline-gold aria-[invalid=true]:border-red-600"
@@ -168,7 +174,7 @@ export function CallbackForm({ endpoint = "/api/callback" }: { endpoint?: string
 
       <div>
         <label htmlFor="cb-time" className="mb-1 block text-sm font-semibold text-navy">
-          Tercih edilen arama saati (opsiyonel)
+          {uiString("preferredTimeLabel")}
         </label>
         <input
           id="cb-time"
@@ -191,10 +197,7 @@ export function CallbackForm({ endpoint = "/api/callback" }: { endpoint?: string
             className="mt-0.5 size-5 accent-[var(--dvn-gold)]"
             {...register("kvkkConsent")}
           />
-          <span>
-            KVKK aydınlatma metnini okudum; kişisel verilerimin geri arama amacıyla işlenmesine onay
-            veriyorum. *
-          </span>
+          <span>{uiString("consentLabel")}</span>
         </label>
         {errors.kvkkConsent ? (
           <p id="cb-kvkk-error" role="alert" className="mt-1 text-sm font-medium text-red-600">
@@ -210,7 +213,7 @@ export function CallbackForm({ endpoint = "/api/callback" }: { endpoint?: string
       ) : null}
 
       <Button type="submit" disabled={isSubmitting}>
-        {isSubmitting ? "Gönderiliyor…" : "Geri arama talep et"}
+        {isSubmitting ? uiString("submitting") : uiString("submitCta")}
       </Button>
     </form>
   );
