@@ -7,6 +7,7 @@ import { Heading, Link, Section } from "@dentaliva/ui";
 import type { QuickServiceItem } from "../../src/content/home";
 import { TreatmentCard } from "../treatment-card";
 import { t } from "../../src/i18n";
+import { uiString } from "../../src/ui-strings";
 
 function ArrowIcon({ direction }: { direction: "left" | "right" }) {
   return (
@@ -185,7 +186,7 @@ export function QuickServicesSection({
           <div className="hidden gap-2 md:flex">
             <button
               type="button"
-              aria-label="Önceki hizmetler"
+              aria-label={uiString("prevServices")}
               onClick={() => goTo(index - 1)}
               disabled={index === 0}
               className={arrowClass}
@@ -194,7 +195,7 @@ export function QuickServicesSection({
             </button>
             <button
               type="button"
-              aria-label="Sonraki hizmetler"
+              aria-label={uiString("nextServices")}
               onClick={() => goTo(index + 1)}
               disabled={index >= maxIndex}
               className={arrowClass}
@@ -223,7 +224,7 @@ export function QuickServicesSection({
             <button
               key={item.slug ?? (t(item.name) || i)}
               type="button"
-              aria-label={`${i + 1}. hizmet`}
+              aria-label={uiString("serviceSlideAria")(i + 1)}
               aria-current={i === index ? "true" : undefined}
               onClick={() => goTo(Math.min(i, maxIndex))}
               className="p-1.5"

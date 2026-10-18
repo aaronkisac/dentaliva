@@ -10,11 +10,12 @@ import { Link } from "@dentaliva/ui";
 import { fetchBlogPosts } from "../../src/content/blog";
 import { readClient } from "../../src/sanity";
 import { pageMetadata } from "../../src/seo";
+import { uiString } from "../../src/ui-strings";
 
 export const metadata: Metadata = pageMetadata({
   path: "/blog",
   title: "Blog",
-  description: "Dentaliva blog — diş sağlığı yazıları",
+  description: uiString("blogDescription"),
 });
 
 export default async function BlogPage() {
@@ -26,7 +27,7 @@ export default async function BlogPage() {
       <Reveal>
         <Section>
           {posts.length === 0 ? (
-            <Text className="mt-6">Yazılar hazırlanıyor.</Text>
+            <Text className="mt-6">{uiString("blogEmpty")}</Text>
           ) : (
             <div className="mt-8 grid gap-6 md:grid-cols-3">
               {posts.map((post) => (

@@ -5,12 +5,12 @@ import { fetchHomeData } from "../src/content/home";
 import { site } from "../src/config";
 import { readClient } from "../src/sanity";
 import { pageMetadata } from "../src/seo";
+import { uiString } from "../src/ui-strings";
 
 export const metadata: Metadata = pageMetadata({
   path: "/",
-  title: "Dentaliva Diş Kliniği | İstanbul",
-  description:
-    "İstanbul Avcılar, Başakşehir ve Altunizade şubeleriyle implant, ortodonti ve estetik diş hekimliği",
+  title: uiString("homeTitle"),
+  description: uiString("homeDescription"),
   absoluteTitle: true,
 });
 

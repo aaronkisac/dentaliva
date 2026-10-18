@@ -8,11 +8,12 @@ import { fetchHomePageDocument } from "../../src/content/home";
 import { fetchSiteCopy } from "../../src/content/site-copy";
 import { readClient } from "../../src/sanity";
 import { pageMetadata } from "../../src/seo";
+import { uiString } from "../../src/ui-strings";
 
 export const metadata: Metadata = pageMetadata({
   path: "/fotograf-galerisi",
-  title: "Fotoğraf Galerisi",
-  description: "Dentaliva fotoğraf galerisi",
+  title: uiString("galleryTitle"),
+  description: uiString("galleryDescription"),
 });
 
 export default async function GalleryPage() {
@@ -39,7 +40,7 @@ export default async function GalleryPage() {
           <p className="font-sans text-ink">{t(headings?.galleryEmpty)}</p>
         ) : (
           <>
-            <p className="sr-only">Galeri: {images.length} görsel, büyütmek için görsel seçin.</p>
+            <p className="sr-only">{uiString("gallerySrSummary")(images.length)}</p>
             <GalleryLightbox
               images={images}
               onceSonra={onceSonra}
@@ -49,7 +50,7 @@ export default async function GalleryPage() {
         )}
       </div>
       {images[0]?.alt ? (
-        <p className="sr-only">İlk görsel açıklaması: {t(images[0]?.alt)}</p>
+        <p className="sr-only">{uiString("galleryFirstAltSr")(t(images[0]?.alt))}</p>
       ) : null}
     </Section>
   );

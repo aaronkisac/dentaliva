@@ -13,6 +13,7 @@ import { site } from "../../src/config";
 import type { LocalizedPair } from "../../src/content/home";
 
 import { imageTarget } from "../../src/image-target";
+import { uiString } from "../../src/ui-strings";
 
 export interface HeroData {
   headline?: { tr?: string; en?: string };
@@ -92,7 +93,7 @@ export function HeroSection({
           ) : null}
           <div className="hero-rise flex flex-wrap items-center gap-4" style={rise(360)}>
             <Link href="/iletisim" className={buttonVariants({ size: "lg" })}>
-              Randevu Al
+              {uiString("bookCta")}
             </Link>
             <Link
               href="/hizmetlerimiz"
@@ -102,7 +103,7 @@ export function HeroSection({
                 class: "border-ivory/50 text-white hover:border-gold-soft hover:text-gold-soft",
               })}
             >
-              Hizmetlerimizi Keşfedin
+              {uiString("exploreServicesCta")}
             </Link>
           </div>
           {/* DSN-44: güven satırı siteCopy'den; tek parça bile yoksa satır basılmaz. */}

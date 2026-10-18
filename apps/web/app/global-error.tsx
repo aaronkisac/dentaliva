@@ -1,5 +1,7 @@
 "use client";
 
+import { site } from "../src/config";
+import { uiString } from "../src/ui-strings";
 /**
  * DSN-33: root-layout seviyesi hata sınırı — layout yerine geçtiği için
  * kendi html/body'sini tanımlar ve token stylesheet'i YÜKLENEMEZ; buradaki
@@ -14,7 +16,7 @@ export default function GlobalError({
 }) {
   console.error("[app] global error:", error);
   return (
-    <html lang="tr">
+    <html lang={site.defaultLocale}>
       <body
         style={{
           margin: 0,
@@ -42,9 +44,9 @@ export default function GlobalError({
               margin: 0,
             }}
           >
-            Bir sorun oluştu
+            {uiString("errorTitle")}
           </h1>
-          <p style={{ margin: 0 }}>Sayfa yüklenirken beklenmeyen bir hata oluştu.</p>
+          <p style={{ margin: 0 }}>{uiString("errorBody")}</p>
           <button
             type="button"
             onClick={reset}
@@ -61,7 +63,7 @@ export default function GlobalError({
               cursor: "pointer",
             }}
           >
-            Tekrar dene
+            {uiString("errorRetry")}
           </button>
         </main>
       </body>

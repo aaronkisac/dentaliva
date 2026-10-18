@@ -7,11 +7,12 @@ import { t } from "../../src/i18n";
 import { fetchLegalPageBySlug } from "../../src/content/legal";
 import { readClient } from "../../src/sanity";
 import { pageMetadata } from "../../src/seo";
+import { uiString } from "../../src/ui-strings";
 
 export const metadata: Metadata = pageMetadata({
   path: "/kvkk",
-  title: "KVKK Aydınlatma Metni",
-  description: "Kişisel verilerin korunması aydınlatma metni",
+  title: uiString("legalTitle"),
+  description: uiString("legalDescription"),
 });
 
 export default async function KvkkPage() {
@@ -32,7 +33,7 @@ export default async function KvkkPage() {
         <p className="font-sans text-xs uppercase tracking-widest text-gold-deep">Dentaliva</p>
       </div>
       <Heading level="h1" size="lg" className="mt-4">
-        {t(page.title) || "KVKK Aydınlatma Metni"}
+        {t(page.title) || uiString("legalTitle")}
       </Heading>
       <div className="mt-8 max-w-3xl space-y-4">
         {paragraphs.map((paragraph, index) => (

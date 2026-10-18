@@ -9,6 +9,7 @@ import { lqipUrl } from "@dentaliva/sanity-schema/image-url";
 import type { HomeTeamSection } from "../../src/content/home";
 import { imageTarget } from "../../src/image-target";
 import { DoctorPortrait } from "../doctor-portrait";
+import { uiString } from "../../src/ui-strings";
 
 const ENV = imageTarget();
 
@@ -116,13 +117,13 @@ export function DoctorsSection({
         {/* Ekran okuyucu duyurusu: öne çıkan hekim + konum; metin her
             ok tıklamasında değişir, öğe remount edilmez. */}
         <p role="status" className="sr-only">
-          Öne çıkan: {visible[0]?.doctor.name} ({start + 1}/{count})
+          {uiString("doctorsLive")(visible[0]?.doctor.name ?? "", start + 1, count)}
         </p>
         <div
           key={`${start}-${dir}`}
           role="group"
           aria-roledescription="carousel"
-          aria-label="Uzman hekimler"
+          aria-label={uiString("doctorsRegionAria")}
           className="flex flex-wrap items-end gap-4"
         >
           {visible.map(({ doctor, isBig }) => (
@@ -172,7 +173,7 @@ export function DoctorsSection({
           <div className="mt-8 flex justify-end gap-2 sm:absolute sm:right-0 sm:top-0 sm:mt-0">
             <button
               type="button"
-              aria-label="Önceki hekimler"
+              aria-label={uiString("prevDoctors")}
               onClick={() => rotate(-1)}
               className="flex h-11 w-11 items-center justify-center border border-[var(--dvn-line-gold)] text-navy hover:bg-gold hover:text-navy"
             >
@@ -180,7 +181,7 @@ export function DoctorsSection({
             </button>
             <button
               type="button"
-              aria-label="Sonraki hekimler"
+              aria-label={uiString("nextDoctors")}
               onClick={() => rotate(1)}
               className="flex h-11 w-11 items-center justify-center border border-[var(--dvn-line-gold)] text-navy hover:bg-gold hover:text-navy"
             >
@@ -197,7 +198,7 @@ export function DoctorsSection({
             <button
               key={doctor.slug ?? i}
               type="button"
-              aria-label={`${i + 1}. hekim`}
+              aria-label={uiString("doctorSlideAria")(i + 1)}
               aria-current={i === start ? "true" : undefined}
               onClick={() => {
                 setDir(i > start ? 1 : -1);

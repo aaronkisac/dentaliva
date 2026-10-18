@@ -14,6 +14,7 @@ import { fetchBlogPostBySlug, fetchBlogPosts } from "../../../src/content/blog";
 import { fetchHomePageDocument, fetchSiteSettings } from "../../../src/content/home";
 import { readClient } from "../../../src/sanity";
 import { absoluteUrl, pageMetadata } from "../../../src/seo";
+import { uiString } from "../../../src/ui-strings";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -63,7 +64,7 @@ export default async function BlogPostPage({ params }: PageProps) {
     <>
       <JsonLd
         data={buildBreadcrumbJsonLd([
-          { name: "Ana Sayfa", url: absoluteUrl("/") },
+          { name: uiString("breadcrumbHome"), url: absoluteUrl("/") },
           { name: "Blog", url: absoluteUrl("/blog") },
           {
             name: t(post.title) || "Blog",

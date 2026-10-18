@@ -3,6 +3,7 @@ import { t } from "../../src/i18n";
 
 import { clampWords } from "../treatment-card";
 import { CarouselTrack } from "../carousel-track";
+import { uiString } from "../../src/ui-strings";
 
 export interface TestimonialItem {
   author?: string;
@@ -60,7 +61,7 @@ export function ReviewsSection({ items, heading }: { items: TestimonialItem[]; h
           <p aria-hidden="true" className="text-lg leading-none text-gold">
             {"★★★★★"}
           </p>
-          <p className="mt-1 font-sans text-sm text-white/85">Google Değerlendirmeleri · 5,0</p>
+          <p className="mt-1 font-sans text-sm text-white/85">{uiString("googleBadge")}</p>
         </div>
       </div>
     </div>
@@ -133,7 +134,7 @@ export function VideoTestimonialsSection({
                 poster: klavye tek durak + sayfa 6 uzaktan frame yüklemez. */}
             <img
               src={`https://i.ytimg.com/vi/${item.youtubeId}/hqdefault.jpg`}
-              alt={item.author ?? "Hasta videosu"}
+              alt={item.author || uiString("patientVideoAlt")}
               loading="lazy"
               className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
             />
