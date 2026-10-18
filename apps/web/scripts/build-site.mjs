@@ -48,6 +48,17 @@ console.log(
   `[build-site] SITE_ID=${site.id} env=${envName} project=${env.SANITY_PROJECT_ID} dataset=${env.SANITY_DATASET} token=${env.SANITY_READ_TOKEN ? "set" : "anonymous"}`,
 );
 
-// next build triggers the postbuild chain (prune-routes + generate-headers).
+// Next persists fetch responses in .next/cache ACROSS builds — a stale cache
+// silently served pre-enrichment dataset state (INT-11). Always start clean;
+// the deploy:* scripts did this via clear-build-cache, standalone runs now
+// get the same guarantee.
+const clear = spawnSync("node", [join(webRoot, "scripts", "clear-build-cache.mjs")], {
+  stdio: "inherit",
+  cwd: webRoot,
+});
+if (clear.status !== 0) process.exit(clear.status ?? 1);
+
+// next build triggers the postbuild chain (prune-routes + generate-redirects
+// + generate-headers).
 const result = spawnSync("pnpm", ["build"], { stdio: "inherit", env, shell: true });
 process.exit(result.status ?? 1);
