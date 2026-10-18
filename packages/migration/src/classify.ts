@@ -3,7 +3,7 @@
 export type ContentType = "treatment" | "doctor" | "branch" | "legal" | "core" | "blog" | "ignored";
 
 const KNOWN_BRANCHES = ["avcilar", "basaksehir", "altunizade"];
-const KNOWN_CORE: Record<"com" | "eu", string[]> = {
+const KNOWN_CORE: Record<"com" | "eu" | "nl", string[]> = {
   com: [
     "hakkimizda",
     "iletisim",
@@ -24,12 +24,27 @@ const KNOWN_CORE: Record<"com" | "eu", string[]> = {
     "branches",
     "blog",
   ],
+  nl: [
+    "over-ons",
+    "contact",
+    "fotogalerij",
+    "personeelszaken",
+    "onze-tandartsen",
+    "behandelingen",
+    "onze-filialen",
+  ],
 };
-const KNOWN_LEGAL = ["kvkk", "gizlilik-politikasi", "cerez-politikasi", "kvkk-aydinlatma-metni"];
+const KNOWN_LEGAL = [
+  "kvkk",
+  "gizlilik-politikasi",
+  "cerez-politikasi",
+  "kvkk-aydinlatma-metni",
+  "privacybeleid",
+];
 const DOCTOR_PREFIX = /^(dr-dt|dr|dt)-/;
 
 /** URL → content-type for a site's slug language (INT-10: com tr, eu en). */
-export function classifyUrl(pathname: string, site: "com" | "eu" = "com"): ContentType {
+export function classifyUrl(pathname: string, site: "com" | "eu" | "nl" = "com"): ContentType {
   const segments = pathname.split("/").filter(Boolean);
   const last = segments[segments.length - 1];
   if (last === undefined) return "core"; // homepage

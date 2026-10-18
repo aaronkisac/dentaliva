@@ -2,12 +2,14 @@ import { existsSync, readFileSync } from "node:fs";
 import { expect, test } from "@playwright/test";
 
 /** PRF-2: klavye geçişi + landmark denetimi (statik export, sunucu gerektirmez). */
-// INT-9: site-farkındalı rota listesi (eu boş CMS'te statik segmentler).
+// INT-9/NL-2: site-farkındalı rota listesi.
 const SITE = process.env.SITE_ID ?? "com";
-const routes =
-  SITE === "eu"
-    ? ["", "/services", "/gallery", "/contact"]
-    : ["", "/hizmetlerimiz", "/fotograf-galerisi", "/iletisim"];
+const ROUTES_BY_SITE: Record<string, string[]> = {
+  com: ["", "/hizmetlerimiz", "/fotograf-galerisi", "/iletisim"],
+  eu: ["", "/services", "/gallery", "/contact"],
+  nl: ["", "/behandelingen", "/fotogalerij", "/contact"],
+};
+const routes = ROUTES_BY_SITE[SITE] ?? ROUTES_BY_SITE.com ?? [];
 
 function decodedHtml(route: string): string {
   const file = route === "" ? "index.html" : `${route.replace(/^\//, "")}.html`;
@@ -28,7 +30,12 @@ test.describe("PRF-2: klavye geçişi ve landmarklar (statik export)", () => {
       expect(await mains.count()).toBe(1);
 
       // Skip link ilk Tab'da odak alır; Enter main'e taşır (adı site dilinden).
-      const skipLabel = SITE === "eu" ? "Skip to content" : "İçeriğe atla";
+      const SKIP_LABELS: Record<string, string> = {
+        com: "İçeriğe atla",
+        eu: "Skip to content",
+        nl: "Doorgaan naar de inhoud",
+      };
+      const skipLabel = SKIP_LABELS[SITE] ?? "İçeriğe atla";
       await page.keyboard.press("Tab");
       await expect(page.getByRole("link", { name: skipLabel })).toBeFocused();
       await page.keyboard.press("Enter");

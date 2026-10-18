@@ -29,7 +29,7 @@ export interface PortableBlock {
 }
 
 export interface BlogPostDetail extends BlogListItem {
-  body?: { tr?: PortableBlock[]; en?: PortableBlock[] };
+  body?: { tr?: PortableBlock[]; en?: PortableBlock[]; nl?: PortableBlock[] };
   author?: { name?: string; slug?: string; title?: LocalizedPair };
   heroImage?: BlogImage;
   seo?: SeoObject | null;

@@ -102,7 +102,7 @@ export default {
         rateLimit: (ip: string | null) => rateLimit(env, ip),
         sendMail: (input: { name: string; phone: string; preferredTime: string }) =>
           sendMail(env, input),
-        locale: env.LOCALE === "en" ? "en" : "tr",
+        locale: env.LOCALE === "en" ? "en" : env.LOCALE === "nl" ? "nl" : "tr",
       };
       return handleCallbackPost(request, deps);
     }

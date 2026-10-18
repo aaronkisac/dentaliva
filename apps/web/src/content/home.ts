@@ -15,6 +15,7 @@ import { fetchSiteCopy, type SiteCopy } from "./site-copy";
 export interface LocalizedPair {
   tr?: string;
   en?: string;
+  nl?: string;
 }
 
 export interface QuickServiceItem {

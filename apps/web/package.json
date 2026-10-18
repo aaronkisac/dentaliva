@@ -15,7 +15,9 @@
     "deploy:prod": "node scripts/clear-build-cache.mjs && pnpm build && wrangler deploy",
     "deploy:staging": "node scripts/clear-build-cache.mjs && pnpm build && wrangler deploy --env staging",
     "deploy:eu:prod": "node scripts/clear-build-cache.mjs && node scripts/build-site.mjs --site eu && wrangler deploy -c wrangler.eu.jsonc",
-    "deploy:eu:staging": "node scripts/clear-build-cache.mjs && node scripts/build-site.mjs --site eu --env staging && wrangler deploy -c wrangler.eu.jsonc --env staging"
+    "deploy:eu:staging": "node scripts/clear-build-cache.mjs && node scripts/build-site.mjs --site eu --env staging && wrangler deploy -c wrangler.eu.jsonc --env staging",
+    "deploy:nl:prod": "node scripts/clear-build-cache.mjs && node scripts/build-site.mjs --site nl && wrangler deploy -c wrangler.nl.jsonc",
+    "deploy:nl:staging": "node scripts/clear-build-cache.mjs && node scripts/build-site.mjs --site nl --env staging && wrangler deploy -c wrangler.nl.jsonc --env staging"
   },
   "dependencies": {
     "@dentaliva/sanity-schema": "workspace:*",

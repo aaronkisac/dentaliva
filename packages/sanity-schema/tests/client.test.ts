@@ -47,6 +47,17 @@ describe("pickLocalized", () => {
     expect(pickLocalized({ tr: "Gülüş tasarımı", en: null }, "en")).toBe("Gülüş tasarımı");
   });
 
+  it("falls back nl→en→tr (NL-1)", () => {
+    expect(
+      pickLocalized({ nl: "Tanden bleken", en: "Teeth whitening", tr: "Diş beyazlatma" }, "nl"),
+    ).toBe("Tanden bleken");
+    expect(pickLocalized({ en: "Teeth whitening", tr: "Diş beyazlatma" }, "nl")).toBe(
+      "Teeth whitening",
+    );
+    expect(pickLocalized({ tr: "Diş beyazlatma" }, "nl")).toBe("Diş beyazlatma");
+    expect(pickLocalized(undefined, "nl")).toBe("");
+  });
+
   it("returns empty string for missing values", () => {
     expect(pickLocalized(null)).toBe("");
     expect(pickLocalized({ tr: undefined, en: "x" }, "en")).toBe("x");

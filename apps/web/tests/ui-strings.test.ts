@@ -38,3 +38,16 @@ describe("uiString client tables (INT-3)", () => {
     expect(ui("patientVideoAlt")).toBe("Patient video");
   });
 });
+
+describe("uiString nl table (NL-1)", () => {
+  it("serves Dutch strings when the site is nl", async () => {
+    process.env.NEXT_PUBLIC_SITE_ID = "nl";
+    vi.resetModules();
+    const { uiString: ui } = await import("../src/ui-strings");
+    expect(ui("bookCta")).toBe("Afspraak maken");
+    expect(ui("errorTitle")).toBe("Er is iets misgegaan");
+    expect(ui("doctorSlideAria")(2)).toBe("Tandarts 2");
+    expect(ui("googleBadge")).toBe("Google Reviews · 5,0");
+    expect(ui("consentLabel")).toContain("privacybeleid");
+  });
+});

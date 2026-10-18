@@ -111,11 +111,11 @@ describe("studioLocale parameterization (INT-7)", () => {
   type Loose = { name: string; title?: string; validation?: unknown };
   const fieldsOf = (t: { fields: unknown[] }) => t.fields as Loose[];
 
-  it("defaults to the tr studio: tr required and first, en optional", () => {
+  it("defaults to the tr studio: tr required and first, en/nl optional", () => {
     const fields = fieldsOf(localeString);
-    expect(fields.map((f) => f.name)).toEqual(["tr", "en"]);
+    expect(fields.map((f) => f.name)).toEqual(["tr", "en", "nl"]);
     expect(fields[0]?.validation).toBeDefined();
-    expect(fields[1]?.validation).toBeUndefined();
+    expect(fields.slice(1).every((f) => f.validation === undefined)).toBe(true);
   });
 
   it("builds the en studio when SANITY_STUDIO_DEFAULT_LOCALE=en", async () => {
@@ -128,11 +128,26 @@ describe("studioLocale parameterization (INT-7)", () => {
     } = await import("../src/objects/locale-text");
     expect(studioLocale).toBe("en");
     const strFields = fieldsOf(enString);
-    expect(strFields.map((f) => f.name)).toEqual(["en", "tr"]);
+    expect(strFields.map((f) => f.name)).toEqual(["en", "tr", "nl"]);
     expect(strFields[0]?.title).toBe("English");
     expect(strFields[0]?.validation).toBeDefined();
-    expect(strFields[1]?.validation).toBeUndefined();
-    expect(fieldsOf(enText).map((f) => f.name)).toEqual(["en", "tr"]);
+    expect(strFields.slice(1).every((f) => f.validation === undefined)).toBe(true);
+    expect(fieldsOf(enText).map((f) => f.name)).toEqual(["en", "tr", "nl"]);
+    vi.unstubAllEnvs();
+    vi.resetModules();
+  });
+});
+
+describe("nl studio (NL-1)", () => {
+  it("builds the nl studio when SANITY_STUDIO_DEFAULT_LOCALE=nl", async () => {
+    vi.stubEnv("SANITY_STUDIO_DEFAULT_LOCALE", "nl");
+    vi.resetModules();
+    const { localeString: nlString, studioLocale } = await import("../src/objects/locale-text");
+    expect(studioLocale).toBe("nl");
+    const fields = fieldsOf(nlString);
+    expect(fields.map((f) => f.name)).toEqual(["nl", "tr", "en"]);
+    expect(fields[0]?.title).toBe("Nederlands");
+    expect(fields[0]?.validation).toBeDefined();
     vi.unstubAllEnvs();
     vi.resetModules();
   });

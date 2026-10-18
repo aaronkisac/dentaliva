@@ -10,7 +10,7 @@ export interface CallbackWorkerDeps {
   rateLimit: (ip: string | null) => Promise<boolean>;
   sendMail: (input: { name: string; phone: string; preferredTime: string }) => Promise<void>;
   /** UI language for user-facing error strings (wrangler var LOCALE, INT-4). */
-  locale?: "tr" | "en";
+  locale?: "tr" | "en" | "nl";
 }
 
 /** User-facing handler errors per locale; field messages come from the schema. */
@@ -30,6 +30,14 @@ const HANDLER_MESSAGES = {
     validationFailed: "Validation failed.",
     verifyFailed: "Verification failed. Please try again.",
     mailFailed: "Email could not be sent. Please contact us by phone.",
+  },
+  nl: {
+    rateLimited: "Te veel verzoeken. Probeer het zo weer.",
+    bodyTooLarge: "Aanvraagtekst te groot.",
+    invalidBody: "Ongeldige aanvraagtekst.",
+    validationFailed: "Validatie mislukt.",
+    verifyFailed: "Verificatie mislukt. Probeer het opnieuw.",
+    mailFailed: "E-mail kon niet worden verzonden. Neem telefonisch contact met ons op.",
   },
 } as const;
 
