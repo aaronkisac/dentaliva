@@ -15,6 +15,8 @@ interface CallbackWorkerEnv {
   MOCK_EXTERNAL?: string;
   /** Form dili — wrangler var (com: tr, eu: en; INT-4). */
   LOCALE?: string;
+  /** Per-site fallback when the NOTIFY_EMAIL secret is absent (INT-8). */
+  NOTIFY_FALLBACK?: string;
   RATE_LIMITER?: { limit(key: { key: string }): Promise<{ success: boolean }> };
   ASSETS: { fetch(request: Request): Promise<Response> };
 }
@@ -73,7 +75,7 @@ async function sendMail(
     signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
     body: JSON.stringify({
       from: env.MAIL_FROM ?? "Dentaliva <onboarding@resend.dev>",
-      to: [env.NOTIFY_EMAIL ?? "info@dentaliva.com"],
+      to: [env.NOTIFY_EMAIL ?? env.NOTIFY_FALLBACK ?? "info@dentaliva.com"],
       subject: `Geri arama talebi: ${input.name}`,
       text: `Ad Soyad: ${input.name}\nTelefon: ${input.phone}\nTercih edilen saat: ${input.preferredTime || "-"}`,
     }),

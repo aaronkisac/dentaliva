@@ -76,13 +76,16 @@ describe("site config (PGT-1)", () => {
     expect(getSite("eu").sections.home).toEqual(site.sections.home);
   });
 
-  it("binds the image CDN target to the registry, ignoring decoy env values", () => {
+  it("binds the image CDN project to the registry; the dataset follows the build", () => {
     // A stale SANITY_PROJECT_ID in .env must never cross-wire a SITE_ID=eu
-    // build onto the com project's CDN (INT-1).
+    // build onto the com project's CDN (INT-1). The dataset is per-build on
+    // purpose: the eu staging deploy targets that site's staging dataset
+    // within its own project (INT-8).
     process.env.SANITY_PROJECT_ID = "decoy123";
     process.env.SANITY_DATASET = "decoy-dataset";
-    expect(imageTarget()).toEqual({ projectId: "86x2hbzv", dataset: "production" });
+    expect(imageTarget()).toEqual({ projectId: "86x2hbzv", dataset: "decoy-dataset" });
     delete process.env.SANITY_PROJECT_ID;
     delete process.env.SANITY_DATASET;
+    expect(imageTarget()).toEqual({ projectId: "86x2hbzv", dataset: "production" });
   });
 });
