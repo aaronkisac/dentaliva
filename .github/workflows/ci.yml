@@ -69,8 +69,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
-      SITE_ID: eu
-      NEXT_PUBLIC_SITE_ID: eu
+      # Unit suites run site-agnostic (com default); SITE_ID scopes only the
+      # build/e2e steps below.
       SANITY_READ_TOKEN_EU: ${{ secrets.SANITY_READ_TOKEN_EU }}
     steps:
       - uses: actions/checkout@v4
@@ -90,6 +90,9 @@ jobs:
       - name: Build (SITE_ID=eu, per-site env runner)
         working-directory: apps/web
         run: node scripts/build-site.mjs --site eu
+        env:
+          SITE_ID: eu
+          NEXT_PUBLIC_SITE_ID: eu
       - name: Bundle budget + use-client audit (eu build)
         run: pnpm --filter @dentaliva/web test:bundle
       - name: Install Playwright chromium
