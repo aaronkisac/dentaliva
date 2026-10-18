@@ -94,14 +94,55 @@ const en: typeof tr = {
   connectionError: "Connection error. Please try again.",
 };
 
-const strings = { tr, en } as const;
+const nl: typeof tr = {
+  errorTitle: "Er is iets misgegaan",
+  errorBody: "Er is een onverwachte fout opgetreden bij het laden van de pagina.",
+  errorRetry: "Probeer opnieuw",
 
-function activeLocale(): "tr" | "en" {
+  bookCta: "Afspraak maken",
+  exploreServicesCta: "Ontdek onze behandelingen",
+
+  googleBadge: "Google Reviews · 5,0",
+  patientVideoAlt: "Patiëntvideo",
+
+  doctorsRegionAria: "Onze tandartsen",
+  doctorsLive: (name, i, n) => `Uitgelicht: ${name} (${i}/${n})`,
+  prevDoctors: "Vorige tandartsen",
+  nextDoctors: "Volgende tandartsen",
+  doctorSlideAria: (n) => `Tandarts ${n}`,
+  prevServices: "Vorige behandelingen",
+  nextServices: "Volgende behandelingen",
+  serviceSlideAria: (n) => `Behandeling ${n}`,
+
+  lightboxImageAria: (n) => `Afbeelding ${n} — vergroot`,
+  lightboxFilterAria: "Galerijfilter",
+  prevImages: "Vorige afbeeldingen",
+  nextImages: "Volgende afbeeldingen",
+  galleryImageAria: (n) => `Afbeelding ${n}`,
+  galleryImageAlt: "Galerijafbeelding",
+
+  nameLabel: "Volledige naam *",
+  phoneLabel: "Telefoonnummer *",
+  phonePlaceholder: "+31 6 12345678",
+  preferredTimeLabel: "Gewenste belmoment (optioneel)",
+  consentLabel:
+    "Ik heb het privacybeleid gelezen en geef toestemming voor het verwerken van mijn gegevens voor een terugbelverzoek. *",
+  submitting: "Versturen…",
+  submitCta: "Terugbelverzoek aanvragen",
+  successMessage: "Uw aanvraag is ontvangen. Wij nemen zo snel mogelijk contact met u op.",
+  submitErrorFallback: "Verzenden mislukt. Probeer het opnieuw.",
+  connectionError: "Verbindingsfout. Probeer het opnieuw.",
+};
+
+const strings = { tr, en, nl } as const;
+
+function activeLocale(): keyof typeof strings {
   // Build-time constant: Next inlines NEXT_PUBLIC_SITE_ID as a literal, so
-  // terser folds this branch and dead-code-eliminates the INACTIVE locale's
+  // terser folds this chain and dead-code-eliminates the INACTIVE locale's
   // table from the client bundle. Kept in sync with the site registry by
   // tests/ui-strings.test.ts.
-  return process.env.NEXT_PUBLIC_SITE_ID === "eu" ? "en" : "tr";
+  const site = process.env.NEXT_PUBLIC_SITE_ID;
+  return site === "eu" ? "en" : site === "nl" ? "nl" : "tr";
 }
 
 export function uiString<K extends keyof typeof tr>(key: K): (typeof tr)[K] {

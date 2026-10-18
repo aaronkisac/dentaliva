@@ -14,7 +14,7 @@ import {
 // INT-10: third arg selects the localeText slot the source copy fills.
 const normalizedDir = process.argv[2] ?? "migration/normalized";
 const outDir = process.argv[3] ?? "migration/ndjson";
-const locale = process.argv[4] === "en" ? "en" : "tr";
+const locale = ["en", "nl"].includes(process.argv[4]) ? process.argv[4] : "tr";
 
 async function load(type) {
   try {

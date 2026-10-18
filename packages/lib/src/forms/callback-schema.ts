@@ -20,7 +20,7 @@ export interface CallbackFormMessages {
   consentRequired: string;
 }
 
-export const CALLBACK_FORM_MESSAGES: Record<"tr" | "en", CallbackFormMessages> = {
+export const CALLBACK_FORM_MESSAGES: Record<"tr" | "en" | "nl", CallbackFormMessages> = {
   tr: {
     nameRequired: "Lütfen adınızı ve soyadınızı girin.",
     nameTooLong: "Ad çok uzun.",
@@ -37,13 +37,21 @@ export const CALLBACK_FORM_MESSAGES: Record<"tr" | "en", CallbackFormMessages> =
     preferredTimeTooLong: "Preferred call time is too long.",
     consentRequired: "You must accept the Privacy Policy to continue.",
   },
+  nl: {
+    nameRequired: "Vul uw volledige naam in.",
+    nameTooLong: "Naam is te lang.",
+    phoneRequired: "Telefoonnummer is verplicht.",
+    phoneInvalid: "Voer een geldig telefoonnummer in (bijv. +31 6 12345678).",
+    preferredTimeTooLong: "Gewenst belmoment is te lang.",
+    consentRequired: "U moet de privacyverklaring accepteren om door te gaan.",
+  },
 };
 
 /** Header/body injection guard: kontrol karakterleri e-postaya asla ulaşmaz. */
 // eslint-disable-next-line no-control-regex -- kuralın varlık sebebi tam da bu: karakterleri bilerek hedefleyip siliyoruz
 const CONTROL_CHARS = /[\u0000-\u001f\u007f]/g;
 
-export function createCallbackSchema(locale: "tr" | "en" = "tr") {
+export function createCallbackSchema(locale: "tr" | "en" | "nl" = "tr") {
   const m = CALLBACK_FORM_MESSAGES[locale];
   const phonePattern = locale === "en" ? INTL_PHONE_PATTERN : TR_PHONE_PATTERN;
   return z.object({

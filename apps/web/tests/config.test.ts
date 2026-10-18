@@ -42,8 +42,20 @@ describe("site config (PGT-1)", () => {
     expect(eu.routes.legal).toBe("/privacy");
   });
 
+  it("resolves the nl sister site with its own Sanity project and locale", () => {
+    const nl = getSite("nl");
+    expect(nl.domain).toBe("www.dentaliva.nl");
+    expect(nl.defaultLocale).toBe("nl");
+    expect(nl.sanity.projectId).toBe("x8kdvsh2");
+    expect(nl.features.chatbotApi).toBe(false);
+    expect(nl.features.blog).toBe(false);
+    expect(nl.routes.treatments).toBe("/behandelingen");
+    expect(nl.routes.doctors).toBe("/onze-tandartsen");
+    expect(nl.routes.legal).toBe("/privacybeleid");
+  });
+
   it("registers every site for loud unknown-id errors", () => {
-    expect(availableSiteIds()).toEqual(["com", "eu"]);
+    expect(availableSiteIds()).toEqual(["com", "eu", "nl"]);
   });
 
   it("resolves from SITE_ID env", () => {

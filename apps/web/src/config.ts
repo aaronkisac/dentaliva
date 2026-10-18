@@ -1,8 +1,9 @@
 import { site as com } from "../sites/com";
 import { site as eu } from "../sites/eu";
+import { site as nl } from "../sites/nl";
 import type { SiteConfig } from "./config-types";
 
-const registry: Record<string, SiteConfig> = { com, eu };
+const registry: Record<string, SiteConfig> = { com, eu, nl };
 
 export function availableSiteIds(): string[] {
   return Object.keys(registry);

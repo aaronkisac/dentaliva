@@ -1,10 +1,20 @@
 import { expect, test } from "@playwright/test";
 
 /** DEP-2: güvenlik başlıkları ve CSP assertion'ları (wrangler dev üzerinden). */
-// INT-9: site-farkındalı rotalar + ters-site 404 savunması.
+// INT-9/NL-2: site-farkındalı rotalar + ters-site 404 savunması.
 const SITE = process.env.SITE_ID ?? "com";
-const contactRoute = SITE === "eu" ? "/contact" : "/iletisim";
-const foreignSegment = SITE === "eu" ? "/hizmetlerimiz" : "/services";
+const CONTACT_BY_SITE: Record<string, string> = {
+  com: "/iletisim",
+  eu: "/contact",
+  nl: "/contact",
+};
+const FOREIGN_BY_SITE: Record<string, string> = {
+  com: "/services",
+  eu: "/hizmetlerimiz",
+  nl: "/hizmetlerimiz",
+};
+const contactRoute = CONTACT_BY_SITE[SITE] ?? "/iletisim";
+const foreignSegment = FOREIGN_BY_SITE[SITE] ?? "/services";
 const routes = ["/", contactRoute];
 
 test.describe("DEP-2: güvenlik başlıkları", () => {

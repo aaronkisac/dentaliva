@@ -9,7 +9,7 @@ import { extractPage } from "./src/extract.ts";
 import { isAllowed, parseDisallowedPaths, parseLocs } from "./src/sitemap.ts";
 
 const BASE = process.argv[4] ?? "https://www.dentaliva.com";
-const SITE = BASE.includes("eu") ? "eu" : "com";
+const SITE = BASE.includes("eu") ? "eu" : BASE.includes("nl") ? "nl" : "com";
 const outDir = process.argv[2] ?? "normalized";
 const delayMs = Number(process.argv[3] ?? 400);
 

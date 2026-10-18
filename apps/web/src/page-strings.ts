@@ -81,9 +81,45 @@ const en: typeof tr = {
   galleryFirstAltSr: (alt) => `First image description: ${alt}`,
 };
 
-const strings = { tr, en } as const;
+const nl: typeof tr = {
+  metaDescription:
+    "Dentaliva Tandkliniek — implantaten, orthodontie en esthetische tandheelkunde in Istanboel",
+  jsonLdCity: "Istanbul",
+  skipLabel: "Doorgaan naar de inhoud",
+  skipAnchor: "inhoud",
+  toggleMenu: "Menu openen/sluiten",
+  closeMenu: "Menu sluiten",
+  breadcrumbHome: "Home",
+
+  homeTitle: "Dentaliva Tandkliniek | Istanbul",
+  homeDescription:
+    "Implantaten, orthodontie en esthetische tandheelkunde in onze klinieken in Avcılar, Başakşehir en Altunizade, Istanbul",
+
+  aboutTitle: "Over ons",
+  aboutDescription: "Over Dentaliva",
+  servicesTitle: "Behandelingen",
+  doctorsTitle: "Onze Tandartsen",
+  branchesTitle: "Vestigingen",
+  contactTitle: "Contact",
+  galleryTitle: "Fotogalerij",
+  galleryDescription: "Fotogalerij van Dentaliva",
+  legalTitle: "Privacyverklaring",
+  legalDescription: "Hoe wij uw gegevens verwerken en beschermen",
+  blogDescription: "Dentaliva blog — artikelen over mondgezondheid",
+
+  blogEmpty: "Artikelen zijn onderweg.",
+  doctorsEmpty: "De profielen van onze tandartsen zijn onderweg.",
+  seedPlaceholder:
+    "Deze inhoud is nog niet gereed. Zodra er documenten aan het Sanity-project worden toegevoegd, wordt deze pagina automatisch gevuld (via de rebuild-webhook).",
+
+  gallerySrSummary: (n) => `Galerij: ${n} afbeeldingen, selecteer er een om te vergroten.`,
+  galleryFirstAltSr: (alt) => `Beschrijving eerste afbeelding: ${alt}`,
+};
+
+const strings = { tr, en, nl } as const;
 
 export function pageString<K extends keyof typeof tr>(key: K): (typeof tr)[K] {
   // Same NEXT_PUBLIC_SITE_ID fold as ui-strings (build-time constant).
-  return strings[process.env.NEXT_PUBLIC_SITE_ID === "eu" ? "en" : "tr"][key];
+  const site = process.env.NEXT_PUBLIC_SITE_ID;
+  return strings[site === "eu" ? "en" : site === "nl" ? "nl" : "tr"][key];
 }

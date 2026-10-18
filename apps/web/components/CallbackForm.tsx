@@ -16,7 +16,12 @@ const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 // üretimi yerine tek kez kurulur. INT-4: şema + etiketler aktif sitenin
 // dilinden gelir (NEXT_PUBLIC_SITE_ID build'de literal inline edilir —
 // tr/en paketlerinin öbürürü bundle'dan elenir).
-const formLocale = process.env.NEXT_PUBLIC_SITE_ID === "eu" ? "en" : "tr";
+const formLocale =
+  process.env.NEXT_PUBLIC_SITE_ID === "eu"
+    ? "en"
+    : process.env.NEXT_PUBLIC_SITE_ID === "nl"
+      ? "nl"
+      : "tr";
 const callbackFormSchema = createCallbackSchema(formLocale);
 const resolver = zodResolver(callbackFormSchema);
 const emptyValues: CallbackFormInput = {

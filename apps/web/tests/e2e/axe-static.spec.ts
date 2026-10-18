@@ -6,22 +6,32 @@ import { expect, test } from "@playwright/test";
 // INT-9: rota listesi aktif siteye göre — com içerikli dinamik örneklerle,
 // eu boş CMS'te yalnız statik segmentlerle taranır.
 const SITE = process.env.SITE_ID ?? "com";
-const routes =
-  SITE === "eu"
-    ? ["", "/about", "/services", "/doctors", "/branches", "/gallery", "/contact", "/blog"]
-    : [
-        "",
-        "/hakkimizda",
-        "/hizmetlerimiz",
-        "/hizmetlerimiz/implant-tedavisi",
-        "/hekimlerimiz/dr-dt-emel-ozdemir",
-        "/subelerimiz/avcilar",
-        "/fotograf-galerisi",
-        "/iletisim",
-        "/kvkk",
-        "/blog",
-        "/blog/en-iyi-ve-guvenilir-dis-dolgusu-cesitleri",
-      ];
+const ROUTES_BY_SITE: Record<string, string[]> = {
+  com: [
+    "",
+    "/hakkimizda",
+    "/hizmetlerimiz",
+    "/hizmetlerimiz/implant-tedavisi",
+    "/hekimlerimiz/dr-dt-emel-ozdemir",
+    "/subelerimiz/avcilar",
+    "/fotograf-galerisi",
+    "/iletisim",
+    "/kvkk",
+    "/blog",
+    "/blog/en-iyi-ve-guvenilir-dis-dolgusu-cesitleri",
+  ],
+  eu: ["", "/about", "/services", "/doctors", "/branches", "/gallery", "/contact", "/blog"],
+  nl: [
+    "",
+    "/over-ons",
+    "/behandelingen",
+    "/onze-tandartsen",
+    "/onze-filialen",
+    "/fotogalerij",
+    "/contact",
+  ],
+};
+const routes = ROUTES_BY_SITE[SITE] ?? ROUTES_BY_SITE.com ?? [];
 
 function decodedHtml(route: string): string {
   const file = route === "" ? "index.html" : `${route.replace(/^\//, "")}.html`;

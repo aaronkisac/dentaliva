@@ -22,6 +22,7 @@ describe("uiString client tables (INT-3)", () => {
     expect(uiString("serviceSlideAria")(7)).toBe("7. hizmet");
     expect(uiString("lightboxImageAria")(2)).toBe("Görsel 2 — büyüt");
     expect(uiString("galleryImageAria")(5)).toBe("5. görsel");
+    expect(uiString("doctorSlideAria")(4)).toBe("4. hekim");
   });
 
   it("serves EN strings when the site is eu", async () => {
@@ -36,5 +37,27 @@ describe("uiString client tables (INT-3)", () => {
     expect(ui("galleryImageAria")(5)).toBe("Image 5");
     expect(ui("exploreServicesCta")).toBe("Explore our services");
     expect(ui("patientVideoAlt")).toBe("Patient video");
+    expect(ui("doctorsLive")("Dr. Example", 1, 19)).toBe("Featured: Dr. Example (1/19)");
+    expect(ui("serviceSlideAria")(7)).toBe("Service 7");
+  });
+});
+
+describe("uiString nl table (NL-1)", () => {
+  it("serves Dutch strings when the site is nl", async () => {
+    process.env.NEXT_PUBLIC_SITE_ID = "nl";
+    vi.resetModules();
+    const { uiString: ui } = await import("../src/ui-strings");
+    expect(ui("bookCta")).toBe("Afspraak maken");
+    expect(ui("errorTitle")).toBe("Er is iets misgegaan");
+    expect(ui("doctorSlideAria")(2)).toBe("Tandarts 2");
+    expect(ui("googleBadge")).toBe("Google Reviews · 5,0");
+    expect(ui("consentLabel")).toContain("privacybeleid");
+    // call every nl function entry (coverage + interpolation regressions)
+    expect(ui("doctorsLive")("Dr. Voorbeeld", 1, 19)).toBe("Uitgelicht: Dr. Voorbeeld (1/19)");
+    expect(ui("serviceSlideAria")(7)).toBe("Behandeling 7");
+    expect(ui("lightboxImageAria")(2)).toBe("Afbeelding 2 — vergroot");
+    expect(ui("galleryImageAria")(5)).toBe("Afbeelding 5");
+    expect(ui("exploreServicesCta")).toBe("Ontdek onze behandelingen");
+    expect(ui("patientVideoAlt")).toBe("Patiëntvideo");
   });
 });

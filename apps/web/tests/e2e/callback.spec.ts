@@ -5,7 +5,7 @@ import { expect, test } from "@playwright/test";
 test.describe.configure({ mode: "serial" });
 
 // INT-9: form yolculuğu com (TR mesajlar) için yazıldı; eu boş CMS job'ı koşturmaz.
-test.skip(process.env.SITE_ID === "eu", "com-only e2e");
+test.skip(process.env.SITE_ID !== undefined && process.env.SITE_ID !== "com", "com-only e2e");
 
 test.describe("callback form journey (FRM-4, mocked externals)", () => {
   test("successful submission shows the confirmation state", async ({ page }) => {

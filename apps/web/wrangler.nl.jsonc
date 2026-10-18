@@ -1,0 +1,29 @@
+{
+  // dentaliva.nl (NL-2): same worker code, third instance. Rate-limit
+  // namespaces stay disjoint: com 1001/1002, eu 1003/1004, nl 1005/1006.
+  "name": "dentaliva-nl",
+  "compatibility_date": "2026-09-01",
+  "main": "worker/index.ts",
+  "assets": {
+    "directory": "./out",
+    "binding": "ASSETS",
+    "not_found_handling": "404-page"
+  },
+  "vars": {
+    "MOCK_EXTERNAL": "0",
+    "LOCALE": "nl",
+    "NOTIFY_FALLBACK": "info@dentaliva.nl"
+  },
+  "ratelimits": [
+    { "name": "RATE_LIMITER", "namespace_id": "1005", "simple": { "limit": 5, "period": 60 } }
+  ],
+  "observability": { "enabled": true },
+  "env": {
+    "staging": {
+      "vars": { "MOCK_EXTERNAL": "1", "LOCALE": "nl", "NOTIFY_FALLBACK": "info@dentaliva.nl" },
+      "ratelimits": [
+        { "name": "RATE_LIMITER", "namespace_id": "1006", "simple": { "limit": 5, "period": 60 } }
+      ]
+    }
+  }
+}

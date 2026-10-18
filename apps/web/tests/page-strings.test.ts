@@ -7,6 +7,24 @@ afterEach(() => {
   vi.resetModules();
 });
 
+describe("pageString nl table (NL-1)", () => {
+  it("serves Dutch strings when the site is nl", async () => {
+    process.env.NEXT_PUBLIC_SITE_ID = "nl";
+    vi.resetModules();
+    const { pageString: p } = await import("../src/page-strings");
+    expect(p("skipLabel")).toBe("Doorgaan naar de inhoud");
+    expect(p("skipAnchor")).toBe("inhoud");
+    expect(p("servicesTitle")).toBe("Behandelingen");
+    expect(p("legalTitle")).toBe("Privacyverklaring");
+    expect(p("gallerySrSummary")(12)).toBe(
+      "Galerij: 12 afbeeldingen, selecteer er een om te vergroten.",
+    );
+    expect(p("galleryFirstAltSr")("Kliniekinterieur")).toBe(
+      "Beschrijving eerste afbeelding: Kliniekinterieur",
+    );
+  });
+});
+
 describe("pageString server tables (INT-3)", () => {
   it("serves the exact legacy TR strings on the com site", () => {
     expect(pageString("skipLabel")).toBe("İçeriğe atla");

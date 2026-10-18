@@ -7,6 +7,8 @@
 export interface LocalizedValue {
   tr?: string | null;
   en?: string | null;
+  /** Dutch slot (NL-1): filled by the dentaliva.nl project's editors. */
+  nl?: string | null;
 }
 
 function asLocalized(value: unknown): LocalizedValue | null {

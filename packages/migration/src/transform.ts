@@ -37,12 +37,13 @@ function cleanName(h1: string): string {
 
 /** h1 → title → slug-derived name chain (slugs yield readable interim names). */
 /** INT-10: which localeText slot the source copy fills (com tr, eu en). */
-export type MigrateLocale = "tr" | "en";
+export type MigrateLocale = "tr" | "en" | "nl";
 
 /** H2 heading patterns for structured extras, per source language. */
 const HEADING_PATTERNS: Record<MigrateLocale, { benefits: RegExp; process: RegExp }> = {
   tr: { benefits: /avantaj|fark/i, process: /uygulama süreci|süreç/i },
   en: { benefits: /advantage|benefit/i, process: /procedure|process|how (is|are)/i },
+  nl: { benefits: /voordeel|verschil/i, process: /procedure|verloop|behandeling|stappen/i },
 };
 
 export function nameFrom(page: NormalizedPage): string {

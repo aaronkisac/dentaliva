@@ -41,11 +41,18 @@ export function createReadClient(env: Partial<SanityEnv> = {}) {
   });
 }
 
-/** Extracts the Turkish (default) or English value from a localized field. */
+export type ReadLocale = "tr" | "en" | "nl";
+
+/**
+ * Extracts the value for a locale from a localized field. Fallback chain is
+ * the reader's language first, then the clinic's other languages: en → tr,
+ * nl → en → tr (INT-12/NL-1).
+ */
 export function pickLocalized(
   value: LocalizedValue | null | undefined,
-  locale: "tr" | "en" = "tr",
+  locale: ReadLocale = "tr",
 ): string {
   if (locale === "en") return value?.en ?? value?.tr ?? "";
+  if (locale === "nl") return value?.nl ?? value?.en ?? value?.tr ?? "";
   return value?.tr ?? "";
 }

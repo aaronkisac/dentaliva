@@ -61,17 +61,18 @@ jobs:
         env:
           LH_THRESHOLD: 70
 
-  # INT-9: dentaliva.eu instance gate. Same code, second site: anonymous
-  # build against the eu project (SANITY_READ_TOKEN_EU secret once Aaron
-  # creates it), its own bundle/e2e pass. Lighthouse stays com-only until
-  # the eu dataset has real content to measure.
-  EU:
+  # INT-9/NL-2: sister-instance gates (dentaliva.eu + dentaliva.nl). Same
+  # code, per-site anonymous-or-token build, bundle budget and site-aware
+  # e2e. Lighthouse stays com-only until those datasets carry real content.
+  SITES:
+    strategy:
+      matrix:
+        site: [eu, nl]
+    name: SITES (${{ matrix.site }})
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
-      # Unit suites run site-agnostic (com default); SITE_ID scopes only the
-      # build/e2e steps below.
-      SANITY_READ_TOKEN_EU: ${{ secrets.SANITY_READ_TOKEN_EU }}
+      SITE_ID: ${{ matrix.site }}
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -87,17 +88,16 @@ jobs:
         run: pnpm typecheck
       - name: Unit + coverage thresholds
         run: pnpm test
-      - name: Build (SITE_ID=eu, per-site env runner)
+      - name: Build (per-site env runner)
         working-directory: apps/web
-        run: node scripts/build-site.mjs --site eu
+        run: node scripts/build-site.mjs --site ${{ matrix.site }}
         env:
-          SITE_ID: eu
-          NEXT_PUBLIC_SITE_ID: eu
+          NEXT_PUBLIC_SITE_ID: ${{ matrix.site }}
       - name: Bundle budget + use-client audit (eu build)
         run: pnpm --filter @dentaliva/web test:bundle
       - name: Install Playwright chromium
         run: pnpm --filter @dentaliva/web exec playwright install --with-deps chromium
-      - name: "E2E (eu - static segments, headers, foreign-segment 404)"
+      - name: "E2E (sister site - static segments, headers, foreign-segment 404)"
         run: pnpm --filter @dentaliva/web exec playwright test
         env:
-          SITE_ID: eu
+          SITE_ID: ${{ matrix.site }}
