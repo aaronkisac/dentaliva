@@ -25,7 +25,9 @@ const THRESHOLD = Number(process.env.LH_THRESHOLD ?? 95);
 // accessibility, best-practices and seo stay at the full threshold.
 const HOME_PERF_ALLOWANCE = Number(process.env.LH_HOME_ALLOWANCE ?? 10);
 const minScore = (route, category) =>
-  route === "" && category === "performance" ? THRESHOLD - HOME_PERF_ALLOWANCE : THRESHOLD;
+  (route === "" || route === "/") && category === "performance"
+    ? THRESHOLD - HOME_PERF_ALLOWANCE
+    : THRESHOLD;
 const PORT = Number(process.env.LH_PORT ?? 4173);
 const ROUTES = ["", "/hizmetlerimiz/implant-tedavisi", "/iletisim"];
 const CATEGORIES = ["performance", "accessibility", "best-practices", "seo"];
