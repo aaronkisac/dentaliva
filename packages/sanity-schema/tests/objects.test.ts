@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { imageWithAlt } from "../src/objects/image-with-alt";
 import { localeString, localeText } from "../src/objects/locale-text";
@@ -102,5 +102,31 @@ describe("validation wiring on schema objects", () => {
       const { rule } = fakeRule();
       expect(() => (field.validation as (rule: unknown) => unknown)(rule)).not.toThrow();
     }
+  });
+});
+
+describe("studioLocale parameterization (INT-7)", () => {
+  it("defaults to the tr studio: tr required and first, en optional", () => {
+    expect(localeString.fields.map((f) => f.name)).toEqual(["tr", "en"]);
+    expect(localeString.fields[0]?.validation).toBeDefined();
+    expect(localeString.fields[1]?.validation).toBeUndefined();
+  });
+
+  it("builds the en studio when SANITY_STUDIO_DEFAULT_LOCALE=en", async () => {
+    vi.stubEnv("SANITY_STUDIO_DEFAULT_LOCALE", "en");
+    vi.resetModules();
+    const {
+      localeString: enString,
+      localeText: enText,
+      studioLocale,
+    } = await import("../src/objects/locale-text");
+    expect(studioLocale).toBe("en");
+    expect(enString.fields.map((f) => f.name)).toEqual(["en", "tr"]);
+    expect(enString.fields[0]?.title).toBe("English");
+    expect(enString.fields[0]?.validation).toBeDefined();
+    expect(enString.fields[1]?.validation).toBeUndefined();
+    expect(enText.fields.map((f) => f.name)).toEqual(["en", "tr"]);
+    vi.unstubAllEnvs();
+    vi.resetModules();
   });
 });
