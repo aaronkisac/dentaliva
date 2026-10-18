@@ -4,6 +4,8 @@ import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 import { createReadClient } from "@dentaliva/sanity-schema/client";
+import { join } from "node:path";
+import { pathToFileURL } from "node:url";
 
 // Local builds load apps/web/.env (Next does this for the app; scripts need it manually).
 if (existsSync(".env")) {
@@ -16,7 +18,23 @@ if (existsSync(".env")) {
   }
 }
 
-const readClient = createReadClient({});
+// INT-8: redirect rules come from the ACTIVE site's project — never from a
+// hardcoded/default project (a SITE_ID=eu build must read eu's CMS). The
+// shared .env token belongs to the project named in that same .env; for any
+// other site it must NOT be sent (tokens are project-scoped) — a
+// site-specific SANITY_READ_TOKEN_<ID> takes over, else anonymous reads.
+const siteId = process.env.SITE_ID ?? "com";
+const site = (await import(pathToFileURL(join(process.cwd(), "sites", `${siteId}.ts`)).href)).site;
+const envProject = process.env.SANITY_PROJECT_ID;
+const token =
+  site.sanity.projectId === envProject
+    ? process.env.SANITY_READ_TOKEN || ""
+    : process.env[`SANITY_READ_TOKEN_${siteId.toUpperCase()}`] || "";
+const readClient = createReadClient({
+  projectId: site.sanity.projectId,
+  dataset: process.env.SANITY_DATASET ?? site.sanity.dataset,
+  token,
+});
 
 const docs =
   (await readClient.fetch(`*[_type == "redirect"]{ "from": from.current, to, permanent }`)) ?? [];

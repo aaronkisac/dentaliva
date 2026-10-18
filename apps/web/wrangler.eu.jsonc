@@ -1,0 +1,36 @@
+{
+  // dentaliva.eu (INT-8): same worker code as dentaliva-com, its own worker
+  // names and rate-limit namespaces. Root config = production
+  // ("dentaliva-eu"); the named env deploys as "dentaliva-eu-staging".
+  // Build step: pnpm --filter @dentaliva/web deploy:eu:prod / deploy:eu:staging
+  // (scripts/build-site.mjs sets the site-scoped env from sites/eu.ts).
+  "name": "dentaliva-eu",
+  "compatibility_date": "2026-09-01",
+  "main": "worker/index.ts",
+  "assets": {
+    "directory": "./out",
+    "binding": "ASSETS",
+    "not_found_handling": "404-page"
+  },
+  "vars": {
+    // Secrets (TURNSTILE_SECRET, RESEND_API_KEY, NOTIFY_EMAIL, MAIL_FROM) are
+    // set per worker via `wrangler secret put -c wrangler.eu.jsonc` — eu needs
+    // its own values (Resend sender info@dentaliva.eu, eu Turnstile widget).
+    "MOCK_EXTERNAL": "0",
+    "LOCALE": "en",
+    "NOTIFY_FALLBACK": "info@dentaliva.eu"
+  },
+  // Account-wide namespace ids stay disjoint: com 1001/1002, eu 1003/1004.
+  "ratelimits": [
+    { "name": "RATE_LIMITER", "namespace_id": "1003", "simple": { "limit": 5, "period": 60 } }
+  ],
+  "observability": { "enabled": true },
+  "env": {
+    "staging": {
+      "vars": { "MOCK_EXTERNAL": "1", "LOCALE": "en", "NOTIFY_FALLBACK": "info@dentaliva.eu" },
+      "ratelimits": [
+        { "name": "RATE_LIMITER", "namespace_id": "1004", "simple": { "limit": 5, "period": 60 } }
+      ]
+    }
+  }
+}

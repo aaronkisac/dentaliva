@@ -14,7 +14,8 @@
     // Production hits Turnstile + Resend for real; their values live in Worker
     // secrets (wrangler secret put, docs/runbooks/deploy.md) — never in config.
     "MOCK_EXTERNAL": "0",
-    "LOCALE": "tr"
+    "LOCALE": "tr",
+    "NOTIFY_FALLBACK": "info@dentaliva.com"
   },
   // Rate limit binding for POST /api/callback: 5 requests / 60 s per key,
   // matching the fallback limiter (packages/lib/src/worker/rate-limit.ts).
@@ -30,7 +31,7 @@
     // Mock mode on: staging can never send real mail or call Turnstile; the
     // URL is locked behind Cloudflare Access (docs/runbooks/deploy.md).
     "staging": {
-      "vars": { "MOCK_EXTERNAL": "1", "LOCALE": "tr" },
+      "vars": { "MOCK_EXTERNAL": "1", "LOCALE": "tr", "NOTIFY_FALLBACK": "info@dentaliva.com" },
       "ratelimits": [
         { "name": "RATE_LIMITER", "namespace_id": "1002", "simple": { "limit": 5, "period": 60 } }
       ]

@@ -8,6 +8,8 @@ import { site } from "./config";
 export function imageTarget(): { projectId: string; dataset: string } {
   return {
     projectId: site.sanity.projectId,
-    dataset: site.sanity.dataset,
+    // Dataset follows the build (eu staging targets its staging dataset);
+    // projectId is registry-only — see src/sanity.ts (INT-1/INT-8).
+    dataset: process.env.SANITY_DATASET ?? site.sanity.dataset,
   };
 }
