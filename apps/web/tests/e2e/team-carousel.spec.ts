@@ -3,6 +3,9 @@ import { expect, test, type Page } from "@playwright/test";
 // DSN-19: tamamen manuel carousel — 4 görünür hekim; sıra 1 büyük
 // (col-span-2 / w-[38%]), küçükler alt kenara hizalı; ok butonları sırayı
 // ±1 kaydırır ve kayma animasyonu oynar; otomatik dönüş YOKTUR.
+// INT-9: hekim carousel'i com içeriğiyle Manuel doğrulandı; eu boş CMS'te koşmaz.
+test.skip(process.env.SITE_ID === "eu", "com-only e2e");
+
 test.describe("team carousel (manuel)", () => {
   test("renders 4 cards with the first one big", async ({ page }) => {
     await page.goto("/");
