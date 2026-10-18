@@ -58,6 +58,21 @@ Next.js App Router + TypeScript strict + Tailwind; `output: 'export'` static-fir
 - **ReoDental** (design reference): https://reodental.framer.website/ — 2 pages, warm off-white/bronze/Geist; layout patterns only.
 - **Tooling guide**: `docs/phase0-tooling.md` (verified install steps, MCP config, versions).
 
+## Milestone 12 — EN Site (dentaliva.eu) — DELIVERED 2026-10-18 (INT-1..15, #259–#273, main aedf81d)
+
+Second instance on the same codebase (ADR-002/004 delivered end to end): **no runtime i18n** — per-site instances with their own Sanity project, workers and segments. Merged PRs #274–#285, every one squash-merged with CI+EU green; board Done.
+
+- **Multi-instance plumbing (INT-1..5):** `sites/eu.ts` (projectId `84n9qnfg`, en, `/services`-family segments) + `SiteRoutes` contract; `t()`/`tBlocks()` locale helpers replace ~90 `.tr` reads; per-locale chrome tables (`src/ui-strings.ts` client / `src/page-strings.ts` server-only — split needed for the bundle budget) with `NEXT_PUBLIC_SITE_ID` build-time fold; form/worker locale packs (`createCallbackSchema(locale)`, wrangler `LOCALE` var); central `src/routes.ts` (route literals live only in `sites/*.ts`).
+- **EN routes (INT-6):** `app/{services,doctors,branches,about,contact,gallery,privacy}` as thin re-export wrappers; `prune-routes.mjs` (postbuild) deletes inactive segments (dir+.html+.txt) from `out/` per SITE_ID — com ships only TR, eu only EN.
+- **Deploy (INT-8):** `wrangler.eu.jsonc` (`dentaliva-eu`/`-staging`, rate-limit namespaces 1003/1004, `LOCALE=en`, `NOTIFY_FALLBACK`), `build-site.mjs` site-scoped env runner (project from registry, dataset per --env, `SANITY_READ_TOKEN_EU` derivation), `generate-redirects` wired into postbuild (long-open SEO-4 item — com deploys now serve their 110 CMS redirect rules too).
+- **CI (INT-9):** second `EU` job — anonymous eu build + bundle budget + site-aware e2e (axes/keyboard/headers per SITE_ID; callback/carousel specs com-only; cross-site 404 assertion pins the prune contract).
+- **Content (INT-10/11):** migration pipeline parameterized (site/locale) — dentaliva.eu crawl → 144 pages → **eu dataset: 24 treatments + 18 doctors + 3 branches + 15 substantial posts + 105 redirects** + EN seeds (siteCopy/siteSettings/homePage) + GDPR privacy DRAFT. com dataset untouched (447 docs).
+- **Studio (INT-12):** `https://dentaliva-eu.sanity.studio` — `SANITY_STUDIO_DEFAULT_LOCALE=en` build → en-required, tr-optional.
+- **Staging (INT-13):** `https://dentaliva-eu-staging.dentaliva.workers.dev` live — 11 page types 200, TR segments 404, legacy `/dental-implant/` → 301 `/services/dental-implant`, HSTS + per-route CSP, EN hero/ticker/CTA.
+- **Perf gate:** home perf allowance added to the Lighthouse script (INT-5, widened INT-8, normalized-route bug fixed INT-11 — the allowance never applied before that fix); bundle budget 200→204KB (bilingual chrome tables).
+
+**AÇIK (Aaron / dashboard):** `SANITY_READ_TOKEN_EU` repo secret (eu CI + staging dataset), Resend dentaliva.eu domain + key, Turnstile eu widget, DNS → Cloudflare NS + custom domains, deploy hooks + Sanity webhook for eu, Studio visual check (en-required fields), privacy draft legal review, review quotes (TR → EN) editorial pass. Refactor backlog: doctors/gallery server-children conversion (real perf fix), Turbopack per-route chrome-table duplication (props threading).
+
 ## Resolved decisions (Phase 1 defaults accepted by Aaron, 2026-09-24)
 
 1. **Design**: navy/gold prototype direction; ReoDental = layout patterns only (ADR-005). Brand assets: none provided — extract logo from live site as interim, flag to client.
