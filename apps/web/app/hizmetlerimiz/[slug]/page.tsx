@@ -17,6 +17,7 @@ import { site } from "../../../src/config";
 import { readClient } from "../../../src/sanity";
 import { absoluteUrl, pageMetadata } from "../../../src/seo";
 import { SeedPlaceholder } from "../../../components/seed-placeholder";
+import { pageString } from "../../../src/page-strings";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -72,8 +73,8 @@ export default async function TreatmentDetailPage({ params }: PageProps) {
   // SEO-5: breadcrumb trail + FAQ answers as structured data.
   const jsonLd = [
     buildBreadcrumbJsonLd([
-      { name: "Ana Sayfa", url: absoluteUrl("/") },
-      { name: "Hizmetlerimiz", url: absoluteUrl("/hizmetlerimiz") },
+      { name: pageString("breadcrumbHome"), url: absoluteUrl("/") },
+      { name: pageString("servicesTitle"), url: absoluteUrl("/hizmetlerimiz") },
       { name, url: absoluteUrl(`/hizmetlerimiz/${slug}`) },
     ]),
     ...(faqs.length > 0
@@ -109,7 +110,7 @@ export default async function TreatmentDetailPage({ params }: PageProps) {
         <link rel="preload" as="image" href={heroPreload} fetchPriority="high" />
       ) : null}
       <PageHero
-        eyebrow="Hizmetlerimiz"
+        eyebrow={pageString("servicesTitle")}
         eyebrowHref="/hizmetlerimiz"
         title={name}
         lead={t(treatment.summary) ? t(treatment.summary) : null}

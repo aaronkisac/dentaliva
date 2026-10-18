@@ -12,7 +12,11 @@ export function availableSiteIds(): string[] {
  * Resolves the active site. Runs at build time: an unknown SITE_ID fails the
  * build loudly instead of silently deploying the wrong domain (PGT-1 AC).
  */
-export function getSite(id: string = process.env.SITE_ID ?? "com"): SiteConfig {
+export function getSite(
+  // NEXT_PUBLIC_ is inlined into the client bundle (error boundaries, carousels
+  // resolve strings at runtime); SITE_ID stays the server/build-time alias.
+  id: string = process.env.NEXT_PUBLIC_SITE_ID ?? process.env.SITE_ID ?? "com",
+): SiteConfig {
   const site = registry[id];
   if (!site) {
     throw new Error(`Unknown SITE_ID "${id}". Available sites: ${availableSiteIds().join(", ")}`);

@@ -10,10 +10,11 @@ import { fetchSiteSettings } from "../../src/content/home";
 import { fetchSiteCopy } from "../../src/content/site-copy";
 import { readClient } from "../../src/sanity";
 import { pageMetadata } from "../../src/seo";
+import { pageString } from "../../src/page-strings";
 
 export const metadata: Metadata = pageMetadata({
   path: "/iletisim",
-  title: "İletişim",
+  title: pageString("contactTitle"),
   description: "Dentaliva iletişim bilgileri",
 });
 
@@ -32,7 +33,7 @@ export default async function ContactPage() {
       {/* DSN-41: tüm sayfalarla aynı hero kalıbı (çıplak H1 değil) + sol
           kolondaki ölü alan şube NAP verileriyle kapanıyor. Harita facade'ı
           ayrı iş. */}
-      <PageHero eyebrow="Dentaliva" title="İletişim" />
+      <PageHero eyebrow="Dentaliva" title={pageString("contactTitle")} />
       <Section>
         <div className="grid gap-10 md:grid-cols-2">
           <div className="space-y-8">

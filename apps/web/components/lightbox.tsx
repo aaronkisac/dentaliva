@@ -9,6 +9,7 @@ import { lqipUrl, refDimensions } from "@dentaliva/sanity-schema/image-url";
 import type { GalleryImage } from "../src/content/home";
 import { imageTarget } from "../src/image-target";
 import { useTrackCarousel } from "./use-track-carousel";
+import { uiString } from "../src/ui-strings";
 
 const ENV = imageTarget();
 
@@ -75,7 +76,7 @@ export function GalleryLightbox({
           "aspect-square bg-ivory-2 transition-shadow duration-300 hover:shadow-[var(--dvn-shadow-lift)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold" +
           (afterCarousel ? " dvn-carousel-card shrink-0 snap-start" : "")
         }
-        aria-label={`Görsel ${index + 1} — büyüt`}
+        aria-label={uiString("lightboxImageAria")(index + 1)}
       >
         <Image
           src={ref}
@@ -96,7 +97,11 @@ export function GalleryLightbox({
       {after.length > 0 ? (
         /* DSN-54: standart düzen — sekmeler solda, oklar sağ üstte. */
         <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
-          <div role="group" aria-label="Galeri filtresi" className="flex flex-wrap gap-2">
+          <div
+            role="group"
+            aria-label={uiString("lightboxFilterAria")}
+            className="flex flex-wrap gap-2"
+          >
             {TABS.map((t) => (
               <button
                 key={t.id}
@@ -121,7 +126,7 @@ export function GalleryLightbox({
             <div className="hidden gap-2 md:flex">
               <button
                 type="button"
-                aria-label="Önceki görseller"
+                aria-label={uiString("prevImages")}
                 onClick={() => carousel.goTo(carousel.index - 1)}
                 disabled={carousel.index === 0}
                 className="flex h-11 w-11 items-center justify-center border border-[var(--dvn-line-gold)] text-navy transition-colors duration-300 hover:bg-gold hover:text-navy disabled:pointer-events-none disabled:opacity-40"
@@ -141,7 +146,7 @@ export function GalleryLightbox({
               </button>
               <button
                 type="button"
-                aria-label="Sonraki görseller"
+                aria-label={uiString("nextImages")}
                 onClick={() => carousel.goTo(carousel.index + 1)}
                 disabled={carousel.index >= carousel.maxIndex}
                 className="flex h-11 w-11 items-center justify-center border border-[var(--dvn-line-gold)] text-navy transition-colors duration-300 hover:bg-gold hover:text-navy disabled:pointer-events-none disabled:opacity-40"
@@ -180,7 +185,7 @@ export function GalleryLightbox({
                 <button
                   key={image.asset?._ref ?? i}
                   type="button"
-                  aria-label={`${i + 1}. görsel`}
+                  aria-label={uiString("galleryImageAria")(i + 1)}
                   aria-current={carousel.index === i ? "true" : undefined}
                   onClick={() => carousel.goTo(Math.min(i, carousel.maxIndex))}
                   className="p-1.5"
@@ -213,7 +218,7 @@ export function GalleryLightbox({
           if (event.key === "Escape") setActive(null);
         }}
         className="backdrop:bg-navy/80"
-        aria-label="Galeri görseli"
+        aria-label={uiString("galleryImageAlt")}
       >
         {active !== null && items[active] ? (
           <div className="p-4">

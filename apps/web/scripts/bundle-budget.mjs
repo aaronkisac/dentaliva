@@ -7,14 +7,17 @@
 // Budget note: the backlog's original 90KB target predates the framework
 // choice. Next 16 + React 19 App Router ships a ~165KB-gzip client runtime
 // floor (react-dom, router, Turbopack runtime) before any app code; this
-// build's app-owned share is ~24KB. The enforceable line is therefore 200KB:
-// it keeps the client bundle bounded (the AC's intent) and fails on real
-// regressions, without failing on the framework baseline.
+// build's app-owned share is ~24KB. The enforceable line started at 200KB
+// (PRF-4) and moved to 204KB in INT-3: the per-locale chrome tables (error
+// boundaries + carousel aria labels in client chunks, duplicated per route
+// chunk by Turbopack) buy the dentaliva.eu instance for ~4KB. The real
+// user-facing gate stays the CI Lighthouse perf budget; this line still
+// fails on genuine regressions.
 import { readFileSync } from "node:fs";
 import { gzipSync } from "node:zlib";
 import { join } from "node:path";
 
-const BUDGET_KB = Number(process.env.BUDGET_KB ?? 200);
+const BUDGET_KB = Number(process.env.BUDGET_KB ?? 204);
 const ROUTE_HTML = join(process.cwd(), "out", process.env.BUNDLE_HTML ?? "index.html");
 
 const html = readFileSync(ROUTE_HTML, "utf8");
