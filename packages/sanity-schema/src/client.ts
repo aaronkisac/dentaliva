@@ -27,7 +27,10 @@ export function defaultEnv(): SanityEnv {
  */
 export function createReadClient(env: Partial<SanityEnv> = {}) {
   const resolved = { ...defaultEnv(), ...env };
-  const token = resolved.token ?? process.env.SANITY_READ_TOKEN;
+  // Empty string counts as "no token": per-project builds (INT-8) blank the
+  // variable instead of leaking one project's token into another project's
+  // read (tokens are project-scoped).
+  const token = resolved.token ?? (process.env.SANITY_READ_TOKEN || undefined);
   return createClient({
     projectId: resolved.projectId,
     dataset: resolved.dataset,
