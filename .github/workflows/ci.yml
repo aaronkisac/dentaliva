@@ -97,7 +97,7 @@ jobs:
         run: pnpm --filter @dentaliva/web test:bundle
       - name: Install Playwright chromium
         run: pnpm --filter @dentaliva/web exec playwright install --with-deps chromium
-      - name: "E2E (eu - static segments, headers, foreign-segment 404)"
+      - name: "E2E (sister site - static segments, headers, foreign-segment 404)"
         run: pnpm --filter @dentaliva/web exec playwright test
         env:
           SITE_ID: ${{ matrix.site }}
