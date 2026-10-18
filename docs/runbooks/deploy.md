@@ -114,8 +114,10 @@ SANITY_STUDIO_DEFAULT_LOCALE=tr npx sanity deploy --url dentaliva`)
   (`..._PROJECT_ID=84n9qnfg ..._DEFAULT_LOCALE=en npx sanity deploy --url
 dentaliva-eu`)
 
-The stale duplicate (`dentaliva-com.sanity.studio`) is removed from the
-Sanity dashboard (Studios → ⋯ → Delete) — 2026-10-18.
+The stale duplicate (`dentaliva-com.sanity.studio`) was removed via
+`npx sanity undeploy <appId> -y` (2026-10-18). To find an app's id, deploy
+to its url once — the result prints `deployment.appId`; there is no list
+API.
 
 ## 4. Second instance: dentaliva.eu (INT milestone 12)
 
