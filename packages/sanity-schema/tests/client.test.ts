@@ -32,6 +32,13 @@ describe("createReadClient", () => {
     const client = createReadClient({ dataset: "production" });
     expect(client.config().dataset).toBe("production");
   });
+
+  it("treats an empty-string token as anonymous (per-project builds, INT-6)", () => {
+    process.env.SANITY_READ_TOKEN = "";
+    const client = createReadClient({ projectId: "84n9qnfg" });
+    expect(client.config().token).toBeUndefined();
+    expect(client.config().useCdn).toBe(true);
+  });
 });
 
 describe("pickLocalized", () => {

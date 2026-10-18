@@ -11,7 +11,7 @@
     "test": "vitest run --coverage",
     "test:perf": "node scripts/lighthouse-budget.mjs",
     "test:bundle": "node scripts/bundle-budget.mjs && node scripts/use-client-audit.mjs",
-    "postbuild": "node scripts/generate-headers.mjs",
+    "postbuild": "node scripts/prune-routes.mjs && node scripts/generate-headers.mjs",
     "deploy:prod": "node scripts/clear-build-cache.mjs && pnpm build && wrangler deploy",
     "deploy:staging": "node scripts/clear-build-cache.mjs && pnpm build && wrangler deploy --env staging"
   },
