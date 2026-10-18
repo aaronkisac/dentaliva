@@ -4,6 +4,9 @@ import { expect, test } from "@playwright/test";
 // ortamda başlatır — FRM-4 yolculuğu CI'da da koşar (DEP-1 yeniden bağlama).
 test.describe.configure({ mode: "serial" });
 
+// INT-9: form yolculuğu com (TR mesajlar) için yazıldı; eu boş CMS job'ı koşturmaz.
+test.skip(process.env.SITE_ID === "eu", "com-only e2e");
+
 test.describe("callback form journey (FRM-4, mocked externals)", () => {
   test("successful submission shows the confirmation state", async ({ page }) => {
     await page.goto("/iletisim");

@@ -60,3 +60,41 @@ jobs:
         run: pnpm --filter @dentaliva/web test:perf
         env:
           LH_THRESHOLD: 70
+
+  # INT-9: dentaliva.eu instance gate. Same code, second site: anonymous
+  # build against the eu project (SANITY_READ_TOKEN_EU secret once Aaron
+  # creates it), its own bundle/e2e pass. Lighthouse stays com-only until
+  # the eu dataset has real content to measure.
+  EU:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      SITE_ID: eu
+      NEXT_PUBLIC_SITE_ID: eu
+      SANITY_READ_TOKEN_EU: ${{ secrets.SANITY_READ_TOKEN_EU }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - name: Install
+        run: pnpm install --frozen-lockfile
+      - name: Lint
+        run: pnpm lint
+      - name: Typecheck
+        run: pnpm typecheck
+      - name: Unit + coverage thresholds
+        run: pnpm test
+      - name: Build (SITE_ID=eu, per-site env runner)
+        working-directory: apps/web
+        run: node scripts/build-site.mjs --site eu
+      - name: Bundle budget + use-client audit (eu build)
+        run: pnpm --filter @dentaliva/web test:bundle
+      - name: Install Playwright chromium
+        run: pnpm --filter @dentaliva/web exec playwright install --with-deps chromium
+      - name: "E2E (eu - static segments, headers, foreign-segment 404)"
+        run: pnpm --filter @dentaliva/web exec playwright test
+        env:
+          SITE_ID: eu

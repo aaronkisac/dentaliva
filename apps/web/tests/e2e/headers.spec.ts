@@ -1,7 +1,11 @@
 import { expect, test } from "@playwright/test";
 
 /** DEP-2: güvenlik başlıkları ve CSP assertion'ları (wrangler dev üzerinden). */
-const routes = ["/", "/iletisim"];
+// INT-9: site-farkındalı rotalar + ters-site 404 savunması.
+const SITE = process.env.SITE_ID ?? "com";
+const contactRoute = SITE === "eu" ? "/contact" : "/iletisim";
+const foreignSegment = SITE === "eu" ? "/hizmetlerimiz" : "/services";
+const routes = ["/", contactRoute];
 
 test.describe("DEP-2: güvenlik başlıkları", () => {
   for (const route of routes) {
@@ -35,7 +39,7 @@ test.describe("DEP-2: güvenlik başlıkları", () => {
     page.on("console", (msg) => {
       if (msg.type() === "error") violations.push(msg.text());
     });
-    await page.goto("/iletisim");
+    await page.goto(contactRoute);
     await page.waitForLoadState("networkidle");
     // Turnstile widget'ı hidrasyondan sonra yüklenir; ihlaller console'a düşer.
     expect(violations.filter((v) => v.includes("Content-Security-Policy"))).toEqual([]);
@@ -44,6 +48,11 @@ test.describe("DEP-2: güvenlik başlıkları", () => {
   // SEC-1: not_found_handling=404-page, 404 HTML'ini rastgele path'lerde
   // servis eder; o path'ler yalnızca /* kuralıyla eşleşir. Taban koruma
   // (XFO + script-src içermeyen kısmi CSP) orada da devrede olmalı.
+  test("INT-6: öteki sitenin segmentleri bu export'ta servis edilmez", async ({ request }) => {
+    const res = await request.get(foreignSegment);
+    expect(res.status()).toBe(404);
+  });
+
   test("404 path: taban güvenlik koruması aktif", async ({ request }) => {
     const res = await request.get("/bu-bir-404-yolu");
     expect(res.status()).toBe(404);

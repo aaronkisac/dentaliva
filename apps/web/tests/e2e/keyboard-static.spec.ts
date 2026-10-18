@@ -2,7 +2,12 @@ import { existsSync, readFileSync } from "node:fs";
 import { expect, test } from "@playwright/test";
 
 /** PRF-2: klavye geçişi + landmark denetimi (statik export, sunucu gerektirmez). */
-const routes = ["", "/hizmetlerimiz", "/fotograf-galerisi", "/iletisim"];
+// INT-9: site-farkındalı rota listesi (eu boş CMS'te statik segmentler).
+const SITE = process.env.SITE_ID ?? "com";
+const routes =
+  SITE === "eu"
+    ? ["", "/services", "/gallery", "/contact"]
+    : ["", "/hizmetlerimiz", "/fotograf-galerisi", "/iletisim"];
 
 function decodedHtml(route: string): string {
   const file = route === "" ? "index.html" : `${route.replace(/^\//, "")}.html`;

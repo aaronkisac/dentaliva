@@ -3,19 +3,25 @@ import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 
 /** PRF-2: statik export HTML'lerinde axe taraması (sunucu gerektirmez). */
-const routes = [
-  "",
-  "/hakkimizda",
-  "/hizmetlerimiz",
-  "/hizmetlerimiz/implant-tedavisi",
-  "/hekimlerimiz/dr-dt-emel-ozdemir",
-  "/subelerimiz/avcilar",
-  "/fotograf-galerisi",
-  "/iletisim",
-  "/kvkk",
-  "/blog",
-  "/blog/en-iyi-ve-guvenilir-dis-dolgusu-cesitleri",
-];
+// INT-9: rota listesi aktif siteye göre — com içerikli dinamik örneklerle,
+// eu boş CMS'te yalnız statik segmentlerle taranır.
+const SITE = process.env.SITE_ID ?? "com";
+const routes =
+  SITE === "eu"
+    ? ["", "/about", "/services", "/doctors", "/branches", "/gallery", "/contact", "/blog"]
+    : [
+        "",
+        "/hakkimizda",
+        "/hizmetlerimiz",
+        "/hizmetlerimiz/implant-tedavisi",
+        "/hekimlerimiz/dr-dt-emel-ozdemir",
+        "/subelerimiz/avcilar",
+        "/fotograf-galerisi",
+        "/iletisim",
+        "/kvkk",
+        "/blog",
+        "/blog/en-iyi-ve-guvenilir-dis-dolgusu-cesitleri",
+      ];
 
 function decodedHtml(route: string): string {
   const file = route === "" ? "index.html" : `${route.replace(/^\//, "")}.html`;
