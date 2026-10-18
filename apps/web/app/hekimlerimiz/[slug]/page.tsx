@@ -14,6 +14,7 @@ import { readClient } from "../../../src/sanity";
 import { absoluteUrl, pageMetadata } from "../../../src/seo";
 import { SeedPlaceholder } from "../../../components/seed-placeholder";
 import { pageString } from "../../../src/page-strings";
+import { routes } from "../../../src/routes";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -35,7 +36,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   // PRF-5: _seed placeholder sayfaları dizine eklenmesin.
   if (!doctor) return { title: "Hekim", robots: { index: false, follow: false } };
   return pageMetadata({
-    path: `/hekimlerimiz/${slug}`,
+    path: routes.doctor(slug),
     title: doctor.name ?? "Hekim",
     description: t(doctor.title) || t(doctor.bio),
     seo: doctor.seo,
@@ -62,15 +63,15 @@ export default async function DoctorDetailPage({ params }: PageProps) {
       <JsonLd
         data={buildBreadcrumbJsonLd([
           { name: pageString("breadcrumbHome"), url: absoluteUrl("/") },
-          { name: pageString("doctorsTitle"), url: absoluteUrl("/hekimlerimiz") },
-          { name: doctor.name ?? "Hekim", url: absoluteUrl(`/hekimlerimiz/${slug}`) },
+          { name: pageString("doctorsTitle"), url: absoluteUrl(routes.doctors) },
+          { name: doctor.name ?? "Hekim", url: absoluteUrl(routes.doctor(slug)) },
         ])}
       />
       {/* DSN-32: kare portre (carousel'la aynı dil, rounded-[4px]) + PageHero.
             DSN-43: foto yoksa markalı baş harf monogramı — boş hero değil. */}
       <PageHero
         eyebrow={pageString("doctorsTitle")}
-        eyebrowHref="/hekimlerimiz"
+        eyebrowHref={routes.doctors}
         title={doctor.name ?? "Hekim"}
         lead={t(doctor.title) ? t(doctor.title) : null}
       >
@@ -98,7 +99,7 @@ export default async function DoctorDetailPage({ params }: PageProps) {
               {(doctor.treatments ?? []).map((treatment) => (
                 <a
                   key={treatment.slug}
-                  href={`/hizmetlerimiz/${treatment.slug}`}
+                  href={routes.treatment(treatment.slug)}
                   className="border border-[var(--dvn-line-gold)] px-4 py-2 font-sans text-sm text-navy transition-colors hover:bg-gold hover:text-navy"
                 >
                   {t(treatment.name)}

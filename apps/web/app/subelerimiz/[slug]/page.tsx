@@ -14,6 +14,7 @@ import { readClient } from "../../../src/sanity";
 import { absoluteUrl, pageMetadata } from "../../../src/seo";
 import { SeedPlaceholder } from "../../../components/seed-placeholder";
 import { pageString } from "../../../src/page-strings";
+import { routes } from "../../../src/routes";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -35,7 +36,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   // PRF-5: _seed placeholder sayfaları dizine eklenmesin.
   if (!branch) return { title: "Şube", robots: { index: false, follow: false } };
   return pageMetadata({
-    path: `/subelerimiz/${slug}`,
+    path: routes.branch(slug),
     title: branch.name ?? "Şube",
     description: t(branch.address),
     seo: branch.seo,
@@ -57,13 +58,13 @@ export default async function BranchDetailPage({ params }: PageProps) {
       <JsonLd
         data={buildBreadcrumbJsonLd([
           { name: pageString("breadcrumbHome"), url: absoluteUrl("/") },
-          { name: pageString("branchesTitle"), url: absoluteUrl("/subelerimiz") },
-          { name: branch.name ?? "Şube", url: absoluteUrl(`/subelerimiz/${slug}`) },
+          { name: pageString("branchesTitle"), url: absoluteUrl(routes.branches) },
+          { name: branch.name ?? "Şube", url: absoluteUrl(routes.branch(slug)) },
         ])}
       />
       <PageHero
         eyebrow={pageString("branchesTitle")}
-        eyebrowHref="/subelerimiz"
+        eyebrowHref={routes.branches}
         title={branch.name ?? "Şube"}
         lead={t(branch.address) ? t(branch.address) : null}
       />

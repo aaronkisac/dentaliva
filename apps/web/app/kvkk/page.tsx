@@ -8,9 +8,10 @@ import { fetchLegalPageBySlug } from "../../src/content/legal";
 import { readClient } from "../../src/sanity";
 import { pageMetadata } from "../../src/seo";
 import { pageString } from "../../src/page-strings";
+import { routes } from "../../src/routes";
 
 export const metadata: Metadata = pageMetadata({
-  path: "/kvkk",
+  path: routes.legal,
   title: pageString("legalTitle"),
   description: pageString("legalDescription"),
 });

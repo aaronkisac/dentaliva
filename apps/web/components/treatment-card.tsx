@@ -4,6 +4,7 @@ import { Link } from "@dentaliva/ui";
 import { t } from "../src/i18n";
 
 import type { TreatmentListItem } from "../src/content/treatments";
+import { routes } from "../src/routes";
 
 /**
  * DSN-48: hizmet kartı — Dentiva referansındaki görsel-baskın overlay kartın
@@ -75,7 +76,7 @@ export function TreatmentCard({ item }: { item: TreatmentListItem }) {
 
   return (
     <Link
-      href={`/hizmetlerimiz/${item.slug}`}
+      href={routes.treatment(item.slug)}
       className={`${shell} hover:no-underline hover:shadow-[var(--dvn-shadow-lift)]`}
     >
       {content}

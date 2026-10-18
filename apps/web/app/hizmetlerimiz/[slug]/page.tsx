@@ -18,6 +18,7 @@ import { readClient } from "../../../src/sanity";
 import { absoluteUrl, pageMetadata } from "../../../src/seo";
 import { SeedPlaceholder } from "../../../components/seed-placeholder";
 import { pageString } from "../../../src/page-strings";
+import { routes } from "../../../src/routes";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -41,7 +42,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   // PRF-5: _seed placeholder sayfaları dizine eklenmesin.
   if (!treatment) return { title: "Tedavi", robots: { index: false, follow: false } };
   return pageMetadata({
-    path: `/hizmetlerimiz/${slug}`,
+    path: routes.treatment(slug),
     title: t(treatment.name) || "Tedavi",
     description: t(treatment.summary),
     seo: treatment.seo,
@@ -74,8 +75,8 @@ export default async function TreatmentDetailPage({ params }: PageProps) {
   const jsonLd = [
     buildBreadcrumbJsonLd([
       { name: pageString("breadcrumbHome"), url: absoluteUrl("/") },
-      { name: pageString("servicesTitle"), url: absoluteUrl("/hizmetlerimiz") },
-      { name, url: absoluteUrl(`/hizmetlerimiz/${slug}`) },
+      { name: pageString("servicesTitle"), url: absoluteUrl(routes.treatments) },
+      { name, url: absoluteUrl(routes.treatment(slug)) },
     ]),
     ...(faqs.length > 0
       ? [
@@ -111,7 +112,7 @@ export default async function TreatmentDetailPage({ params }: PageProps) {
       ) : null}
       <PageHero
         eyebrow={pageString("servicesTitle")}
-        eyebrowHref="/hizmetlerimiz"
+        eyebrowHref={routes.treatments}
         title={name}
         lead={t(treatment.summary) ? t(treatment.summary) : null}
       >
@@ -228,9 +229,7 @@ export default async function TreatmentDetailPage({ params }: PageProps) {
                   </Heading>
                   {t(doctor.title) ? <Text className="mt-1">{t(doctor.title)}</Text> : null}
                   <Text tone="muted" size="small" className="mt-3 underline">
-                    <Link href={`/hekimlerimiz/${doctor.slug}`}>
-                      {t(headings?.doctorProfileLink)}
-                    </Link>
+                    <Link href={routes.doctor(doctor.slug)}>{t(headings?.doctorProfileLink)}</Link>
                   </Text>
                 </Card>
               ))}

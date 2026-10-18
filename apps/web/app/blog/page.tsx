@@ -11,9 +11,10 @@ import { fetchBlogPosts } from "../../src/content/blog";
 import { readClient } from "../../src/sanity";
 import { pageMetadata } from "../../src/seo";
 import { pageString } from "../../src/page-strings";
+import { routes } from "../../src/routes";
 
 export const metadata: Metadata = pageMetadata({
-  path: "/blog",
+  path: routes.blog,
   title: "Blog",
   description: pageString("blogDescription"),
 });
@@ -52,7 +53,7 @@ export default async function BlogPage() {
                   </Heading>
                   <Text className="mt-2">{t(post.excerpt)}</Text>
                   <Link
-                    href={`/blog/${post.slug}`}
+                    href={routes.blogPost(post.slug)}
                     className="mt-4 inline-block font-sans text-sm font-semibold text-navy hover:text-gold-deep"
                   >
                     Oku →

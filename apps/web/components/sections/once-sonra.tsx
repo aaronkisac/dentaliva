@@ -3,6 +3,7 @@ import { t } from "../../src/i18n";
 
 import type { BeforeAfterCase } from "../../src/content/home";
 import { BeforeAfterSlider } from "../before-after-slider";
+import { routes } from "../../src/routes";
 
 /**
  * DSN-50: anasayfa önce/sonra karşılaştırma bölümü — ReoDental deseni
@@ -53,7 +54,7 @@ export function OnceSonraSection({
             <Heading level="h3" size="title">
               {slug && title ? (
                 <Link
-                  href={`/hizmetlerimiz/${slug}`}
+                  href={routes.treatment(slug)}
                   className="hover:text-gold-deep hover:no-underline"
                 >
                   {title}

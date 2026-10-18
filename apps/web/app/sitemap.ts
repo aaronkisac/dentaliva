@@ -5,6 +5,7 @@ export const dynamic = "force-static";
 
 import { site } from "../src/config";
 import { readClient } from "../src/sanity";
+import { routes } from "../src/routes";
 
 /**
  * Per-domain sitemap. hreflang alternates stay dormant until sister domains
@@ -17,14 +18,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const staticPaths = [
     "",
-    "/hakkimizda",
-    "/hizmetlerimiz",
-    "/hekimlerimiz",
-    "/subelerimiz",
-    "/fotograf-galerisi",
-    "/iletisim",
-    "/kvkk",
-    ...(site.features.blog ? ["/blog"] : []),
+    routes.about,
+    routes.treatments,
+    routes.doctors,
+    routes.branches,
+    routes.gallery,
+    routes.contact,
+    routes.legal,
+    ...(site.features.blog ? [routes.blog] : []),
   ];
 
   const cmsSlugs = async (typeQuery: string): Promise<string[]> => {
@@ -41,10 +42,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ]);
 
   const cmsPaths = [
-    ...treatments.map((slug) => `/hizmetlerimiz/${slug}`),
-    ...doctors.map((slug) => `/hekimlerimiz/${slug}`),
-    ...branches.map((slug) => `/subelerimiz/${slug}`),
-    ...blog.map((slug) => `/blog/${slug}`),
+    ...treatments.map((slug) => routes.treatment(slug)),
+    ...doctors.map((slug) => routes.doctor(slug)),
+    ...branches.map((slug) => routes.branch(slug)),
+    ...blog.map((slug) => routes.blogPost(slug)),
   ];
 
   return [...staticPaths, ...cmsPaths].map((path) => ({

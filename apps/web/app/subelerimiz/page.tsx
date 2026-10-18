@@ -11,9 +11,10 @@ import { fetchBranches } from "../../src/content/branches";
 import { readClient } from "../../src/sanity";
 import { pageMetadata } from "../../src/seo";
 import { pageString } from "../../src/page-strings";
+import { routes } from "../../src/routes";
 
 export const metadata: Metadata = pageMetadata({
-  path: "/subelerimiz",
+  path: routes.branches,
   title: pageString("branchesTitle"),
   description: "Dentaliva şubeleri",
 });
@@ -49,7 +50,7 @@ export default async function BranchesPage() {
                   </Heading>
                   <Text className="mt-2">{t(branch.address)}</Text>
                   <Link
-                    href={`/subelerimiz/${branch.slug}`}
+                    href={routes.branch(branch.slug)}
                     className="mt-4 inline-block font-sans text-sm font-semibold text-navy hover:text-gold-deep"
                   >
                     Detay →
