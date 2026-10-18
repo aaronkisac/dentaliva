@@ -27,9 +27,10 @@ test.describe("PRF-2: klavye geçişi ve landmarklar (statik export)", () => {
       const mains = page.locator("main");
       expect(await mains.count()).toBe(1);
 
-      // Skip link ilk Tab'da odak alır; Enter main'e taşır.
+      // Skip link ilk Tab'da odak alır; Enter main'e taşır (adı site dilinden).
+      const skipLabel = SITE === "eu" ? "Skip to content" : "İçeriğe atla";
       await page.keyboard.press("Tab");
-      await expect(page.getByRole("link", { name: "İçeriğe atla" })).toBeFocused();
+      await expect(page.getByRole("link", { name: skipLabel })).toBeFocused();
       await page.keyboard.press("Enter");
       await expect(mains).toBeFocused();
 
