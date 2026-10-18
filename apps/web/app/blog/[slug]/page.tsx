@@ -15,6 +15,7 @@ import { fetchHomePageDocument, fetchSiteSettings } from "../../../src/content/h
 import { readClient } from "../../../src/sanity";
 import { absoluteUrl, pageMetadata } from "../../../src/seo";
 import { pageString } from "../../../src/page-strings";
+import { routes } from "../../../src/routes";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -36,7 +37,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   // PRF-5: _seed placeholder sayfaları dizine eklenmesin.
   if (!post) return { title: "Blog", robots: { index: false, follow: false } };
   return pageMetadata({
-    path: `/blog/${slug}`,
+    path: routes.blogPost(slug),
     title: t(post.title) || "Blog",
     description: t(post.excerpt),
     seo: post.seo,
@@ -65,10 +66,10 @@ export default async function BlogPostPage({ params }: PageProps) {
       <JsonLd
         data={buildBreadcrumbJsonLd([
           { name: pageString("breadcrumbHome"), url: absoluteUrl("/") },
-          { name: "Blog", url: absoluteUrl("/blog") },
+          { name: "Blog", url: absoluteUrl(routes.blog) },
           {
             name: t(post.title) || "Blog",
-            url: absoluteUrl(`/blog/${slug}`),
+            url: absoluteUrl(routes.blogPost(slug)),
           },
         ])}
       />

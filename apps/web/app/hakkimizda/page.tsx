@@ -13,9 +13,10 @@ import { fetchHomePageDocument, fetchSiteSettings } from "../../src/content/home
 import { readClient } from "../../src/sanity";
 import { pageMetadata } from "../../src/seo";
 import { pageString } from "../../src/page-strings";
+import { routes } from "../../src/routes";
 
 export const metadata: Metadata = pageMetadata({
-  path: "/hakkimizda",
+  path: routes.about,
   title: pageString("aboutTitle"),
   description: pageString("aboutDescription"),
 });
@@ -81,7 +82,7 @@ export default async function AboutPage() {
                     {t(doctor.title)}
                   </Text>
                   <Link
-                    href={`/hekimlerimiz/${doctor.slug}`}
+                    href={routes.doctor(doctor.slug)}
                     className="mt-4 inline-block font-sans text-sm font-semibold text-navy hover:text-gold-deep"
                   >
                     Detay →

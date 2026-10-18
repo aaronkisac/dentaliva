@@ -9,9 +9,10 @@ import { fetchSiteCopy } from "../../src/content/site-copy";
 import { readClient } from "../../src/sanity";
 import { pageMetadata } from "../../src/seo";
 import { pageString } from "../../src/page-strings";
+import { routes } from "../../src/routes";
 
 export const metadata: Metadata = pageMetadata({
-  path: "/fotograf-galerisi",
+  path: routes.gallery,
   title: pageString("galleryTitle"),
   description: pageString("galleryDescription"),
 });

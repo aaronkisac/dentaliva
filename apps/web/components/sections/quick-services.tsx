@@ -8,6 +8,7 @@ import type { QuickServiceItem } from "../../src/content/home";
 import { TreatmentCard } from "../treatment-card";
 import { t } from "../../src/i18n";
 import { uiString } from "../../src/ui-strings";
+import { routes } from "../../src/routes";
 
 function ArrowIcon({ direction }: { direction: "left" | "right" }) {
   return (
@@ -177,7 +178,7 @@ export function QuickServicesSection({
         <div className="flex items-center gap-3 max-md:mt-2">
           {ctaLabel ? (
             <Link
-              href="/hizmetlerimiz"
+              href={routes.treatments}
               className="font-sans text-sm font-semibold text-navy underline-offset-4 hover:text-gold-deep hover:underline"
             >
               {ctaLabel} →

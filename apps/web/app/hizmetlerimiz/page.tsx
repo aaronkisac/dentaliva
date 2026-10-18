@@ -8,9 +8,10 @@ import { fetchTreatments } from "../../src/content/treatments";
 import { readClient } from "../../src/sanity";
 import { pageMetadata } from "../../src/seo";
 import { pageString } from "../../src/page-strings";
+import { routes } from "../../src/routes";
 
 export const metadata: Metadata = pageMetadata({
-  path: "/hizmetlerimiz",
+  path: routes.treatments,
   title: pageString("servicesTitle"),
   description: "Dentaliva tedavileri",
 });

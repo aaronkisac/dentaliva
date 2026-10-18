@@ -2,6 +2,7 @@ import { Heading, Link, Reveal, Section, buttonVariants } from "@dentaliva/ui";
 
 import type { LocalizedPair } from "../src/content/home";
 import { t } from "../src/i18n";
+import { routes } from "../src/routes";
 
 /**
  * DSN-24: iç sayfa sonlarındaki dönüşüm bandı. Ana sayfa CtaSection'ın
@@ -33,7 +34,7 @@ export function CtaBand({
           <p className="mx-auto mt-3 max-w-2xl font-sans text-lg text-white/80">{t(text)}</p>
         ) : null}
         <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
-          <Link href="/iletisim" className={buttonVariants({ size: "lg" })}>
+          <Link href={routes.contact} className={buttonVariants({ size: "lg" })}>
             Randevu Al
           </Link>
           {phone ? (

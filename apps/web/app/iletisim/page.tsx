@@ -11,9 +11,10 @@ import { fetchSiteCopy } from "../../src/content/site-copy";
 import { readClient } from "../../src/sanity";
 import { pageMetadata } from "../../src/seo";
 import { pageString } from "../../src/page-strings";
+import { routes } from "../../src/routes";
 
 export const metadata: Metadata = pageMetadata({
-  path: "/iletisim",
+  path: routes.contact,
   title: pageString("contactTitle"),
   description: "Dentaliva iletişim bilgileri",
 });

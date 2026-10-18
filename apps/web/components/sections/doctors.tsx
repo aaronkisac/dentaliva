@@ -10,6 +10,7 @@ import type { HomeTeamSection } from "../../src/content/home";
 import { imageTarget } from "../../src/image-target";
 import { DoctorPortrait } from "../doctor-portrait";
 import { uiString } from "../../src/ui-strings";
+import { routes } from "../../src/routes";
 
 const ENV = imageTarget();
 
@@ -129,7 +130,7 @@ export function DoctorsSection({
           {visible.map(({ doctor, isBig }) => (
             <Link
               key={doctor.slug}
-              href={`/hekimlerimiz/${doctor.slug}`}
+              href={routes.doctor(doctor.slug)}
               className={cn(
                 "group block",
                 isBig ? "w-full sm:w-[38%]" : "w-[calc(50%-0.5rem)] sm:w-auto sm:min-w-0 sm:flex-1",

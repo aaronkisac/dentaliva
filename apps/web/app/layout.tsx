@@ -17,6 +17,7 @@ import type { FooterContact } from "@dentaliva/ui";
 import "./globals.css";
 import { uiString } from "../src/ui-strings";
 import { pageString } from "../src/page-strings";
+import { routes } from "../src/routes";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -103,7 +104,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <Header
           items={site.nav}
           logo={<span className="font-serif text-2xl">{siteName}</span>}
-          cta={{ label: uiString("bookCta"), href: "/iletisim" }}
+          cta={{ label: uiString("bookCta"), href: routes.contact }}
           labels={{ toggleMenu: pageString("toggleMenu"), closeMenu: pageString("closeMenu") }}
           contact={
             settings?.phone ? { phone: settings.phone, email: settings.email ?? "" } : undefined

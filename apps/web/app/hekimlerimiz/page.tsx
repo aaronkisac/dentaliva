@@ -10,9 +10,10 @@ import { fetchDoctors } from "../../src/content/doctors";
 import { readClient } from "../../src/sanity";
 import { pageMetadata } from "../../src/seo";
 import { pageString } from "../../src/page-strings";
+import { routes } from "../../src/routes";
 
 export const metadata: Metadata = pageMetadata({
-  path: "/hekimlerimiz",
+  path: routes.doctors,
   title: pageString("doctorsTitle"),
   description: "Dentaliva hekim kadrosu",
 });
@@ -46,7 +47,7 @@ export default async function DoctorsPage() {
                     {t(doctor.title)}
                   </Text>
                   <Link
-                    href={`/hekimlerimiz/${doctor.slug}`}
+                    href={routes.doctor(doctor.slug)}
                     className="mt-4 inline-block font-sans text-sm font-semibold text-navy hover:text-gold-deep"
                   >
                     Detay →
