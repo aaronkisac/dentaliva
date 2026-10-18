@@ -100,4 +100,4 @@ jobs:
       - name: "E2E (eu - static segments, headers, foreign-segment 404)"
         run: pnpm --filter @dentaliva/web exec playwright test
         env:
-          SITE_ID: eu
+          SITE_ID: ${{ matrix.site }}
