@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 import Image from "next/image";
 
-import { pickLocalized } from "@dentaliva/sanity-schema/client";
+import { t } from "../../../src/i18n";
 import { buildBreadcrumbJsonLd } from "@dentaliva/seo";
 
 import { Reveal, Heading, Section, Text } from "@dentaliva/ui";
@@ -36,7 +36,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return pageMetadata({
     path: `/subelerimiz/${slug}`,
     title: branch.name ?? "Şube",
-    description: pickLocalized(branch.address),
+    description: t(branch.address),
     seo: branch.seo,
   });
 }
@@ -64,7 +64,7 @@ export default async function BranchDetailPage({ params }: PageProps) {
         eyebrow="Şubelerimiz"
         eyebrowHref="/subelerimiz"
         title={branch.name ?? "Şube"}
-        lead={branch.address?.tr ? pickLocalized(branch.address) : null}
+        lead={t(branch.address) ? t(branch.address) : null}
       />
       <Reveal>
         <Section>
@@ -80,9 +80,7 @@ export default async function BranchDetailPage({ params }: PageProps) {
                   </a>
                 </Text>
               ) : null}
-              {branch.hours?.tr ? (
-                <Text className="mt-2">{pickLocalized(branch.hours)}</Text>
-              ) : null}
+              {t(branch.hours) ? <Text className="mt-2">{t(branch.hours)}</Text> : null}
             </div>
             {branch.geo ? (
               <div className="md:col-span-2">
@@ -108,9 +106,9 @@ export default async function BranchDetailPage({ params }: PageProps) {
             ) : null}
             {branch.mapUrl ? (
               <div>
-                {copy?.sectionHeadings?.routeLink?.tr ? (
+                {t(copy?.sectionHeadings?.routeLink) ? (
                   <Heading level="h2" size="title">
-                    {copy.sectionHeadings.routeLink.tr}
+                    {t(copy?.sectionHeadings?.routeLink)}
                   </Heading>
                 ) : null}
                 <Text className="mt-3">

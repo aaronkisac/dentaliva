@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { Heading, Section, Text } from "@dentaliva/ui";
-import { pickLocalized } from "@dentaliva/sanity-schema/client";
+import { t } from "../../src/i18n";
 
 import { fetchLegalPageBySlug } from "../../src/content/legal";
 import { readClient } from "../../src/sanity";
@@ -20,7 +20,7 @@ export default async function KvkkPage() {
 
   // DSN-35: hukuki metin tipografisi — çift satır sonlarına göre paragraf
   // bölünür (müşteri onaylı gerçek metin geldiğinde de aynı düzen çalışır).
-  const paragraphs = (pickLocalized(page.body) ?? "")
+  const paragraphs = t(page.body)
     .split(/\n{2,}/)
     .map((paragraph) => paragraph.trim())
     .filter(Boolean);
@@ -32,7 +32,7 @@ export default async function KvkkPage() {
         <p className="font-sans text-xs uppercase tracking-widest text-gold-deep">Dentaliva</p>
       </div>
       <Heading level="h1" size="lg" className="mt-4">
-        {pickLocalized(page.title) || "KVKK Aydınlatma Metni"}
+        {t(page.title) || "KVKK Aydınlatma Metni"}
       </Heading>
       <div className="mt-8 max-w-3xl space-y-4">
         {paragraphs.map((paragraph, index) => (

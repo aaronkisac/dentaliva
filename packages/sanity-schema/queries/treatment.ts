@@ -1,7 +1,9 @@
 import { defineQuery } from "groq";
 
+// Sorting is locale-driven and happens in app code (fetchTreatments, JS
+// Collator) — a GROQ order() here would hardcode one language.
 export const treatmentListQuery = defineQuery(
-  `*[_type == "treatment"] | order(name.tr asc){
+  `*[_type == "treatment"]{
     name,
     "slug": slug.current,
     summary,

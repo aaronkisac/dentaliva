@@ -1,5 +1,5 @@
 import { Card, Heading, Section, Text } from "@dentaliva/ui";
-import { pickLocalized } from "@dentaliva/sanity-schema/client";
+import { t } from "../../src/i18n";
 
 import { clampWords } from "../treatment-card";
 import { CarouselTrack } from "../carousel-track";
@@ -85,7 +85,7 @@ export function ReviewsSection({ items, heading }: { items: TestimonialItem[]; h
                 {"★".repeat(Math.min(item.rating ?? 5, 5))}
               </Text>
               <Text tone="white" className="mt-3">
-                {clampWords(pickLocalized(item.quote) ?? "", 30)}
+                {clampWords(t(item.quote), 30)}
               </Text>
               <Text tone="white" size="small" className="mt-4">
                 {item.author} · {item.source}

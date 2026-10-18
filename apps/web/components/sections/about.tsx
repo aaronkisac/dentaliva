@@ -2,7 +2,7 @@ import Image from "next/image";
 import { Fragment } from "react";
 
 import { Heading, Section, Text } from "@dentaliva/ui";
-import { pickLocalized } from "@dentaliva/sanity-schema/client";
+import { t } from "../../src/i18n";
 import { lqipUrl } from "@dentaliva/sanity-schema/image-url";
 
 import { imageTarget } from "../../src/image-target";
@@ -43,9 +43,9 @@ export function AboutSection({
   if (!data) return null;
   const ref = data.image?.asset?._ref;
   // Copy sweep: başlık yalnızca CMS'ten — fallback copy yok.
-  const title = pickLocalized(data.title);
-  const body = pickLocalized(data.body);
-  const benefits = (data.benefits ?? []).map((item) => pickLocalized(item)).filter(Boolean);
+  const title = t(data.title);
+  const body = t(data.body);
+  const benefits = (data.benefits ?? []).map((item) => t(item)).filter(Boolean);
   const visibleStats = (stats ?? []).filter((stat) => stat.value).slice(0, 2);
   return (
     <Section className={dark ? "bg-navy text-white" : "bg-white"}>
@@ -54,7 +54,7 @@ export function AboutSection({
           <div className="relative aspect-[4/3] overflow-hidden rounded-[4px] border border-[var(--dvn-line-gold)]">
             <Image
               src={ref}
-              alt={pickLocalized(data.image?.alt) ?? title}
+              alt={t(data.image?.alt) || title}
               fill
               sizes="(max-width: 768px) 100vw, 50vw"
               placeholder="blur"
@@ -70,7 +70,7 @@ export function AboutSection({
                       <div>
                         <p className="font-serif text-2xl text-gold-soft">{stat.value}</p>
                         <p className="font-sans text-xs uppercase tracking-widest text-white/80">
-                          {pickLocalized(stat.label)}
+                          {t(stat.label)}
                         </p>
                       </div>
                     </Fragment>

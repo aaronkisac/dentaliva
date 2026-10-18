@@ -1,7 +1,7 @@
 import Image from "next/image";
 
 import { Link } from "@dentaliva/ui";
-import { pickLocalized } from "@dentaliva/sanity-schema/client";
+import { t } from "../src/i18n";
 
 import type { TreatmentListItem } from "../src/content/treatments";
 
@@ -29,15 +29,15 @@ export function clampWords(text: string, max = 20): string {
 }
 
 export function TreatmentCard({ item }: { item: TreatmentListItem }) {
-  const name = pickLocalized(item.name);
-  const summary = pickLocalized(item.summary);
+  const name = t(item.name);
+  const summary = t(item.summary);
 
   const content = (
     <>
       {item.heroImage?.ref ? (
         <Image
           src={item.heroImage.ref}
-          alt={item.heroImage.alt?.tr ?? ""}
+          alt={t(item.heroImage.alt)}
           fill
           sizes="(max-width: 768px) 100vw, 33vw"
           placeholder={item.heroImage.lqip ? "blur" : "empty"}

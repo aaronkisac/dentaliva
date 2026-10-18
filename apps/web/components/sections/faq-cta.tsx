@@ -1,5 +1,6 @@
 import { Accordion, Heading, Section, Link, buttonVariants } from "@dentaliva/ui";
 import type { LocalizedPair } from "../../src/content/home";
+import { t } from "../../src/i18n";
 
 export interface FaqEntry {
   question?: { tr?: string };
@@ -28,16 +29,16 @@ export function FaqSection({
   copy?: FaqSectionCopy | null;
 }) {
   const accordionItems = items
-    .filter((item) => item.question?.tr && item.answer?.tr)
+    .filter((item) => t(item.question) && t(item.answer))
     .map((item) => ({
-      id: item.question?.tr ?? "",
-      question: item.question?.tr ?? "",
-      answer: item.answer?.tr ?? "",
+      id: t(item.question),
+      question: t(item.question),
+      answer: t(item.answer),
     }));
   if (accordionItems.length === 0) return null;
-  const eyebrow = copy?.eyebrow?.tr;
-  const support = copy?.support?.tr;
-  const ctaLabel = copy?.ctaLabel?.tr;
+  const eyebrow = t(copy?.eyebrow);
+  const support = t(copy?.support);
+  const ctaLabel = t(copy?.ctaLabel);
   const ctaHref = copy?.ctaHref;
   return (
     <Section>
@@ -83,14 +84,14 @@ export function CtaSection({
   text?: LocalizedPair | null;
   phone: string;
 }) {
-  if (!title?.tr) return null;
+  if (!t(title)) return null;
   return (
     <Section className="bg-navy text-center">
       <Heading level="h2" size="md" className="text-white">
-        {title.tr}
+        {t(title)}
       </Heading>
-      {text?.tr ? (
-        <p className="mx-auto mt-3 max-w-2xl font-sans text-lg text-white/80">{text.tr}</p>
+      {t(text) ? (
+        <p className="mx-auto mt-3 max-w-2xl font-sans text-lg text-white/80">{t(text)}</p>
       ) : null}
       <p className="mt-4 font-sans text-lg text-gold-soft">{phone}</p>
     </Section>

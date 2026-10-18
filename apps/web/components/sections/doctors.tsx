@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 import { cn, Heading, Link, Section, Text } from "@dentaliva/ui";
-import { pickLocalized } from "@dentaliva/sanity-schema/client";
+import { t } from "../../src/i18n";
 import { lqipUrl } from "@dentaliva/sanity-schema/image-url";
 
 import type { HomeTeamSection } from "../../src/content/home";
@@ -95,22 +95,20 @@ export function DoctorsSection({
 
   return (
     <Section className="bg-white">
-      {pickLocalized(team?.heading) ? (
+      {t(team?.heading) ? (
         <>
           <div className="flex items-center gap-3">
             <span aria-hidden="true" className="h-px w-8 bg-gold" />
             <p className="font-sans text-xs uppercase tracking-widest text-gold-deep">
-              {pickLocalized(team?.eyebrow)}
+              {t(team?.eyebrow)}
             </p>
           </div>
           <Heading level="h2" size="md" className="mt-4 max-w-2xl">
-            {pickLocalized(team?.heading)}
+            {t(team?.heading)}
           </Heading>
         </>
       ) : null}
-      {pickLocalized(team?.text) ? (
-        <Text className="mt-3 max-w-2xl text-ink/70">{pickLocalized(team?.text)}</Text>
-      ) : null}
+      {t(team?.text) ? <Text className="mt-3 max-w-2xl text-ink/70">{t(team?.text)}</Text> : null}
 
       {/* relative sarmalayıcı: ok butonları sm+ üstünde küçük kartların
           üstündeki boşluğa mutlak konumlanır; mobilde akışta kalır. */}
@@ -147,7 +145,7 @@ export function DoctorsSection({
                       doctor.lqip ??
                       (doctor.photo?.ref ? lqipUrl(doctor.photo.ref, ENV) : undefined),
                   }}
-                  alt={doctor.photo?.alt?.tr ?? doctor.name ?? ""}
+                  alt={t(doctor.photo?.alt) || doctor.name}
                   frameClassName="aspect-[20/21] w-full"
                   width={isBig ? 800 : 400}
                   height={isBig ? 840 : 420}
@@ -163,8 +161,8 @@ export function DoctorsSection({
               >
                 {doctor.name}
               </p>
-              {doctor.title?.tr ? (
-                <p className="mt-0.5 font-sans text-xs text-ink/70">{doctor.title.tr}</p>
+              {t(doctor.title) ? (
+                <p className="mt-0.5 font-sans text-xs text-ink/70">{t(doctor.title)}</p>
               ) : null}
             </Link>
           ))}

@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 
-import { site } from "../sites/com";
+import { site } from "../src/config";
 
 // Static export: robots.txt must be fully prerenderable.
 export const dynamic = "force-static";

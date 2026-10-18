@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { Reveal, Card, Heading, Section, Text } from "@dentaliva/ui";
 import { PageHero } from "../../components/page-hero";
 import { DoctorPortrait } from "../../components/doctor-portrait";
-import { pickLocalized } from "@dentaliva/sanity-schema/client";
+import { t } from "../../src/i18n";
 
 import { Link } from "@dentaliva/ui";
 import { fetchDoctors } from "../../src/content/doctors";
@@ -42,7 +42,7 @@ export default async function DoctorsPage() {
                     {doctor.name}
                   </Heading>
                   <Text tone="muted" size="small">
-                    {pickLocalized(doctor.title)}
+                    {t(doctor.title)}
                   </Text>
                   <Link
                     href={`/hekimlerimiz/${doctor.slug}`}

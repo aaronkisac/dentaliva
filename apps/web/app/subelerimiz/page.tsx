@@ -4,7 +4,7 @@ import Image from "next/image";
 
 import { Reveal, Card, Heading, Section, Text } from "@dentaliva/ui";
 import { PageHero } from "../../components/page-hero";
-import { pickLocalized } from "@dentaliva/sanity-schema/client";
+import { t } from "../../src/i18n";
 
 import { Link } from "@dentaliva/ui";
 import { fetchBranches } from "../../src/content/branches";
@@ -46,7 +46,7 @@ export default async function BranchesPage() {
                   <Heading level="h3" size="title">
                     {branch.name}
                   </Heading>
-                  <Text className="mt-2">{pickLocalized(branch.address)}</Text>
+                  <Text className="mt-2">{t(branch.address)}</Text>
                   <Link
                     href={`/subelerimiz/${branch.slug}`}
                     className="mt-4 inline-block font-sans text-sm font-semibold text-navy hover:text-gold-deep"

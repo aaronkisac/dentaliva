@@ -6,6 +6,7 @@ import { Heading, Link, Section } from "@dentaliva/ui";
 
 import type { QuickServiceItem } from "../../src/content/home";
 import { TreatmentCard } from "../treatment-card";
+import { t } from "../../src/i18n";
 
 function ArrowIcon({ direction }: { direction: "left" | "right" }) {
   return (
@@ -211,7 +212,7 @@ export function QuickServicesSection({
         className="-mx-[var(--dvn-container-gutter)] mt-8 flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-pl-[var(--dvn-container-gutter)] px-[var(--dvn-container-gutter)] pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
         {(renderAll ? items : items.slice(0, INITIAL_CARDS)).map((item) => (
-          <div key={item.slug ?? item.name?.tr} className="dvn-service-card shrink-0 snap-start">
+          <div key={item.slug ?? t(item.name)} className="dvn-service-card shrink-0 snap-start">
             <TreatmentCard item={item} />
           </div>
         ))}
@@ -220,7 +221,7 @@ export function QuickServicesSection({
         <div className="mt-4 flex flex-wrap items-center justify-center gap-1">
           {items.map((item, i) => (
             <button
-              key={item.slug ?? item.name?.tr ?? i}
+              key={item.slug ?? (t(item.name) || i)}
               type="button"
               aria-label={`${i + 1}. hizmet`}
               aria-current={i === index ? "true" : undefined}

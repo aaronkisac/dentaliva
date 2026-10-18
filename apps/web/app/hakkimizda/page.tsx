@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 import { Card, Heading, Link, Reveal, Section, Text } from "@dentaliva/ui";
-import { pickLocalized } from "@dentaliva/sanity-schema/client";
+import { t } from "../../src/i18n";
 
 import { CtaBand } from "../../components/cta-band";
 import { DoctorPortrait } from "../../components/doctor-portrait";
@@ -35,7 +35,7 @@ export default async function AboutPage() {
 
   return (
     <>
-      <PageHero eyebrow="Dentaliva" title="Hakkımızda" lead={homePage?.about?.title?.tr ?? null} />
+      <PageHero eyebrow="Dentaliva" title="Hakkımızda" lead={t(homePage?.about?.title) || null} />
       <Reveal>
         <AboutSection data={homePage?.about ?? null} stats={homePage?.stats ?? []} />
       </Reveal>
@@ -45,16 +45,16 @@ export default async function AboutPage() {
       {doctors.length > 0 ? (
         <Reveal>
           <Section className="bg-white">
-            {pickLocalized(homePage?.teamSection?.heading) ? (
+            {t(homePage?.teamSection?.heading) ? (
               <>
                 <div className="flex items-center gap-3">
                   <span aria-hidden="true" className="h-px w-8 bg-gold" />
                   <p className="font-sans text-xs uppercase tracking-widest text-gold-deep">
-                    {pickLocalized(homePage?.teamSection?.eyebrow)}
+                    {t(homePage?.teamSection?.eyebrow)}
                   </p>
                 </div>
                 <Heading level="h2" size="md" className="mt-4">
-                  {pickLocalized(homePage?.teamSection?.heading)}
+                  {t(homePage?.teamSection?.heading)}
                 </Heading>
               </>
             ) : null}
@@ -73,7 +73,7 @@ export default async function AboutPage() {
                     {doctor.name}
                   </Heading>
                   <Text tone="muted" size="small">
-                    {pickLocalized(doctor.title)}
+                    {t(doctor.title)}
                   </Text>
                   <Link
                     href={`/hekimlerimiz/${doctor.slug}`}

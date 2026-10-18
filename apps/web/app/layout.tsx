@@ -6,6 +6,7 @@ import { JsonLd } from "../components/json-ld";
 import { site } from "../src/config";
 import { fetchSiteSettings } from "../src/content/home";
 import { fetchSiteCopy } from "../src/content/site-copy";
+import { t } from "../src/i18n";
 import { readClient } from "../src/sanity";
 import { siteUrl } from "../src/seo";
 import { fontVariables } from "../src-fonts";
@@ -33,22 +34,22 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     ? {
         phone: settings.phone ?? "",
         email: settings.email ?? "",
-        address: settings.address?.tr ?? "",
-        hours: settings.hours?.tr ?? "",
+        address: t(settings.address),
+        hours: t(settings.hours),
       }
     : undefined;
   // SEO-5: one Dentist entity for the whole site; needs at least the phone,
   // so a fresh clone with empty CMS simply renders without it.
   const orgJsonLd =
-    settings?.phone && settings.address?.tr
+    settings?.phone && t(settings.address)
       ? buildDentistJsonLd({
           name: siteName,
           url: siteUrl,
           phone: settings.phone,
           ...(settings.email ? { email: settings.email } : {}),
-          streetAddress: settings.address.tr,
+          streetAddress: t(settings.address),
           city: "İstanbul",
-          ...(settings.hours?.tr ? { openingHours: settings.hours.tr } : {}),
+          ...(t(settings.hours) ? { openingHours: t(settings.hours) } : {}),
           sameAs: (settings.social ?? [])
             .filter((s): s is { platform: string; url: string } => Boolean(s.platform && s.url))
             .map((s) => s.url),
@@ -117,9 +118,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             .map((s) => ({ label: s.platform, href: s.url }))}
           copyright={`© Copyright ${siteName} ${new Date().getFullYear()}`}
           labels={{
-            contact: siteCopy?.footer?.contactHeading?.tr,
-            quickLinks: siteCopy?.footer?.quickLinksHeading?.tr,
-            follow: siteCopy?.footer?.followHeading?.tr,
+            contact: t(siteCopy?.footer?.contactHeading),
+            quickLinks: t(siteCopy?.footer?.quickLinksHeading),
+            follow: t(siteCopy?.footer?.followHeading),
           }}
         />
       </body>

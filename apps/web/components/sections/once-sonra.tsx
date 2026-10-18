@@ -1,5 +1,5 @@
 import { Heading, Link, Section, Text } from "@dentaliva/ui";
-import { pickLocalized } from "@dentaliva/sanity-schema/client";
+import { t } from "../../src/i18n";
 
 import type { BeforeAfterCase } from "../../src/content/home";
 import { BeforeAfterSlider } from "../before-after-slider";
@@ -46,8 +46,8 @@ export function OnceSonraSection({
       ) : null}
       <div className="mt-10 grid gap-6 md:grid-cols-3">
         {cards.map((item, index) => {
-          const title = pickLocalized(item.title);
-          const text = pickLocalized(item.text);
+          const title = t(item.title);
+          const text = t(item.text);
           const slug = item.treatment?.slug;
           const headingNode = (
             <Heading level="h3" size="title">
@@ -71,12 +71,12 @@ export function OnceSonraSection({
               <BeforeAfterSlider
                 before={{
                   ref: item.before!.ref!,
-                  alt: pickLocalized(item.before?.alt) ?? "",
+                  alt: t(item.before?.alt),
                   lqip: item.before?.lqip,
                 }}
                 after={{
                   ref: item.after!.ref!,
-                  alt: pickLocalized(item.after?.alt) ?? "",
+                  alt: t(item.after?.alt) ?? "",
                   lqip: item.after?.lqip,
                 }}
                 label={title ?? ""}
