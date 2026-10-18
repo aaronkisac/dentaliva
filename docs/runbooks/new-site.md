@@ -130,6 +130,11 @@ pnpm --filter @dentaliva/web deploy:staging  # <name>-staging, mock mode — loc
 - ✅ Executed once on the founding site (dentaliva): Sanity project/datasets/
   Studio deploy (~12 min total), Workers config, webhook, Turnstile/Resend —
   see repo history (#70–#72, #94, #104).
-- ⏳ Pending live validation on a SECOND site (blocked on a real client /
-  Cloudflare credentials — DEP-1): steps 1, 4–9 timings above are targets, to
-  be re-recorded at first use and updated here.
+- ✅ Executed on the SECOND site (dentaliva.eu, 2026-10-18, INT milestone
+  12): step 1 config (~10 min incl. route-map contract), step 2 project +
+  datasets via `sanity projects create` (non-interactive), step 3 studio
+  deploy (`--url dentaliva-eu`, `SANITY_STUDIO_DEFAULT_LOCALE=en`), step 4
+  content via the migration pipeline (crawl 144 pages → 45 docs + 15 posts +
+  105 redirects), steps 5+9 workers/CI done, step 6 DNS + step 8 keys
+  pending with the account owner. See deploy.md §4 for the per-instance
+  commands and the recorded verification.

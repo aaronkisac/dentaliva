@@ -99,3 +99,34 @@ Risk #1 — registrar-side change, the one step outside this repo).
 > Template use (`docs/runbooks/new-site.md`): these names are per-site values
 > in `apps/web/wrangler.jsonc` (`name`, Access domain, deploy hooks) — repeat
 > steps 1–3 for each new client.
+
+## 4. Second instance: dentaliva.eu (INT milestone 12)
+
+Same codebase, second site — ADR-002/004 delivered end to end (2026-10-18):
+
+- **Site config**: `apps/web/sites/eu.ts` (projectId `84n9qnfg`, domain
+  `www.dentaliva.eu`, en locale, `/services`-style segments).
+- **Workers**: `wrangler.eu.jsonc` → `dentaliva-eu` (prod, namespaces 1003)
+  and `dentaliva-eu-staging` (mock mode, namespace 1004), `LOCALE=en`,
+  `NOTIFY_FALLBACK=info@dentaliva.eu`.
+- **Build**: `node scripts/build-site.mjs --site eu [--env staging]` sets the
+  full site-scoped env from the registry; tokens are per-project
+  (`SANITY_READ_TOKEN_EU` — anonymous v1 reads omit documents, so real
+  content builds need the token).
+- **Deploy**:
+  ```bash
+  pnpm --filter @dentaliva/web deploy:eu:staging   # dentaliva-eu-staging
+  pnpm --filter @dentaliva/web deploy:eu:prod      # dentaliva-eu (needs secrets)
+  ```
+- **Recorded 2026-10-18**: staging live at
+  `https://dentaliva-eu-staging.dentaliva.workers.dev` — 11 page types 200,
+  TR segments 404 (prune), legacy `/dental-implant/` → 301
+  `/services/dental-implant` (105 CMS redirect rules served from
+  `out/_redirects`), HSTS + per-route CSP verified.
+- **Secrets still pending (account owner)**: `TURNSTILE_SECRET`,
+  `RESEND_API_KEY`, `NOTIFY_EMAIL`, `MAIL_FROM` for `dentaliva-eu` (+ staging
+  mocks fine without), `SANITY_READ_TOKEN_EU` repo secret, Resend domain
+  verify for `dentaliva.eu`, Turnstile widget for the eu domain, DNS →
+  Cloudflare nameservers + custom domains.
+- **Studio**: `https://dentaliva-eu.sanity.studio` (built with
+  `SANITY_STUDIO_DEFAULT_LOCALE=en` → en-required, tr-optional fields).
