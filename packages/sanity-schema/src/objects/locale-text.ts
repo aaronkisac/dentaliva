@@ -12,23 +12,22 @@ import { requireNonEmpty } from "../validation";
 export const studioLocale: "tr" | "en" =
   process.env.SANITY_STUDIO_DEFAULT_LOCALE === "en" ? "en" : "tr";
 
-const otherLocale: "tr" | "en" = studioLocale === "en" ? "tr" : "en";
-
 const localeTitle: Record<"tr" | "en", string> = { tr: "Türkçe", en: "English" };
 
-function localeField(name: "tr" | "en", type: "string" | "text") {
-  return defineField({
-    name,
-    title: localeTitle[name],
-    type,
-    ...(name === studioLocale
-      ? {
-          validation: (rule: {
-            required: () => { custom: (fn: typeof requireNonEmpty) => unknown };
-          }) => rule.required().custom(requireNonEmpty),
-        }
-      : {}),
-  });
+/** [required primary field, optional secondary field] for the studio locale. */
+function localeFields(kind: "string" | "text") {
+  const required = (name: "tr" | "en") =>
+    defineField({
+      name,
+      title: localeTitle[name],
+      type: kind,
+      validation: (rule) => rule.required().custom(requireNonEmpty),
+    });
+  const optional = (name: "tr" | "en") =>
+    defineField({ name, title: localeTitle[name], type: kind });
+  return studioLocale === "tr"
+    ? [required("tr"), optional("en")]
+    : [required("en"), optional("tr")];
 }
 
 /** Single-line localized string: { tr, en } — the studio locale is required. */
@@ -37,7 +36,7 @@ export const localeString = defineType({
   title: "Yerelleştirilmiş metin (tek satır)",
   type: "object",
   fieldsets: [{ name: "translations", title: "Çeviriler", options: { collapsible: true } }],
-  fields: [localeField(studioLocale, "string"), localeField(otherLocale, "string")],
+  fields: localeFields("string"),
 });
 
 /** Multi-paragraph localized text. */
@@ -46,5 +45,5 @@ export const localeText = defineType({
   title: "Yerelleştirilmiş metin (çok satır)",
   type: "object",
   fieldsets: [{ name: "translations", title: "Çeviriler", options: { collapsible: true } }],
-  fields: [localeField(studioLocale, "text"), localeField(otherLocale, "text")],
+  fields: localeFields("text"),
 });
