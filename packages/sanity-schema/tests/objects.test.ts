@@ -106,10 +106,16 @@ describe("validation wiring on schema objects", () => {
 });
 
 describe("studioLocale parameterization (INT-7)", () => {
+  // The required/optional branch union erases `validation` on the inferred
+  // type; cast to the runtime shape that the Rule walker already pins down.
+  type Loose = { name: string; title?: string; validation?: unknown };
+  const fieldsOf = (t: { fields: unknown[] }) => t.fields as Loose[];
+
   it("defaults to the tr studio: tr required and first, en optional", () => {
-    expect(localeString.fields.map((f) => f.name)).toEqual(["tr", "en"]);
-    expect(localeString.fields[0]?.validation).toBeDefined();
-    expect(localeString.fields[1]?.validation).toBeUndefined();
+    const fields = fieldsOf(localeString);
+    expect(fields.map((f) => f.name)).toEqual(["tr", "en"]);
+    expect(fields[0]?.validation).toBeDefined();
+    expect(fields[1]?.validation).toBeUndefined();
   });
 
   it("builds the en studio when SANITY_STUDIO_DEFAULT_LOCALE=en", async () => {
@@ -121,11 +127,12 @@ describe("studioLocale parameterization (INT-7)", () => {
       studioLocale,
     } = await import("../src/objects/locale-text");
     expect(studioLocale).toBe("en");
-    expect(enString.fields.map((f) => f.name)).toEqual(["en", "tr"]);
-    expect(enString.fields[0]?.title).toBe("English");
-    expect(enString.fields[0]?.validation).toBeDefined();
-    expect(enString.fields[1]?.validation).toBeUndefined();
-    expect(enText.fields.map((f) => f.name)).toEqual(["en", "tr"]);
+    const strFields = fieldsOf(enString);
+    expect(strFields.map((f) => f.name)).toEqual(["en", "tr"]);
+    expect(strFields[0]?.title).toBe("English");
+    expect(strFields[0]?.validation).toBeDefined();
+    expect(strFields[1]?.validation).toBeUndefined();
+    expect(fieldsOf(enText).map((f) => f.name)).toEqual(["en", "tr"]);
     vi.unstubAllEnvs();
     vi.resetModules();
   });
