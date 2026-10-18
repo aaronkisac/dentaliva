@@ -160,3 +160,61 @@ describe("handleCallbackPost (FRM-3)", () => {
     expect(deps.rateLimit).toHaveBeenCalledWith("9.9.9.9");
   });
 });
+
+describe("handleCallbackPost locale packs (INT-4)", () => {
+  const baseDeps = (over: Partial<Parameters<typeof handleCallbackPost>[1]> = {}) => ({
+    verifyTurnstile: vi.fn().mockResolvedValue(true),
+    rateLimit: vi.fn().mockResolvedValue(true),
+    sendMail: vi.fn().mockResolvedValue(undefined),
+    ...over,
+  });
+  const validBody = { name: "Ada", phone: "+49 151 234 5678", kvkkConsent: true };
+  const post = (deps: Parameters<typeof handleCallbackPost>[1], body: unknown) =>
+    handleCallbackPost(
+      new Request("https://x/api/callback", { method: "POST", body: JSON.stringify(body) }),
+      deps,
+    );
+
+  it("serves EN handler errors when locale=en", async () => {
+    const limited = baseDeps({ locale: "en", rateLimit: vi.fn().mockResolvedValue(false) });
+    expect(((await (await post(limited, validBody)).json()) as { error: string }).error).toBe(
+      "Too many requests. Please try again shortly.",
+    );
+
+    const failVerify = baseDeps({
+      locale: "en",
+      verifyTurnstile: vi.fn().mockResolvedValue(false),
+    });
+    expect(((await (await post(failVerify, validBody)).json()) as { error: string }).error).toBe(
+      "Verification failed. Please try again.",
+    );
+
+    const failMail = baseDeps({
+      locale: "en",
+      sendMail: vi.fn().mockRejectedValue(new Error("x")),
+    });
+    expect(((await (await post(failMail, validBody)).json()) as { error: string }).error).toBe(
+      "Email could not be sent. Please contact us by phone.",
+    );
+
+    const badBody = baseDeps({ locale: "en" });
+    const res = await post(badBody, { ...validBody, phone: "123" });
+    const json = (await res.json()) as { error: string; fields: Record<string, string> };
+    expect(json.error).toBe("Validation failed.");
+    expect(json.fields.phone).toContain("+49 151 234 5678");
+
+    const garbage = baseDeps({ locale: "en" });
+    const res2 = await handleCallbackPost(
+      new Request("https://x/api/callback", { method: "POST", body: "not-json" }),
+      garbage,
+    );
+    expect(((await res2.json()) as { error: string }).error).toBe("Invalid request body.");
+  });
+
+  it("defaults to tr when locale is absent", async () => {
+    const limited = baseDeps({ rateLimit: vi.fn().mockResolvedValue(false) });
+    expect(((await (await post(limited, validBody)).json()) as { error: string }).error).toBe(
+      "Çok fazla istek. Lütfen birazdan tekrar deneyin.",
+    );
+  });
+});

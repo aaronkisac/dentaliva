@@ -4,6 +4,7 @@
  */
 import { createFixedWindowLimiter } from "@dentaliva/lib/worker/rate-limit";
 import { handleCallbackPost } from "@dentaliva/lib/worker/callback-handler";
+import type { CallbackWorkerDeps } from "@dentaliva/lib/worker/callback-handler";
 
 interface CallbackWorkerEnv {
   TURNSTILE_SECRET?: string;
@@ -12,6 +13,8 @@ interface CallbackWorkerEnv {
   MAIL_FROM?: string;
   /** E2E/local: dış çağrıları atlat (mock mod). */
   MOCK_EXTERNAL?: string;
+  /** Form dili — wrangler var (com: tr, eu: en; INT-4). */
+  LOCALE?: string;
   RATE_LIMITER?: { limit(key: { key: string }): Promise<{ success: boolean }> };
   ASSETS: { fetch(request: Request): Promise<Response> };
 }
@@ -92,11 +95,12 @@ export default {
           "[worker] MOCK_EXTERNAL=1 — Turnstile doğrulaması ve e-posta atlanıyor (yalnızca staging/e2e).",
         );
       }
-      const deps = {
+      const deps: CallbackWorkerDeps = {
         verifyTurnstile: (token: string, ip: string | null) => verifyTurnstile(env, token, ip),
         rateLimit: (ip: string | null) => rateLimit(env, ip),
         sendMail: (input: { name: string; phone: string; preferredTime: string }) =>
           sendMail(env, input),
+        locale: env.LOCALE === "en" ? "en" : "tr",
       };
       return handleCallbackPost(request, deps);
     }
