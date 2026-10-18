@@ -6,8 +6,8 @@ import { readFile, writeFile } from "node:fs/promises";
 const TOKEN = JSON.parse(
   await readFile(process.env.USERPROFILE + "/.config/sanity/config.json", "utf8"),
 ).authToken;
-const PROJECT = "86x2hbzv";
-const DATASET = "production";
+const PROJECT = process.env.MIGRATION_PROJECT_ID ?? "86x2hbzv";
+const DATASET = process.env.MIGRATION_DATASET ?? "production";
 const BASE = "https://www.dentaliva.com";
 const delay = (ms) => new Promise((r) => setTimeout(r, ms));
 

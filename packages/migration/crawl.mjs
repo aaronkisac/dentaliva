@@ -1,5 +1,6 @@
-// One-off crawler: dentaliva.com → normalized JSON (MIG-1).
-// Usage: node crawl.mjs [outDir] [delayMs]
+// One-off crawler: a clinic site → normalized JSON (MIG-1; INT-10: any base).
+// Usage: node crawl.mjs [outDir] [delayMs] [base]
+//   eu run: node crawl.mjs normalized-eu 400 https://www.dentaliva.eu
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 
@@ -7,7 +8,8 @@ import { classifyUrl } from "./src/classify.ts";
 import { extractPage } from "./src/extract.ts";
 import { isAllowed, parseDisallowedPaths, parseLocs } from "./src/sitemap.ts";
 
-const BASE = "https://www.dentaliva.com";
+const BASE = process.argv[4] ?? "https://www.dentaliva.com";
+const SITE = BASE.includes("eu") ? "eu" : "com";
 const outDir = process.argv[2] ?? "normalized";
 const delayMs = Number(process.argv[3] ?? 400);
 
@@ -19,7 +21,7 @@ const disallowed = parseDisallowedPaths(robots);
 log(`robots: ${disallowed.length} disallow rules`);
 
 function classify(pathname) {
-  return classifyUrl(pathname);
+  return classifyUrl(pathname, SITE);
 }
 
 const indexXml = await (await fetch(`${BASE}/sitemap_index.xml`)).text();

@@ -11,8 +11,10 @@ import {
 } from "./src/transform.ts";
 
 // CPT-1: optional argv overrides for v2 re-extraction runs.
+// INT-10: third arg selects the localeText slot the source copy fills.
 const normalizedDir = process.argv[2] ?? "migration/normalized";
 const outDir = process.argv[3] ?? "migration/ndjson";
+const locale = process.argv[4] === "en" ? "en" : "tr";
 
 async function load(type) {
   try {
@@ -30,12 +32,12 @@ const [core, treatments, doctors, branches] = await Promise.all([
 ]);
 
 const docs = [
-  ...treatments.map(treatmentToSanity),
+  ...treatments.map((page) => treatmentToSanity(page, locale)),
   ...doctors.map(doctorToSanity),
   ...branches.map(branchToSanity),
 ];
 
-const errors = validateDocs(docs);
+const errors = validateDocs(docs, locale);
 if (errors.length > 0) {
   console.error("VALIDATION FAILED:\n" + errors.join("\n"));
   process.exit(1);

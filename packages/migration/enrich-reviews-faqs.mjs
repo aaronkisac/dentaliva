@@ -8,8 +8,8 @@ import * as cheerio from "cheerio";
 const TOKEN = JSON.parse(
   await readFile(process.env.USERPROFILE + "/.config/sanity/config.json", "utf8"),
 ).authToken;
-const PROJECT = "86x2hbzv";
-const DATASET = "production";
+const PROJECT = process.env.MIGRATION_PROJECT_ID ?? "86x2hbzv";
+const DATASET = process.env.MIGRATION_DATASET ?? "production";
 const delay = (ms) => new Promise((r) => setTimeout(r, ms));
 
 const VIDEO_CAPTIONS = [

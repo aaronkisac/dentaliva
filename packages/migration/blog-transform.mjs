@@ -4,7 +4,7 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 
 import { splitByLastmod, toBlogPostDoc, toRedirectDoc } from "./src/blog-transform.ts";
 
-const POST_SITEMAP = "https://www.dentaliva.com/post-sitemap.xml";
+const POST_SITEMAP = process.argv[4] ?? "https://www.dentaliva.com/post-sitemap.xml";
 // CPT-1: optional argv overrides for v2 re-extraction runs.
 const normalizedDir = process.argv[2] ?? "migration/normalized";
 const outDir = process.argv[3] ?? "migration/ndjson";

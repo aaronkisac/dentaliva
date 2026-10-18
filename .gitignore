@@ -28,3 +28,10 @@ playwright-report/
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# Migration raw artifacts stay local (INT-10); committed record = report JSONs
+migration/normalized/
+migration/normalized-eu/
+migration/ndjson/
+migration/ndjson-eu/
+migration/ndjson-v2/
