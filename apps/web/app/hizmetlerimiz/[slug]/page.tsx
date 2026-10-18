@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 import Image from "next/image";
 
-import { pickLocalized } from "@dentaliva/sanity-schema/client";
+import { t } from "../../../src/i18n";
 import { urlForImage } from "@dentaliva/sanity-schema/image-url";
 import { buildBreadcrumbJsonLd, buildFaqJsonLd } from "@dentaliva/seo";
 
@@ -41,11 +41,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!treatment) return { title: "Tedavi", robots: { index: false, follow: false } };
   return pageMetadata({
     path: `/hizmetlerimiz/${slug}`,
-    title: pickLocalized(treatment.name) || "Tedavi",
-    description: pickLocalized(treatment.summary),
+    title: t(treatment.name) || "Tedavi",
+    description: t(treatment.summary),
     seo: treatment.seo,
     ogImageRef: treatment.heroImage?.ref,
-    ogImageAlt: treatment.heroImage?.alt?.tr,
+    ogImageAlt: t(treatment.heroImage?.alt),
   });
 }
 
@@ -59,7 +59,7 @@ export default async function TreatmentDetailPage({ params }: PageProps) {
   }
 
   const steps = treatment.steps ?? [];
-  const name = pickLocalized(treatment.name);
+  const name = t(treatment.name);
   // DSN-24: sayfa sonu bandının CMS içeriği (cache'li fetcher'lar). Bant
   // fetch hatasında sessizce düşer — detay sayfası içeriğini bloklamaz.
   const [homePage, settings, copy] = await Promise.all([
@@ -68,7 +68,7 @@ export default async function TreatmentDetailPage({ params }: PageProps) {
     fetchSiteCopy(readClient),
   ]);
   const headings = copy?.sectionHeadings;
-  const faqs = (treatment.faqs ?? []).filter((f) => f.question?.tr && f.answer?.tr);
+  const faqs = (treatment.faqs ?? []).filter((f) => t(f.question) && t(f.answer));
   // SEO-5: breadcrumb trail + FAQ answers as structured data.
   const jsonLd = [
     buildBreadcrumbJsonLd([
@@ -80,8 +80,8 @@ export default async function TreatmentDetailPage({ params }: PageProps) {
       ? [
           buildFaqJsonLd(
             faqs.map((f) => ({
-              question: f.question?.tr ?? "",
-              answer: f.answer?.tr ?? "",
+              question: t(f.question),
+              answer: t(f.answer),
             })),
           ),
         ]
@@ -112,7 +112,7 @@ export default async function TreatmentDetailPage({ params }: PageProps) {
         eyebrow="Hizmetlerimiz"
         eyebrowHref="/hizmetlerimiz"
         title={name}
-        lead={treatment.summary?.tr ? pickLocalized(treatment.summary) : null}
+        lead={t(treatment.summary) ? t(treatment.summary) : null}
       >
         {treatment.heroImage?.ref ? (
           <div
@@ -125,7 +125,7 @@ export default async function TreatmentDetailPage({ params }: PageProps) {
           >
             <Image
               src={treatment.heroImage.ref}
-              alt={treatment.heroImage.alt?.tr ?? ""}
+              alt={t(treatment.heroImage.alt)}
               width={1200}
               height={800}
               priority
@@ -138,22 +138,22 @@ export default async function TreatmentDetailPage({ params }: PageProps) {
 
       <Reveal>
         <Section>
-          {treatment.body?.tr ? (
-            <Text className="max-w-3xl whitespace-pre-line">{pickLocalized(treatment.body)}</Text>
+          {t(treatment.body) ? (
+            <Text className="max-w-3xl whitespace-pre-line">{t(treatment.body)}</Text>
           ) : null}
 
           {/* CPT-6: H2 "farklar/avantajlar" bölümlerinden gelen faydalar. */}
           {(treatment.benefits ?? []).length > 0 ? (
             <div className="mt-10">
-              {headings?.keyBenefits?.tr ? (
+              {t(headings?.keyBenefits) ? (
                 <Heading level="h2" size="md">
-                  {headings.keyBenefits.tr}
+                  {t(headings?.keyBenefits)}
                 </Heading>
               ) : null}
               <div className="mt-6 grid gap-4 md:grid-cols-3">
                 {(treatment.benefits ?? []).map((benefit, index) => (
                   <Card key={index}>
-                    <Text>{benefit.tr}</Text>
+                    <Text>{t(benefit)}</Text>
                   </Card>
                 ))}
               </div>
@@ -163,17 +163,17 @@ export default async function TreatmentDetailPage({ params }: PageProps) {
           {/* DSN-31: adımlar numaralı ve başlıklı (eyebrow motif, copy sweep borçlu). */}
           {steps.length > 0 ? (
             <div className="mt-12">
-              {headings?.treatmentProcessEyebrow?.tr ? (
+              {t(headings?.treatmentProcessEyebrow) ? (
                 <div className="flex items-center gap-3">
                   <span aria-hidden="true" className="h-px w-8 bg-gold" />
                   <p className="font-sans text-xs uppercase tracking-widest text-gold-deep">
-                    {headings.treatmentProcessEyebrow.tr}
+                    {t(headings?.treatmentProcessEyebrow)}
                   </p>
                 </div>
               ) : null}
-              {headings?.treatmentProcess?.tr ? (
+              {t(headings?.treatmentProcess) ? (
                 <Heading level="h2" size="md" className="mt-4">
-                  {headings.treatmentProcess.tr}
+                  {t(headings?.treatmentProcess)}
                 </Heading>
               ) : null}
               <div className="mt-6 grid gap-6 md:grid-cols-3">
@@ -183,18 +183,18 @@ export default async function TreatmentDetailPage({ params }: PageProps) {
                       {String(index + 1).padStart(2, "0")}
                     </p>
                     <Heading level="h3" size="title" className="mt-3">
-                      {pickLocalized(step.title) || `Adım ${index + 1}`}
+                      {t(step.title) || `Adım ${index + 1}`}
                     </Heading>
-                    <Text className="mt-2">{pickLocalized(step.description)}</Text>
+                    <Text className="mt-2">{t(step.description)}</Text>
                   </Card>
                 ))}
               </div>
             </div>
           ) : null}
 
-          {treatment.priceNote?.tr ? (
+          {t(treatment.priceNote) ? (
             <div className="mt-12 max-w-3xl border border-[var(--dvn-line-gold)] bg-white p-8 shadow-[var(--dvn-shadow-soft)]">
-              <Text>{pickLocalized(treatment.priceNote)}</Text>
+              <Text>{t(treatment.priceNote)}</Text>
             </div>
           ) : null}
         </Section>
@@ -204,9 +204,9 @@ export default async function TreatmentDetailPage({ params }: PageProps) {
       {(treatment.doctors ?? []).length > 0 ? (
         <Reveal>
           <Section className="bg-white">
-            {headings?.relatedDoctors?.tr ? (
+            {t(headings?.relatedDoctors) ? (
               <Heading level="h2" size="md">
-                {headings.relatedDoctors.tr}
+                {t(headings?.relatedDoctors)}
               </Heading>
             ) : null}
             <div className="mt-8 grid gap-6 md:grid-cols-3">
@@ -225,12 +225,10 @@ export default async function TreatmentDetailPage({ params }: PageProps) {
                   <Heading level="h3" size="title" className="mt-4">
                     {doctor.name}
                   </Heading>
-                  {doctor.title?.tr ? (
-                    <Text className="mt-1">{pickLocalized(doctor.title)}</Text>
-                  ) : null}
+                  {t(doctor.title) ? <Text className="mt-1">{t(doctor.title)}</Text> : null}
                   <Text tone="muted" size="small" className="mt-3 underline">
                     <Link href={`/hekimlerimiz/${doctor.slug}`}>
-                      {headings?.doctorProfileLink?.tr}
+                      {t(headings?.doctorProfileLink)}
                     </Link>
                   </Text>
                 </Card>
@@ -243,19 +241,19 @@ export default async function TreatmentDetailPage({ params }: PageProps) {
       {(treatment.faqs ?? []).length > 0 ? (
         <Reveal>
           <Section className="bg-white">
-            {headings?.faq?.tr ? (
+            {t(headings?.faq) ? (
               <Heading level="h2" size="md">
-                {headings.faq.tr}
+                {t(headings?.faq)}
               </Heading>
             ) : null}
             <div className="mt-8 max-w-3xl">
               <Accordion
                 items={(treatment.faqs ?? [])
-                  .filter((f) => f.question?.tr && f.answer?.tr)
+                  .filter((f) => t(f.question) && t(f.answer))
                   .map((f) => ({
-                    id: f.question?.tr ?? "",
-                    question: f.question?.tr ?? "",
-                    answer: f.answer?.tr ?? "",
+                    id: t(f.question),
+                    question: t(f.question),
+                    answer: t(f.answer),
                   }))}
               />
             </div>

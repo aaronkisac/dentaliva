@@ -6,7 +6,7 @@ import { buttonVariants, Link } from "@dentaliva/ui";
 import { Container } from "@dentaliva/ui";
 import { Heading } from "@dentaliva/ui";
 import { Text } from "@dentaliva/ui";
-import { pickLocalized } from "@dentaliva/sanity-schema/client";
+import { t } from "../../src/i18n";
 import { lqipUrl, refDimensions } from "@dentaliva/sanity-schema/image-url";
 
 import { site } from "../../src/config";
@@ -44,9 +44,9 @@ export function HeroSection({
   trust?: HeroTrust | null;
 }) {
   // Copy sweep: hero metni yalnızca CMS'ten gelir — fallback copy yok.
-  const headline = pickLocalized(data?.headline);
-  const subline = pickLocalized(data?.subline);
-  const trustItems = [trust?.since?.tr, trust?.experience?.tr, trust?.googleRating?.tr].filter(
+  const headline = t(data?.headline);
+  const subline = t(data?.subline);
+  const trustItems = [t(trust?.since), t(trust?.experience), t(trust?.googleRating)].filter(
     (item): item is string => Boolean(item),
   );
   const ref = data?.image?.asset?._ref;

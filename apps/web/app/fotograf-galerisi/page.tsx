@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 import { Heading, Section } from "@dentaliva/ui";
-import { pickLocalized } from "@dentaliva/sanity-schema/client";
+import { t } from "../../src/i18n";
 
 import { GalleryLightbox } from "../../components/lightbox";
 import { fetchHomePageDocument } from "../../src/content/home";
@@ -29,27 +29,27 @@ export default async function GalleryPage() {
 
   return (
     <Section>
-      {headings?.galleryPage?.tr ? (
+      {t(headings?.galleryPage) ? (
         <Heading level="h1" size="lg">
-          {headings.galleryPage.tr}
+          {t(headings?.galleryPage)}
         </Heading>
       ) : null}
       <div className="mt-8">
         {images.length === 0 && onceSonra.length === 0 ? (
-          <p className="font-sans text-ink">{headings?.galleryEmpty?.tr}</p>
+          <p className="font-sans text-ink">{t(headings?.galleryEmpty)}</p>
         ) : (
           <>
             <p className="sr-only">Galeri: {images.length} görsel, büyütmek için görsel seçin.</p>
             <GalleryLightbox
               images={images}
               onceSonra={onceSonra}
-              closeLabel={copy?.ui?.lightboxClose?.tr}
+              closeLabel={t(copy?.ui?.lightboxClose)}
             />
           </>
         )}
       </div>
-      {images[0]?.alt?.tr ? (
-        <p className="sr-only">İlk görsel açıklaması: {pickLocalized(images[0].alt)}</p>
+      {images[0]?.alt ? (
+        <p className="sr-only">İlk görsel açıklaması: {t(images[0]?.alt)}</p>
       ) : null}
     </Section>
   );

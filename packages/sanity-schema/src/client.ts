@@ -2,6 +2,8 @@ import { createClient } from "@sanity/client";
 
 import type { LocalizedValue } from "./validation";
 
+export type { LocalizedValue };
+
 export interface SanityEnv {
   projectId: string;
   dataset: string;

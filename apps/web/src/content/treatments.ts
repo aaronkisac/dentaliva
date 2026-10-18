@@ -3,6 +3,8 @@ import { cache } from "react";
 
 import type { SeoObject } from "@dentaliva/seo";
 import { treatmentBySlugQuery, treatmentListQuery } from "@dentaliva/sanity-schema/queries";
+import { site } from "../config";
+import { t } from "../i18n";
 import type { LocalizedPair } from "./home";
 
 export interface TreatmentListItem {
@@ -43,7 +45,10 @@ async function fetchJson<T>(client: SanityClient, query: string): Promise<T> {
 
 export async function fetchTreatments(client: SanityClient): Promise<TreatmentListItem[]> {
   const list = await fetchJson<TreatmentListItem[] | null>(client, treatmentListQuery);
-  return list ?? [];
+  // Locale-aware alphabetical order (the GROQ query no longer hardcodes a
+  // language); Intl.Collator sorts tr and en each by their own rules.
+  const collator = new Intl.Collator(site.defaultLocale);
+  return (list ?? []).sort((a, b) => collator.compare(t(a.name), t(b.name)));
 }
 
 /** PRF-5: generateMetadata + sayfa aynı isteği paylaşır (React cache). */

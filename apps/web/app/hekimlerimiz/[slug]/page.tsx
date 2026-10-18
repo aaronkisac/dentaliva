@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { pickLocalized } from "@dentaliva/sanity-schema/client";
+import { t } from "../../../src/i18n";
 import { buildBreadcrumbJsonLd } from "@dentaliva/seo";
 
 import { Reveal, Section, Text } from "@dentaliva/ui";
@@ -36,7 +36,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return pageMetadata({
     path: `/hekimlerimiz/${slug}`,
     title: doctor.name ?? "Hekim",
-    description: pickLocalized(doctor.title) || pickLocalized(doctor.bio),
+    description: t(doctor.title) || t(doctor.bio),
     seo: doctor.seo,
     ogImageRef: doctor.photo?.ref,
     ogImageAlt: doctor.name,
@@ -71,7 +71,7 @@ export default async function DoctorDetailPage({ params }: PageProps) {
         eyebrow="Hekimlerimiz"
         eyebrowHref="/hekimlerimiz"
         title={doctor.name ?? "Hekim"}
-        lead={doctor.title?.tr ? pickLocalized(doctor.title) : null}
+        lead={t(doctor.title) ? t(doctor.title) : null}
       >
         <DoctorPortrait
           name={doctor.name}
@@ -87,8 +87,8 @@ export default async function DoctorDetailPage({ params }: PageProps) {
       </PageHero>
       <Reveal>
         <Section>
-          {doctor.bio?.tr ? (
-            <Text className="max-w-3xl whitespace-pre-line">{pickLocalized(doctor.bio)}</Text>
+          {t(doctor.bio) ? (
+            <Text className="max-w-3xl whitespace-pre-line">{t(doctor.bio)}</Text>
           ) : null}
 
           {/* DSN-9: hekimin ilgi alanları (schema: doctor.treatments). */}
@@ -100,7 +100,7 @@ export default async function DoctorDetailPage({ params }: PageProps) {
                   href={`/hizmetlerimiz/${treatment.slug}`}
                   className="border border-[var(--dvn-line-gold)] px-4 py-2 font-sans text-sm text-navy transition-colors hover:bg-gold hover:text-navy"
                 >
-                  {pickLocalized(treatment.name)}
+                  {t(treatment.name)}
                 </a>
               ))}
             </div>

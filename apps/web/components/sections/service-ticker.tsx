@@ -1,4 +1,4 @@
-import { pickLocalized } from "@dentaliva/sanity-schema/client";
+import { t } from "../../src/i18n";
 
 import type { QuickServiceItem } from "../../src/content/home";
 
@@ -11,7 +11,7 @@ import type { QuickServiceItem } from "../../src/content/home";
 export function ServiceTicker({ items }: { items: QuickServiceItem[] }) {
   const names = items
     .slice(0, 10)
-    .map((item) => pickLocalized(item.name))
+    .map((item) => t(item.name))
     .filter((name) => name.length > 0);
   if (names.length === 0) return null;
 

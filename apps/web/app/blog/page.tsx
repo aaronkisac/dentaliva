@@ -4,7 +4,7 @@ import Image from "next/image";
 
 import { Reveal, Card, Heading, Section, Text } from "@dentaliva/ui";
 import { PageHero } from "../../components/page-hero";
-import { pickLocalized } from "@dentaliva/sanity-schema/client";
+import { t } from "../../src/i18n";
 
 import { Link } from "@dentaliva/ui";
 import { fetchBlogPosts } from "../../src/content/blog";
@@ -34,7 +34,7 @@ export default async function BlogPage() {
                   {post.heroImage?.ref ? (
                     <Image
                       src={post.heroImage.ref}
-                      alt={post.heroImage.alt?.tr ?? ""}
+                      alt={t(post.heroImage.alt)}
                       width={600}
                       height={400}
                       sizes="(max-width: 768px) 100vw, 33vw"
@@ -47,9 +47,9 @@ export default async function BlogPage() {
                     {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString("tr-TR") : ""}
                   </Text>
                   <Heading level="h3" size="title" className="mt-2">
-                    {pickLocalized(post.title)}
+                    {t(post.title)}
                   </Heading>
-                  <Text className="mt-2">{pickLocalized(post.excerpt)}</Text>
+                  <Text className="mt-2">{t(post.excerpt)}</Text>
                   <Link
                     href={`/blog/${post.slug}`}
                     className="mt-4 inline-block font-sans text-sm font-semibold text-navy hover:text-gold-deep"

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 import Image from "next/image";
 
-import { pickLocalized } from "@dentaliva/sanity-schema/client";
+import { t, tBlocks } from "../../../src/i18n";
 import { buildBreadcrumbJsonLd } from "@dentaliva/seo";
 
 import { Reveal, Heading, Section, Text } from "@dentaliva/ui";
@@ -36,11 +36,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!post) return { title: "Blog", robots: { index: false, follow: false } };
   return pageMetadata({
     path: `/blog/${slug}`,
-    title: pickLocalized(post.title) || "Blog",
-    description: pickLocalized(post.excerpt),
+    title: t(post.title) || "Blog",
+    description: t(post.excerpt),
     seo: post.seo,
     ogImageRef: post.heroImage?.ref,
-    ogImageAlt: post.heroImage?.alt?.tr ?? pickLocalized(post.title),
+    ogImageAlt: t(post.heroImage?.alt) || t(post.title),
   });
 }
 
@@ -51,7 +51,7 @@ export default async function BlogPostPage({ params }: PageProps) {
     return <SeedPlaceholder title="Blog" />;
   }
 
-  const blocks = post.body?.tr ?? [];
+  const blocks = tBlocks(post.body);
 
   // DSN-24: sayfa sonu bandının CMS içeriği; fetch hatasında sessizce düşer.
   const [homePage, settings] = await Promise.all([
@@ -66,7 +66,7 @@ export default async function BlogPostPage({ params }: PageProps) {
           { name: "Ana Sayfa", url: absoluteUrl("/") },
           { name: "Blog", url: absoluteUrl("/blog") },
           {
-            name: pickLocalized(post.title) || "Blog",
+            name: t(post.title) || "Blog",
             url: absoluteUrl(`/blog/${slug}`),
           },
         ])}
@@ -75,13 +75,13 @@ export default async function BlogPostPage({ params }: PageProps) {
         <Text tone="muted" size="small">
           {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString("tr-TR") : ""}
           {post.author?.name
-            ? ` · ${post.author.name}${post.author.title?.tr ? ` — ${post.author.title.tr}` : ""}`
+            ? ` · ${post.author.name}${t(post.author.title) ? ` — ${t(post.author.title)}` : ""}`
             : ""}
         </Text>
         {post.heroImage?.ref ? (
           <Image
             src={post.heroImage.ref}
-            alt={post.heroImage?.alt?.tr ?? pickLocalized(post.title)}
+            alt={t(post.heroImage?.alt) || t(post.title)}
             width={1200}
             height={600}
             // PRF-5: hero görseli LCP adayı — priority (preload) + varsa
@@ -94,11 +94,11 @@ export default async function BlogPostPage({ params }: PageProps) {
           />
         ) : null}
         <Heading level="h1" size="lg" className="mt-2">
-          {pickLocalized(post.title)}
+          {t(post.title)}
         </Heading>
-        {post.excerpt?.tr ? (
+        {t(post.excerpt) ? (
           <Text size="lg" className="mt-4 max-w-3xl">
-            {pickLocalized(post.excerpt)}
+            {t(post.excerpt)}
           </Text>
         ) : null}
         <Reveal>

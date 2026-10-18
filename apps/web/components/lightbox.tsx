@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
-import { pickLocalized } from "@dentaliva/sanity-schema/client";
+import { t } from "../src/i18n";
 import { lqipUrl, refDimensions } from "@dentaliva/sanity-schema/image-url";
 
 import type { GalleryImage } from "../src/content/home";
@@ -79,7 +79,7 @@ export function GalleryLightbox({
       >
         <Image
           src={ref}
-          alt={pickLocalized(image.alt) || `Galeri görseli ${index + 1}`}
+          alt={t(image.alt) || `Galeri görseli ${index + 1}`}
           width={dims.width}
           height={dims.height}
           sizes={afterCarousel ? "(max-width: 640px) 82vw, 33vw" : "(max-width: 768px) 50vw, 25vw"}
@@ -223,7 +223,7 @@ export function GalleryLightbox({
               return (
                 <Image
                   src={ref}
-                  alt={pickLocalized(items[active].alt) || "Büyük görsel"}
+                  alt={t(items[active].alt) || "Büyük görsel"}
                   width={dims.width}
                   height={dims.height}
                   sizes="80vw"

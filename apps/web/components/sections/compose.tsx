@@ -13,6 +13,7 @@ import { OnceSonraSection } from "./once-sonra";
 import { QuickServicesSection } from "./quick-services";
 import { ServiceTicker } from "./service-ticker";
 import { ReviewsSection, VideoTestimonialsSection } from "./testimonials";
+import { t } from "../../src/i18n";
 
 type SectionRenderer = (data: HomeData) => ReactNode;
 
@@ -31,9 +32,9 @@ export const sectionRegistry: Record<HomeSectionId, SectionRenderer> = {
     reveal(
       <QuickServicesSection
         items={data.quickServices}
-        eyebrow={data.siteCopy?.sectionHeadings?.servicesEyebrow?.tr}
-        heading={data.siteCopy?.sectionHeadings?.servicesHeading?.tr}
-        ctaLabel={data.siteCopy?.sectionHeadings?.allServicesCta?.tr}
+        eyebrow={t(data.siteCopy?.sectionHeadings?.servicesEyebrow)}
+        heading={t(data.siteCopy?.sectionHeadings?.servicesHeading)}
+        ctaLabel={t(data.siteCopy?.sectionHeadings?.allServicesCta)}
       />,
     ),
   about: (data) =>
@@ -48,14 +49,14 @@ export const sectionRegistry: Record<HomeSectionId, SectionRenderer> = {
     reveal(
       <VideoTestimonialsSection
         items={data.testimonials}
-        heading={data.siteCopy?.sectionHeadings?.videoReviews?.tr}
+        heading={t(data.siteCopy?.sectionHeadings?.videoReviews)}
       />,
     ),
   reviews: (data) =>
     reveal(
       <ReviewsSection
         items={data.testimonials}
-        heading={data.siteCopy?.sectionHeadings?.reviews?.tr}
+        heading={t(data.siteCopy?.sectionHeadings?.reviews)}
       />,
     ),
   gallery: (data) =>
@@ -63,18 +64,18 @@ export const sectionRegistry: Record<HomeSectionId, SectionRenderer> = {
       <GallerySection
         images={data.homePage?.gallery ?? []}
         onceSonra={data.homePage?.onceSonraGallery ?? []}
-        heading={data.siteCopy?.sectionHeadings?.galleryHome?.tr}
-        closeLabel={data.siteCopy?.ui?.lightboxClose?.tr}
+        heading={t(data.siteCopy?.sectionHeadings?.galleryHome)}
+        closeLabel={t(data.siteCopy?.ui?.lightboxClose)}
       />,
     ),
   onceSonra: (data) =>
     reveal(
       <OnceSonraSection
         items={data.homePage?.onceSonraCases ?? []}
-        eyebrow={data.siteCopy?.sectionHeadings?.onceSonraEyebrow?.tr}
-        heading={data.siteCopy?.sectionHeadings?.onceSonraHeading?.tr}
-        beforeLabel={data.siteCopy?.ui?.onceSonraBefore?.tr}
-        afterLabel={data.siteCopy?.ui?.onceSonraAfter?.tr}
+        eyebrow={t(data.siteCopy?.sectionHeadings?.onceSonraEyebrow)}
+        heading={t(data.siteCopy?.sectionHeadings?.onceSonraHeading)}
+        beforeLabel={t(data.siteCopy?.ui?.onceSonraBefore)}
+        afterLabel={t(data.siteCopy?.ui?.onceSonraAfter)}
       />,
     ),
   doctors: (data) =>
@@ -83,7 +84,7 @@ export const sectionRegistry: Record<HomeSectionId, SectionRenderer> = {
     reveal(
       <FaqSection
         items={data.faqs}
-        heading={data.siteCopy?.sectionHeadings?.faq?.tr}
+        heading={t(data.siteCopy?.sectionHeadings?.faq)}
         copy={data.siteCopy?.faq ?? null}
       />,
     ),

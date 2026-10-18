@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { CallbackForm } from "../../components/CallbackForm";
 import { PageHero } from "../../components/page-hero";
 import { Heading, Section, Text } from "@dentaliva/ui";
-import { pickLocalized } from "@dentaliva/sanity-schema/client";
+import { t } from "../../src/i18n";
 
 import { fetchBranches } from "../../src/content/branches";
 import { fetchSiteSettings } from "../../src/content/home";
@@ -45,7 +45,7 @@ export default async function ContactPage() {
                 </Text>
               ) : null}
               {settings?.email ? <Text>{settings.email}</Text> : null}
-              {settings?.hours?.tr ? <Text tone="muted">{settings.hours.tr}</Text> : null}
+              {t(settings?.hours) ? <Text tone="muted">{t(settings?.hours)}</Text> : null}
             </div>
             {branches.length > 0 ? (
               <div className="space-y-5">
@@ -55,7 +55,7 @@ export default async function ContactPage() {
                       {branch.name}
                     </Heading>
                     <Text tone="muted" className="mt-1">
-                      {pickLocalized(branch.address)}
+                      {t(branch.address)}
                     </Text>
                   </div>
                 ))}
@@ -63,9 +63,9 @@ export default async function ContactPage() {
             ) : null}
           </div>
           <div className="border border-[var(--dvn-line-gold)] bg-white p-6">
-            {copy?.sectionHeadings?.callbackForm?.tr ? (
+            {t(copy?.sectionHeadings?.callbackForm) ? (
               <Heading level="h2" size="title">
-                {copy.sectionHeadings.callbackForm.tr}
+                {t(copy?.sectionHeadings?.callbackForm)}
               </Heading>
             ) : null}
             <div className="mt-4">

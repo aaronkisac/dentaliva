@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { t } from "../src/i18n";
 import { fetchSiteCopy } from "../src/content/site-copy";
 import { readClient } from "../src/sanity";
 
@@ -9,13 +10,13 @@ import { readClient } from "../src/sanity";
  */
 export default async function NotFound() {
   const copy = await fetchSiteCopy(readClient);
-  const title = copy?.ui?.notFoundTitle?.tr;
-  const body = copy?.ui?.notFoundBody?.tr;
-  const backLink = copy?.ui?.notFoundBackLink?.tr;
+  const title = t(copy?.ui?.notFoundTitle);
+  const body = t(copy?.ui?.notFoundBody);
+  const backLink = t(copy?.ui?.notFoundBackLink);
   return (
     <main className="mx-auto flex min-h-[50vh] max-w-[var(--dvn-container-max)] flex-col items-center justify-center px-[var(--dvn-container-gutter)] py-24 text-center">
       <h1 className="font-serif text-[length:var(--dvn-text-display-lg-size)] text-navy">
-        {title ?? "404"}
+        {title || "404"}
       </h1>
       {body ? <p className="mt-4 text-ink">{body}</p> : null}
       {backLink ? (
