@@ -1,5 +1,7 @@
 // MIG-4: per-page featured images → Sanity assets → patch treatment/doctor docs.
 // Usage (packages/migration): node images.mjs
+const PROJECT = process.env.MIGRATION_PROJECT_ID ?? "86x2hbzv";
+const DATASET = process.env.MIGRATION_DATASET ?? "production";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 
 import { classifyUrl } from "./src/classify.ts";
@@ -85,7 +87,7 @@ const uploadImage = async (url, filename) => {
   const bin = Buffer.from(await (await fetch(url)).arrayBuffer());
   const ext = filename.split(".").pop().toLowerCase();
   const res = await fetch(
-    `https://86x2hbzv.api.sanity.io/v1/assets/images/production?filename=${filename}`,
+    `https://${PROJECT}.api.sanity.io/v1/assets/images/${DATASET}?filename=${filename}`,
     {
       method: "POST",
       headers: {

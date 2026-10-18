@@ -36,6 +36,15 @@ function cleanName(h1: string): string {
 }
 
 /** h1 → title → slug-derived name chain (slugs yield readable interim names). */
+/** INT-10: which localeText slot the source copy fills (com tr, eu en). */
+export type MigrateLocale = "tr" | "en";
+
+/** H2 heading patterns for structured extras, per source language. */
+const HEADING_PATTERNS: Record<MigrateLocale, { benefits: RegExp; process: RegExp }> = {
+  tr: { benefits: /avantaj|fark/i, process: /uygulama süreci|süreç/i },
+  en: { benefits: /advantage|benefit/i, process: /procedure|process|how (is|are)/i },
+};
+
 export function nameFrom(page: NormalizedPage): string {
   const fromH1 = cleanName(page.h1);
   if (fromH1) return fromH1;
@@ -66,7 +75,7 @@ export function sectionLines(blocks: ContentBlock[], headingPattern: RegExp): st
   return lines;
 }
 
-export function treatmentToSanity(page: NormalizedPage): SanityDoc {
+export function treatmentToSanity(page: NormalizedPage, locale: MigrateLocale = "tr"): SanityDoc {
   const slug = slugFromUrl(page.url);
   const name = nameFrom(page);
   const nonHeading = page.paragraphs.filter((p) => !p.startsWith("#"));
@@ -81,20 +90,25 @@ export function treatmentToSanity(page: NormalizedPage): SanityDoc {
 
   // Structured extras from the H2 sections (CPT-1); absent in legacy input.
   const blocks = page.blocks ?? [];
-  const benefits = sectionLines(blocks, /avantaj|fark/i).filter(
+  const headings = HEADING_PATTERNS[locale];
+  const benefits = sectionLines(blocks, headings.benefits).filter(
     (line) => line.length >= 25 && line.length <= 140 && !isJunkLine(line),
   );
-  const steps: Array<{ title: { tr: string }; description: { tr: string }; _key: string }> = [];
+  const steps: Array<{
+    title: Record<string, string>;
+    description: Record<string, string>;
+    _key: string;
+  }> = [];
   const processStart = blocks.findIndex(
-    (block) => block.type === "h2" && /uygulama süreci|süreç/i.test(block.text),
+    (block) => block.type === "h2" && headings.process.test(block.text),
   );
   if (processStart !== -1) {
     for (const block of blocks.slice(processStart + 1)) {
       if (block.type === "h2") break;
       if (block.type === "h3") {
         steps.push({
-          title: { tr: block.text },
-          description: { tr: "" },
+          title: { [locale]: block.text },
+          description: { [locale]: "" },
           _key: `step${steps.length}`,
         });
       }
@@ -104,12 +118,12 @@ export function treatmentToSanity(page: NormalizedPage): SanityDoc {
   return {
     _id: docId("treatment", slug),
     _type: "treatment",
-    name: { tr: name },
+    name: { [locale]: name },
     slug: { _type: "slug", current: slug },
-    summary: { tr: summary },
-    body: { tr: body },
+    summary: { [locale]: summary },
+    body: { [locale]: body },
     ...(benefits.length > 0
-      ? { benefits: benefits.map((text, index) => ({ _key: `ben${index}`, tr: text })) }
+      ? { benefits: benefits.map((text, index) => ({ _key: `ben${index}`, [locale]: text })) }
       : {}),
     ...(steps.length > 0 ? { steps } : {}),
   };
@@ -190,21 +204,22 @@ export function buildNapReport(pages: NormalizedPage[]): NapDiff {
 }
 
 /** Round-trip guard: every doc must have _id, _type and a non-empty slug. */
-export function validateDocs(docs: SanityDoc[]): string[] {
+export function validateDocs(docs: SanityDoc[], locale: MigrateLocale = "tr"): string[] {
   const errors: string[] = [];
   for (const doc of docs) {
     if (!doc._id) errors.push(`${doc._type}: missing _id`);
     if (!doc._type) errors.push(`${doc._id}: missing _type`);
     const slug = doc.slug as { current?: string } | undefined;
     if (!slug?.current) errors.push(`${doc._id}: missing slug.current`);
-    // name is a plain string (doctor/branch) or a localized object (treatment).
+    // name is a plain string (doctor/branch) or a localized object (treatment);
+    // the localized slot checked is the migration locale (INT-10).
     const rawName: unknown = doc.name;
     let nameText = "";
     if (typeof rawName === "string") {
       nameText = rawName.trim();
-    } else if (typeof rawName === "object" && rawName !== null && "tr" in rawName) {
-      const tr: unknown = (rawName as { tr?: unknown }).tr;
-      nameText = typeof tr === "string" ? tr.trim() : "";
+    } else if (typeof rawName === "object" && rawName !== null && locale in rawName) {
+      const value: unknown = (rawName as Record<string, unknown>)[locale];
+      nameText = typeof value === "string" ? value.trim() : "";
     }
     if (!nameText) errors.push(`${doc._id}: missing name`);
   }

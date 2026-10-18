@@ -3,20 +3,33 @@
 export type ContentType = "treatment" | "doctor" | "branch" | "legal" | "core" | "blog" | "ignored";
 
 const KNOWN_BRANCHES = ["avcilar", "basaksehir", "altunizade"];
-const KNOWN_CORE = [
-  "hakkimizda",
-  "iletisim",
-  "fotograf-galerisi",
-  "insan-kaynaklari",
-  "hekimlerimiz",
-  "hizmetlerimiz",
-  "subelerimiz",
-  "blog",
-];
+const KNOWN_CORE: Record<"com" | "eu", string[]> = {
+  com: [
+    "hakkimizda",
+    "iletisim",
+    "fotograf-galerisi",
+    "insan-kaynaklari",
+    "hekimlerimiz",
+    "hizmetlerimiz",
+    "subelerimiz",
+    "blog",
+  ],
+  eu: [
+    "about-us",
+    "contact",
+    "image-gallery",
+    "human-resources",
+    "our-experts",
+    "our-services",
+    "branches",
+    "blog",
+  ],
+};
 const KNOWN_LEGAL = ["kvkk", "gizlilik-politikasi", "cerez-politikasi", "kvkk-aydinlatma-metni"];
 const DOCTOR_PREFIX = /^(dr-dt|dr|dt)-/;
 
-export function classifyUrl(pathname: string): ContentType {
+/** URL → content-type for a site's slug language (INT-10: com tr, eu en). */
+export function classifyUrl(pathname: string, site: "com" | "eu" = "com"): ContentType {
   const segments = pathname.split("/").filter(Boolean);
   const last = segments[segments.length - 1];
   if (last === undefined) return "core"; // homepage
@@ -29,7 +42,7 @@ export function classifyUrl(pathname: string): ContentType {
   }
   if (KNOWN_BRANCHES.includes(last)) return "branch";
   if (last.includes("kvkk") || KNOWN_LEGAL.includes(last)) return "legal";
-  if (KNOWN_CORE.includes(last)) return "core";
+  if (KNOWN_CORE[site].includes(last)) return "core";
   if (segments.length === 1) {
     return DOCTOR_PREFIX.test(last) ? "doctor" : "treatment";
   }

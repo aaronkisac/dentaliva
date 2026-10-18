@@ -8,7 +8,7 @@ import { existsSync } from "node:fs";
 
 const args = process.argv.slice(2);
 const dataset = args.includes("--dataset") ? args[args.indexOf("--dataset") + 1] : "production";
-const PROJECT = "86x2hbzv";
+const PROJECT = process.env.MIGRATION_PROJECT_ID ?? "86x2hbzv";
 
 /** First non-empty TR value across a doc's localized text fields. */
 function trText(doc, fields) {

@@ -3,8 +3,11 @@ import { fileURLToPath } from "node:url";
 
 import { describe, expect, it } from "vitest";
 
-import { extractPage } from "../src/extract";
 import { classifyUrl } from "../src/classify";
+import { treatmentToSanity } from "../src/transform";
+
+import { extractPage } from "../src/extract";
+
 import { isAllowed, isSitemapIndex, parseDisallowedPaths, parseLocs } from "../src/sitemap";
 
 const fixtureDir = fileURLToPath(new URL("./fixtures/", import.meta.url));
@@ -85,5 +88,46 @@ describe("page extraction", () => {
 describe("parseLocs edge cases", () => {
   it("filters empty loc entries", () => {
     expect(parseLocs("<loc></loc><loc>https://x.com/a</loc>")).toEqual(["https://x.com/a"]);
+  });
+});
+
+describe("eu source support (INT-10)", () => {
+  it("classifies eu English slugs", () => {
+    expect(classifyUrl("/", "eu")).toBe("core");
+    expect(classifyUrl("/about-us/", "eu")).toBe("core");
+    expect(classifyUrl("/our-experts/", "eu")).toBe("core");
+    expect(classifyUrl("/our-services/", "eu")).toBe("core");
+    expect(classifyUrl("/contact/", "eu")).toBe("core");
+    expect(classifyUrl("/branches/", "eu")).toBe("core");
+    expect(classifyUrl("/avcilar/", "eu")).toBe("branch");
+    expect(classifyUrl("/dr-dt-emel-ozdemir/", "eu")).toBe("doctor");
+    expect(classifyUrl("/dental-implant/", "eu")).toBe("treatment");
+    expect(classifyUrl("/blog/all-on-6-in-turkey-all-on-six-in-turkey/", "eu")).toBe("blog");
+    expect(classifyUrl("/blog/category/services-pages/", "eu")).toBe("ignored");
+  });
+
+  it("keeps the com classification intact (tr slugs)", () => {
+    expect(classifyUrl("/hakkimizda/")).toBe("core");
+    expect(classifyUrl("/hizmetlerimiz/implant-tedavisi/", "com")).toBe("ignored");
+    expect(classifyUrl("/implant-tedavisi/", "com")).toBe("treatment");
+  });
+
+  it("fills the en slot when transforming with locale=en", () => {
+    const doc = treatmentToSanity(
+      {
+        url: "https://www.dentaliva.eu/dental-implant/",
+        title: "Dental Implant | Dentaliva",
+        h1: "Dental Implant",
+        paragraphs: [
+          "Implants replace missing teeth with titanium roots.",
+          "## The Procedure",
+          "Placement happens in structured stages.",
+        ],
+      },
+      "en",
+    );
+    expect(doc._id).toBe("treatment.dental-implant");
+    expect(doc.name).toEqual({ en: "Dental Implant" });
+    expect(doc.summary).toEqual({ en: "Implants replace missing teeth with titanium roots." });
   });
 });
