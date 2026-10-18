@@ -16,18 +16,21 @@ describe("sanity image loader (ADR-006)", () => {
     expect(url).toContain("80");
   });
 
-  it("falls back to q=75 and the registry project when env is unset", () => {
+  it("falls back to q=75 and the registry project", () => {
     const url = sanityLoader({ src: "image-abc123-800x600-jpg", width: 320 });
     expect(url).toContain("cdn.sanity.io");
     expect(url).toContain("86x2hbzv");
     expect(url).toContain("q=75");
   });
 
-  it("honours SANITY_PROJECT_ID / SANITY_DATASET overrides", () => {
+  it("ignores SANITY_PROJECT_ID / SANITY_DATASET env values — the registry is authoritative", () => {
+    // A stale .env value must never cross-wire a SITE_ID=eu build onto the
+    // com project's CDN (INT-1); imageTarget() reads only site.sanity.
     process.env.SANITY_PROJECT_ID = "proj-test";
     process.env.SANITY_DATASET = "staging";
     const url = sanityLoader({ src: "image-abc123-800x600-jpg", width: 320 });
-    expect(url).toContain("proj-test");
-    expect(url).toContain("staging");
+    expect(url).toContain("86x2hbzv");
+    expect(url).toContain("production");
+    expect(url).not.toContain("proj-test");
   });
 });

@@ -9,6 +9,7 @@ import { buildMetadata, type SeoObject } from "@dentaliva/seo";
 import { urlForImage } from "@dentaliva/sanity-schema/image-url";
 
 import { site } from "./config";
+import { imageTarget } from "./image-target";
 
 export const siteUrl = `https://${site.domain}`;
 
@@ -28,14 +29,7 @@ export interface PageSeoInput {
 }
 
 export function sanityImageUrl(ref: string, width = 1200): string {
-  return urlForImage(
-    ref,
-    { width, quality: 75 },
-    {
-      projectId: process.env.SANITY_PROJECT_ID ?? site.sanity.projectId,
-      dataset: process.env.SANITY_DATASET ?? site.sanity.dataset,
-    },
-  );
+  return urlForImage(ref, { width, quality: 75 }, imageTarget());
 }
 
 export function absoluteUrl(path: string): string {
