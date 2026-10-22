@@ -48,6 +48,13 @@ describe("ReviewsSection carousel (DSN-52)", () => {
     expect(html).not.toContain("kelime30");
   });
 
+  it("renders tone-aware arrows visible on the navy section", () => {
+    const html = render({ items });
+    // Koyu zemin varyantı: lacivert ikon/çizgi DEĞİL, beyaz ikon + white/25 çizgi.
+    expect(html).toContain("border-white/25 text-white");
+    expect(html).not.toContain("border-[var(--dvn-line-gold)] text-navy");
+  });
+
   it("renders nothing without items", () => {
     expect(render({ items: [], heading: "Hastalarımızın Yorumları" })).toBe("");
   });

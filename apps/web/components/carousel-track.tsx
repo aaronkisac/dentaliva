@@ -7,11 +7,14 @@ function ArrowButton({
   label,
   onClick,
   disabled,
+  dark,
 }: {
   direction: "left" | "right";
   label: string;
   onClick: () => void;
   disabled: boolean;
+  /** Koyu bölüm zemini (bg-navy): lacivert ikon kaybolur — açık ikon + çizgi. */
+  dark?: boolean;
 }) {
   return (
     <button
@@ -19,7 +22,10 @@ function ArrowButton({
       aria-label={label}
       onClick={onClick}
       disabled={disabled}
-      className="flex h-11 w-11 items-center justify-center border border-[var(--dvn-line-gold)] text-navy transition-colors duration-300 hover:bg-gold hover:text-navy disabled:pointer-events-none disabled:opacity-40"
+      className={
+        "flex h-11 w-11 items-center justify-center border transition-colors duration-300 hover:bg-gold hover:text-navy disabled:pointer-events-none disabled:opacity-40 " +
+        (dark ? "border-white/25 text-white" : "border-[var(--dvn-line-gold)] text-navy")
+      }
     >
       <svg
         aria-hidden="true"
@@ -69,7 +75,7 @@ export function CarouselTrack({
   headerClassName?: string;
   /** Track'e ek sınıf (bölüm üst/alt boşlukları buradan verilir). */
   trackClassName?: string;
-  /** Nokta renkleri: light (açık zemin, varsayılan) | dark (espresso zemin). */
+  /** Nokta+ok renkleri: light (açık zemin, varsayılan) | dark (navy zemin). */
   tone?: "light" | "dark";
 }) {
   const { trackRef, index, maxIndex, goTo, syncFromScroll, markUserScroll } =
@@ -83,12 +89,14 @@ export function CarouselTrack({
         label={`Önceki ${ariaLabelPrefix}`}
         onClick={() => goTo(index - 1)}
         disabled={index === 0}
+        dark={dark}
       />
       <ArrowButton
         direction="right"
         label={`Sonraki ${ariaLabelPrefix}`}
         onClick={() => goTo(index + 1)}
         disabled={index >= maxIndex}
+        dark={dark}
       />
     </div>
   );
