@@ -117,7 +117,14 @@ dentaliva-eu`)
 The stale duplicate (`dentaliva-com.sanity.studio`) was removed via
 `npx sanity undeploy <appId> -y` (2026-10-18). To find an app's id, deploy
 to its url once — the result prints `deployment.appId`; there is no list
-API.
+API (the v2024-08-01 `projects/<id>/user-applications` endpoint works for
+verification — app record `title` is null, the manage list shows the
+deployment manifest's workspace title instead).
+
+The manage label is the config `title`, so it must stay locale-tagged:
+`Dentaliva Studio (TR|EN|NL)` derives from `studioLocale` (#306). A config
+title change + redeploy per canonical host refreshes all three labels; the
+`--title` flag only applies when a host is first registered.
 
 ## 4. Second instance: dentaliva.eu (INT milestone 12)
 
