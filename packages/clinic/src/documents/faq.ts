@@ -32,6 +32,14 @@ export const faq = defineType({
       type: "boolean",
       initialValue: false,
     }),
+    defineField({
+      // DSN-56: öge bazlı gizle/göster — anasayfa ve tedavi sayfası
+      // sorgularından düşer (misc.ts/treatment.ts filtreleri), doküman kalır.
+      name: "hidden",
+      title: "Gizle",
+      type: "boolean",
+      initialValue: false,
+    }),
   ],
   orderings: [{ title: "Sıralama", name: "orderAsc", by: [{ field: "order", direction: "asc" }] }],
   preview: { select: { title: "question.tr" } },

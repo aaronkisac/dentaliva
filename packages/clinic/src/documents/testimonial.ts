@@ -47,6 +47,14 @@ export const testimonial = defineType({
       hidden: true,
       validation: (rule) => rule.regex(/^[A-Za-z0-9_-]{6,20}$/, { name: "YouTube ID" }),
     }),
+    defineField({
+      // DSN-56: öge bazlı gizle/göster — yorum/video her iki bölümden de düşer
+      // (misc.ts testimonialListQuery filtresi), doküman CRM'de kalır.
+      name: "hidden",
+      title: "Gizle",
+      type: "boolean",
+      initialValue: false,
+    }),
   ],
   preview: { select: { title: "author", subtitle: "source" } },
 });

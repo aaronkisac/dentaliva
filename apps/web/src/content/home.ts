@@ -83,6 +83,12 @@ export interface HomePageContent {
   /** Copy sweep: ekip bölümünün CMS'ten gelen başlık/copy bloğu. */
   teamSection?: HomeTeamSection;
   cta?: { title?: LocalizedPair; text?: LocalizedPair };
+  /**
+   * DSN-56: içerik bazlı gizle/göster — site config sırasından düşülecek
+   * bölüm id'leri (HomeSectionId). Alan unset/null olduğunda hiçbir bölüm
+   * gizlenmez.
+   */
+  hiddenSections?: string[];
 }
 
 export interface SiteSettingsLite {

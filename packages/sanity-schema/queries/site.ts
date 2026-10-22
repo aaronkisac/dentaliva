@@ -26,7 +26,8 @@ export const homePageQuery = defineQuery(`*[_type == "homePage"][0]{
   stats,
   gallery[]{ "asset": { "_ref": asset._ref }, "alt": alt, "lqip": asset->metadata.lqip },
   onceSonraGallery[]{ "asset": { "_ref": asset._ref }, "alt": alt, "lqip": asset->metadata.lqip },
-  onceSonraCases[]{
+  // DSN-56: [@.hidden != true] — dizi öğesinde hidden unset/false ise geçer.
+  onceSonraCases[@.hidden != true]{
     before { "ref": asset._ref, alt, "lqip": asset->metadata.lqip },
     after { "ref": asset._ref, alt, "lqip": asset->metadata.lqip },
     title,
@@ -34,5 +35,6 @@ export const homePageQuery = defineQuery(`*[_type == "homePage"][0]{
     treatment->{ name, "slug": slug.current }
   },
   teamSection,
-  cta
+  cta,
+  hiddenSections
 }`);

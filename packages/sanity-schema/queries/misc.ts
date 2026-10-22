@@ -15,11 +15,12 @@ export const branchListQuery = defineQuery(
 );
 
 export const faqListQuery = defineQuery(
-  `*[_type == "faq" && displayOnHome == true] | order(order asc){ question, answer }`,
+  // DSN-56: hidden != true — alan unset/false olan dokümanlar geçer.
+  `*[_type == "faq" && displayOnHome == true && hidden != true] | order(order asc){ question, answer }`,
 );
 
 export const testimonialListQuery = defineQuery(
-  `*[_type == "testimonial" && rating >= 4] | order(_createdAt desc){ author, quote, rating, source, youtubeId }`,
+  `*[_type == "testimonial" && rating >= 4 && hidden != true] | order(_createdAt desc){ author, quote, rating, source, youtubeId }`,
 );
 
 export const blogListQuery = defineQuery(
