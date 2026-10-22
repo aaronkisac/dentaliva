@@ -104,6 +104,13 @@ export const homePage = defineType({
               type: "reference",
               to: [{ type: "treatment" }],
             },
+            {
+              // DSN-56: öge bazlı gizle/göster — vaka siteden düşer, CRM'de kalır.
+              name: "hidden",
+              title: "Gizle",
+              type: "boolean",
+              initialValue: false,
+            },
           ],
         },
       ],
@@ -127,6 +134,31 @@ export const homePage = defineType({
         { name: "title", type: "localeString" },
         { name: "text", type: "localeText" },
       ],
+    }),
+    defineField({
+      // DSN-56: içerik bazlı gizle/göster — bölüm verisi CRM'de kalır, yalnız
+      // anasayfa render'ından düşer (compose.tsx HomeSections filtresi).
+      name: "hiddenSections",
+      title: "Gizlenen bölümler",
+      description:
+        "Seçilen bölümler anasayfada gösterilmez (içerikleri silinmez). Tümünü geri açmak için listeyi boşaltın.",
+      type: "array",
+      of: [{ type: "string" }],
+      options: {
+        list: [
+          { title: "Hero", value: "hero" },
+          { title: "Hizmet şeridi", value: "ticker" },
+          { title: "Hizmetler carousel'i", value: "quickServices" },
+          { title: "Hakkında", value: "about" },
+          { title: "Video yorumlar", value: "videoTestimonials" },
+          { title: "Hasta yorumları", value: "reviews" },
+          { title: "Fotoğraf galerisi", value: "gallery" },
+          { title: "Önce/Sonra vakalar", value: "onceSonra" },
+          { title: "Ekip", value: "doctors" },
+          { title: "SSS", value: "faq" },
+          { title: "CTA bandı", value: "cta" },
+        ],
+      },
     }),
   ],
   preview: { select: { title: "hero.headline.tr" } },

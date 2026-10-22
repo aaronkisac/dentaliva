@@ -21,7 +21,11 @@ export const treatmentBySlugQuery = defineQuery(
     benefits,
     steps,
     priceNote,
-    faqs[]->{ question, answer },
+    // DSN-56: hidden FAQ'lar tedavi sayfasından da düşer. Referans hedefindeki
+    // alan için filtre deref sonrası uygulanır; GROQ'un proj-filtre birleşimi
+    // (koseli + ok + koseli, parantezsiz) filtreyi deref içine alıp tüm
+    // öğeleri null yapıyor — bileşik parantezli form doğru (canlı API doğrulu).
+    "faqs": (faqs[]->{ question, answer, hidden })[@.hidden != true]{ question, answer },
     doctors[]->{ name, slug, title, photo { "ref": asset._ref, alt } },
     seo
   }`,

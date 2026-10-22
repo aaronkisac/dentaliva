@@ -99,13 +99,18 @@ export const sectionRegistry: Record<HomeSectionId, SectionRenderer> = {
 };
 
 export function HomeSections({ data, order }: { data: HomeData; order: HomeSectionId[] }) {
+  // DSN-56: CRM'den gizlenen bölümler sıradan çıkar (veri silinmez; boş
+  // liste/unset alan hiçbir bölümü gizlemez).
+  const hidden = new Set(data.homePage?.hiddenSections ?? []);
   return (
     <>
-      {order.map((id) => (
-        <div key={id} data-section={id}>
-          {sectionRegistry[id](data)}
-        </div>
-      ))}
+      {order
+        .filter((id) => !hidden.has(id))
+        .map((id) => (
+          <div key={id} data-section={id}>
+            {sectionRegistry[id](data)}
+          </div>
+        ))}
     </>
   );
 }
