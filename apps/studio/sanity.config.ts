@@ -1,4 +1,5 @@
 import { schemaTypes, singletonTypes } from "@dentaliva/clinic";
+import { studioLocale } from "@dentaliva/sanity-schema";
 import { defineConfig } from "sanity";
 import { structureTool } from "sanity/structure";
 
@@ -7,9 +8,13 @@ import { structureTool } from "sanity/structure";
 const projectId = process.env.SANITY_STUDIO_PROJECT_ID ?? "dentaliva";
 const dataset = process.env.SANITY_STUDIO_DATASET ?? "production";
 
+// The locale tag distinguishes the three deployments in sanity.io/manage's
+// "Studios & Apps" list, which would otherwise show three identical names.
+const localeTag = { tr: "TR", en: "EN", nl: "NL" } as const;
+
 export default defineConfig({
   name: "dentaliva",
-  title: "Dentaliva Studio",
+  title: `Dentaliva Studio (${localeTag[studioLocale]})`,
   projectId,
   dataset,
   plugins: [
