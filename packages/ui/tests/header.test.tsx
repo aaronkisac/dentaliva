@@ -311,7 +311,7 @@ describe("gruplu açılır menü (mega panel)", () => {
     return renderUi(
       <Header
         items={menuItems}
-        logo={<span>Dentaliva</span>}
+        logo={logo}
         labels={{ toggleMenu: "Menüyü aç/kapat", closeMenu: "Menüyü kapat" }}
       />,
     );
@@ -403,7 +403,7 @@ describe("gruplu açılır menü (mega panel)", () => {
     await expectNoA11yViolations(
       <Header
         items={menuItems}
-        logo={<span>Dentaliva</span>}
+        logo={logo}
         labels={{ toggleMenu: "Menüyü aç/kapat", closeMenu: "Menüyü kapat" }}
       />,
     );
@@ -436,7 +436,7 @@ describe("gruplu menü varyant dalları", () => {
     return renderUi(
       <Header
         items={darkItems}
-        logo={<span>Dentaliva</span>}
+        logo={logo}
         labels={{ toggleMenu: "Menüyü aç/kapat", closeMenu: "Menüyü kapat" }}
       />,
     );
