@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import { branch } from "../src/documents/branch";
 import { doctor } from "../src/documents/doctor";
+import { siteCopy } from "../src/documents/site-copy";
 import { treatment } from "../src/documents/treatment";
 
 type AnyField = { name: string; validation?: unknown; type?: string; options?: unknown };
@@ -70,5 +71,17 @@ describe("clinic core documents", () => {
   it("slug fields source from their names", () => {
     expect(fieldOf(treatment, "slug").options).toMatchObject({ source: "name.tr" });
     expect(fieldOf(doctor, "slug").options).toMatchObject({ source: "name" });
+  });
+
+  it("navMenu group requires a heading or at least one treatment", () => {
+    const navMenu = fieldOf(siteCopy, "navMenu") as AnyField & { of?: AnyField[] };
+    const groupRule = navMenu.of?.[0]?.validation;
+    expect(groupRule).toBeDefined();
+    const { rule, captured } = fakeRule();
+    (groupRule as (r: unknown) => unknown)(rule);
+    expect(captured.custom?.(undefined)).toContain("en az bir başlık ya da tedavi");
+    expect(captured.custom?.({})).toContain("en az bir başlık ya da tedavi");
+    expect(captured.custom?.({ heading: { tr: "Diş Estetiği" } })).toBe(true);
+    expect(captured.custom?.({ treatments: [{}] })).toBe(true);
   });
 });

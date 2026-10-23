@@ -90,6 +90,51 @@ export const siteCopy = defineType({
         { name: "notFoundBackLink", title: "404 ana sayfa bağlantısı", type: "localeText" },
         { name: "onceSonraBefore", title: "Önce/Sonra 'Önce' rozeti", type: "localeText" },
         { name: "onceSonraAfter", title: "Önce/Sonra 'Sonra' rozeti", type: "localeText" },
+        {
+          name: "menuAllLink",
+          title: "Menü 'tümünü gör' bağlantısı",
+          type: "localeText",
+          description: "Tedaviler açılır menüsünün altındaki liste sayfası bağlantısı.",
+        },
+      ],
+    }),
+    defineField({
+      name: "navMenu",
+      title: "Tedaviler menüsü (header açılır menü)",
+      description:
+        "Header'daki Tedaviler menüsünün grupları — sırayla sütunlara düşer. Başlıksız grup, başlıklı sütunların altına hizalanır. Menü boşsa Tedaviler bağlantısı düz kalır (açılmaz).",
+      type: "array",
+      of: [
+        {
+          type: "object",
+          name: "navMenuGroup",
+          fields: [
+            {
+              name: "heading",
+              title: "Grup başlığı",
+              type: "localeString",
+              description: "Boş bırakılabilir — başlıksız sütun olarak çizilir.",
+            },
+            {
+              name: "headingPage",
+              title: "Başlık sayfası (başlığı linke çevirir)",
+              type: "reference",
+              to: [{ type: "treatment" }],
+            },
+            {
+              name: "treatments",
+              title: "Tedaviler",
+              type: "array",
+              of: [{ type: "reference", to: [{ type: "treatment" }] }],
+            },
+          ],
+          validation: (rule) =>
+            rule.custom((group: { heading?: unknown; treatments?: unknown[] } | undefined) =>
+              !group || (!group.heading && !(group.treatments ?? []).length)
+                ? "Grup en az bir başlık ya da tedavi içermeli."
+                : true,
+            ),
+        },
       ],
     }),
   ],

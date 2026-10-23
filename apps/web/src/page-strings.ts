@@ -25,7 +25,7 @@ const tr = {
   // section/listing titles (metadata + PageHero + breadcrumbs)
   aboutTitle: "Hakkımızda",
   aboutDescription: "Dentaliva hakkında",
-  servicesTitle: "Hizmetlerimiz",
+  servicesTitle: "Tedavilerimiz",
   doctorsTitle: "Hekimlerimiz",
   branchesTitle: "Şubelerimiz",
   contactTitle: "İletişim",
@@ -62,7 +62,7 @@ const en: typeof tr = {
 
   aboutTitle: "About Us",
   aboutDescription: "About Dentaliva",
-  servicesTitle: "Services",
+  servicesTitle: "Our Treatments",
   doctorsTitle: "Our Doctors",
   branchesTitle: "Branches",
   contactTitle: "Contact",

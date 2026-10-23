@@ -18,7 +18,7 @@ const tr = {
 
   // hero CTAs (client hero)
   bookCta: "Randevu Al",
-  exploreServicesCta: "Hizmetlerimizi Keşfedin",
+  exploreServicesCta: "Tedavilerimizi Keşfedin",
 
   // social proof (client testimonials)
   googleBadge: "Google Değerlendirmeleri · 5,0",
@@ -73,7 +73,7 @@ const en: typeof tr = {
   errorRetry: "Try again",
 
   bookCta: "Book an Appointment",
-  exploreServicesCta: "Explore our services",
+  exploreServicesCta: "Explore our treatments",
 
   googleBadge: "Google Reviews · 5.0",
   patientVideoAlt: "Patient video",

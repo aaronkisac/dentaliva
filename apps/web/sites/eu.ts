@@ -20,7 +20,7 @@ export const site = {
   },
   nav: [
     { label: "About Us", href: "/about" },
-    { label: "Services", href: "/services" },
+    { label: "Our Treatments", href: "/services" },
     { label: "Our Doctors", href: "/doctors" },
     { label: "Branches", href: "/branches" },
     { label: "Blog", href: "/blog" },
