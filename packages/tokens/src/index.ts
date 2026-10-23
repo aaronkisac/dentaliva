@@ -14,4 +14,5 @@ export {
 } from "./tokens";
 export { contrastRatio, hexToRgb, luminance, meetsWcag } from "./contrast";
 export { contrastPairs, prohibitedPairs, type ContrastPair } from "./semantic";
-export { cssVariables, renderTokensCss } from "./to-css";
+export { cssVariables, renderPalettesCss, renderTokensCss } from "./to-css";
+export { defaultPaletteId, palettes, paletteIds, type Palette, type PaletteId } from "./palettes";

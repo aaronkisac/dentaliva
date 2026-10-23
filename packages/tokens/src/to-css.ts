@@ -12,6 +12,7 @@ import {
   typeScale,
   zIndex,
 } from "./tokens";
+import { palettes, type Palette } from "./palettes";
 
 /** Explicit var names keep the generated CSS stable and greppable. */
 export const cssVariables: Record<string, string> = {
@@ -71,4 +72,40 @@ export function renderTokensCss(): string {
   return `/* GENERATED from src/tokens.ts — edit tokens.ts, then run:
      pnpm --filter @dentaliva/tokens test -- -u */
 :root {\n${lines.join("\n")}\n}\n`;
+}
+
+/** Same explicit-name discipline as cssVariables, keyed by Palette field. */
+const paletteVariables: Record<keyof Palette, string> = {
+  navy: "--dvn-navy",
+  navy2: "--dvn-navy-2",
+  navy3: "--dvn-navy-3",
+  gold: "--dvn-gold",
+  goldSoft: "--dvn-gold-soft",
+  goldDeep: "--dvn-gold-deep",
+  ivory: "--dvn-ivory",
+  ivory2: "--dvn-ivory-2",
+  ink: "--dvn-ink",
+  muted: "--dvn-muted",
+  lineGold: "--dvn-line-gold",
+  lineSoft: "--dvn-line-soft",
+  gradGold: "--dvn-grad-gold",
+  gradNavy: "--dvn-grad-navy",
+  shadowSoft: "--dvn-shadow-soft",
+  shadowLift: "--dvn-shadow-lift",
+  shadowGold: "--dvn-shadow-gold",
+};
+
+/** One [data-palette] override block per alternate palette (DSN-57). Equal
+    specificity with the :root block above — palettes.css must be imported
+    AFTER tokens.css so the attribute wins on source order. */
+export function renderPalettesCss(): string {
+  const blocks = Object.entries(palettes).map(([id, palette]) => {
+    const lines = Object.entries(paletteVariables).map(
+      ([key, name]) => `  ${name}: ${palette[key as keyof Palette]};`,
+    );
+    return `[data-palette="${id}"] {\n${lines.join("\n")}\n}`;
+  });
+  return `/* GENERATED from src/palettes.ts — edit palettes.ts, then run:
+     pnpm --filter @dentaliva/tokens test -- -u */
+${blocks.join("\n\n")}\n`;
 }

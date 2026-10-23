@@ -8,6 +8,8 @@
  *
  * Turkish is the source of truth; `en` must satisfy the same shape.
  */
+import type { PaletteId } from "@dentaliva/tokens";
+
 const tr = {
   // error boundaries (client — cannot fetch the CMS)
   errorTitle: "Bir sorun oluştu",
@@ -52,6 +54,17 @@ const tr = {
   successMessage: "Talebiniz alındı. En kısa sürede size dönüş yapacağız.",
   submitErrorFallback: "Gönderim başarısız oldu. Lütfen tekrar deneyin.",
   connectionError: "Bağlantı hatası. Lütfen tekrar deneyin.",
+
+  // palette switcher (client — DSN-57)
+  themeOpenAria: "Renk paleti seçiciyi aç",
+  themeLabel: "Renk paleti",
+  themeClose: "Renk paleti seçiciyi kapat",
+  paletteNames: {
+    espresso: "Espresso",
+    gece: "Gece Mavisi",
+    deniz: "Deniz Yeşili",
+    bordeaux: "Bordeaux",
+  } satisfies Record<PaletteId, string>,
 };
 
 const en: typeof tr = {
@@ -92,6 +105,16 @@ const en: typeof tr = {
   successMessage: "We've received your request. We'll get back to you as soon as possible.",
   submitErrorFallback: "Submission failed. Please try again.",
   connectionError: "Connection error. Please try again.",
+
+  themeOpenAria: "Open the colour palette picker",
+  themeLabel: "Colour palette",
+  themeClose: "Dismiss the colour palette picker",
+  paletteNames: {
+    espresso: "Espresso",
+    gece: "Midnight Blue",
+    deniz: "Sea Green",
+    bordeaux: "Bordeaux",
+  } satisfies Record<PaletteId, string>,
 };
 
 const nl: typeof tr = {
@@ -132,6 +155,16 @@ const nl: typeof tr = {
   successMessage: "Uw aanvraag is ontvangen. Wij nemen zo snel mogelijk contact met u op.",
   submitErrorFallback: "Verzenden mislukt. Probeer het opnieuw.",
   connectionError: "Verbindingsfout. Probeer het opnieuw.",
+
+  themeOpenAria: "Kleurpaletkiezer openen",
+  themeLabel: "Kleurpalet",
+  themeClose: "Kleurpaletkiezer sluiten",
+  paletteNames: {
+    espresso: "Espresso",
+    gece: "Middernachtblauw",
+    deniz: "Zeegroen",
+    bordeaux: "Bordeaux",
+  } satisfies Record<PaletteId, string>,
 };
 
 const strings = { tr, en, nl } as const;

@@ -1,0 +1,61 @@
+/* GENERATED from src/palettes.ts — edit palettes.ts, then run:
+     pnpm --filter @dentaliva/tokens test -- -u */
+[data-palette="gece"] {
+  --dvn-navy: #0c1f38;
+  --dvn-navy-2: #122b4a;
+  --dvn-navy-3: #1a3a5f;
+  --dvn-gold: #c9a35c;
+  --dvn-gold-soft: #e6cfa0;
+  --dvn-gold-deep: #a8823d;
+  --dvn-ivory: #faf7f2;
+  --dvn-ivory-2: #f3eee4;
+  --dvn-ink: #2a3648;
+  --dvn-muted: #6b7686;
+  --dvn-line-gold: rgba(201, 163, 92, 0.35);
+  --dvn-line-soft: rgba(12, 31, 56, 0.1);
+  --dvn-grad-gold: linear-gradient(120deg, #a8823d 0%, #e6cfa0 45%, #c9a35c 100%);
+  --dvn-grad-navy: linear-gradient(160deg, #0c1f38 0%, #1a3a5f 100%);
+  --dvn-shadow-soft: 0 10px 30px -12px rgba(12, 31, 56, 0.14);
+  --dvn-shadow-lift: 0 30px 60px -25px rgba(12, 31, 56, 0.3);
+  --dvn-shadow-gold: 0 18px 40px -18px rgba(201, 163, 92, 0.55);
+}
+
+[data-palette="deniz"] {
+  --dvn-navy: #0d2630;
+  --dvn-navy-2: #12333e;
+  --dvn-navy-3: #1a4553;
+  --dvn-gold: #8fd0c3;
+  --dvn-gold-soft: #c9e8e1;
+  --dvn-gold-deep: #2e7d72;
+  --dvn-ivory: #f7fafa;
+  --dvn-ivory-2: #eaf1f0;
+  --dvn-ink: #22333a;
+  --dvn-muted: #64777d;
+  --dvn-line-gold: rgba(143, 208, 195, 0.4);
+  --dvn-line-soft: rgba(13, 38, 48, 0.1);
+  --dvn-grad-gold: linear-gradient(120deg, #2e7d72 0%, #c9e8e1 45%, #8fd0c3 100%);
+  --dvn-grad-navy: linear-gradient(160deg, #0d2630 0%, #1a4553 100%);
+  --dvn-shadow-soft: 0 10px 30px -12px rgba(13, 38, 48, 0.14);
+  --dvn-shadow-lift: 0 30px 60px -25px rgba(13, 38, 48, 0.3);
+  --dvn-shadow-gold: 0 18px 40px -18px rgba(143, 208, 195, 0.5);
+}
+
+[data-palette="bordeaux"] {
+  --dvn-navy: #291016;
+  --dvn-navy-2: #361620;
+  --dvn-navy-3: #47202c;
+  --dvn-gold: #cf9a6a;
+  --dvn-gold-soft: #ecd0bd;
+  --dvn-gold-deep: #9c5f41;
+  --dvn-ivory: #fbf6f3;
+  --dvn-ivory-2: #f4ebe6;
+  --dvn-ink: #302226;
+  --dvn-muted: #7d6a6e;
+  --dvn-line-gold: rgba(207, 154, 106, 0.35);
+  --dvn-line-soft: rgba(41, 16, 22, 0.1);
+  --dvn-grad-gold: linear-gradient(120deg, #9c5f41 0%, #ecd0bd 45%, #cf9a6a 100%);
+  --dvn-grad-navy: linear-gradient(160deg, #291016 0%, #47202c 100%);
+  --dvn-shadow-soft: 0 10px 30px -12px rgba(41, 16, 22, 0.14);
+  --dvn-shadow-lift: 0 30px 60px -25px rgba(41, 16, 22, 0.3);
+  --dvn-shadow-gold: 0 18px 40px -18px rgba(207, 154, 106, 0.55);
+}
