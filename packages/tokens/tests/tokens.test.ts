@@ -6,6 +6,7 @@ import { describe, expect, it } from "vitest";
 import { contrastRatio, hexToRgb, meetsWcag } from "../src/contrast";
 import { palettes, paletteIds, type Palette } from "../src/palettes";
 import { contrastPairs, prohibitedPairs } from "../src/semantic";
+import { paletteSwatches } from "../src/swatches";
 import { color } from "../src/tokens";
 import { renderPalettesCss, renderTokensCss } from "../src/to-css";
 
@@ -65,12 +66,16 @@ describe("generated tokens.css", () => {
   }
 });
 
-/** semantic.ts pairs mapped onto palette roles — white is palette-neutral. */
+/** semantic.ts pairs mapped onto palette roles — white is palette-neutral.
+    DSN-57b: alternates also carry `muted` on `ivory` at 4.5 — the default
+    espresso fails that documented prohibited pair (4.39, semantic.ts), and
+    new themes must not inherit it. */
 function rolePairs(p: Palette) {
   return [
     { usage: "body text on ivory sections", fg: p.ink, bg: p.ivory, min: 4.5 },
     { usage: "body text on white", fg: p.ink, bg: "#ffffff", min: 4.5 },
     { usage: "secondary text on white", fg: p.muted, bg: "#ffffff", min: 4.5 },
+    { usage: "secondary text on ivory sections", fg: p.muted, bg: p.ivory, min: 4.5 },
     { usage: "accent text on navy sections", fg: p.gold, bg: p.navy, min: 4.5 },
     { usage: "soft accent text on navy", fg: p.goldSoft, bg: p.navy, min: 4.5 },
     { usage: "primary text on navy", fg: "#ffffff", bg: p.navy, min: 4.5 },
@@ -93,8 +98,30 @@ describe("alternate palettes (DSN-57)", () => {
     expect(paletteIds[0]).toBe("espresso");
   });
 
+  it("keeps the client swatch previews in sync with the palette sources", () => {
+    for (const [id, swatch] of Object.entries(paletteSwatches)) {
+      const palette =
+        id === "espresso"
+          ? { navy: color.navy, gold: color.gold }
+          : palettes[id as keyof typeof palettes];
+      expect(swatch.dark, id).toBe(palette.navy);
+      expect(swatch.accent, id).toBe(palette.gold);
+    }
+  });
+
   it("orders the id registry as default first, then alternates", () => {
-    expect(paletteIds).toEqual(["espresso", "gece", "deniz", "bordeaux"]);
+    expect(paletteIds).toEqual([
+      "espresso",
+      "gece",
+      "deniz",
+      "bordeaux",
+      "zeytin",
+      "lila",
+      "okyanus",
+      "gul",
+      "tarcin",
+      "orman",
+    ]);
   });
 });
 

@@ -64,6 +64,12 @@ const tr = {
     gece: "Gece Mavisi",
     deniz: "Deniz Yeşili",
     bordeaux: "Bordeaux",
+    zeytin: "Zeytin",
+    lila: "Lila",
+    okyanus: "Okyanus",
+    gul: "Gül",
+    tarcin: "Tarçın",
+    orman: "Orman",
   } satisfies Record<PaletteId, string>,
 };
 
@@ -114,6 +120,12 @@ const en: typeof tr = {
     gece: "Midnight Blue",
     deniz: "Sea Green",
     bordeaux: "Bordeaux",
+    zeytin: "Olive",
+    lila: "Lilac",
+    okyanus: "Ocean",
+    gul: "Rose",
+    tarcin: "Cinnamon",
+    orman: "Forest",
   } satisfies Record<PaletteId, string>,
 };
 
@@ -164,6 +176,12 @@ const nl: typeof tr = {
     gece: "Middernachtblauw",
     deniz: "Zeegroen",
     bordeaux: "Bordeaux",
+    zeytin: "Olijf",
+    lila: "Lila",
+    okyanus: "Oceaan",
+    gul: "Roze",
+    tarcin: "Kaneel",
+    orman: "Bos",
   } satisfies Record<PaletteId, string>,
 };
 
