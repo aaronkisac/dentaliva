@@ -1,6 +1,6 @@
 import { act } from "react";
 import { createRoot, type Root } from "react-dom/client";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { ThemeSwitcher } from "../components/theme-switcher";
 
@@ -25,60 +25,101 @@ function cleanup(): void {
   container = null;
   delete document.documentElement.dataset.palette;
   localStorage.clear();
+  vi.useRealTimers();
 }
 
 const wrapper = () => document.querySelector<HTMLElement>("[data-theme-switcher]")!;
 const tab = () => wrapper().querySelector<HTMLButtonElement>("button")!;
-const select = () => document.querySelector<HTMLSelectElement>("#dvn-theme-select")!;
+const swatches = () => [...wrapper().querySelectorAll<HTMLButtonElement>('[role="radio"]')];
+const swatch = (id: string) => document.getElementById(`dvn-swatch-${id}`) as HTMLButtonElement;
 const dismiss = () =>
   document.querySelector<HTMLButtonElement>('button[aria-label="Renk paleti seçiciyi kapat"]')!;
 
 afterEach(cleanup);
 
-describe("ThemeSwitcher (DSN-57)", () => {
-  it("renders only the collapsed edge tab while closed", () => {
-    mount();
-    expect(tab().getAttribute("aria-label")).toBe("Renk paleti seçiciyi aç");
-    expect(tab().getAttribute("aria-expanded")).toBe("false");
-    expect(document.querySelector("select")).toBeNull();
-  });
-
-  it("opens the panel with all palette options and closes via the tab", () => {
+describe("ThemeSwitcher swatch menu (DSN-57b)", () => {
+  it("renders ten color swatches with localized names, espresso checked", () => {
     mount();
     act(() => tab().click());
-    expect(tab().getAttribute("aria-expanded")).toBe("true");
-    const options = [...select().options].map((option) => [option.value, option.textContent]);
-    expect(options).toEqual([
-      ["espresso", "Espresso"],
-      ["gece", "Gece Mavisi"],
-      ["deniz", "Deniz Yeşili"],
-      ["bordeaux", "Bordeaux"],
+    expect(swatches()).toHaveLength(10);
+    const names = swatches().map((button) => button.getAttribute("aria-label"));
+    expect(names[0]).toBe("Espresso");
+    expect(names.at(-1)).toBe("Orman");
+    // Görsel isimsiz: ad yalnızca erişilebilir ad + tooltip
+    expect(swatches()[1]!.textContent).toBe("");
+    expect(swatches()[1]!.getAttribute("title")).toBe("Gece Mavisi");
+    expect(swatches().filter((b) => b.getAttribute("aria-checked") === "true")).toEqual([
+      swatch("espresso"),
     ]);
-    act(() => tab().click());
-    expect(document.querySelector("select")).toBeNull();
+    // Roving tabindex: yalnızca seçili çip sekme sırasında
+    expect(swatch("espresso").getAttribute("tabindex")).toBe("0");
+    expect(swatch("gece").getAttribute("tabindex")).toBe("-1");
   });
 
-  it("applies the chosen palette to the document element and storage", () => {
+  it("applies the clicked palette and moves the checked state", () => {
+    mount();
+    act(() => tab().click());
+    act(() => swatch("bordeaux").click());
+    expect(document.documentElement.dataset.palette).toBe("bordeaux");
+    expect(localStorage.getItem("dvn-palette")).toBe("bordeaux");
+    expect(swatch("bordeaux").getAttribute("aria-checked")).toBe("true");
+    expect(swatch("espresso").getAttribute("aria-checked")).toBe("false");
+  });
+
+  it("checks the stored palette after mount (hydration order)", () => {
+    localStorage.setItem("dvn-palette", "deniz");
+    mount();
+    act(() => tab().click());
+    expect(swatch("deniz").getAttribute("aria-checked")).toBe("true");
+  });
+
+  it("selects the next palette with ArrowRight and focuses it (APG radio)", () => {
     mount();
     act(() => tab().click());
     act(() => {
-      select().value = "gece";
-      select().dispatchEvent(new Event("change", { bubbles: true }));
+      swatch("espresso").dispatchEvent(
+        new KeyboardEvent("keydown", { key: "ArrowRight", bubbles: true }),
+      );
     });
     expect(document.documentElement.dataset.palette).toBe("gece");
-    expect(localStorage.getItem("dvn-palette")).toBe("gece");
+    expect(document.activeElement).toBe(swatch("gece"));
     act(() => {
-      select().value = "espresso";
-      select().dispatchEvent(new Event("change", { bubbles: true }));
+      swatch("gece").dispatchEvent(new KeyboardEvent("keydown", { key: "End", bubbles: true }));
     });
+    expect(document.documentElement.dataset.palette).toBe("orman");
+    act(() => {
+      swatch("orman").dispatchEvent(new KeyboardEvent("keydown", { key: "Home", bubbles: true }));
+    });
+    // Varsayılan palet attribute'suzdur — seçim onu kaldırır.
     expect(document.documentElement.dataset.palette).toBeUndefined();
   });
 
-  it("syncs the select from storage after mount (hydration order)", () => {
-    localStorage.setItem("dvn-palette", "bordeaux");
+  it("keeps the panel open while hovered; closes after the grace delay", () => {
+    vi.useFakeTimers();
     mount();
     act(() => tab().click());
-    expect(select().value).toBe("bordeaux");
+    act(() => {
+      wrapper().dispatchEvent(new Event("mouseleave"));
+    });
+    expect(document.querySelector('[role="radiogroup"]')).not.toBeNull();
+    act(() => {
+      vi.advanceTimersByTime(300);
+    });
+    expect(document.querySelector('[role="radiogroup"]')).toBeNull();
+    expect(tab()).not.toBeNull();
+  });
+
+  it("cancels the close when the pointer returns within the grace window", () => {
+    vi.useFakeTimers();
+    mount();
+    act(() => tab().click());
+    act(() => {
+      wrapper().dispatchEvent(new Event("mouseleave"));
+      vi.advanceTimersByTime(200);
+      wrapper().dispatchEvent(new Event("mouseenter"));
+      vi.advanceTimersByTime(400);
+    });
+    expect(document.querySelector('[role="radiogroup"]')).not.toBeNull();
   });
 
   it("closes the panel on Escape and returns focus to the tab", () => {
@@ -87,7 +128,7 @@ describe("ThemeSwitcher (DSN-57)", () => {
     act(() => {
       wrapper().dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", bubbles: true }));
     });
-    expect(document.querySelector("select")).toBeNull();
+    expect(document.querySelector('[role="radiogroup"]')).toBeNull();
     expect(document.activeElement).toBe(tab());
   });
 
@@ -97,18 +138,7 @@ describe("ThemeSwitcher (DSN-57)", () => {
     act(() => {
       wrapper().dispatchEvent(new FocusEvent("focusout", { bubbles: true, relatedTarget: null }));
     });
-    expect(document.querySelector("select")).toBeNull();
-  });
-
-  it("keeps the panel open while focus stays inside", () => {
-    mount();
-    act(() => tab().click());
-    act(() => {
-      wrapper().dispatchEvent(
-        new FocusEvent("focusout", { bubbles: true, relatedTarget: select() }),
-      );
-    });
-    expect(select()).not.toBeNull();
+    expect(document.querySelector('[role="radiogroup"]')).toBeNull();
   });
 
   it("dismisses the whole widget via the X button", () => {
