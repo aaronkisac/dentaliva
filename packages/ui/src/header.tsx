@@ -14,10 +14,24 @@ export interface NavLink {
   children?: Array<{ label: string; href: string }>;
 }
 
+/**
+ * Brand lockup shown as the home link. `srcDark` is the variant rendered while
+ * the header is transparent over the dark home hero (DSN-58: the original
+ * Dentaliva logo ships as a light and a white file); alt text comes from the
+ * caller — the package hardcodes no copy.
+ */
+export interface HeaderLogo {
+  src: string;
+  srcDark?: string;
+  alt: string;
+  width: number;
+  height: number;
+}
+
 export interface HeaderProps {
   items: NavLink[];
   cta?: { label: string; href: string };
-  logo: React.ReactNode;
+  logo: HeaderLogo;
   contact?: { phone: string; email: string };
   /** Locale chrome copy — the package hardcodes no language (i18n-ready). */
   labels: { toggleMenu: string; closeMenu: string };
@@ -278,18 +292,20 @@ export function Header({ items, cta, logo, contact, labels }: HeaderProps) {
       )}
     >
       <div className="mx-auto flex h-[var(--dvn-header-h)] max-w-[var(--dvn-container-max)] items-center justify-between gap-6 px-[var(--dvn-container-gutter)]">
-        <div className="flex items-center gap-3">
-          <span
-            aria-hidden="true"
-            className="flex h-9 w-9 items-center justify-center bg-gold font-serif text-xl font-bold text-navy"
-          >
-            D
-          </span>
-          {/* Wordmark, dark/light durumuna uyan diğer başlık öğeleriyle birlikte
-              renk değiştirir — logo düğümü renksiz geldiği için buradan miras
-              alır (şeffaf hero üstünde koyu wordmark okunmuyordu). */}
-          <span className={cn(dark ? "text-ivory" : "text-navy")}>{logo}</span>
-        </div>
+        {/* DSN-58: orijinal marka kilidi (kuğu logosu) home bağlantısıdır —
+            header'da daha önce link yoktu. Varyant dark/light durumunu izler:
+            şeffaf hero üstünde beyaz, ışık header'da renkli. Kaynak dosya
+            yerel public asset'idir; Sanity custom loader'ı yalnız CDN
+            görsellerini hedefler, bu yüzden düz img. */}
+        <Link href="/" className="flex shrink-0 items-center">
+          <img
+            src={dark ? (logo.srcDark ?? logo.src) : logo.src}
+            alt={logo.alt}
+            width={logo.width}
+            height={logo.height}
+            className="h-11 w-auto"
+          />
+        </Link>
         <nav aria-label="Main" className="hidden items-center gap-1 md:flex">
           {items.map((item) =>
             item.children ? (

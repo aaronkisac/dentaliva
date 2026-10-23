@@ -103,7 +103,16 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         </a>
         <Header
           items={site.nav}
-          logo={<span className="font-serif text-2xl">{siteName}</span>}
+          // DSN-58: orijinal marka kilidi (canlı siteden çıkarılan kuğu logosu)
+          // home bağlantısı olarak; beyaz varyant hero üstündeki şeffaf
+          // header'da, renkli varyant ışık header'da.
+          logo={{
+            src: "/logo.png",
+            srcDark: "/logo-white.png",
+            alt: siteName,
+            width: 339,
+            height: 112,
+          }}
           cta={{ label: uiString("bookCta"), href: routes.contact }}
           labels={{ toggleMenu: pageString("toggleMenu"), closeMenu: pageString("closeMenu") }}
           contact={

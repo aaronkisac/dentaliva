@@ -23,7 +23,7 @@ export {
 } from "./field";
 export { Container, type ContainerProps } from "./container";
 export { Footer, type FooterColumn, type FooterContact, type FooterProps } from "./footer";
-export { Header, type HeaderProps, type NavLink } from "./header";
+export { Header, type HeaderProps, type HeaderLogo, type NavLink } from "./header";
 export {
   Heading,
   headingSize,
