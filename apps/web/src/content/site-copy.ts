@@ -52,7 +52,15 @@ export interface SiteCopy {
     notFoundBackLink?: LocalizedPair;
     onceSonraBefore?: LocalizedPair;
     onceSonraAfter?: LocalizedPair;
+    /** Header mega menüsünün "tümünü gör" bağlantısı. */
+    menuAllLink?: LocalizedPair;
   } | null;
+  /** Header Tedaviler menüsünün grupları — sırayla mega panel sütunlarına düşer. */
+  navMenu?: Array<{
+    heading?: LocalizedPair;
+    headingPage?: { name?: LocalizedPair; slug?: string } | null;
+    treatments?: Array<{ name?: LocalizedPair; slug?: string } | null>;
+  }> | null;
 }
 
 /**

@@ -3,7 +3,18 @@ import { defineQuery } from "groq";
 /** Singleton dokümanlar ve site çapında veriler. */
 export const siteSettingsQuery = defineQuery(`*[_type == "siteSettings"][0]`);
 
-export const siteCopyQuery = defineQuery(`*[_type == "siteCopy"][0]`);
+export const siteCopyQuery = defineQuery(`*[_type == "siteCopy"][0]{
+  footer,
+  sectionHeadings,
+  faq,
+  heroTrust,
+  ui,
+  navMenu[]{
+    heading,
+    headingPage->{ name, "slug": slug.current },
+    treatments[]->{ name, "slug": slug.current }
+  }
+}`);
 
 export const branchBySlugQuery = defineQuery(
   `*[_type == "branch" && slug.current == $slug][0]{

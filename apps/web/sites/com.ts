@@ -20,7 +20,7 @@ export const site = {
   },
   nav: [
     { label: "Hakkımızda", href: "/hakkimizda" },
-    { label: "Hizmetlerimiz", href: "/hizmetlerimiz" },
+    { label: "Tedavilerimiz", href: "/hizmetlerimiz" },
     { label: "Hekimlerimiz", href: "/hekimlerimiz" },
     { label: "Şubelerimiz", href: "/subelerimiz" },
     { label: "Blog", href: "/blog" },

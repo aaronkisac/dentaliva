@@ -6,6 +6,7 @@ import { JsonLd } from "../components/json-ld";
 import { site } from "../src/config";
 import { fetchSiteSettings } from "../src/content/home";
 import { fetchSiteCopy } from "../src/content/site-copy";
+import { buildHeaderItems } from "../src/header-items";
 import { t } from "../src/i18n";
 import { readClient } from "../src/sanity";
 import { siteUrl } from "../src/seo";
@@ -102,7 +103,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           {pageString("skipLabel")}
         </a>
         <Header
-          items={site.nav}
+          items={buildHeaderItems(site, siteCopy)}
           // DSN-58: orijinal marka kilidi (canlı siteden çıkarılan kuğu logosu)
           // home bağlantısı olarak; beyaz varyant hero üstündeki şeffaf
           // header'da, renkli varyant ışık header'da.
