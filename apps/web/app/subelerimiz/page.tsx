@@ -36,7 +36,7 @@ export default async function BranchesPage() {
                   {branch.image?.ref ? (
                     <Image
                       src={branch.image.ref}
-                      alt={branch.name ?? ""}
+                      alt={t(branch.image.alt) || branch.name || ""}
                       width={600}
                       height={400}
                       sizes="(max-width: 768px) 100vw, 33vw"
