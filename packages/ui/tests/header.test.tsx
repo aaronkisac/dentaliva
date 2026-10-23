@@ -21,11 +21,19 @@ const items: NavLink[] = [
   { label: "İletişim", href: "/iletisim" },
 ];
 
+const logo = {
+  src: "/logo.png",
+  srcDark: "/logo-white.png",
+  alt: "Dentaliva",
+  width: 339,
+  height: 112,
+};
+
 function renderHeader(overrides: Partial<Parameters<typeof Header>[0]> = {}) {
   return renderUi(
     <Header
       items={items}
-      logo={<span>Dentaliva</span>}
+      logo={logo}
       cta={{ label: "Randevu Al", href: "/randevu" }}
       contact={{ phone: "+90 212 555 54 82", email: "info@dentaliva.com" }}
       labels={{ toggleMenu: "Menüyü aç/kapat", closeMenu: "Menüyü kapat" }}
@@ -40,9 +48,14 @@ describe("Header", () => {
   it("renders the contact bar, logo, nav links and CTA", () => {
     renderHeader();
     expect(screen.getByText("+90 212 555 54 82")).toHaveAttribute("href", "tel:+90 212 555 54 82");
-    expect(screen.getByText("Dentaliva")).toBeInTheDocument();
+    expect(screen.getByRole("img", { name: "Dentaliva" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "İletişim" })).toHaveAttribute("href", "/iletisim");
     expect(screen.getByRole("link", { name: "Randevu Al" })).toHaveAttribute("href", "/randevu");
+  });
+
+  it("uses the brand lockup as the home link (DSN-58)", () => {
+    renderHeader();
+    expect(screen.getByRole("link", { name: "Dentaliva" })).toHaveAttribute("href", "/");
   });
 
   it("omits the contact bar when no contact is given", () => {
@@ -146,7 +159,7 @@ describe("Header", () => {
     await expectNoA11yViolations(
       <Header
         items={items}
-        logo={<span>Dentaliva</span>}
+        logo={logo}
         labels={{ toggleMenu: "Menüyü aç/kapat", closeMenu: "Menüyü kapat" }}
       />,
     );
@@ -178,14 +191,23 @@ describe("DSN-10 header variants", () => {
     expect(nav.textContent).toContain("İletişim");
   });
 
-  it("wordmark follows the dark/light state (DSN-37): ivory over hero, navy when lit", () => {
+  it("logo follows the dark/light state (DSN-58): white over hero, colored when lit", () => {
     mockPathname.value = "/";
     const { unmount } = renderHeader();
-    expect(screen.getByText("Dentaliva").parentElement).toHaveClass("text-ivory");
+    expect(screen.getByRole("img", { name: "Dentaliva" })).toHaveAttribute(
+      "src",
+      "/logo-white.png",
+    );
     unmount();
     mockPathname.value = "/hakkimizda";
     renderHeader();
-    expect(screen.getByText("Dentaliva").parentElement).toHaveClass("text-navy");
+    expect(screen.getByRole("img", { name: "Dentaliva" })).toHaveAttribute("src", "/logo.png");
+  });
+
+  it("keeps the light logo when no dark variant is given", () => {
+    mockPathname.value = "/";
+    renderHeader({ logo: { ...logo, srcDark: undefined } });
+    expect(screen.getByRole("img", { name: "Dentaliva" })).toHaveAttribute("src", "/logo.png");
   });
 
   it("light variant dropdown opens", async () => {
