@@ -22,6 +22,8 @@ const ROOTS = [join(process.cwd()), join(process.cwd(), "..", "..", "packages", 
  * - sections/testimonials: reviews carousel scroll/index state (DSN-52)
  * - app/error.tsx: Next error boundary — client zorunluluğu (reset state)
  * - app/global-error.tsx: root hata sınırı — client zorunluluğu (reset state)
+ * - components/theme-switcher: hover/panel open + dismiss state, palet
+ *   uygulama (DSN-57 — kalıcı sürüm src/theme.ts'te, saf ve test edilebilir)
  * (ui/button was audited out — purely presentational, renders server-side.)
  */
 const ALLOWED = new Set(
@@ -33,6 +35,7 @@ const ALLOWED = new Set(
     "components/sections/quick-services.tsx",
     "components/use-track-carousel.ts",
     "components/carousel-track.tsx",
+    "components/theme-switcher.tsx",
     "app/error.tsx",
     "app/global-error.tsx",
     "src/header.tsx",

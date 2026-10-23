@@ -15,6 +15,7 @@
   },
   "exports": {
     ".": "./src/index.ts",
-    "./css/tokens.css": "./css/tokens.css"
+    "./css/tokens.css": "./css/tokens.css",
+    "./css/palettes.css": "./css/palettes.css"
   }
 }

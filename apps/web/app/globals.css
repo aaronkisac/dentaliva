@@ -228,6 +228,9 @@
 @import "tailwindcss" source("../../../");
 @source "../../packages/ui/src";
 @import "@dentaliva/tokens/css/tokens.css";
+/* DSN-57: [data-palette] blokları :root ile aynı özgünlükte — tokens.css'ten
+   SONRA import edilmeli, kazanım kaynak sırasından gelsin. */
+@import "@dentaliva/tokens/css/palettes.css";
 @import "@dentaliva/config/tailwind/theme.css";
 
 /* Loaded webfonts win over the static token stacks (which remain as fallbacks). */
