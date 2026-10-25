@@ -33,6 +33,7 @@ export const branchBySlugQuery = defineQuery(
 export const homePageQuery = defineQuery(`*[_type == "homePage"][0]{
   hero { ..., image { ..., alt, "lqip": asset->metadata.lqip } },
   quickServiceLinks[]->{ name, slug, summary, heroImage { "ref": asset._ref, alt, "lqip": asset->metadata.lqip } },
+  trustStrip { rating, ratingLabel, items },
   about { ..., image { ..., alt, "lqip": asset->metadata.lqip } },
   stats,
   gallery[]{ "asset": { "_ref": asset._ref }, "alt": alt, "lqip": asset->metadata.lqip },

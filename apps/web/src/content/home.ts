@@ -67,6 +67,8 @@ interface HomeImage {
 export interface HomePageContent {
   hero?: { headline?: LocalizedPair; subline?: LocalizedPair; image?: HomeImage };
   quickServiceLinks?: QuickServiceItem[];
+  /** DSN-61: hero altı kompakt güven bandı — veri yoksa bölüm render edilmez. */
+  trustStrip?: TrustStripData;
   about?: {
     title?: LocalizedPair;
     body?: LocalizedPair;
@@ -105,6 +107,13 @@ export interface HomeTeamSection {
   eyebrow?: LocalizedPair;
   heading?: LocalizedPair;
   text?: LocalizedPair;
+}
+
+/** DSN-61: güven şeridi hücreleri — puan rozeti + en fazla 3 gösterge. */
+export interface TrustStripData {
+  rating?: LocalizedPair;
+  ratingLabel?: LocalizedPair;
+  items?: Array<{ value?: string; label?: LocalizedPair }>;
 }
 
 /** DSN-50: önce/sonra karşılaştırma kartı — slider için görsel çifti. */

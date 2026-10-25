@@ -31,15 +31,17 @@ export const site = {
     blog: false,
   },
   sections: {
+    // DSN-61: funnel strategy order — see com.ts.
     home: [
       "hero",
       "ticker",
-      "quickServices",
+      "trustStrip",
       "about",
+      "quickServices",
+      "onceSonra",
       "videoTestimonials",
       "reviews",
       "gallery",
-      "onceSonra",
       "doctors",
       "faq",
       "cta",

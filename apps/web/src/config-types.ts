@@ -21,6 +21,7 @@ export interface SiteFeatures {
 export const homeSectionIds = [
   "hero",
   "ticker",
+  "trustStrip",
   "quickServices",
   "about",
   "videoTestimonials",

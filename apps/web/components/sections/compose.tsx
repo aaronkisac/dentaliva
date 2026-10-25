@@ -13,6 +13,7 @@ import { OnceSonraSection } from "./once-sonra";
 import { QuickServicesSection } from "./quick-services";
 import { ServiceTicker } from "./service-ticker";
 import { ReviewsSection, VideoTestimonialsSection } from "./testimonials";
+import { TrustStripSection } from "./trust-strip";
 import { t } from "../../src/i18n";
 
 type SectionRenderer = (data: HomeData) => ReactNode;
@@ -28,6 +29,7 @@ export const sectionRegistry: Record<HomeSectionId, SectionRenderer> = {
     <HeroSection data={data.homePage?.hero ?? null} trust={data.siteCopy?.heroTrust ?? null} />
   ),
   ticker: (data) => <ServiceTicker items={data.quickServices} />,
+  trustStrip: (data) => reveal(<TrustStripSection data={data.homePage?.trustStrip ?? null} />),
   quickServices: (data) =>
     reveal(
       <QuickServicesSection
