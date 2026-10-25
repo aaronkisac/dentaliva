@@ -16,15 +16,14 @@ describe("ReviewFormSection (DSN-63)", () => {
     expect(render(null)).toBe("");
   });
 
-  it("anchors the section at #review for the hero CTA and renders the form", () => {
+  it("anchors the section at #review for the hero CTA and renders the form card", () => {
     const html = render({ steps: [{ tr: "Adım bir" }] }, { heading: "Başlık" });
     expect(html).toContain('id="review"');
     expect(html).toContain("Adım bir");
     expect(html).toContain("Başlık");
-    // Form alanları (CallbackForm SSR çıktısı).
-    expect(html).toContain('id="cb-name"');
-    expect(html).toContain('id="cb-interest"');
-    expect(html).toContain('id="cb-contact"');
+    // Form dinamik yüklenir (DSN-63 bundle) — SSR'de iskelet kart basılır;
+    // gerçek form alanlarının kapsamı /iletisim e2e'sindedir.
+    expect(html).toContain("bg-ivory-2");
   });
 
   it("caps the step list at three entries", () => {

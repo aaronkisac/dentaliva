@@ -12,13 +12,17 @@
 // boundaries + carousel aria labels in client chunks, duplicated per route
 // chunk by Turbopack) buy the dentaliva.eu instance for ~4KB. DSN-59 moved it
 // to 205KB: the grouped treatments mega menu (NavMenu types + panel +
-// mobile disclosure) costs ~0.3KB of chrome. The real user-facing gate stays
-// the CI Lighthouse perf budget; this line still fails on genuine regressions.
+// mobile disclosure) costs ~0.3KB of chrome. DSN-63 moved it to 206KB: the
+// review-form section's server chrome (steps list, #review anchor card,
+// hero WhatsApp CTA branch) — the form's RHF+zod chunk itself is dynamically
+// imported and stays OUT of the initial script set (~100KB). The real
+// user-facing gate stays the CI Lighthouse perf budget; this line still
+// fails on genuine regressions.
 import { readFileSync } from "node:fs";
 import { gzipSync } from "node:zlib";
 import { join } from "node:path";
 
-const BUDGET_KB = Number(process.env.BUDGET_KB ?? 205);
+const BUDGET_KB = Number(process.env.BUDGET_KB ?? 206);
 const ROUTE_HTML = join(process.cwd(), "out", process.env.BUNDLE_HTML ?? "index.html");
 
 const html = readFileSync(ROUTE_HTML, "utf8");

@@ -1,7 +1,7 @@
 import { Heading, Section } from "@dentaliva/ui";
 import { t } from "../../src/i18n";
 
-import { CallbackForm } from "../CallbackForm";
+import { ReviewFormLoader } from "../review-form-loader";
 import type { LocalizedPair } from "../../src/content/home";
 
 /**
@@ -58,7 +58,7 @@ export function ReviewFormSection({
           ) : null}
         </div>
         <div className="rounded-[4px] border border-[var(--dvn-line-soft)] bg-white p-6 md:p-8">
-          <CallbackForm />
+          <ReviewFormLoader />
         </div>
       </div>
     </Section>
