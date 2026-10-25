@@ -18,6 +18,10 @@ export interface CallbackFormMessages {
   phoneInvalid: string;
   preferredTimeTooLong: string;
   consentRequired: string;
+  emailInvalid: string;
+  emailTooLong: string;
+  interestTooLong: string;
+  contactMethodTooLong: string;
 }
 
 export const CALLBACK_FORM_MESSAGES: Record<"tr" | "en" | "nl", CallbackFormMessages> = {
@@ -28,6 +32,10 @@ export const CALLBACK_FORM_MESSAGES: Record<"tr" | "en" | "nl", CallbackFormMess
     phoneInvalid: "Geçerli bir telefon numarası girin (örn. 0532 000 00 00).",
     preferredTimeTooLong: "Tercih edilen saat çok uzun.",
     consentRequired: "KVKK aydınlatma metnini onaylamanız gerekiyor.",
+    emailInvalid: "Geçerli bir e-posta adresi girin.",
+    emailTooLong: "E-posta çok uzun.",
+    interestTooLong: "Tedavi ilgisi alanı çok uzun.",
+    contactMethodTooLong: "İletişim tercihi alanı çok uzun.",
   },
   en: {
     nameRequired: "Please enter your full name.",
@@ -36,6 +44,10 @@ export const CALLBACK_FORM_MESSAGES: Record<"tr" | "en" | "nl", CallbackFormMess
     phoneInvalid: "Enter a valid phone number (e.g. +49 151 234 5678).",
     preferredTimeTooLong: "Preferred call time is too long.",
     consentRequired: "You must accept the Privacy Policy to continue.",
+    emailInvalid: "Enter a valid email address.",
+    emailTooLong: "Email is too long.",
+    interestTooLong: "Treatment interest field is too long.",
+    contactMethodTooLong: "Contact method field is too long.",
   },
   nl: {
     nameRequired: "Vul uw volledige naam in.",
@@ -44,6 +56,10 @@ export const CALLBACK_FORM_MESSAGES: Record<"tr" | "en" | "nl", CallbackFormMess
     phoneInvalid: "Voer een geldig telefoonnummer in (bijv. +31 6 12345678).",
     preferredTimeTooLong: "Gewenst belmoment is te lang.",
     consentRequired: "U moet de privacyverklaring accepteren om door te gaan.",
+    emailInvalid: "Voer een geldig e-mailadres in.",
+    emailTooLong: "E-mail is te lang.",
+    interestTooLong: "Behandelinteresseveld is te lang.",
+    contactMethodTooLong: "Contactvoorkeurveld is te lang.",
   },
 };
 
@@ -71,6 +87,38 @@ export function createCallbackSchema(locale: "tr" | "en" | "nl" = "tr") {
       .string()
       .transform((value) => value.replace(CONTROL_CHARS, " "))
       .pipe(z.string().trim().max(120, m.preferredTimeTooLong))
+      .optional()
+      .or(z.literal("")),
+    /**
+     * DSN-63 (strateji dokümanı Form 1): opsiyonel e-posta + öz-nicelendirme
+     * alanları. Select değerleri UI'dan kısa kodlar olarak gelir; doğrulama
+     * uzunluk/kontrol karakteri temizliğiyle sınırlı — sağlık verisi YOK
+     * (Form 2 ayrı iştir, burada bilinçli istenmez).
+     */
+    email: z
+      .string()
+      .transform((value) => value.replace(CONTROL_CHARS, " "))
+      .pipe(
+        z
+          .string()
+          .trim()
+          .max(200, m.emailTooLong)
+          .refine((value) => value === "" || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value), {
+            message: m.emailInvalid,
+          }),
+      )
+      .optional()
+      .or(z.literal("")),
+    treatmentInterest: z
+      .string()
+      .transform((value) => value.replace(CONTROL_CHARS, " "))
+      .pipe(z.string().trim().max(60, m.interestTooLong))
+      .optional()
+      .or(z.literal("")),
+    contactMethod: z
+      .string()
+      .transform((value) => value.replace(CONTROL_CHARS, " "))
+      .pipe(z.string().trim().max(40, m.contactMethodTooLong))
       .optional()
       .or(z.literal("")),
     kvkkConsent: z.boolean().refine((value) => value === true, {

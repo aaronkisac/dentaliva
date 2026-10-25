@@ -31,6 +31,8 @@ export interface SiteCopy {
     allServicesCta?: LocalizedPair;
     treatmentPathsEyebrow?: LocalizedPair;
     treatmentPathsHeading?: LocalizedPair;
+    reviewFormEyebrow?: LocalizedPair;
+    reviewFormHeading?: LocalizedPair;
     onceSonraEyebrow?: LocalizedPair;
     onceSonraHeading?: LocalizedPair;
   } | null;

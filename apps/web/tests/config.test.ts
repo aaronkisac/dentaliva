@@ -83,6 +83,7 @@ describe("site config (PGT-1)", () => {
       "quickServices",
       "onceSonra",
       "videoTestimonials",
+      "reviewForm",
       "reviews",
       "gallery",
       "doctors",

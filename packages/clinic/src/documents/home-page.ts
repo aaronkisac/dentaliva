@@ -196,6 +196,24 @@ export const homePage = defineType({
       validation: (rule) => rule.max(12),
     }),
     defineField({
+      // DSN-63: strateji dokümanı #06 — ilk değerlendirme formu bölümünün
+      // "sonra ne olacak" adımları. Formun kendisi ortak CallbackForm'dur.
+      name: "reviewForm",
+      title: "Ön değerlendirme formu",
+      description:
+        "Ana sayfadaki ön değerlendirme formu bölümü — solda 'sonra ne olacak' adımları, sağda form. Alan boşken bölüm render edilmez (form da girmez).",
+      type: "object",
+      fields: [
+        {
+          name: "steps",
+          title: "Adımlar (numaralı liste)",
+          type: "array",
+          validation: (rule) => rule.max(3),
+          of: [{ type: "localeText" }],
+        },
+      ],
+    }),
+    defineField({
       name: "teamSection",
       title: "Ekip bölümü",
       type: "object",
@@ -236,6 +254,7 @@ export const homePage = defineType({
           { title: "Fotoğraf galerisi", value: "gallery" },
           { title: "Önce/Sonra vakalar", value: "onceSonra" },
           { title: "Ekip", value: "doctors" },
+          { title: "Ön değerlendirme formu", value: "reviewForm" },
           { title: "SSS", value: "faq" },
           { title: "CTA bandı", value: "cta" },
         ],

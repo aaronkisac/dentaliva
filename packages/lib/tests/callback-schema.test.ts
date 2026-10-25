@@ -68,6 +68,38 @@ describe("callbackFormSchema", () => {
     const parsed = callbackFormSchema.safeParse({ ...valid, preferredTime: "x".repeat(121) });
     expect(parsed.success).toBe(false);
   });
+
+  it("accepts an optional valid email and rejects a malformed one (DSN-63)", () => {
+    expect(callbackFormSchema.safeParse({ ...valid, email: "ada@example.com" }).success).toBe(true);
+    expect(callbackFormSchema.safeParse({ ...valid, email: "" }).success).toBe(true);
+    const parsed = callbackFormSchema.safeParse({ ...valid, email: "ada-at-example" });
+    expect(parsed.success).toBe(false);
+    if (!parsed.success) {
+      expect(parsed.error.issues[0]?.message).toContain("e-posta");
+    }
+  });
+
+  it("strips control characters from the optional email (SEC-1/DSN-63)", () => {
+    const parsed = callbackFormSchema.safeParse({ ...valid, email: "ada@example.com\u0000" });
+    expect(parsed.success).toBe(true);
+    if (parsed.success) expect(parsed.data.email).toBe("ada@example.com");
+  });
+
+  it("caps treatmentInterest and contactMethod length (DSN-63)", () => {
+    expect(
+      callbackFormSchema.safeParse({ ...valid, treatmentInterest: "x".repeat(61) }).success,
+    ).toBe(false);
+    expect(callbackFormSchema.safeParse({ ...valid, contactMethod: "x".repeat(41) }).success).toBe(
+      false,
+    );
+    expect(
+      callbackFormSchema.safeParse({
+        ...valid,
+        treatmentInterest: "implants",
+        contactMethod: "whatsapp",
+      }).success,
+    ).toBe(true);
+  });
 });
 
 describe("TR_PHONE_PATTERN", () => {

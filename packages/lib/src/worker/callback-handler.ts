@@ -8,7 +8,15 @@ import { createCallbackSchema } from "../forms/callback-schema";
 export interface CallbackWorkerDeps {
   verifyTurnstile: (token: string, ip: string | null) => Promise<boolean>;
   rateLimit: (ip: string | null) => Promise<boolean>;
-  sendMail: (input: { name: string; phone: string; preferredTime: string }) => Promise<void>;
+  /** DSN-63: yeni Form 1 alanları opsiyonel — eski/tek alanlı istemciler de geçer. */
+  sendMail: (input: {
+    name: string;
+    phone: string;
+    preferredTime: string;
+    email?: string;
+    treatmentInterest?: string;
+    contactMethod?: string;
+  }) => Promise<void>;
   /** UI language for user-facing error strings (wrangler var LOCALE, INT-4). */
   locale?: "tr" | "en" | "nl";
 }
@@ -100,6 +108,9 @@ export async function handleCallbackPost(
       name: values.name,
       phone: values.phone,
       preferredTime: values.preferredTime ?? "",
+      email: values.email ?? "",
+      treatmentInterest: values.treatmentInterest ?? "",
+      contactMethod: values.contactMethod ?? "",
     });
   } catch {
     return json(502, { error: m.mailFailed });

@@ -63,9 +63,26 @@ async function rateLimit(env: CallbackWorkerEnv, ip: string | null): Promise<boo
 
 async function sendMail(
   env: CallbackWorkerEnv,
-  input: { name: string; phone: string; preferredTime: string },
+  input: {
+    name: string;
+    phone: string;
+    preferredTime: string;
+    email?: string;
+    treatmentInterest?: string;
+    contactMethod?: string;
+  },
 ): Promise<void> {
   if (env.MOCK_EXTERNAL === "1") return;
+  // DSN-63: Form 1'in opsiyonel alanları — boşsa satır basılmaz (e-posta gürültüsüz).
+  const extras = [
+    input.email ? `E-posta: ${input.email}` : null,
+    input.treatmentInterest ? `Tedavi ilgisi: ${input.treatmentInterest}` : null,
+    input.contactMethod ? `İletişim tercihi: ${input.contactMethod}` : null,
+  ].filter((line): line is string => line !== null);
+  const text = [`Ad Soyad: ${input.name}`, `Telefon: ${input.phone}`]
+    .concat(extras)
+    .concat([`Tercih edilen saat: ${input.preferredTime || "-"}`])
+    .join("\n");
   const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: {
@@ -77,7 +94,7 @@ async function sendMail(
       from: env.MAIL_FROM ?? "Dentaliva <onboarding@resend.dev>",
       to: [env.NOTIFY_EMAIL ?? env.NOTIFY_FALLBACK ?? "info@dentaliva.com"],
       subject: `Geri arama talebi: ${input.name}`,
-      text: `Ad Soyad: ${input.name}\nTelefon: ${input.phone}\nTercih edilen saat: ${input.preferredTime || "-"}`,
+      text,
     }),
   });
   if (!res.ok) throw new Error(`resend ${res.status}`);
