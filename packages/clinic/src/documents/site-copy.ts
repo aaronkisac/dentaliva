@@ -46,6 +46,16 @@ export const siteCopy = defineType({
         { name: "servicesHeading", title: "Hizmetlerimiz başlığı (ana sayfa)", type: "localeText" },
         { name: "allServicesCta", title: "Tüm hizmetler butonu (ana sayfa)", type: "localeText" },
         {
+          name: "treatmentPathsEyebrow",
+          title: "Tedavi yolları üst etiketi (ana sayfa)",
+          type: "localeText",
+        },
+        {
+          name: "treatmentPathsHeading",
+          title: "Tedavi yolları başlığı (ana sayfa)",
+          type: "localeText",
+        },
+        {
           name: "onceSonraEyebrow",
           title: "Önce/Sonra üst etiketi (ana sayfa)",
           type: "localeText",

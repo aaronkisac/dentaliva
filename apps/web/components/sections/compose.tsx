@@ -14,6 +14,7 @@ import { QuickServicesSection } from "./quick-services";
 import { ServiceTicker } from "./service-ticker";
 import { ReviewsSection, VideoTestimonialsSection } from "./testimonials";
 import { TrustStripSection } from "./trust-strip";
+import { TreatmentPathsSection } from "./treatment-paths";
 import { t } from "../../src/i18n";
 
 type SectionRenderer = (data: HomeData) => ReactNode;
@@ -30,6 +31,14 @@ export const sectionRegistry: Record<HomeSectionId, SectionRenderer> = {
   ),
   ticker: (data) => <ServiceTicker items={data.quickServices} />,
   trustStrip: (data) => reveal(<TrustStripSection data={data.homePage?.trustStrip ?? null} />),
+  treatmentPaths: (data) =>
+    reveal(
+      <TreatmentPathsSection
+        items={data.homePage?.treatmentPaths ?? []}
+        eyebrow={t(data.siteCopy?.sectionHeadings?.treatmentPathsEyebrow)}
+        heading={t(data.siteCopy?.sectionHeadings?.treatmentPathsHeading)}
+      />,
+    ),
   quickServices: (data) =>
     reveal(
       <QuickServicesSection

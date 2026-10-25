@@ -69,6 +69,8 @@ export interface HomePageContent {
   quickServiceLinks?: QuickServiceItem[];
   /** DSN-61: hero altı kompakt güven bandı — veri yoksa bölüm render edilmez. */
   trustStrip?: TrustStripData;
+  /** DSN-62: ihtiyaç bazlı self-segmentation kartları — boşken bölüm render edilmez. */
+  treatmentPaths?: TreatmentPathItem[];
   about?: {
     title?: LocalizedPair;
     body?: LocalizedPair;
@@ -114,6 +116,14 @@ export interface TrustStripData {
   rating?: LocalizedPair;
   ratingLabel?: LocalizedPair;
   items?: Array<{ value?: string; label?: LocalizedPair }>;
+}
+
+/** DSN-62: tedavi yolu kartı — ihtiyaç cümlesi + teknik terim + tedavi linki. */
+export interface TreatmentPathItem {
+  headline?: LocalizedPair;
+  subline?: LocalizedPair;
+  image?: { ref?: string; alt?: LocalizedPair; lqip?: string };
+  treatment?: { name?: LocalizedPair; slug?: string } | null;
 }
 
 /** DSN-50: önce/sonra karşılaştırma kartı — slider için görsel çifti. */
