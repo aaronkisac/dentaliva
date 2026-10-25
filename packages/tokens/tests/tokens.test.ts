@@ -64,6 +64,12 @@ describe("generated tokens.css", () => {
       expect(readLf(cssPath)).toBe(generated);
     });
   }
+
+  it("widens the container cap on wide screens (DSN-60)", () => {
+    expect(generated).toContain(
+      "@media (min-width: 1536px) {\n  :root {\n    --dvn-container-max: 1360px;",
+    );
+  });
 });
 
 /** semantic.ts pairs mapped onto palette roles — white is palette-neutral.

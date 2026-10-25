@@ -71,7 +71,15 @@ export function renderTokensCss(): string {
   const lines = Object.entries(cssVariables).map(([name, value]) => `  ${name}: ${value};`);
   return `/* GENERATED from src/tokens.ts — edit tokens.ts, then run:
      pnpm --filter @dentaliva/tokens test -- -u */
-:root {\n${lines.join("\n")}\n}\n`;
+:root {\n${lines.join("\n")}\n}\n
+/* DSN-60: wide-screen container cap — every --dvn-container-max consumer
+   (Container, header row, mega panel, footer) widens together above the
+   prototype breakpoints. */
+@media (min-width: ${layout.containerWideMin}) {
+  :root {
+    --dvn-container-max: ${layout.containerMaxWide};
+  }
+}\n`;
 }
 
 /** Same explicit-name discipline as cssVariables, keyed by Palette field. */

@@ -152,7 +152,7 @@ function DesktopDropdown({ item, dark }: { item: NavLink; dark: boolean }) {
         aria-expanded={open}
         onClick={() => setOpen((value) => !value)}
         className={cn(
-          "px-3 py-2 font-sans text-sm",
+          "whitespace-nowrap px-3 py-2 font-sans text-sm",
           dark ? "text-ivory/90 hover:text-gold-soft" : "text-ink hover:text-gold-deep",
         )}
       >
@@ -164,7 +164,7 @@ function DesktopDropdown({ item, dark }: { item: NavLink; dark: boolean }) {
             <Link
               key={child.href}
               href={child.href}
-              className="block px-3 py-2 text-sm text-ink hover:bg-ivory"
+              className="block whitespace-nowrap px-3 py-2 text-sm text-ink hover:bg-ivory"
               onClick={() => setOpen(false)}
             >
               {child.label}
@@ -196,7 +196,7 @@ function DesktopMegaTrigger({
       aria-controls={MEGA_PANEL_ID}
       onClick={onToggle}
       className={cn(
-        "flex items-center gap-1.5 px-3 py-2 font-sans text-sm",
+        "flex items-center gap-1.5 whitespace-nowrap px-3 py-2 font-sans text-sm",
         dark ? "text-ivory/90 hover:text-gold-soft" : "text-ink hover:text-gold-deep",
       )}
     >
@@ -220,7 +220,7 @@ function MegaPanel({ menu, onClose }: { menu: NavMenu; onClose: () => void }) {
   return (
     <div
       id={MEGA_PANEL_ID}
-      className="absolute inset-x-0 top-full hidden border-b border-[var(--dvn-line-gold)] bg-white shadow-[var(--dvn-shadow-soft)] md:block"
+      className="absolute inset-x-0 top-full hidden border-b border-[var(--dvn-line-gold)] bg-white shadow-[var(--dvn-shadow-soft)] xl:block"
     >
       <div className="mx-auto grid max-w-[var(--dvn-container-max)] grid-cols-2 gap-x-8 gap-y-6 px-[var(--dvn-container-gutter)] py-6 md:grid-cols-4">
         {menu.groups.map((group) => (
@@ -248,7 +248,7 @@ function MegaPanel({ menu, onClose }: { menu: NavMenu; onClose: () => void }) {
                   <Link
                     href={link.href}
                     onClick={onClose}
-                    className="block py-1 text-sm text-ink/80 hover:text-gold-deep"
+                    className="block whitespace-nowrap py-1 text-sm text-ink/80 hover:text-gold-deep"
                   >
                     {link.label}
                   </Link>
@@ -406,7 +406,7 @@ function MobileMenu({
     <div
       ref={ref}
       className={cn(
-        "border-t md:hidden",
+        "border-t xl:hidden",
         dark ? "border-gold/30 bg-navy" : "border-[var(--dvn-line-soft)] bg-ivory",
       )}
     >
@@ -463,6 +463,11 @@ function MobileMenu({
  * unicode değil SVG ikondur; durum aria-expanded ile bildirilir (APG pattern).
  * Gruplu açılır menü (mega panel) header seviyesinde tek state ile yönetilir;
  * Escape ve dış tıklama kapatır (APG disclosure).
+ * DSN-60: masaüstü chrome'u (nav + telefon + CTA) xl(1280) altında gizli —
+ * tek satırlık satır ihtiyacı en geniş yerel (EN) için ~1166px'tir ve 1280
+ * altındaki kullanılabilir genişlik bunu karşılayamaz; etiketler İKİ SATIRA
+ * sarılıyordu. 1280 altı burger + mobil mega akordeonla hizmet verir. Tüm
+ * satır öğeleri nowrap'dır — sarma imkânsız, taşma olursa flex sıkıştırır.
  */
 export function headerMode(
   pathname: string,
@@ -563,7 +568,7 @@ export function Header({ items, cta, logo, contact, labels }: HeaderProps) {
             className="h-11 w-auto"
           />
         </Link>
-        <nav aria-label="Main" className="hidden items-center gap-1 md:flex">
+        <nav aria-label="Main" className="hidden items-center gap-1 xl:flex">
           {items.map((item) =>
             item.menu ? (
               <DesktopMegaTrigger
@@ -578,24 +583,28 @@ export function Header({ items, cta, logo, contact, labels }: HeaderProps) {
             ) : item.children ? (
               <DesktopDropdown key={item.href} item={item} dark={dark} />
             ) : (
-              <Link key={item.href} href={item.href} className={cn("px-3 py-2 text-sm", linkClass)}>
+              <Link
+                key={item.href}
+                href={item.href}
+                className={cn("whitespace-nowrap px-3 py-2 text-sm", linkClass)}
+              >
                 {item.label}
               </Link>
             ),
           )}
         </nav>
-        <div className="hidden items-center gap-5 md:flex">
+        <div className="hidden items-center gap-5 xl:flex">
           {contact?.phone ? (
             <a
               href={`tel:${contact.phone}`}
-              className={cn("flex items-center gap-2 text-sm", linkClass)}
+              className={cn("flex items-center gap-2 whitespace-nowrap text-sm", linkClass)}
             >
               <PhoneIcon />
               {contact.phone}
             </a>
           ) : null}
           {cta ? (
-            <Link href={cta.href} className={cn("px-5 py-2.5 text-sm", ctaClass)}>
+            <Link href={cta.href} className={cn("whitespace-nowrap px-5 py-2.5 text-sm", ctaClass)}>
               {cta.label}
             </Link>
           ) : null}
@@ -605,7 +614,7 @@ export function Header({ items, cta, logo, contact, labels }: HeaderProps) {
           aria-expanded={mobileOpen}
           aria-label={labels.toggleMenu}
           onClick={() => setMobileOpen((open) => !open)}
-          className={cn("px-2 py-3 md:hidden", dark ? "text-ivory" : "text-navy")}
+          className={cn("px-2 py-3 xl:hidden", dark ? "text-ivory" : "text-navy")}
         >
           {mobileOpen ? <CloseIcon /> : <MenuIcon />}
         </button>
