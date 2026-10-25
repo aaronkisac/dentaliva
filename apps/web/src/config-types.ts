@@ -24,6 +24,7 @@ export const homeSectionIds = [
   "trustStrip",
   "quickServices",
   "about",
+  "treatmentPaths",
   "videoTestimonials",
   "reviews",
   "gallery",

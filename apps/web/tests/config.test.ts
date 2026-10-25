@@ -79,6 +79,7 @@ describe("site config (PGT-1)", () => {
       "ticker",
       "trustStrip",
       "about",
+      "treatmentPaths",
       "quickServices",
       "onceSonra",
       "videoTestimonials",

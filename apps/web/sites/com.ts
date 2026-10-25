@@ -39,6 +39,7 @@ export const site = {
       "ticker",
       "trustStrip",
       "about",
+      "treatmentPaths",
       "quickServices",
       "onceSonra",
       "videoTestimonials",

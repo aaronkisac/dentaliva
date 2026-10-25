@@ -66,6 +66,42 @@ export const homePage = defineType({
       ],
     }),
     defineField({
+      // DSN-62: strateji dokümanı #03 — ihtiyaç bazlı self-segmentation kartları.
+      name: "treatmentPaths",
+      title: "Tedavi yolları",
+      description:
+        "İhtiyaca göre kendini konumlandıran kartlar (örn. eksik dişi yerine koy / tam çene restorasyonu). Kartın tamamı ilgili tedaviye giden link; teknik terim ikinci satırdadır. Boşken bölüm render edilmez.",
+      type: "array",
+      validation: (rule) => rule.max(4),
+      of: [
+        {
+          type: "object",
+          name: "treatmentPath",
+          fields: [
+            {
+              name: "headline",
+              title: "Kart başlığı (ihtiyaç cümlesi)",
+              type: "localeString",
+              validation: (rule) => rule.required(),
+            },
+            {
+              name: "subline",
+              title: "Alt satır (teknik terim)",
+              type: "localeText",
+            },
+            { name: "image", title: "Görsel (gerçek vaka/klinik)", type: "imageWithAlt" },
+            {
+              name: "treatment",
+              title: "İlgili tedavi (kartın gittiği sayfa)",
+              type: "reference",
+              to: [{ type: "treatment" }],
+            },
+          ],
+          preview: { select: { title: "headline.tr", subtitle: "subline.tr" } },
+        },
+      ],
+    }),
+    defineField({
       name: "about",
       title: "Hakkında bölümü",
       type: "object",
@@ -194,6 +230,7 @@ export const homePage = defineType({
           { title: "Güven şeridi", value: "trustStrip" },
           { title: "Hizmetler carousel'i", value: "quickServices" },
           { title: "Hakkında", value: "about" },
+          { title: "Tedavi yolları", value: "treatmentPaths" },
           { title: "Video yorumlar", value: "videoTestimonials" },
           { title: "Hasta yorumları", value: "reviews" },
           { title: "Fotoğraf galerisi", value: "gallery" },
