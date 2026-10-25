@@ -12,6 +12,9 @@ const ROOTS = [join(process.cwd()), join(process.cwd(), "..", "..", "packages", 
 /**
  * Reviewed client surfaces (justifications):
  * - CallbackForm: form state + fetch + Turnstile widget
+ * - review-form-loader: yalnız dinamik import köprüsü — RHF+zod chunk'ını
+ *   ilk yükleme JS'inin DİŞINA taşır (DSN-63 bundle patlaması: form ana
+ *   sayfaya girince 205→306KB); gerçek istemci mantığı CallbackForm'da
  * - lightbox: <dialog> open/close state
  * - ui/header: mobile menu state + focus trap
  * - ui/accordion: disclosure state
@@ -29,6 +32,7 @@ const ROOTS = [join(process.cwd()), join(process.cwd(), "..", "..", "packages", 
 const ALLOWED = new Set(
   [
     "components/CallbackForm.tsx",
+    "components/review-form-loader.tsx",
     "components/lightbox.tsx",
     "components/before-after-slider.tsx",
     "components/sections/doctors.tsx",

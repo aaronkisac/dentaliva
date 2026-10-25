@@ -71,6 +71,8 @@ export interface HomePageContent {
   trustStrip?: TrustStripData;
   /** DSN-62: ihtiyaç bazlı self-segmentation kartları — boşken bölüm render edilmez. */
   treatmentPaths?: TreatmentPathItem[];
+  /** DSN-63: ön değerlendirme formu bölümü — alan unset ise bölüm render edilmez. */
+  reviewForm?: { steps?: LocalizedPair[] };
   about?: {
     title?: LocalizedPair;
     body?: LocalizedPair;

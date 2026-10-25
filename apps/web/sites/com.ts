@@ -43,6 +43,7 @@ export const site = {
       "quickServices",
       "onceSonra",
       "videoTestimonials",
+      "reviewForm",
       "reviews",
       "gallery",
       "doctors",

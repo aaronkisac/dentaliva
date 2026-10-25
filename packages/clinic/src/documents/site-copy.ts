@@ -56,6 +56,16 @@ export const siteCopy = defineType({
           type: "localeText",
         },
         {
+          name: "reviewFormEyebrow",
+          title: "Ön değerlendirme formu üst etiketi (ana sayfa)",
+          type: "localeText",
+        },
+        {
+          name: "reviewFormHeading",
+          title: "Ön değerlendirme formu başlığı (ana sayfa)",
+          type: "localeText",
+        },
+        {
           name: "onceSonraEyebrow",
           title: "Önce/Sonra üst etiketi (ana sayfa)",
           type: "localeText",

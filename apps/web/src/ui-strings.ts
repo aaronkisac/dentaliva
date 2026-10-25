@@ -19,6 +19,9 @@ const tr = {
   // hero CTAs (client hero)
   bookCta: "Randevu Al",
   exploreServicesCta: "Tedavilerimizi Keşfedin",
+  // DSN-63: doküman #01 — birincil dönüşüm ilk değerlendirme formuna gider.
+  startReviewCta: "Ücretsiz Ön Değerlendirme Başlatın",
+  whatsappCta: "WhatsApp'tan Yazın",
 
   // social proof (client testimonials)
   googleBadge: "Google Değerlendirmeleri · 5,0",
@@ -44,9 +47,28 @@ const tr = {
 
   // callback form (client — INT-4)
   nameLabel: "Ad Soyad *",
-  phoneLabel: "Telefon *",
+  phoneLabel: "Telefon / WhatsApp *",
   phonePlaceholder: "0532 000 00 00",
   preferredTimeLabel: "Tercih edilen arama saati (opsiyonel)",
+  // DSN-63: doküman Form 1'in opsiyonel alanları.
+  emailLabel: "E-posta (opsiyonel)",
+  treatmentInterestLabel: "Tedavi ilgisi (opsiyonel)",
+  treatmentInterestOptions: {
+    "": "Seçiniz",
+    implants: "İmplant / eksik diş",
+    "full-arch": "Tüm çene (All-on-4/6)",
+    smile: "Gülüş tasarımı",
+    veneers: "Lamine kaplama",
+    crowns: "Zirkonyum kaplama",
+    unsure: "Emin değilim",
+  } as Record<string, string>,
+  contactMethodLabel: "Sizi nasıl aramamızı istersiniz? (opsiyonel)",
+  contactMethodOptions: {
+    "": "Seçiniz",
+    whatsapp: "WhatsApp",
+    phone: "Telefon",
+    email: "E-posta",
+  } as Record<string, string>,
   consentLabel:
     "KVKK aydınlatma metnini okudum; kişisel verilerimin geri arama amacıyla işlenmesine onay veriyorum. *",
   submitting: "Gönderiliyor…",
@@ -80,6 +102,8 @@ const en: typeof tr = {
 
   bookCta: "Book an Appointment",
   exploreServicesCta: "Explore our treatments",
+  startReviewCta: "Start My Free Initial Review",
+  whatsappCta: "Chat on WhatsApp",
 
   googleBadge: "Google Reviews · 5.0",
   patientVideoAlt: "Patient video",
@@ -101,9 +125,27 @@ const en: typeof tr = {
   galleryImageAlt: "Gallery image",
 
   nameLabel: "Full Name *",
-  phoneLabel: "Phone *",
+  phoneLabel: "Phone / WhatsApp *",
   phonePlaceholder: "+90 532 000 00 00",
   preferredTimeLabel: "Preferred call time (optional)",
+  emailLabel: "Email (optional)",
+  treatmentInterestLabel: "Treatment interest (optional)",
+  treatmentInterestOptions: {
+    "": "Select",
+    implants: "Implants / missing teeth",
+    "full-arch": "Full arch (All-on-4/6)",
+    smile: "Smile design",
+    veneers: "Veneers",
+    crowns: "Zirconia crowns",
+    unsure: "Not sure yet",
+  },
+  contactMethodLabel: "How should we contact you? (optional)",
+  contactMethodOptions: {
+    "": "Select",
+    whatsapp: "WhatsApp",
+    phone: "Phone",
+    email: "Email",
+  },
   consentLabel:
     "I have read the Privacy Policy and consent to my personal data being processed for the purpose of a callback. *",
   submitting: "Sending…",
@@ -136,6 +178,8 @@ const nl: typeof tr = {
 
   bookCta: "Afspraak maken",
   exploreServicesCta: "Ontdek onze behandelingen",
+  startReviewCta: "Start mijn gratis eerste beoordeling",
+  whatsappCta: "Stuur een bericht via WhatsApp",
 
   googleBadge: "Google Reviews · 5,0",
   patientVideoAlt: "Patiëntvideo",
@@ -157,9 +201,27 @@ const nl: typeof tr = {
   galleryImageAlt: "Galerijafbeelding",
 
   nameLabel: "Volledige naam *",
-  phoneLabel: "Telefoonnummer *",
+  phoneLabel: "Telefoon / WhatsApp *",
   phonePlaceholder: "+31 6 12345678",
   preferredTimeLabel: "Gewenste belmoment (optioneel)",
+  emailLabel: "E-mail (optioneel)",
+  treatmentInterestLabel: "Behandelinteresse (optioneel)",
+  treatmentInterestOptions: {
+    "": "Kies",
+    implants: "Implantaten / ontbrekende tanden",
+    "full-arch": "Volledige kaak (All-on-4/6)",
+    smile: "Glimlachontwerp",
+    veneers: "Veneers",
+    crowns: "Zirkoniumkronen",
+    unsure: "Weet ik nog niet",
+  },
+  contactMethodLabel: "Hoe mogen we u bereiken? (optioneel)",
+  contactMethodOptions: {
+    "": "Kies",
+    whatsapp: "WhatsApp",
+    phone: "Telefoon",
+    email: "E-mail",
+  },
   consentLabel:
     "Ik heb het privacybeleid gelezen en geef toestemming voor het verwerken van mijn gegevens voor een terugbelverzoek. *",
   submitting: "Versturen…",

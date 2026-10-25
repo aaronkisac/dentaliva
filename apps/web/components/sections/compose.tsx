@@ -15,6 +15,7 @@ import { ServiceTicker } from "./service-ticker";
 import { ReviewsSection, VideoTestimonialsSection } from "./testimonials";
 import { TrustStripSection } from "./trust-strip";
 import { TreatmentPathsSection } from "./treatment-paths";
+import { ReviewFormSection } from "./review-form";
 import { t } from "../../src/i18n";
 
 type SectionRenderer = (data: HomeData) => ReactNode;
@@ -27,7 +28,11 @@ function reveal(node: ReactNode): ReactNode {
 /** Registry: section id → renderer. Order comes from the site config. */
 export const sectionRegistry: Record<HomeSectionId, SectionRenderer> = {
   hero: (data) => (
-    <HeroSection data={data.homePage?.hero ?? null} trust={data.siteCopy?.heroTrust ?? null} />
+    <HeroSection
+      data={data.homePage?.hero ?? null}
+      trust={data.siteCopy?.heroTrust ?? null}
+      whatsapp={data.siteSettings?.whatsapp ?? null}
+    />
   ),
   ticker: (data) => <ServiceTicker items={data.quickServices} />,
   trustStrip: (data) => reveal(<TrustStripSection data={data.homePage?.trustStrip ?? null} />),
@@ -61,6 +66,14 @@ export const sectionRegistry: Record<HomeSectionId, SectionRenderer> = {
       <VideoTestimonialsSection
         items={data.testimonials}
         heading={t(data.siteCopy?.sectionHeadings?.videoReviews)}
+      />,
+    ),
+  reviewForm: (data) =>
+    reveal(
+      <ReviewFormSection
+        data={data.homePage?.reviewForm ?? null}
+        eyebrow={t(data.siteCopy?.sectionHeadings?.reviewFormEyebrow)}
+        heading={t(data.siteCopy?.sectionHeadings?.reviewFormHeading)}
       />,
     ),
   reviews: (data) =>

@@ -131,6 +131,9 @@ describe("handleCallbackPost (FRM-3)", () => {
       name: "Test Kullanıcı",
       phone: "05320000000",
       preferredTime: "",
+      email: "",
+      treatmentInterest: "",
+      contactMethod: "",
     });
   });
 
@@ -151,6 +154,31 @@ describe("handleCallbackPost (FRM-3)", () => {
       name: "Test Kullanıcı",
       phone: "05320000000",
       preferredTime: "14:00",
+      email: "",
+      treatmentInterest: "",
+      contactMethod: "",
+    });
+  });
+
+  it("forwards the DSN-63 review-form fields to the mailer (DSN-63)", async () => {
+    const deps = makeDeps();
+    const res = await handleCallbackPost(
+      jsonRequest({
+        ...validBody,
+        email: "ada@example.com",
+        treatmentInterest: "implants",
+        contactMethod: "whatsapp",
+      }),
+      deps,
+    );
+    expect(res.status).toBe(200);
+    expect(deps.sendMail).toHaveBeenCalledWith({
+      name: "Test Kullanıcı",
+      phone: "05320000000",
+      preferredTime: "",
+      email: "ada@example.com",
+      treatmentInterest: "implants",
+      contactMethod: "whatsapp",
     });
   });
 

@@ -40,10 +40,17 @@ const ENV = imageTarget();
 export function HeroSection({
   data,
   trust,
+  whatsapp,
 }: {
   data: HeroData | null;
   /** DSN-44: güven satırı siteCopy'den — parça yoksa satır hiç render edilmez. */
   trust?: HeroTrust | null;
+  /**
+   * DSN-63: doküman #01 — ikincil CTA WhatsApp kanalı. siteSettings.whatsapp
+   * boşken buton render edilmez (keşif CTA'sı kalır); numara CMS'e girildiği
+   * an ilk rebuild'de görünür (Aaron onayı bekleniyor — DSN-21).
+   */
+  whatsapp?: string | null;
 }) {
   // Copy sweep: hero metni yalnızca CMS'ten gelir — fallback copy yok.
   const headline = t(data?.headline);
@@ -93,19 +100,35 @@ export function HeroSection({
             </Text>
           ) : null}
           <div className="hero-rise flex flex-wrap items-center gap-4" style={rise(360)}>
-            <Link href={routes.contact} className={buttonVariants({ size: "lg" })}>
-              {uiString("bookCta")}
+            {/* DSN-63: birincil dönüşüm artık ilk değerlendirme formu (doküman #01). */}
+            <Link href="#review" className={buttonVariants({ size: "lg" })}>
+              {uiString("startReviewCta")}
             </Link>
-            <Link
-              href={routes.treatments}
-              className={buttonVariants({
-                variant: "outline",
-                size: "lg",
-                class: "border-ivory/50 text-white hover:border-gold-soft hover:text-gold-soft",
-              })}
-            >
-              {uiString("exploreServicesCta")}
-            </Link>
+            {whatsapp ? (
+              <a
+                href={`https://wa.me/${whatsapp.replace(/[^\d]/g, "")}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={buttonVariants({
+                  variant: "outline",
+                  size: "lg",
+                  class: "border-ivory/50 text-white hover:border-gold-soft hover:text-gold-soft",
+                })}
+              >
+                {uiString("whatsappCta")}
+              </a>
+            ) : (
+              <Link
+                href={routes.treatments}
+                className={buttonVariants({
+                  variant: "outline",
+                  size: "lg",
+                  class: "border-ivory/50 text-white hover:border-gold-soft hover:text-gold-soft",
+                })}
+              >
+                {uiString("exploreServicesCta")}
+              </Link>
+            )}
           </div>
           {/* DSN-44: güven satırı siteCopy'den; tek parça bile yoksa satır basılmaz. */}
           {trustItems.length > 0 ? (
