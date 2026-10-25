@@ -23,6 +23,49 @@ export const homePage = defineType({
       of: [{ type: "reference", to: [{ type: "treatment" }] }],
     }),
     defineField({
+      // DSN-61: strateji dokümanı #02 — hero altı kompakt güven bandı.
+      name: "trustStrip",
+      title: "Güven şeridi",
+      description:
+        "Hero altındaki kompakt güven bandı — Google puanı ve doğrulanabilir göstergeler (vaka sayısı, video sayısı). Tamamen boşken bölüm render edilmez.",
+      type: "object",
+      fields: [
+        { name: "rating", title: "Puan (örn. 5,0)", type: "localeString" },
+        {
+          name: "ratingLabel",
+          title: "Puan etiketi (örn. Google Değerlendirmeleri)",
+          type: "localeString",
+        },
+        {
+          name: "items",
+          title: "Güven göstergeleri",
+          type: "array",
+          validation: (rule) => rule.max(3),
+          of: [
+            {
+              type: "object",
+              name: "trustItem",
+              fields: [
+                {
+                  name: "value",
+                  title: "Değer (örn. 300+)",
+                  type: "string",
+                  validation: (rule) => rule.required(),
+                },
+                {
+                  name: "label",
+                  title: "Etiket (örn. Gerçek Vaka)",
+                  type: "localeString",
+                  validation: (rule) => rule.required(),
+                },
+              ],
+              preview: { select: { title: "value", subtitle: "label.tr" } },
+            },
+          ],
+        },
+      ],
+    }),
+    defineField({
       name: "about",
       title: "Hakkında bölümü",
       type: "object",
@@ -148,6 +191,7 @@ export const homePage = defineType({
         list: [
           { title: "Hero", value: "hero" },
           { title: "Hizmet şeridi", value: "ticker" },
+          { title: "Güven şeridi", value: "trustStrip" },
           { title: "Hizmetler carousel'i", value: "quickServices" },
           { title: "Hakkında", value: "about" },
           { title: "Video yorumlar", value: "videoTestimonials" },

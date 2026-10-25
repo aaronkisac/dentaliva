@@ -31,15 +31,19 @@ export const site = {
     blog: true,
   },
   sections: {
+    // DSN-61: funnel strategy order — existing sections move to their final
+    // positions; new sections (treatmentPaths, reviewForm, …) are inserted by
+    // later waves between these slots.
     home: [
       "hero",
       "ticker",
-      "quickServices",
+      "trustStrip",
       "about",
+      "quickServices",
+      "onceSonra",
       "videoTestimonials",
       "reviews",
       "gallery",
-      "onceSonra",
       "doctors",
       "faq",
       "cta",
