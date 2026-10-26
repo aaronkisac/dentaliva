@@ -43,6 +43,7 @@ export const site = {
       "videoTestimonials",
       "reviewForm",
       "howItWorks",
+      "decisionModules",
       "reviews",
       "gallery",
       "doctors",

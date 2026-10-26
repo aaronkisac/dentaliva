@@ -22,6 +22,8 @@ const tr = {
   // DSN-63: doküman #01 — birincil dönüşüm ilk değerlendirme formuna gider.
   startReviewCta: "Ücretsiz Ön Değerlendirme Başlatın",
   whatsappCta: "WhatsApp'tan Yazın",
+  // DSN-65: karar modüllerinin ana CTA linki (sunucu bileşeni de okur).
+  moduleCta: "Seçenekleri keşfedin",
 
   // social proof (client testimonials)
   googleBadge: "Google Değerlendirmeleri · 5,0",
@@ -104,6 +106,7 @@ const en: typeof tr = {
   exploreServicesCta: "Explore our treatments",
   startReviewCta: "Start My Free Initial Review",
   whatsappCta: "Chat on WhatsApp",
+  moduleCta: "Explore the options",
 
   googleBadge: "Google Reviews · 5.0",
   patientVideoAlt: "Patient video",
@@ -180,6 +183,7 @@ const nl: typeof tr = {
   exploreServicesCta: "Ontdek onze behandelingen",
   startReviewCta: "Start mijn gratis eerste beoordeling",
   whatsappCta: "Stuur een bericht via WhatsApp",
+  moduleCta: "Bekijk de opties",
 
   googleBadge: "Google Reviews · 5,0",
   patientVideoAlt: "Patiëntvideo",

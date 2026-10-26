@@ -75,6 +75,8 @@ export interface HomePageContent {
   reviewForm?: { steps?: LocalizedPair[] };
   /** DSN-64: süreç adımları — boşken bölüm render edilmez. */
   howItWorks?: { steps?: HowItWorksStep[] };
+  /** DSN-65: karar modülleri — GROQ hidden filtresi uygulanmış halde gelir. */
+  decisionModules?: DecisionModule[];
   about?: {
     title?: LocalizedPair;
     body?: LocalizedPair;
@@ -134,6 +136,21 @@ export interface TreatmentPathItem {
 export interface HowItWorksStep {
   title?: LocalizedPair;
   text?: LocalizedPair;
+}
+
+/** DSN-65: karar modülü — seçenek kartları + medya + CTA tedavisi. */
+export interface DecisionModule {
+  eyebrow?: LocalizedPair;
+  heading?: LocalizedPair;
+  body?: LocalizedPair;
+  image?: { ref?: string; alt?: LocalizedPair; lqip?: string };
+  youtubeId?: string;
+  options?: Array<{
+    title?: LocalizedPair;
+    text?: LocalizedPair;
+    treatment?: { name?: LocalizedPair; slug?: string } | null;
+  }>;
+  ctaTreatment?: { name?: LocalizedPair; slug?: string } | null;
 }
 
 /** DSN-50: önce/sonra karşılaştırma kartı — slider için görsel çifti. */

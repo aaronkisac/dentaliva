@@ -224,6 +224,79 @@ export const homePage = defineType({
       ],
     }),
     defineField({
+      // DSN-65: strateji dokümanı #08/#09 — yüksek niyetli tedavi karar
+      // modülleri (implant / gülüş tasarımı). Öge bazlı hidden (DSN-56).
+      name: "decisionModules",
+      title: "Karar modülleri",
+      description:
+        "En yüksek niyetli tedavi gruplarına derin geçiş modülleri (implant, gülüş tasarımı). Her modül: başlık + metin + en fazla 3 seçenek kartı (tedavi linkli) + medya (video/görsel) + CTA tedavisi. Boşken bölüm render edilmez.",
+      type: "array",
+      validation: (rule) => rule.max(2),
+      of: [
+        {
+          type: "object",
+          name: "decisionModule",
+          fields: [
+            { name: "eyebrow", title: "Üst etiket", type: "localeString" },
+            {
+              name: "heading",
+              title: "Başlık",
+              type: "localeString",
+              validation: (rule) => rule.required(),
+            },
+            { name: "body", title: "Açıklama", type: "localeText" },
+            { name: "image", title: "Görsel (video yoksa)", type: "imageWithAlt" },
+            {
+              name: "youtubeId",
+              title: "YouTube video kimliği (hekim açıklaması)",
+              type: "string",
+            },
+            {
+              name: "options",
+              title: "Seçenek kartları",
+              type: "array",
+              validation: (rule) => rule.max(3),
+              of: [
+                {
+                  type: "object",
+                  name: "decisionOption",
+                  fields: [
+                    {
+                      name: "title",
+                      title: "Seçenek başlığı",
+                      type: "localeString",
+                      validation: (rule) => rule.required(),
+                    },
+                    { name: "text", title: "Kısa açıklama", type: "localeText" },
+                    {
+                      name: "treatment",
+                      title: "İlgili tedavi",
+                      type: "reference",
+                      to: [{ type: "treatment" }],
+                    },
+                  ],
+                  preview: { select: { title: "title.tr" } },
+                },
+              ],
+            },
+            {
+              name: "ctaTreatment",
+              title: "CTA tedavisi (modülün ana linki)",
+              type: "reference",
+              to: [{ type: "treatment" }],
+            },
+            {
+              name: "hidden",
+              title: "Gizle",
+              type: "boolean",
+              initialValue: false,
+            },
+          ],
+          preview: { select: { title: "heading.tr" } },
+        },
+      ],
+    }),
+    defineField({
       // DSN-64: strateji dokümanı #07 — süreç netliği (6 adımlı timeline).
       name: "howItWorks",
       title: "Nasıl işler",
@@ -294,6 +367,7 @@ export const homePage = defineType({
           { title: "Ekip", value: "doctors" },
           { title: "Ön değerlendirme formu", value: "reviewForm" },
           { title: "Nasıl işler", value: "howItWorks" },
+          { title: "Karar modülleri", value: "decisionModules" },
           { title: "SSS", value: "faq" },
           { title: "CTA bandı", value: "cta" },
         ],

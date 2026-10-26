@@ -42,6 +42,15 @@ export const homePageQuery = defineQuery(`*[_type == "homePage"][0]{
   },
   reviewForm { steps },
   howItWorks { steps },
+  decisionModules[@.hidden != true]{
+    eyebrow,
+    heading,
+    body,
+    image { "ref": asset._ref, alt, "lqip": asset->metadata.lqip },
+    youtubeId,
+    options[]{ title, text, treatment->{ name, "slug": slug.current } },
+    ctaTreatment->{ name, "slug": slug.current }
+  },
   about { ..., image { ..., alt, "lqip": asset->metadata.lqip } },
   stats,
   gallery[]{ "asset": { "_ref": asset._ref }, "alt": alt, "lqip": asset->metadata.lqip },
