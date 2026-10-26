@@ -29,6 +29,8 @@ export const homeSectionIds = [
   "reviewForm",
   "howItWorks",
   "decisionModules",
+  "travelStay",
+  "aftercare",
   "reviews",
   "gallery",
   "onceSonra",

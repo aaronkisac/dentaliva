@@ -51,6 +51,8 @@ export const homePageQuery = defineQuery(`*[_type == "homePage"][0]{
     options[]{ title, text, treatment->{ name, "slug": slug.current } },
     ctaTreatment->{ name, "slug": slug.current }
   },
+  travelStay { checklist },
+  aftercare { normal, urgent, contactNote },
   about { ..., image { ..., alt, "lqip": asset->metadata.lqip } },
   stats,
   gallery[]{ "asset": { "_ref": asset._ref }, "alt": alt, "lqip": asset->metadata.lqip },

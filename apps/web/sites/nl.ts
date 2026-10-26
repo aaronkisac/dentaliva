@@ -44,6 +44,8 @@ export const site = {
       "reviewForm",
       "howItWorks",
       "decisionModules",
+      "travelStay",
+      "aftercare",
       "reviews",
       "gallery",
       "doctors",

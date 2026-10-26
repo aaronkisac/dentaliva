@@ -77,6 +77,14 @@ export interface HomePageContent {
   howItWorks?: { steps?: HowItWorksStep[] };
   /** DSN-65: karar modülleri — GROQ hidden filtresi uygulanmış halde gelir. */
   decisionModules?: DecisionModule[];
+  /** DSN-66: seyahat planlama check-listi — boşken bölüm render edilmez. */
+  travelStay?: { checklist?: LocalizedPair[] };
+  /** DSN-66: aftercare belirtileri + iletişim notu — boşken render edilmez. */
+  aftercare?: {
+    normal?: LocalizedPair[];
+    urgent?: LocalizedPair[];
+    contactNote?: LocalizedPair;
+  };
   about?: {
     title?: LocalizedPair;
     body?: LocalizedPair;

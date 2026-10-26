@@ -81,6 +81,32 @@ export const siteCopy = defineType({
           type: "localeText",
         },
         {
+          name: "travelEyebrow",
+          title: "Seyahat üst etiketi (ana sayfa)",
+          type: "localeText",
+        },
+        { name: "travelHeading", title: "Seyahat başlığı (ana sayfa)", type: "localeText" },
+        {
+          name: "aftercareEyebrow",
+          title: "Aftercare üst etiketi (ana sayfa)",
+          type: "localeText",
+        },
+        {
+          name: "aftercareHeading",
+          title: "Aftercare başlığı (ana sayfa)",
+          type: "localeText",
+        },
+        {
+          name: "aftercareNormalTitle",
+          title: "Aftercare normal kart başlığı",
+          type: "localeText",
+        },
+        {
+          name: "aftercareUrgentTitle",
+          title: "Aftercare iletişim kart başlığı",
+          type: "localeText",
+        },
+        {
           name: "onceSonraEyebrow",
           title: "Önce/Sonra üst etiketi (ana sayfa)",
           type: "localeText",
