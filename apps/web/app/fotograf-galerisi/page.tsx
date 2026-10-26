@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 
-import { Heading, Section } from "@dentaliva/ui";
+import { Section, Text } from "@dentaliva/ui";
 import { t } from "../../src/i18n";
 
+import { CtaBand } from "../../components/cta-band";
 import { GalleryLightbox } from "../../components/lightbox";
-import { fetchHomePageDocument } from "../../src/content/home";
+import { PageHero } from "../../components/page-hero";
+import { fetchHomePageDocument, fetchSiteSettings } from "../../src/content/home";
 import { fetchSiteCopy } from "../../src/content/site-copy";
 import { readClient } from "../../src/sanity";
 import { pageMetadata } from "../../src/seo";
@@ -18,10 +20,11 @@ export const metadata: Metadata = pageMetadata({
 });
 
 export default async function GalleryPage() {
-  // PRF-5: yalnızca homePage dokümanı — liste sorguları çekilmez.
-  const [homePage, copy] = await Promise.all([
+  // PRF-5: yalnızca homePage + siteCopy + siteSettings — liste sorguları çekilmez.
+  const [homePage, copy, settings] = await Promise.all([
     fetchHomePageDocument(readClient),
     fetchSiteCopy(readClient),
+    fetchSiteSettings(readClient),
   ]);
   const headings = copy?.sectionHeadings;
   const images = homePage?.gallery ?? [];
@@ -30,15 +33,17 @@ export default async function GalleryPage() {
   const onceSonra = homePage?.onceSonraGallery ?? [];
 
   return (
-    <Section>
-      {t(headings?.galleryPage) ? (
-        <Heading level="h1" size="lg">
-          {t(headings?.galleryPage)}
-        </Heading>
-      ) : null}
-      <div className="mt-8">
+    <>
+      {/* DSN-68: galeri sayfası PageHero kalıbına alındı — diğer listeleme
+          sayfalarıyla tek şablon (DSN-25); lead siteCopy'den. */}
+      <PageHero
+        eyebrow="Dentaliva"
+        title={t(headings?.galleryPage) || pageString("galleryTitle")}
+        lead={t(headings?.galleryLead)}
+      />
+      <Section>
         {images.length === 0 && onceSonra.length === 0 ? (
-          <p className="font-sans text-ink">{t(headings?.galleryEmpty)}</p>
+          <Text>{t(headings?.galleryEmpty)}</Text>
         ) : (
           <>
             <p className="sr-only">{pageString("gallerySrSummary")(images.length)}</p>
@@ -49,10 +54,17 @@ export default async function GalleryPage() {
             />
           </>
         )}
-      </div>
-      {images[0]?.alt ? (
-        <p className="sr-only">{pageString("galleryFirstAltSr")(t(images[0]?.alt))}</p>
-      ) : null}
-    </Section>
+        {images[0]?.alt ? (
+          <p className="sr-only">{pageString("galleryFirstAltSr")(t(images[0]?.alt))}</p>
+        ) : null}
+      </Section>
+      {/* DSN-68: dönüşüm bandı — hizmet/hekim/blog detay sayfalarıyla aynı. */}
+      <CtaBand
+        title={homePage?.cta?.title ?? null}
+        text={homePage?.cta?.text ?? null}
+        phone={settings?.phone}
+        actionLabel={t(copy?.ui?.appointmentCta)}
+      />
+    </>
   );
 }

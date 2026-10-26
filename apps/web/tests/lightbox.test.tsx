@@ -9,7 +9,7 @@ vi.mock("next/image", () => ({
   },
 }));
 
-import { GalleryLightbox, galleryMode } from "../components/lightbox";
+import { GalleryLightbox, LightboxStage, galleryMode, mosaicSpan } from "../components/lightbox";
 import type { GalleryImage } from "../src/content/home";
 
 const img = (ref: string): GalleryImage => ({
@@ -51,6 +51,36 @@ describe("GalleryLightbox (DSN-29)", () => {
   });
 });
 
+describe("GalleryLightbox mosaic rhythm (DSN-68)", () => {
+  it("keeps a uniform grid under six images — the rhythm cannot establish", () => {
+    expect(mosaicSpan(0, 5)).toBeNull();
+    expect(mosaicSpan(2, 3)).toBeNull();
+  });
+
+  it("uses the home pattern for an eight-image set: feature first, wide last", () => {
+    expect(mosaicSpan(0, 8)).toBe("feature");
+    expect(mosaicSpan(7, 8)).toBe("wide");
+    expect(mosaicSpan(3, 8)).toBeNull();
+  });
+
+  it("features every seventh image in larger sets", () => {
+    expect(mosaicSpan(0, 24)).toBe("feature");
+    expect(mosaicSpan(7, 24)).toBe("feature");
+    expect(mosaicSpan(14, 24)).toBe("feature");
+    expect(mosaicSpan(21, 24)).toBe("feature");
+    expect(mosaicSpan(5, 24)).toBeNull();
+  });
+
+  it("renders the mosaic grid classes on the klinik tab", () => {
+    const many = Array.from({ length: 8 }, (_, i) =>
+      img(`image-${String(i + 1).padStart(40, "3")}-800x800-jpg`),
+    );
+    const html = render({ images: many });
+    expect(html).toContain("grid-flow-dense");
+    expect(html).toContain("md:row-span-2");
+  });
+});
+
 describe("GalleryLightbox once/sonra carousel (DSN-51)", () => {
   const many = Array.from({ length: 5 }, (_, i) => ({
     asset: { _ref: `image-${String(i + 1).padStart(40, "4")}-800x800-jpg` },
@@ -70,6 +100,33 @@ describe("GalleryLightbox once/sonra carousel (DSN-51)", () => {
       <GalleryLightbox images={list} onceSonra={list} closeLabel="Kapat" />,
     );
     expect(html).toContain("Önce / Sonra");
-    expect(html).toContain("grid grid-cols-2");
+    expect(html).toContain("grid-flow-dense");
+  });
+});
+
+describe("LightboxStage (DSN-68)", () => {
+  const items = [img("image-a1b2c3d4e5-800x600-jpg"), img("image-b2c3d4e5f6-800x600-jpg"), img("image-c3d4e5f6a7-800x600-jpg")];
+  const noop = () => {};
+
+  it("renders arrows, counter and caption", () => {
+    const html = renderToStaticMarkup(
+      <LightboxStage items={items} active={1} closeLabel="Kapat" onClose={noop} onNavigate={noop} />,
+    );
+    expect(html).toContain('aria-label="Önceki görseller"');
+    expect(html).toContain('aria-label="Sonraki görseller"');
+    expect(html).toContain("2 / 3");
+    expect(html).toContain("Görsel image-b2c3d4e5f6-800x600-jpg");
+    expect(html).toContain("Kapat ✕");
+  });
+
+  it("disables the arrows at both ends", () => {
+    const first = renderToStaticMarkup(
+      <LightboxStage items={items} active={0} onClose={noop} onNavigate={noop} />,
+    );
+    const last = renderToStaticMarkup(
+      <LightboxStage items={items} active={2} onClose={noop} onNavigate={noop} />,
+    );
+    expect(first.match(/disabled=""/g)?.length).toBe(1);
+    expect(last.match(/disabled=""/g)?.length).toBe(1);
   });
 });

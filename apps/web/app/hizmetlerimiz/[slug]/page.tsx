@@ -266,6 +266,7 @@ export default async function TreatmentDetailPage({ params }: PageProps) {
         title={homePage?.cta?.title ?? null}
         text={homePage?.cta?.text ?? null}
         phone={settings?.phone}
+        actionLabel={t(copy?.ui?.appointmentCta)}
       />
     </>
   );

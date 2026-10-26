@@ -20,6 +20,7 @@ import { HowItWorksSection } from "./how-it-works";
 import { DecisionModulesSection } from "./decision-modules";
 import { AftercareSection, TravelStaySection } from "./travel-aftercare";
 import { t } from "../../src/i18n";
+import { routes } from "../../src/routes";
 
 type SectionRenderer = (data: HomeData) => ReactNode;
 
@@ -119,7 +120,11 @@ export const sectionRegistry: Record<HomeSectionId, SectionRenderer> = {
       <GallerySection
         images={data.homePage?.gallery ?? []}
         onceSonra={data.homePage?.onceSonraGallery ?? []}
+        eyebrow={t(data.siteCopy?.sectionHeadings?.galleryEyebrow)}
         heading={t(data.siteCopy?.sectionHeadings?.galleryHome)}
+        lead={t(data.siteCopy?.sectionHeadings?.galleryLead)}
+        allLabel={t(data.siteCopy?.sectionHeadings?.allGalleryCta)}
+        allHref={routes.gallery}
         closeLabel={t(data.siteCopy?.ui?.lightboxClose)}
       />,
     ),

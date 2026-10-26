@@ -38,6 +38,13 @@ export const siteCopy = defineType({
         { name: "galleryPage", title: "Galeri sayfası başlığı", type: "localeText" },
         { name: "galleryHome", title: "Ana sayfa galeri başlığı", type: "localeText" },
         { name: "galleryEmpty", title: "Galeri boş durumu", type: "localeText" },
+        { name: "galleryEyebrow", title: "Galeri üst etiketi", type: "localeText" },
+        { name: "galleryLead", title: "Galeri açıklaması", type: "localeText" },
+        {
+          name: "allGalleryCta",
+          title: "Tüm fotoğraflar bağlantısı (ana sayfa)",
+          type: "localeText",
+        },
         {
           name: "servicesEyebrow",
           title: "Hizmetlerimiz üst etiketi (ana sayfa)",
@@ -156,6 +163,12 @@ export const siteCopy = defineType({
           title: "Menü 'tümünü gör' bağlantısı",
           type: "localeText",
           description: "Tedaviler açılır menüsünün altındaki liste sayfası bağlantısı.",
+        },
+        {
+          name: "appointmentCta",
+          title: "Randevu butonu (dönüşüm bandı)",
+          type: "localeText",
+          description: "İç sayfa sonlarındaki bandın randevu butonu metni.",
         },
       ],
     }),

@@ -10,6 +10,7 @@ import { AboutSection } from "../../components/sections/about";
 import { GallerySection } from "../../components/sections/gallery";
 import { fetchDoctors } from "../../src/content/doctors";
 import { fetchHomePageDocument, fetchSiteSettings } from "../../src/content/home";
+import { fetchSiteCopy } from "../../src/content/site-copy";
 import { readClient } from "../../src/sanity";
 import { pageMetadata } from "../../src/seo";
 import { pageString } from "../../src/page-strings";
@@ -29,10 +30,11 @@ export const metadata: Metadata = pageMetadata({
  * aynı) — CPT-8 copy sweep'inde homePage şemasına taşınacak.
  */
 export default async function AboutPage() {
-  const [homePage, doctors, settings] = await Promise.all([
+  const [homePage, doctors, settings, copy] = await Promise.all([
     fetchHomePageDocument(readClient).catch(() => null),
     fetchDoctors(readClient),
     fetchSiteSettings(readClient),
+    fetchSiteCopy(readClient),
   ]);
 
   return (
@@ -97,6 +99,7 @@ export default async function AboutPage() {
         title={homePage?.cta?.title ?? null}
         text={homePage?.cta?.text ?? null}
         phone={settings?.phone}
+        actionLabel={t(copy?.ui?.appointmentCta)}
       />
     </>
   );
