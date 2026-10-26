@@ -107,9 +107,7 @@ export function GalleryLightbox({
         onClick={() => setActive(index)}
         className={
           "group relative overflow-hidden rounded-[4px] bg-ivory-2 transition-shadow duration-300 hover:shadow-[var(--dvn-shadow-lift)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold " +
-          (span
-            ? spanClasses[span]
-            : "aspect-square") +
+          (span ? spanClasses[span] : "aspect-square") +
           (afterCarousel ? " dvn-carousel-card shrink-0 snap-start" : "")
         }
         aria-label={uiString("lightboxImageAria")(index + 1)}
@@ -276,7 +274,10 @@ export function GalleryLightbox({
           if (Math.abs(delta) > 48) navigate(delta < 0 ? 1 : -1);
           touchStart.current = null;
         }}
-        className="backdrop:bg-navy/90 bg-transparent p-0 text-ivory"
+        // m-auto zorunlu: preflight tüm margin'leri sıfırladığı için UA'nın
+        // dialog:modal { margin: auto } merkezlemesi ölür ve dialog sol üste
+        // yapışır. Fit-content kutu m-auto ile viewport'ta ortalanır.
+        className="backdrop:bg-navy/90 m-auto bg-transparent p-0 text-ivory"
         aria-label={uiString("galleryImageAlt")}
       >
         {active !== null && items[active] ? (
@@ -376,7 +377,12 @@ export function LightboxStage({
             sizes="90vw"
             placeholder="blur"
             blurDataURL={image.lqip ?? lqipUrl(ref, ENV)}
-            className="mx-auto h-auto max-h-[72vh] w-auto max-w-[86vw] rounded-[2px] object-contain md:max-w-3xl"
+            // Boyut viewport oranlı: 86vw genişlik tavanı mobilde kenar
+            // payıyla güvenli; md:max-w-3xl kalktı — desktop'ta görsel
+            // 768px'e hapsedilip küçük kalıyordu, artık yükseklik tavanı
+            // (78dvh — mobil tarayıcı araç çubuğu kaydıkça alan kaybetmesin)
+            // belirleyici olana kadar ekranla büyür.
+            className="mx-auto h-auto max-h-[78dvh] w-auto max-w-[86vw] rounded-[2px] object-contain"
           />
         ) : null}
         <div className="mt-3 flex flex-wrap items-center justify-between gap-x-6 gap-y-2 border-t border-white/10 pt-3">

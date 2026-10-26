@@ -49,6 +49,11 @@ describe("GalleryLightbox (DSN-29)", () => {
     expect(html).toContain("image-a1b2c3d4e5-800x600-jpg");
     expect(html).not.toContain("undefined");
   });
+
+  it("keeps m-auto on the dialog — preflight zeroes margins and the UA's dialog:centering dies without it", () => {
+    const html = render({ images: [img("image-a1b2c3d4e5-800x600-jpg")] });
+    expect(html).toMatch(/<dialog[^>]*class="[^"]*\bm-auto\b/);
+  });
 });
 
 describe("GalleryLightbox mosaic rhythm (DSN-68)", () => {
@@ -105,12 +110,22 @@ describe("GalleryLightbox once/sonra carousel (DSN-51)", () => {
 });
 
 describe("LightboxStage (DSN-68)", () => {
-  const items = [img("image-a1b2c3d4e5-800x600-jpg"), img("image-b2c3d4e5f6-800x600-jpg"), img("image-c3d4e5f6a7-800x600-jpg")];
+  const items = [
+    img("image-a1b2c3d4e5-800x600-jpg"),
+    img("image-b2c3d4e5f6-800x600-jpg"),
+    img("image-c3d4e5f6a7-800x600-jpg"),
+  ];
   const noop = () => {};
 
   it("renders arrows, counter and caption", () => {
     const html = renderToStaticMarkup(
-      <LightboxStage items={items} active={1} closeLabel="Kapat" onClose={noop} onNavigate={noop} />,
+      <LightboxStage
+        items={items}
+        active={1}
+        closeLabel="Kapat"
+        onClose={noop}
+        onNavigate={noop}
+      />,
     );
     expect(html).toContain('aria-label="Önceki görseller"');
     expect(html).toContain('aria-label="Sonraki görseller"');
