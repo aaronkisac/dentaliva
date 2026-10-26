@@ -4,6 +4,19 @@ import type { GalleryImage } from "../../src/content/home";
 import { GalleryLightbox } from "../lightbox";
 
 /**
+ * DSN-68: ana sayfa galerisi için küme seçimi — CMS'te "Ana sayfa galeri
+ * seçkisi" doluysa o basılır; boşsa galeri sayfasının külliyatının ilk 8'i
+ * (bugünkü davranış) kalır. Seçki boş referanslı öğeler içerirse elenir.
+ */
+export function pickHomeGallery(
+  homeGallery: GalleryImage[] | undefined,
+  gallery: GalleryImage[],
+): GalleryImage[] {
+  const selection = (homeGallery ?? []).filter((image) => image.asset?._ref);
+  return selection.length > 0 ? selection : gallery;
+}
+
+/**
  * DSN-46: ana sayfa galerisi — başlık siteCopy'den (yoksa render edilmez),
  * grid GalleryLightbox'a devredilir: fotoğrafa tıklayınca büyütme + CMS'ten
  * "Kapat". Fotoğraflar geçici (müşteri CMS'ten değiştirir) — yapı sabit.

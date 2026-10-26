@@ -94,6 +94,8 @@ export interface HomePageContent {
   };
   stats?: Array<{ value?: string; label?: LocalizedPair }>;
   gallery?: GalleryImage[];
+  /** DSN-68: ana sayfa seçkisi — doluysa ana sayfa galerisi bunu basar (max 8). */
+  homeGallery?: GalleryImage[];
   /** DSN-29: hasta izinli önce/sonra görselleri — dolunca galeri sekmesi açılır. */
   onceSonraGallery?: GalleryImage[];
   /** DSN-50: anasayfa önce/sonra karşılaştırma kartları — boşken bölüm render edilmez. */

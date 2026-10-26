@@ -8,7 +8,7 @@ vi.mock("next/image", () => ({
   },
 }));
 
-import { GallerySection } from "../components/sections/gallery";
+import { GallerySection, pickHomeGallery } from "../components/sections/gallery";
 
 const img = (n: number): React.ComponentProps<typeof GallerySection>["images"][number] => ({
   asset: { _ref: `image-${String(n).padStart(40, "3")}-600x400-jpg` },
@@ -62,5 +62,24 @@ describe("GallerySection (DSN-46, DSN-52, DSN-68)", () => {
   it("renders the hover caption from the CMS alt text", () => {
     const html = render({ images: [img(1), img(2)] });
     expect(html).toContain("Görsel 1");
+  });
+});
+
+describe("pickHomeGallery (DSN-68 ana sayfa seçkisi)", () => {
+  const full = [img(1), img(2), img(3)];
+  const curated = [img(9), img(7), img(5), img(3)];
+
+  it("prefers the curated selection when it has refs", () => {
+    expect(pickHomeGallery(curated, full)).toEqual(curated);
+  });
+
+  it("falls back to the full gallery when the selection is empty or unset", () => {
+    expect(pickHomeGallery(undefined, full)).toEqual(full);
+    expect(pickHomeGallery([], full)).toEqual(full);
+  });
+
+  it("drops ref-less selection entries instead of falling back for them", () => {
+    const withJunk = [{ alt: { tr: "bozuk" } }, img(4)];
+    expect(pickHomeGallery(withJunk, full)).toEqual([img(4)]);
   });
 });

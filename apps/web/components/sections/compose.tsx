@@ -7,7 +7,7 @@ import type { HomeData } from "../../src/content/home";
 import { AboutSection } from "./about";
 import { CtaSection, FaqSection } from "./faq-cta";
 import { DoctorsSection } from "./doctors";
-import { GallerySection } from "./gallery";
+import { GallerySection, pickHomeGallery } from "./gallery";
 import { HeroSection } from "./hero";
 import { OnceSonraSection } from "./once-sonra";
 import { QuickServicesSection } from "./quick-services";
@@ -118,7 +118,10 @@ export const sectionRegistry: Record<HomeSectionId, SectionRenderer> = {
   gallery: (data) =>
     reveal(
       <GallerySection
-        images={data.homePage?.gallery ?? []}
+        images={pickHomeGallery(
+          data.homePage?.homeGallery,
+          data.homePage?.gallery ?? [],
+        )}
         onceSonra={data.homePage?.onceSonraGallery ?? []}
         eyebrow={t(data.siteCopy?.sectionHeadings?.galleryEyebrow)}
         heading={t(data.siteCopy?.sectionHeadings?.galleryHome)}
