@@ -44,6 +44,7 @@ export const site = {
       "onceSonra",
       "videoTestimonials",
       "reviewForm",
+      "howItWorks",
       "reviews",
       "gallery",
       "doctors",

@@ -224,12 +224,50 @@ export const homePage = defineType({
       ],
     }),
     defineField({
+      // DSN-64: strateji dokümanı #07 — süreç netliği (6 adımlı timeline).
+      name: "howItWorks",
+      title: "Nasıl işler",
+      description:
+        "Tedavi yolculuğu adımları — xl'de yatay timeline, mobilde dikey. Adımlar bağlam anlatır; süre/garanti iddiası içermez. Boşken bölüm render edilmez.",
+      type: "object",
+      fields: [
+        {
+          name: "steps",
+          title: "Adımlar",
+          type: "array",
+          validation: (rule) => rule.max(6),
+          of: [
+            {
+              type: "object",
+              name: "journeyStep",
+              fields: [
+                {
+                  name: "title",
+                  title: "Adım başlığı",
+                  type: "localeString",
+                  validation: (rule) => rule.required(),
+                },
+                { name: "text", title: "Kısa açıklama", type: "localeText" },
+              ],
+              preview: { select: { title: "title.tr" } },
+            },
+          ],
+        },
+      ],
+    }),
+    defineField({
       name: "cta",
       title: "CTA bandı",
       type: "object",
       fields: [
         { name: "title", type: "localeString" },
         { name: "text", type: "localeText" },
+        {
+          // DSN-64: doküman #15 güven satırı — privacy/response/provisional.
+          name: "trustLine",
+          title: "Güven satırı (gizlilik/yanıt kanalı notu)",
+          type: "localeText",
+        },
       ],
     }),
     defineField({
@@ -255,6 +293,7 @@ export const homePage = defineType({
           { title: "Önce/Sonra vakalar", value: "onceSonra" },
           { title: "Ekip", value: "doctors" },
           { title: "Ön değerlendirme formu", value: "reviewForm" },
+          { title: "Nasıl işler", value: "howItWorks" },
           { title: "SSS", value: "faq" },
           { title: "CTA bandı", value: "cta" },
         ],

@@ -16,6 +16,7 @@ import { ReviewsSection, VideoTestimonialsSection } from "./testimonials";
 import { TrustStripSection } from "./trust-strip";
 import { TreatmentPathsSection } from "./treatment-paths";
 import { ReviewFormSection } from "./review-form";
+import { HowItWorksSection } from "./how-it-works";
 import { t } from "../../src/i18n";
 
 type SectionRenderer = (data: HomeData) => ReactNode;
@@ -76,6 +77,14 @@ export const sectionRegistry: Record<HomeSectionId, SectionRenderer> = {
         heading={t(data.siteCopy?.sectionHeadings?.reviewFormHeading)}
       />,
     ),
+  howItWorks: (data) =>
+    reveal(
+      <HowItWorksSection
+        steps={data.homePage?.howItWorks?.steps ?? []}
+        eyebrow={t(data.siteCopy?.sectionHeadings?.howItWorksEyebrow)}
+        heading={t(data.siteCopy?.sectionHeadings?.howItWorksHeading)}
+      />,
+    ),
   reviews: (data) =>
     reveal(
       <ReviewsSection
@@ -117,7 +126,10 @@ export const sectionRegistry: Record<HomeSectionId, SectionRenderer> = {
       <CtaSection
         title={data.homePage?.cta?.title ?? null}
         text={data.homePage?.cta?.text ?? null}
+        trustLine={data.homePage?.cta?.trustLine ?? null}
+        eyebrow={data.siteCopy?.sectionHeadings?.finalCtaEyebrow ?? null}
         phone={data.siteSettings?.phone ?? ""}
+        whatsapp={data.siteSettings?.whatsapp ?? null}
       />,
     ),
 };

@@ -33,6 +33,9 @@ export interface SiteCopy {
     treatmentPathsHeading?: LocalizedPair;
     reviewFormEyebrow?: LocalizedPair;
     reviewFormHeading?: LocalizedPair;
+    howItWorksEyebrow?: LocalizedPair;
+    howItWorksHeading?: LocalizedPair;
+    finalCtaEyebrow?: LocalizedPair;
     onceSonraEyebrow?: LocalizedPair;
     onceSonraHeading?: LocalizedPair;
   } | null;

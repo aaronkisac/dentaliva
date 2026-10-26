@@ -27,6 +27,7 @@ export const homeSectionIds = [
   "treatmentPaths",
   "videoTestimonials",
   "reviewForm",
+  "howItWorks",
   "reviews",
   "gallery",
   "onceSonra",

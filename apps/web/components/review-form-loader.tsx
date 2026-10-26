@@ -25,6 +25,6 @@ const CallbackForm = dynamic(() => import("./CallbackForm").then((m) => m.Callba
   ),
 });
 
-export function ReviewFormLoader() {
-  return <CallbackForm />;
+export function ReviewFormLoader({ variant = "full" }: { variant?: "full" | "compact" }) {
+  return <CallbackForm variant={variant} />;
 }

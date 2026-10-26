@@ -66,6 +66,21 @@ export const siteCopy = defineType({
           type: "localeText",
         },
         {
+          name: "howItWorksEyebrow",
+          title: "Nasıl işler üst etiketi (ana sayfa)",
+          type: "localeText",
+        },
+        {
+          name: "howItWorksHeading",
+          title: "Nasıl işler başlığı (ana sayfa)",
+          type: "localeText",
+        },
+        {
+          name: "finalCtaEyebrow",
+          title: "Final CTA üst etiketi (ana sayfa)",
+          type: "localeText",
+        },
+        {
           name: "onceSonraEyebrow",
           title: "Önce/Sonra üst etiketi (ana sayfa)",
           type: "localeText",
