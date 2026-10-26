@@ -224,6 +224,52 @@ export const homePage = defineType({
       ],
     }),
     defineField({
+      // DSN-66: strateji dokümanı #10 — seyahat planlama check-listi.
+      name: "travelStay",
+      title: "Seyahat ve konaklama",
+      description:
+        "Uluslararası hastanın lojistik sorularına yanıt: yazılı plan, ziyaret sayısı, ulaşım, konaklama. 'Ücretsiz/hediye' dili kullanılmaz; dahil-hariç bilgisi yazılı olarak. Boşken bölüm render edilmez.",
+      type: "object",
+      fields: [
+        {
+          name: "checklist",
+          title: "Planlama maddeleri",
+          type: "array",
+          validation: (rule) => rule.max(8),
+          of: [{ type: "localeText" }],
+        },
+      ],
+    }),
+    defineField({
+      // DSN-66: strateji dokümanı #11 — aftercare belirtileri ve iletişim.
+      name: "aftercare",
+      title: "Tedavi sonrası bakım",
+      description:
+        "Normal iyileşme belirtileri ile bize ulaştırılması gereken durumlar ayrı kartlarda. '24/7' ve garanti dili yalnız operasyonel doğrulamayla kullanılabilir. Boşken bölüm render edilmez.",
+      type: "object",
+      fields: [
+        {
+          name: "normal",
+          title: "Normal iyileşme belirtileri",
+          type: "array",
+          validation: (rule) => rule.max(5),
+          of: [{ type: "localeText" }],
+        },
+        {
+          name: "urgent",
+          title: "Bize ulaştırılması gereken durumlar",
+          type: "array",
+          validation: (rule) => rule.max(5),
+          of: [{ type: "localeText" }],
+        },
+        {
+          name: "contactNote",
+          title: "İletişim rotası notu",
+          type: "localeText",
+        },
+      ],
+    }),
+    defineField({
       // DSN-65: strateji dokümanı #08/#09 — yüksek niyetli tedavi karar
       // modülleri (implant / gülüş tasarımı). Öge bazlı hidden (DSN-56).
       name: "decisionModules",
@@ -368,6 +414,8 @@ export const homePage = defineType({
           { title: "Ön değerlendirme formu", value: "reviewForm" },
           { title: "Nasıl işler", value: "howItWorks" },
           { title: "Karar modülleri", value: "decisionModules" },
+          { title: "Seyahat ve konaklama", value: "travelStay" },
+          { title: "Tedavi sonrası bakım", value: "aftercare" },
           { title: "SSS", value: "faq" },
           { title: "CTA bandı", value: "cta" },
         ],

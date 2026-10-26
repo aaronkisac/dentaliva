@@ -18,6 +18,7 @@ import { TreatmentPathsSection } from "./treatment-paths";
 import { ReviewFormSection } from "./review-form";
 import { HowItWorksSection } from "./how-it-works";
 import { DecisionModulesSection } from "./decision-modules";
+import { AftercareSection, TravelStaySection } from "./travel-aftercare";
 import { t } from "../../src/i18n";
 
 type SectionRenderer = (data: HomeData) => ReactNode;
@@ -88,6 +89,24 @@ export const sectionRegistry: Record<HomeSectionId, SectionRenderer> = {
     ),
   decisionModules: (data) =>
     reveal(<DecisionModulesSection modules={data.homePage?.decisionModules ?? []} />),
+  travelStay: (data) =>
+    reveal(
+      <TravelStaySection
+        data={data.homePage?.travelStay ?? null}
+        eyebrow={t(data.siteCopy?.sectionHeadings?.travelEyebrow)}
+        heading={t(data.siteCopy?.sectionHeadings?.travelHeading)}
+      />,
+    ),
+  aftercare: (data) =>
+    reveal(
+      <AftercareSection
+        data={data.homePage?.aftercare ?? null}
+        eyebrow={t(data.siteCopy?.sectionHeadings?.aftercareEyebrow)}
+        heading={t(data.siteCopy?.sectionHeadings?.aftercareHeading)}
+        normalTitle={t(data.siteCopy?.sectionHeadings?.aftercareNormalTitle)}
+        urgentTitle={t(data.siteCopy?.sectionHeadings?.aftercareUrgentTitle)}
+      />,
+    ),
   reviews: (data) =>
     reveal(
       <ReviewsSection
