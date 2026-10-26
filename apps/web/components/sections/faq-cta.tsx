@@ -1,6 +1,9 @@
 import { Accordion, Heading, Section, Link, buttonVariants } from "@dentaliva/ui";
 import type { LocalizedPair } from "../../src/content/home";
 import { t } from "../../src/i18n";
+import { uiString } from "../../src/ui-strings";
+
+import { ReviewFormLoader } from "../review-form-loader";
 
 export interface FaqEntry {
   question?: { tr?: string };
@@ -78,22 +81,58 @@ export function FaqSection({
 export function CtaSection({
   title,
   text,
+  trustLine,
+  eyebrow,
   phone,
+  whatsapp,
 }: {
   title?: LocalizedPair | null;
   text?: LocalizedPair | null;
+  /** DSN-64: doküman #15 güven satırı — privacy/response/provisional notu. */
+  trustLine?: LocalizedPair | null;
+  eyebrow?: LocalizedPair | null;
   phone: string;
+  /** DSN-63/64: WhatsApp kanalı — siteSettings.whatsapp boşken buton basılmaz. */
+  whatsapp?: string | null;
 }) {
   if (!t(title)) return null;
+  const eyebrowText = t(eyebrow);
+  const trust = t(trustLine);
   return (
-    <Section className="bg-navy text-center">
-      <Heading level="h2" size="md" className="text-white">
-        {t(title)}
-      </Heading>
-      {t(text) ? (
-        <p className="mx-auto mt-3 max-w-2xl font-sans text-lg text-white/80">{t(text)}</p>
-      ) : null}
-      <p className="mt-4 font-sans text-lg text-gold-soft">{phone}</p>
+    <Section className="bg-navy">
+      {/* DSN-64: doküman #15 — sol karar metni + sağ kısa form; yüksek niyetli
+          kullanıcı sayfa sonunda forma geri dönmek zorunda kalmaz. */}
+      <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-16">
+        <div>
+          {eyebrowText ? (
+            <div className="flex items-center gap-3">
+              <span aria-hidden="true" className="h-px w-8 bg-gold" />
+              <p className="font-sans text-xs uppercase tracking-widest text-gold-soft">
+                {eyebrowText}
+              </p>
+            </div>
+          ) : null}
+          <Heading level="h2" size="md" className="mt-4 text-white">
+            {t(title)}
+          </Heading>
+          {t(text) ? <p className="mt-4 font-sans text-lg text-white/80">{t(text)}</p> : null}
+          {whatsapp ? (
+            <a
+              href={`https://wa.me/${whatsapp.replace(/[^\d]/g, "")}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-6 inline-flex items-center border border-white/40 px-6 py-3 font-sans text-sm font-semibold text-white hover:border-gold-soft hover:text-gold-soft"
+            >
+              {uiString("whatsappCta")}
+            </a>
+          ) : null}
+          {trust ? <p className="mt-6 font-sans text-sm text-white/60">{trust}</p> : null}
+          {phone ? <p className="mt-2 font-sans text-sm text-white/60">{phone}</p> : null}
+        </div>
+        <div className="rounded-[4px] bg-white p-6 md:p-8">
+          <ReviewFormLoader variant="compact" />
+        </div>
+      </div>
     </Section>
   );
 }

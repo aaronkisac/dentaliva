@@ -47,7 +47,18 @@ declare global {
 
 type SubmitState = "idle" | "success" | "error";
 
-export function CallbackForm({ endpoint = "/api/callback" }: { endpoint?: string }) {
+export function CallbackForm({
+  endpoint = "/api/callback",
+  variant = "full",
+}: {
+  endpoint?: string;
+  /**
+   * DSN-64: compact — final CTA bloğunun kısa formu (ad + telefon + izin);
+   * opsiyonel alanlar gizlenir, şema aynıdır (eksik alanlar optional).
+   */
+  variant?: "full" | "compact";
+}) {
+  const compact = variant === "compact";
   const {
     register,
     handleSubmit,
@@ -180,71 +191,75 @@ export function CallbackForm({ endpoint = "/api/callback" }: { endpoint?: string
         ) : null}
       </div>
 
-      <div>
-        <label htmlFor="cb-email" className="mb-1 block text-sm font-semibold text-navy">
-          {uiString("emailLabel")}
-        </label>
-        <input
-          id="cb-email"
-          type="email"
-          autoComplete="email"
-          aria-invalid={Boolean(errors.email)}
-          aria-describedby={errors.email ? "cb-email-error" : undefined}
-          className="w-full border border-[var(--dvn-line-soft)] bg-white px-4 py-3 text-ink focus:border-gold focus:outline-2 focus:outline-offset-0 focus:outline-gold aria-[invalid=true]:border-red-600"
-          {...register("email")}
-        />
-        {errors.email ? (
-          <p id="cb-email-error" role="alert" className="mt-1 text-sm font-medium text-red-600">
-            {errors.email.message}
-          </p>
-        ) : null}
-      </div>
+      {!compact ? (
+        <>
+          <div>
+            <label htmlFor="cb-email" className="mb-1 block text-sm font-semibold text-navy">
+              {uiString("emailLabel")}
+            </label>
+            <input
+              id="cb-email"
+              type="email"
+              autoComplete="email"
+              aria-invalid={Boolean(errors.email)}
+              aria-describedby={errors.email ? "cb-email-error" : undefined}
+              className="w-full border border-[var(--dvn-line-soft)] bg-white px-4 py-3 text-ink focus:border-gold focus:outline-2 focus:outline-offset-0 focus:outline-gold aria-[invalid=true]:border-red-600"
+              {...register("email")}
+            />
+            {errors.email ? (
+              <p id="cb-email-error" role="alert" className="mt-1 text-sm font-medium text-red-600">
+                {errors.email.message}
+              </p>
+            ) : null}
+          </div>
 
-      <div>
-        <label htmlFor="cb-interest" className="mb-1 block text-sm font-semibold text-navy">
-          {uiString("treatmentInterestLabel")}
-        </label>
-        <select
-          id="cb-interest"
-          className="w-full border border-[var(--dvn-line-soft)] bg-white px-4 py-3 text-ink focus:border-gold focus:outline-2 focus:outline-offset-0 focus:outline-gold"
-          {...register("treatmentInterest")}
-        >
-          {Object.entries(uiString("treatmentInterestOptions")).map(([value, label]) => (
-            <option key={value} value={value}>
-              {label}
-            </option>
-          ))}
-        </select>
-      </div>
+          <div>
+            <label htmlFor="cb-interest" className="mb-1 block text-sm font-semibold text-navy">
+              {uiString("treatmentInterestLabel")}
+            </label>
+            <select
+              id="cb-interest"
+              className="w-full border border-[var(--dvn-line-soft)] bg-white px-4 py-3 text-ink focus:border-gold focus:outline-2 focus:outline-offset-0 focus:outline-gold"
+              {...register("treatmentInterest")}
+            >
+              {Object.entries(uiString("treatmentInterestOptions")).map(([value, label]) => (
+                <option key={value} value={value}>
+                  {label}
+                </option>
+              ))}
+            </select>
+          </div>
 
-      <div>
-        <label htmlFor="cb-contact" className="mb-1 block text-sm font-semibold text-navy">
-          {uiString("contactMethodLabel")}
-        </label>
-        <select
-          id="cb-contact"
-          className="w-full border border-[var(--dvn-line-soft)] bg-white px-4 py-3 text-ink focus:border-gold focus:outline-2 focus:outline-offset-0 focus:outline-gold"
-          {...register("contactMethod")}
-        >
-          {Object.entries(uiString("contactMethodOptions")).map(([value, label]) => (
-            <option key={value} value={value}>
-              {label}
-            </option>
-          ))}
-        </select>
-      </div>
+          <div>
+            <label htmlFor="cb-contact" className="mb-1 block text-sm font-semibold text-navy">
+              {uiString("contactMethodLabel")}
+            </label>
+            <select
+              id="cb-contact"
+              className="w-full border border-[var(--dvn-line-soft)] bg-white px-4 py-3 text-ink focus:border-gold focus:outline-2 focus:outline-offset-0 focus:outline-gold"
+              {...register("contactMethod")}
+            >
+              {Object.entries(uiString("contactMethodOptions")).map(([value, label]) => (
+                <option key={value} value={value}>
+                  {label}
+                </option>
+              ))}
+            </select>
+          </div>
 
-      <div>
-        <label htmlFor="cb-time" className="mb-1 block text-sm font-semibold text-navy">
-          {uiString("preferredTimeLabel")}
-        </label>
-        <input
-          id="cb-time"
-          type="text"
-          className="w-full border border-[var(--dvn-line-soft)] bg-white px-4 py-3 text-ink focus:border-gold focus:outline-2 focus:outline-offset-0 focus:outline-gold"
-          {...register("preferredTime")}
-        />
-      </div>
+          <div>
+            <label htmlFor="cb-time" className="mb-1 block text-sm font-semibold text-navy">
+              {uiString("preferredTimeLabel")}
+            </label>
+            <input
+              id="cb-time"
+              type="text"
+              className="w-full border border-[var(--dvn-line-soft)] bg-white px-4 py-3 text-ink focus:border-gold focus:outline-2 focus:outline-offset-0 focus:outline-gold"
+              {...register("preferredTime")}
+            />
+          </div>
+        </>
+      ) : null}
 
       <div>
         <div ref={widgetRef} />

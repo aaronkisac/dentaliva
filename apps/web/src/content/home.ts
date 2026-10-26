@@ -73,6 +73,8 @@ export interface HomePageContent {
   treatmentPaths?: TreatmentPathItem[];
   /** DSN-63: ön değerlendirme formu bölümü — alan unset ise bölüm render edilmez. */
   reviewForm?: { steps?: LocalizedPair[] };
+  /** DSN-64: süreç adımları — boşken bölüm render edilmez. */
+  howItWorks?: { steps?: HowItWorksStep[] };
   about?: {
     title?: LocalizedPair;
     body?: LocalizedPair;
@@ -88,7 +90,7 @@ export interface HomePageContent {
   onceSonraCases?: BeforeAfterCase[];
   /** Copy sweep: ekip bölümünün CMS'ten gelen başlık/copy bloğu. */
   teamSection?: HomeTeamSection;
-  cta?: { title?: LocalizedPair; text?: LocalizedPair };
+  cta?: { title?: LocalizedPair; text?: LocalizedPair; trustLine?: LocalizedPair };
   /**
    * DSN-56: içerik bazlı gizle/göster — site config sırasından düşülecek
    * bölüm id'leri (HomeSectionId). Alan unset/null olduğunda hiçbir bölüm
@@ -126,6 +128,12 @@ export interface TreatmentPathItem {
   subline?: LocalizedPair;
   image?: { ref?: string; alt?: LocalizedPair; lqip?: string };
   treatment?: { name?: LocalizedPair; slug?: string } | null;
+}
+
+/** DSN-64: süreç adımı — başlık zorunlu, kısa açıklama opsiyonel. */
+export interface HowItWorksStep {
+  title?: LocalizedPair;
+  text?: LocalizedPair;
 }
 
 /** DSN-50: önce/sonra karşılaştırma kartı — slider için görsel çifti. */
