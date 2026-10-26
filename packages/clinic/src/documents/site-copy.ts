@@ -107,6 +107,18 @@ export const siteCopy = defineType({
           type: "localeText",
         },
         {
+          name: "clinicsEyebrow",
+          title: "Üç klinik üst etiketi (ana sayfa)",
+          type: "localeText",
+        },
+        { name: "clinicsHeading", title: "Üç klinik başlığı (ana sayfa)", type: "localeText" },
+        { name: "clinicsIntro", title: "Üç klinik giriş metni (ana sayfa)", type: "localeText" },
+        {
+          name: "resultsVaryNote",
+          title: "Önce/sonra sonuç notu (ana sayfa)",
+          type: "localeText",
+        },
+        {
           name: "onceSonraEyebrow",
           title: "Önce/Sonra üst etiketi (ana sayfa)",
           type: "localeText",
