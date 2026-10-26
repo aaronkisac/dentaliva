@@ -85,6 +85,7 @@ describe("site config (PGT-1)", () => {
       "videoTestimonials",
       "reviewForm",
       "howItWorks",
+      "decisionModules",
       "reviews",
       "gallery",
       "doctors",

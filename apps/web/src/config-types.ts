@@ -28,6 +28,7 @@ export const homeSectionIds = [
   "videoTestimonials",
   "reviewForm",
   "howItWorks",
+  "decisionModules",
   "reviews",
   "gallery",
   "onceSonra",

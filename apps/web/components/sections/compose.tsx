@@ -17,6 +17,7 @@ import { TrustStripSection } from "./trust-strip";
 import { TreatmentPathsSection } from "./treatment-paths";
 import { ReviewFormSection } from "./review-form";
 import { HowItWorksSection } from "./how-it-works";
+import { DecisionModulesSection } from "./decision-modules";
 import { t } from "../../src/i18n";
 
 type SectionRenderer = (data: HomeData) => ReactNode;
@@ -85,6 +86,8 @@ export const sectionRegistry: Record<HomeSectionId, SectionRenderer> = {
         heading={t(data.siteCopy?.sectionHeadings?.howItWorksHeading)}
       />,
     ),
+  decisionModules: (data) =>
+    reveal(<DecisionModulesSection modules={data.homePage?.decisionModules ?? []} />),
   reviews: (data) =>
     reveal(
       <ReviewsSection
