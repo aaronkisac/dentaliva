@@ -3,17 +3,18 @@ import type { Metadata } from "next";
 import Image from "next/image";
 
 import { t } from "../../../src/i18n";
-import { urlForImage } from "@dentaliva/sanity-schema/image-url";
 import { buildBreadcrumbJsonLd, buildFaqJsonLd } from "@dentaliva/seo";
 
-import { Reveal, Accordion, Card, Heading, Link, Section, Text } from "@dentaliva/ui";
+import { Reveal, Accordion, Card, Heading, Section, Text } from "@dentaliva/ui";
 import { JsonLd } from "../../../components/json-ld";
 import { CtaBand } from "../../../components/cta-band";
+import { DoctorCard } from "../../../components/doctor-card";
 import { PageHero } from "../../../components/page-hero";
+import { ReadingCta } from "../../../components/reading-cta";
 import { fetchTreatmentBySlug, fetchTreatments } from "../../../src/content/treatments";
+import { bodyBreakIndex, splitBodyParagraphs } from "../../../src/content/treatment-body";
 import { fetchHomePageDocument, fetchSiteSettings } from "../../../src/content/home";
 import { fetchSiteCopy } from "../../../src/content/site-copy";
-import { site } from "../../../src/config";
 import { readClient } from "../../../src/sanity";
 import { absoluteUrl, pageMetadata } from "../../../src/seo";
 import { SeedPlaceholder } from "../../../components/seed-placeholder";
@@ -62,6 +63,10 @@ export default async function TreatmentDetailPage({ params }: PageProps) {
 
   const steps = treatment.steps ?? [];
   const name = t(treatment.name);
+  // DSN-70: legacy düz metin gövde paragraflara bölünür; görsel ve dönüşüm
+  // molası akışın ortasına yerleşir (hero'daki dev görsel bandı kalktı).
+  const paragraphs = treatment.body ? splitBodyParagraphs(t(treatment.body)) : [];
+  const imageAfter = treatment.heroImage?.ref ? bodyBreakIndex(paragraphs.length, 0.3) : null;
   // DSN-24: sayfa sonu bandının CMS içeriği (cache'li fetcher'lar). Bant
   // fetch hatasında sessizce düşer — detay sayfası içeriğini bloklamaz.
   const [homePage, settings, copy] = await Promise.all([
@@ -70,6 +75,9 @@ export default async function TreatmentDetailPage({ params }: PageProps) {
     fetchSiteCopy(readClient),
   ]);
   const headings = copy?.sectionHeadings;
+  const midCtaText = t(copy?.ui?.treatmentMidCta);
+  const midCtaAfter =
+    midCtaText || t(copy?.ui?.appointmentCta) ? bodyBreakIndex(paragraphs.length, 0.65) : null;
   const faqs = (treatment.faqs ?? []).filter((f) => t(f.question) && t(f.answer));
   // SEO-5: breadcrumb trail + FAQ answers as structured data.
   const jsonLd = [
@@ -89,59 +97,82 @@ export default async function TreatmentDetailPage({ params }: PageProps) {
         ]
       : []),
   ];
-  // React hoists this into <head>: the LCP image fetch starts at head-parse,
-  // in parallel with CSS, instead of after discovery (PRF-3).
-  const heroPreload = treatment.heroImage?.ref
-    ? urlForImage(
-        treatment.heroImage.ref,
-        { width: 1200, quality: 75 },
-        {
-          projectId: process.env.SANITY_PROJECT_ID ?? site.sanity.projectId,
-          dataset: process.env.SANITY_DATASET ?? site.sanity.dataset,
-        },
-      )
-    : null;
-
   return (
     <>
       {jsonLd.map((data, index) => (
         <JsonLd key={index} data={data} />
       ))}
-      {heroPreload ? (
-        <link rel="preload" as="image" href={heroPreload} fetchPriority="high" />
-      ) : null}
       <PageHero
         eyebrow={pageString("servicesTitle")}
         eyebrowHref={routes.treatments}
         title={name}
         lead={t(treatment.summary) ? t(treatment.summary) : null}
-      >
-        {treatment.heroImage?.ref ? (
-          <div
-            className="mt-8 border border-[var(--dvn-line-gold)]"
-            style={
-              treatment.heroImage.lqip
-                ? { backgroundImage: `url(${treatment.heroImage.lqip})`, backgroundSize: "cover" }
-                : undefined
-            }
-          >
-            <Image
-              src={treatment.heroImage.ref}
-              alt={t(treatment.heroImage.alt)}
-              width={1200}
-              height={800}
-              priority
-              sizes="(max-width: 900px) 100vw, 1180px"
-              className="h-auto w-full object-cover"
-            />
-          </div>
-        ) : null}
-      </PageHero>
+      />
 
       <Reveal>
         <Section>
-          {t(treatment.body) ? (
-            <Text className="max-w-3xl whitespace-pre-line">{t(treatment.body)}</Text>
+          {/* DSN-70: okuma kolonu — ilk paragraf lead stili; görsel ve dönüşüm
+              molası paragraf akışının içine yerleşir (hero'daki 1180px dev
+              görsel bandı kalktı; LCP artık metin, preload gerekmez). */}
+          {paragraphs.length > 0 ? (
+            <div className="max-w-[680px]">
+              {paragraphs.map((paragraph, index) => (
+                <div key={index}>
+                  {imageAfter !== null && index === imageAfter && treatment.heroImage?.ref ? (
+                    <figure className="my-10 border border-[var(--dvn-line-gold)] bg-ivory-2">
+                      <Image
+                        src={treatment.heroImage.ref}
+                        alt={t(treatment.heroImage.alt)}
+                        width={1200}
+                        height={800}
+                        sizes="(max-width: 768px) 100vw, 680px"
+                        placeholder={treatment.heroImage.lqip ? "blur" : "empty"}
+                        blurDataURL={treatment.heroImage.lqip}
+                        className="h-auto w-full object-cover"
+                      />
+                    </figure>
+                  ) : null}
+                  {midCtaAfter !== null && index === midCtaAfter ? (
+                    <ReadingCta
+                      text={midCtaText}
+                      phone={settings?.phone}
+                      actionLabel={t(copy?.ui?.appointmentCta)}
+                    />
+                  ) : null}
+                  <p
+                    className={
+                      index === 0
+                        ? "font-sans text-lg leading-relaxed text-ink"
+                        : "mt-5 font-sans text-[15px] leading-relaxed text-ink/90"
+                    }
+                  >
+                    {paragraph}
+                  </p>
+                </div>
+              ))}
+              {/* Kısa gövdelerde molasız kalan görsel/CTA sonda basılır. */}
+              {imageAfter === null && treatment.heroImage?.ref ? (
+                <figure className="mt-10 border border-[var(--dvn-line-gold)] bg-ivory-2">
+                  <Image
+                    src={treatment.heroImage.ref}
+                    alt={t(treatment.heroImage.alt)}
+                    width={1200}
+                    height={800}
+                    sizes="(max-width: 768px) 100vw, 680px"
+                    placeholder={treatment.heroImage.lqip ? "blur" : "empty"}
+                    blurDataURL={treatment.heroImage.lqip}
+                    className="h-auto w-full object-cover"
+                  />
+                </figure>
+              ) : null}
+              {midCtaAfter === null ? (
+                <ReadingCta
+                  text={midCtaText}
+                  phone={settings?.phone}
+                  actionLabel={t(copy?.ui?.appointmentCta)}
+                />
+              ) : null}
+            </div>
           ) : null}
 
           {/* CPT-6: H2 "farklar/avantajlar" bölümlerinden gelen faydalar. */}
@@ -211,27 +242,16 @@ export default async function TreatmentDetailPage({ params }: PageProps) {
                 {t(headings?.relatedDoctors)}
               </Heading>
             ) : null}
-            <div className="mt-8 grid gap-6 md:grid-cols-3">
+            <div className="mt-10 grid gap-x-10 gap-y-14 md:grid-cols-2 lg:grid-cols-3">
+              {/* DSN-69/70: vitrin kartı — eski h-48 kırpımı yüzleri kesiyordu. */}
               {(treatment.doctors ?? []).map((doctor) => (
-                <Card key={doctor.slug} hover="lift">
-                  {doctor.photo?.ref ? (
-                    <Image
-                      src={doctor.photo.ref}
-                      alt={doctor.name ?? ""}
-                      width={400}
-                      height={400}
-                      sizes="(max-width: 768px) 100vw, 33vw"
-                      className="h-48 w-full object-cover"
-                    />
-                  ) : null}
-                  <Heading level="h3" size="title" className="mt-4">
-                    {doctor.name}
-                  </Heading>
-                  {t(doctor.title) ? <Text className="mt-1">{t(doctor.title)}</Text> : null}
-                  <Text tone="muted" size="small" className="mt-3 underline">
-                    <Link href={routes.doctor(doctor.slug)}>{t(headings?.doctorProfileLink)}</Link>
-                  </Text>
-                </Card>
+                <DoctorCard
+                  key={doctor.slug}
+                  name={doctor.name}
+                  title={t(doctor.title)}
+                  slug={doctor.slug ?? ""}
+                  photo={doctor.photo}
+                />
               ))}
             </div>
           </Section>

@@ -171,6 +171,13 @@ export const siteCopy = defineType({
           type: "localeText",
           description: "İç sayfa sonlarındaki bandın randevu butonu metni.",
         },
+        {
+          name: "treatmentMidCta",
+          title: "Tedavi gövdesi orta molası",
+          type: "localeText",
+          description:
+            "Uzun tedavi metinlerinin ortasındaki randevu kartının metni (ReadingCta).",
+        },
       ],
     }),
     defineField({

@@ -73,6 +73,8 @@ export interface SiteCopy {
     menuAllLink?: LocalizedPair;
     /** Dönüşüm bandının randevu butonu (CtaBand — DSN-68). */
     appointmentCta?: LocalizedPair;
+    /** Tedavi gövdelerinin orta dönüşüm molası (ReadingCta — DSN-70). */
+    treatmentMidCta?: LocalizedPair;
   } | null;
   /** Header Tedaviler menüsünün grupları — sırayla mega panel sütunlarına düşer. */
   navMenu?: Array<{
