@@ -44,6 +44,7 @@ export interface SiteCopy {
     aftercareUrgentTitle?: LocalizedPair;
     onceSonraEyebrow?: LocalizedPair;
     onceSonraHeading?: LocalizedPair;
+    blogFeatured?: LocalizedPair;
   } | null;
   /** DSN-47: ana sayfa SSS bölümü — eyebrow, destek metni ve CTA. */
   faq?: {
@@ -67,6 +68,8 @@ export interface SiteCopy {
     onceSonraAfter?: LocalizedPair;
     /** Header mega menüsünün "tümünü gör" bağlantısı. */
     menuAllLink?: LocalizedPair;
+    /** Blog kart/vitrin okuma bağlantısı (DSN-72 — "Oku →" hardcoded'inin yerine). */
+    blogReadCta?: LocalizedPair;
   } | null;
   /** Header Tedaviler menüsünün grupları — sırayla mega panel sütunlarına düşer. */
   navMenu?: Array<{

@@ -112,6 +112,11 @@ export const siteCopy = defineType({
           type: "localeText",
         },
         { name: "onceSonraHeading", title: "Önce/Sonra başlığı (ana sayfa)", type: "localeText" },
+        {
+          name: "blogFeatured",
+          title: "Blog vitrin üst etiketi (/blog)",
+          type: "localeText",
+        },
       ],
     }),
     defineField({
