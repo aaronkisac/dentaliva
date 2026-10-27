@@ -47,6 +47,11 @@ export const siteCopy = defineType({
           type: "localeText",
         },
         {
+          name: "branchesLead",
+          title: "Şubelerimiz sayfası açıklaması",
+          type: "localeText",
+        },
+        {
           name: "servicesEyebrow",
           title: "Hizmetlerimiz üst etiketi (ana sayfa)",
           type: "localeText",
@@ -177,6 +182,12 @@ export const siteCopy = defineType({
           type: "localeText",
           description:
             "Uzun tedavi metinlerinin ortasındaki randevu kartının metni (ReadingCta).",
+        },
+        {
+          name: "branchDetailLink",
+          title: "Şube detay bağlantısı",
+          type: "localeText",
+          description: "Şube listeleme satırlarındaki detay bağlantısı metni.",
         },
       ],
     }),

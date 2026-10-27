@@ -27,6 +27,8 @@ export interface SiteCopy {
     galleryHome?: LocalizedPair;
     galleryEmpty?: LocalizedPair;
     doctorsLead?: LocalizedPair;
+    /** Şubelerimiz sayfası hero açıklaması (DSN-71). */
+    branchesLead?: LocalizedPair;
     galleryEyebrow?: LocalizedPair;
     galleryLead?: LocalizedPair;
     allGalleryCta?: LocalizedPair;
@@ -75,6 +77,8 @@ export interface SiteCopy {
     appointmentCta?: LocalizedPair;
     /** Tedavi gövdelerinin orta dönüşüm molası (ReadingCta — DSN-70). */
     treatmentMidCta?: LocalizedPair;
+    /** Şube listeleme satırlarındaki detay bağlantısı (DSN-71). */
+    branchDetailLink?: LocalizedPair;
   } | null;
   /** Header Tedaviler menüsünün grupları — sırayla mega panel sütunlarına düşer. */
   navMenu?: Array<{
