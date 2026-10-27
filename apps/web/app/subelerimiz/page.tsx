@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 
-import Image from "next/image";
-
 import { Heading, Reveal, Section, Text } from "@dentaliva/ui";
+import { BranchGallery } from "../../components/branch-gallery";
 import { PageHero } from "../../components/page-hero";
 import { t } from "../../src/i18n";
 
@@ -28,6 +27,7 @@ export default async function BranchesPage() {
   ]);
   const detailLabel = t(copy?.ui?.branchDetailLink);
   const routeLabel = t(copy?.sectionHeadings?.routeLink);
+  const lightboxClose = t(copy?.ui?.lightboxClose);
 
   return (
     <>
@@ -50,29 +50,19 @@ export default async function BranchesPage() {
                   key={branch.slug}
                   className="grid items-center gap-8 md:grid-cols-[2fr_3fr] md:gap-12"
                 >
-                  <a
-                    href={routes.branch(branch.slug)}
-                    aria-label={branch.name}
-                    className="group relative block overflow-hidden rounded-[4px] bg-ivory-2 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold"
-                  >
-                    {branch.image?.ref ? (
-                      <Image
-                        src={branch.image.ref}
-                        alt={t(branch.image.alt) || branch.name || ""}
-                        width={790}
-                        height={637}
-                        sizes="(max-width: 768px) 100vw, 40vw"
-                        placeholder={branch.image.lqip ? "blur" : "empty"}
-                        blurDataURL={branch.image.lqip}
-                        className="aspect-[4/3] h-auto w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04] motion-reduce:transition-none motion-reduce:transform-none"
-                      />
-                    ) : null}
-                    {/* Altın hairline — hover'da soldan açılır (vitrin dili). */}
-                    <span
-                      aria-hidden="true"
-                      className="pointer-events-none absolute inset-x-0 bottom-0 h-0.5 origin-left scale-x-0 bg-gold transition-transform duration-500 ease-out group-hover:scale-x-100 motion-reduce:transition-none"
-                    />
-                  </a>
+                  {/* DSN-72: şubeye özel mini galeri — boşsa bina fotoğrafı
+                      fallback (mevcut davranış korunur). Tıklayınca lightbox. */}
+                  <BranchGallery
+                    name={branch.name}
+                    photos={
+                      branch.gallery?.length
+                        ? branch.gallery
+                        : branch.image?.ref
+                          ? [branch.image]
+                          : []
+                    }
+                    closeLabel={lightboxClose}
+                  />
                   <div>
                     <Heading level="h2" size="md">
                       {branch.name}

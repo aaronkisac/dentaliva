@@ -10,6 +10,7 @@ export const branchListQuery = defineQuery(
     mapUrl,
     geo,
     image { "ref": asset._ref, alt, "lqip": asset->metadata.lqip },
+    "gallery": gallery[]{ "ref": asset._ref, alt, "lqip": asset->metadata.lqip },
     seo
   }`,
 );

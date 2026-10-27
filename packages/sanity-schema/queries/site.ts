@@ -26,6 +26,7 @@ export const branchBySlugQuery = defineQuery(
     mapUrl,
     geo,
     image { "ref": asset._ref, alt },
+    "gallery": gallery[]{ "ref": asset._ref, alt, "lqip": asset->metadata.lqip },
     seo
   }`,
 );
