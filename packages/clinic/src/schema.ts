@@ -2,6 +2,7 @@ import { schemaObjects } from "@dentaliva/sanity-schema";
 
 import { blogPost } from "./documents/blog-post";
 import { branch } from "./documents/branch";
+import { clinicPhoto } from "./documents/clinic-photo";
 import { doctor } from "./documents/doctor";
 import { faq } from "./documents/faq";
 import { homePage } from "./documents/home-page";
@@ -27,6 +28,7 @@ export const schemaTypes = [
   treatment,
   doctor,
   branch,
+  clinicPhoto,
   faq,
   testimonial,
   legalPage,

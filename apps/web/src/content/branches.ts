@@ -14,8 +14,9 @@ export interface BranchItem {
   mapUrl?: string;
   geo?: { lat?: number; lng?: number };
   image?: { ref?: string; alt?: LocalizedPair; lqip?: string };
-  /** DSN-72: şube foto galerisi — boşken image fallback. */
-  gallery?: Array<{ ref?: string; alt?: LocalizedPair; lqip?: string }>;
+  /** DSN-72/73: şube foto galerisi — Klinik Fotoğrafları referanslarının
+      deref edilmiş hâli (category kütüphane etiketi); boşken image fallback. */
+  gallery?: Array<{ ref?: string; alt?: LocalizedPair; lqip?: string; category?: string }>;
   seo?: SeoObject | null;
 }
 

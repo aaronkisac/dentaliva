@@ -10,7 +10,9 @@ export const branchListQuery = defineQuery(
     mapUrl,
     geo,
     image { "ref": asset._ref, alt, "lqip": asset->metadata.lqip },
-    "gallery": gallery[]{ "ref": asset._ref, alt, "lqip": asset->metadata.lqip },
+    // DSN-73: galeri Klinik Fotoğrafları kütüphanesine referans — []-> ile
+    // öğe başına deref: {ref, alt, lqip, category} (BranchItem.gallery).
+    "gallery": gallery[]->{ "ref": photo.asset._ref, "alt": photo.alt, "lqip": photo.asset->metadata.lqip, "category": category },
     seo
   }`,
 );

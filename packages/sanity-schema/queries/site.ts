@@ -26,7 +26,8 @@ export const branchBySlugQuery = defineQuery(
     mapUrl,
     geo,
     image { "ref": asset._ref, alt },
-    "gallery": gallery[]{ "ref": asset._ref, alt, "lqip": asset->metadata.lqip },
+    // DSN-73: galeri referansları — []-> öğe başına deref (bkz. misc.ts).
+    "gallery": gallery[]->{ "ref": photo.asset._ref, "alt": photo.alt, "lqip": photo.asset->metadata.lqip, "category": category },
     seo
   }`,
 );
