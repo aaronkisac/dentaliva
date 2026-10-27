@@ -26,26 +26,22 @@ export function galleryMode(onceSonraCount: number, tab: GalleryTab): "carousel"
 }
 
 /**
- * DSN-68: küratörlü mosaic ritmi — hangi görselin "fetih" (2×2) veya geniş
- * (2 kolon) kare olacağını söyler. Az görselde (<6) ritim kurulamaz, düz grid
- * kalır; 8'lik küme ana sayfa desenidir (fetih + 6 kare + geniş), daha
- * büyük kümelerde her 7. görsel fetih karesidir.
+ * DSN-68: küratörlü mosaic ritmi — hangi görselin "fetih" (2×2) kare
+ * olacağını söyler. 5'lik küme ana sayfa desenidir (fetih + 4 kare, iki
+ * sıra — Aaron'ın sadeleştirme kararı); 6+ küme (galeri sayfası
+ * kulliyatı) her 7. görselde fetih karesi kurar; daha küçük kümelerde
+ * ritim kurulamaz, düz grid kalır.
  */
-export function mosaicSpan(index: number, total: number): "feature" | "wide" | null {
+export function mosaicSpan(index: number, total: number): "feature" | null {
+  if (total === 5) return index === 0 ? "feature" : null;
   if (total < 6) return null;
-  if (total === 8) {
-    if (index === 0) return "feature";
-    if (index === total - 1) return "wide";
-    return null;
-  }
   return index % 7 === 0 ? "feature" : null;
 }
 
-const spanClasses: Record<"feature" | "wide", string> = {
-  // Mobilde (2 kolon) fetih/geniş kareler tam satır: yükseklik aspect'ten,
+const spanClasses: Record<"feature", string> = {
+  // Mobilde (2 kolon) fetih karesi tam satır: yükseklik aspect'ten,
   // md+ boyunca kapladığı grid satırlarından gelir.
   feature: "col-span-2 aspect-[4/3] md:aspect-auto md:row-span-2",
-  wide: "col-span-2 aspect-video md:aspect-auto",
 };
 
 /**
@@ -96,7 +92,7 @@ export function GalleryLightbox({
     );
   };
 
-  const galleryCard = (image: GalleryImage, index: number, span: "feature" | "wide" | null) => {
+  const galleryCard = (image: GalleryImage, index: number, span: "feature" | null) => {
     const ref = image.asset?._ref as string;
     const dims = refDimensions(ref) ?? { width: 800, height: 800 };
     const caption = t(image.alt);

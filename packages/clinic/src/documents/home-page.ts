@@ -150,7 +150,7 @@ export const homePage = defineType({
       name: "gallery",
       title: "Fotoğraf galerisi",
       description:
-        "Galeri sayfasının tamamı — en fazla 24 foto. Ana sayfada yalnız seçki varsa seçki, yoksa ilk 8'i görünür.",
+        "Galeri sayfasının tamamı — en fazla 24 foto. Ana sayfada yalnız seçki varsa seçki, yoksa ilk 5'i görünür.",
       type: "array",
       of: [{ type: "imageWithAlt" }],
       validation: (rule) => rule.max(24),
@@ -159,10 +159,10 @@ export const homePage = defineType({
       name: "homeGallery",
       title: "Ana sayfa galeri seçkisi",
       description:
-        "Ana sayfadaki galeri bölümünde görünecek en fazla 8 fotoğraf. Boşsa 'Fotoğraf galerisi'nin ilk 8'i kullanılır.",
+        "Ana sayfadaki galeri bölümünde görünecek en fazla 5 fotoğraf (ilki büyük kare olur). Boşsa 'Fotoğraf galerisi'nin ilk 5'i kullanılır.",
       type: "array",
       of: [{ type: "imageWithAlt" }],
-      validation: (rule) => rule.max(8),
+      validation: (rule) => rule.max(5),
     }),
     defineField({
       name: "onceSonraGallery",

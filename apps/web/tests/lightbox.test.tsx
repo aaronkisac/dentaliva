@@ -57,18 +57,18 @@ describe("GalleryLightbox (DSN-29)", () => {
 });
 
 describe("GalleryLightbox mosaic rhythm (DSN-68)", () => {
-  it("keeps a uniform grid under six images — the rhythm cannot establish", () => {
-    expect(mosaicSpan(0, 5)).toBeNull();
+  it("uses the home pattern for a five-image set: feature first, squares after", () => {
+    expect(mosaicSpan(0, 5)).toBe("feature");
+    expect(mosaicSpan(1, 5)).toBeNull();
+    expect(mosaicSpan(4, 5)).toBeNull();
+  });
+
+  it("keeps a uniform grid under five images — the rhythm cannot establish", () => {
+    expect(mosaicSpan(0, 4)).toBeNull();
     expect(mosaicSpan(2, 3)).toBeNull();
   });
 
-  it("uses the home pattern for an eight-image set: feature first, wide last", () => {
-    expect(mosaicSpan(0, 8)).toBe("feature");
-    expect(mosaicSpan(7, 8)).toBe("wide");
-    expect(mosaicSpan(3, 8)).toBeNull();
-  });
-
-  it("features every seventh image in larger sets", () => {
+  it("features every seventh image in larger sets (gallery page)", () => {
     expect(mosaicSpan(0, 24)).toBe("feature");
     expect(mosaicSpan(7, 24)).toBe("feature");
     expect(mosaicSpan(14, 24)).toBe("feature");
@@ -77,12 +77,12 @@ describe("GalleryLightbox mosaic rhythm (DSN-68)", () => {
   });
 
   it("renders the mosaic grid classes on the klinik tab", () => {
-    const many = Array.from({ length: 8 }, (_, i) =>
+    const many = Array.from({ length: 5 }, (_, i) =>
       img(`image-${String(i + 1).padStart(40, "3")}-800x800-jpg`),
     );
     const html = render({ images: many });
     expect(html).toContain("grid-flow-dense");
-    expect(html).toContain("md:row-span-2");
+    expect(html.match(/md:row-span-2/g)?.length).toBe(1);
   });
 });
 

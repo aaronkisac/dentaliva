@@ -45,18 +45,18 @@ describe("GallerySection (DSN-46, DSN-52, DSN-68)", () => {
     expect(html).toContain("600x400-jpg");
   });
 
-  it("caps the grid at eight images", () => {
+  it("caps the grid at five images (home composition: feature + 4 squares)", () => {
     const many = Array.from({ length: 11 }, (_, i) => img(i + 10));
     const html = render({ images: many });
-    expect(html.match(/image-n\d+-600x400-jpg/g)?.length ?? 0).toBeLessThanOrEqual(8);
+    expect(new Set(html.match(/image-\d+-600x400-jpg/g)).size).toBe(5);
   });
 
-  it("composes the home mosaic: feature tile first, wide tile last (DSN-68)", () => {
-    const eight = Array.from({ length: 8 }, (_, i) => img(i + 1));
-    const html = render({ images: eight });
-    // İlk kart fetih karesi (2 kolon + 2 satır), son kart geniş (2 kolon).
-    expect(html).toContain("col-span-2 aspect-[4/3] md:aspect-auto md:row-span-2");
-    expect(html).toContain("col-span-2 aspect-video md:aspect-auto");
+  it("composes the home mosaic: one feature tile, uniform squares (DSN-68)", () => {
+    const five = Array.from({ length: 5 }, (_, i) => img(i + 1));
+    const html = render({ images: five });
+    // Tek fetih karesi (2 kolon + 2 satır); geniş şerit sınıfı kalktı.
+    expect(html.match(/md:row-span-2/g)?.length).toBe(1);
+    expect(html).not.toContain("aspect-video");
   });
 
   it("renders the hover caption from the CMS alt text", () => {

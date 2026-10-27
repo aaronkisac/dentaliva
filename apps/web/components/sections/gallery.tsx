@@ -44,7 +44,9 @@ export function GallerySection({
   allHref?: string;
   closeLabel?: string;
 }) {
-  const rendered = images.filter((image) => image.asset?._ref).slice(0, 8);
+  // DSN-68 sadeleştirme (Aaron): ana sayfa bölümü 5 foto — fetih karesi +
+  // 4 kare, iki sıra; kalanı galeri sayfası ve "Tüm Fotoğraflar" devreder.
+  const rendered = images.filter((image) => image.asset?._ref).slice(0, 5);
   if (rendered.length === 0) return null;
   return (
     <Section>
