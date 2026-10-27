@@ -26,6 +26,7 @@ export interface SiteCopy {
     galleryPage?: LocalizedPair;
     galleryHome?: LocalizedPair;
     galleryEmpty?: LocalizedPair;
+    doctorsLead?: LocalizedPair;
     galleryEyebrow?: LocalizedPair;
     galleryLead?: LocalizedPair;
     allGalleryCta?: LocalizedPair;

@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 
-import { Card, Heading, Link, Reveal, Section, Text } from "@dentaliva/ui";
+import { Heading, Reveal, Section } from "@dentaliva/ui";
 import { t } from "../../src/i18n";
 
 import { CtaBand } from "../../components/cta-band";
-import { DoctorPortrait } from "../../components/doctor-portrait";
+import { DoctorCard } from "../../components/doctor-card";
 import { PageHero } from "../../components/page-hero";
 import { AboutSection } from "../../components/sections/about";
 import { GallerySection } from "../../components/sections/gallery";
@@ -66,30 +66,17 @@ export default async function AboutPage() {
                 </Heading>
               </>
             ) : null}
-            <div className="mt-8 grid gap-6 md:grid-cols-3">
-              {doctors.map((doctor) => (
-                <Card key={doctor.slug} hover="lift">
-                  {/* DSN-43: foto yoksa markalı baş harf monogramı. */}
-                  <DoctorPortrait
-                    name={doctor.name}
-                    photo={{ ref: doctor.photo?.ref, lqip: doctor.lqip }}
-                    alt={doctor.name ?? ""}
-                    frameClassName="h-48 w-full"
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                  />
-                  <Heading level="h3" size="title" className="mt-4">
-                    {doctor.name}
-                  </Heading>
-                  <Text tone="muted" size="small">
-                    {t(doctor.title)}
-                  </Text>
-                  <Link
-                    href={routes.doctor(doctor.slug)}
-                    className="mt-4 inline-block font-sans text-sm font-semibold text-navy hover:text-gold-deep"
-                  >
-                    Detay →
-                  </Link>
-                </Card>
+            <div className="mt-10 grid gap-x-10 gap-y-14 md:grid-cols-2 lg:grid-cols-3">
+              {doctors.map((doctor, index) => (
+                /* DSN-69: hekimlerimiz vitrin kartı — 4/5 portre, kart-link. */
+                <DoctorCard
+                  key={doctor.slug}
+                  name={doctor.name}
+                  title={t(doctor.title)}
+                  slug={doctor.slug ?? ""}
+                  photo={{ ref: doctor.photo?.ref, lqip: doctor.lqip }}
+                  priority={index < 3}
+                />
               ))}
             </div>
           </Section>
