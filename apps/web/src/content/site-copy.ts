@@ -22,6 +22,8 @@ export interface SiteCopy {
     treatmentProcessEyebrow?: LocalizedPair;
     doctorProfileLink?: LocalizedPair;
     routeLink?: LocalizedPair;
+    /** DSN-82: şube detay iletişim bölümü başlığı. */
+    branchContact?: LocalizedPair;
     callbackForm?: LocalizedPair;
     galleryPage?: LocalizedPair;
     galleryHome?: LocalizedPair;

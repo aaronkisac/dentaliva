@@ -33,7 +33,9 @@ function cspFor(hashes) {
     "img-src 'self' data: blob: https://cdn.sanity.io https://i.ytimg.com",
     "font-src 'self'",
     "connect-src 'self' https://challenges.cloudflare.com",
-    "frame-src https://challenges.cloudflare.com https://www.youtube-nocookie.com https://maps.google.com",
+    // DSN-82: maps embed'i iç çerçevede www.google.com'a sarar — o origin
+    // frame-src'de yoksa harita kutusu TÜM tarayıcılarda boş kalır.
+    "frame-src https://challenges.cloudflare.com https://www.youtube-nocookie.com https://maps.google.com https://www.google.com",
     "media-src 'self'",
     "worker-src 'self' blob:",
     "object-src 'none'",
