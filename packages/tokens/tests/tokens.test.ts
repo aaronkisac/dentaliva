@@ -70,6 +70,12 @@ describe("generated tokens.css", () => {
       "@media (min-width: 1536px) {\n  :root {\n    --dvn-container-max: 1360px;",
     );
   });
+
+  it("steps the display scale down below md (DSN-80)", () => {
+    expect(generated).toContain(
+      "@media (max-width: 899px) {\n  :root {\n    --dvn-text-display-xl-size: 40px;",
+    );
+  });
 });
 
 /** semantic.ts pairs mapped onto palette roles — white is palette-neutral.

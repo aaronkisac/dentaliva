@@ -3,6 +3,7 @@ import { cache } from "react";
 
 import type { SeoObject } from "@dentaliva/seo";
 import { branchBySlugQuery, branchListQuery } from "@dentaliva/sanity-schema/queries";
+import type { PortableBlock } from "./blog";
 import type { LocalizedPair } from "./home";
 
 export interface BranchItem {
@@ -12,11 +13,15 @@ export interface BranchItem {
   phone?: string;
   hours?: LocalizedPair;
   mapUrl?: string;
+  /** DSN-77: orijinalin sayfa içi harita gömmesi (maps.google.com embed). */
+  mapEmbedUrl?: string;
   geo?: { lat?: number; lng?: number };
   image?: { ref?: string; alt?: LocalizedPair; lqip?: string };
   /** DSN-72/73: şube foto galerisi — Klinik Fotoğrafları referanslarının
       deref edilmiş hâli (category kütüphane etiketi); boşken image fallback. */
   gallery?: Array<{ ref?: string; alt?: LocalizedPair; lqip?: string; category?: string }>;
+  /** DSN-77: orijinal şube sayfalarının gövde metinleri (blog deseni). */
+  body?: { tr?: PortableBlock[]; en?: PortableBlock[]; nl?: PortableBlock[] } | null;
   seo?: SeoObject | null;
 }
 
