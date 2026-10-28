@@ -222,6 +222,13 @@ export const homePage = defineType({
           validation: (rule) => rule.max(3),
           of: [{ type: "localeText" }],
         },
+        {
+          // DSN-79: doküman #06 body copy — koordinatör güvencesi. Boşken
+          // render edilmez (sıfır-hardcoded-copy kuralı).
+          name: "note",
+          title: "Destek notu (adımların altında)",
+          type: "localeText",
+        },
       ],
     }),
     defineField({

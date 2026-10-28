@@ -42,6 +42,14 @@ describe("Footer", () => {
     expect(ref.current).toBeInstanceOf(HTMLElement);
   });
 
+  it("renders the legal links row only when provided (DSN-78)", () => {
+    renderUi(<Footer {...props} legalLinks={[{ label: "Gizlilik Bildirimi", href: "/kvkk" }]} />);
+    expect(screen.getByRole("link", { name: "Gizlilik Bildirimi" })).toHaveAttribute(
+      "href",
+      "/kvkk",
+    );
+  });
+
   it("omits nameless anchors when contact values are empty", () => {
     renderUi(
       <Footer

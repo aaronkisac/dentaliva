@@ -1,5 +1,6 @@
 /** Serializes tokens to the `--dvn-*` custom properties consumed by the app. */
 import {
+  breakpoint,
   color,
   fontFamily,
   gradient,
@@ -78,6 +79,17 @@ export function renderTokensCss(): string {
 @media (min-width: ${layout.containerWideMin}) {
   :root {
     --dvn-container-max: ${layout.containerMaxWide};
+  }
+}
+/* DSN-80: mobil display adımı — 64px hero başlığı küçük ekranda metni
+   ekrana sıkıştırıyordu (8 satır, CTA'lar fold altında). md altında display
+   ölçeği bir adım iner; kırılım değerleri değişmez. */
+@media (max-width: ${breakpoint.md - 1}px) {
+  :root {
+    --dvn-text-display-xl-size: 40px;
+    --dvn-text-display-xl-lh: 1.15;
+    --dvn-text-display-lg-size: 32px;
+    --dvn-text-display-lg-lh: 1.2;
   }
 }\n`;
 }

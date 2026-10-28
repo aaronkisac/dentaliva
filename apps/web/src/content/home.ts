@@ -73,7 +73,7 @@ export interface HomePageContent {
   /** DSN-62: ihtiyaç bazlı self-segmentation kartları — boşken bölüm render edilmez. */
   treatmentPaths?: TreatmentPathItem[];
   /** DSN-63: ön değerlendirme formu bölümü — alan unset ise bölüm render edilmez. */
-  reviewForm?: { steps?: LocalizedPair[] };
+  reviewForm?: { steps?: LocalizedPair[]; note?: LocalizedPair };
   /** DSN-64: süreç adımları — boşken bölüm render edilmez. */
   howItWorks?: { steps?: HowItWorksStep[] };
   /** DSN-65: karar modülleri — GROQ hidden filtresi uygulanmış halde gelir. */

@@ -25,6 +25,13 @@ const CallbackForm = dynamic(() => import("./CallbackForm").then((m) => m.Callba
   ),
 });
 
-export function ReviewFormLoader({ variant = "full" }: { variant?: "full" | "compact" }) {
-  return <CallbackForm variant={variant} />;
+export function ReviewFormLoader({
+  variant = "full",
+  privacyHref,
+}: {
+  variant?: "full" | "compact";
+  /** DSN-78: Privacy Notice linki — ortak CallbackForm'a olduğu gibi taşınır. */
+  privacyHref?: string;
+}) {
+  return <CallbackForm variant={variant} privacyHref={privacyHref} />;
 }

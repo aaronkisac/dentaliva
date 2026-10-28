@@ -45,7 +45,7 @@ export const homePageQuery = defineQuery(`*[_type == "homePage"][0]{
     image { "ref": asset._ref, alt, "lqip": asset->metadata.lqip },
     treatment->{ name, "slug": slug.current }
   },
-  reviewForm { steps },
+  reviewForm { steps, note },
   howItWorks { steps },
   decisionModules[@.hidden != true]{
     eyebrow,
