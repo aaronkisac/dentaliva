@@ -10,6 +10,7 @@ const render = (props: {
   eyebrow?: { tr?: string } | null;
   phone?: string;
   whatsapp?: string | null;
+  privacyHref?: string;
 }) => renderToStaticMarkup(<CtaSection phone={props.phone ?? ""} {...props} />);
 
 describe("CtaSection final conversion block (DSN-64)", () => {
@@ -38,5 +39,13 @@ describe("CtaSection final conversion block (DSN-64)", () => {
     expect(without).not.toContain("wa.me");
     const withNumber = render({ title: { tr: "T" }, whatsapp: "+90 530 840 54 82" });
     expect(withNumber).toContain("https://wa.me/905308405482");
+  });
+
+  it("renders the privacy notice link only when a href is given (DSN-78)", () => {
+    const without = render({ title: { tr: "T" } });
+    expect(without).not.toContain("/kvkk");
+    const withLink = render({ title: { tr: "T" }, privacyHref: "/kvkk" });
+    expect(withLink).toContain('href="/kvkk"');
+    expect(withLink).toContain("Gizlilik Bildirimi");
   });
 });

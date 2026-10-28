@@ -24,10 +24,13 @@ export const branchBySlugQuery = defineQuery(
     phone,
     hours,
     mapUrl,
+    mapEmbedUrl,
     geo,
     image { "ref": asset._ref, alt },
     // DSN-73: galeri referansları — []-> öğe başına deref (bkz. misc.ts).
     "gallery": gallery[]->{ "ref": photo.asset._ref, "alt": photo.alt, "lqip": photo.asset->metadata.lqip, "category": category },
+    // DSN-77: orijinal şube sayfalarındaki gövde metinleri (blog deseninde).
+    body,
     seo
   }`,
 );
@@ -42,7 +45,7 @@ export const homePageQuery = defineQuery(`*[_type == "homePage"][0]{
     image { "ref": asset._ref, alt, "lqip": asset->metadata.lqip },
     treatment->{ name, "slug": slug.current }
   },
-  reviewForm { steps },
+  reviewForm { steps, note },
   howItWorks { steps },
   decisionModules[@.hidden != true]{
     eyebrow,
