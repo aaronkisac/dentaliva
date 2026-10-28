@@ -59,6 +59,6 @@ Follow [docs/runbooks/new-site.md](docs/runbooks/new-site.md) — the under-one-
 
 ## Repo conventions
 
-- One issue → one branch (`feat/<n>-<slug>`) → one PR; CI must be green before merge (`scripts/merge-pr.mjs`).
+- One issue → one branch (`feat/<n>-<slug>`) → one PR; `scripts/merge-pr.mjs` gates every merge (conflict-free against + based on current `main`, then green CI).
 - Commits follow Conventional Commits (commitlint + husky + lint-staged).
 - `AGENTS.md` holds the automation/agent rules for this repo.
