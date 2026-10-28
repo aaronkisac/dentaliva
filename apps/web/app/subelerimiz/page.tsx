@@ -43,26 +43,33 @@ export default async function BranchesPage() {
           ) : (
             /* DSN-71: yatay şube satırları — foto + tam iletişim (telefon,
                saatler) + yol tarifi; 3 öğeli sayfada kart grid'i yerine
-               editorial dizin ritmi. */
+               editorial dizin ritmi. DSN-76: zikzak — çift numaralı satırda
+               foto sağda (kolon izi + order birlikte döner; mobilde foto
+               yine üstte). */
             <div className="mt-12 space-y-14 md:space-y-20">
-              {branches.map((branch) => (
+              {branches.map((branch, index) => (
                 <article
                   key={branch.slug}
-                  className="grid items-center gap-8 md:grid-cols-[2fr_3fr] md:gap-12"
+                  className={
+                    "grid items-center gap-8 md:gap-12 " +
+                    (index % 2 === 1 ? "md:grid-cols-[3fr_2fr]" : "md:grid-cols-[2fr_3fr]")
+                  }
                 >
                   {/* DSN-72: şubeye özel mini galeri — boşsa bina fotoğrafı
                       fallback (mevcut davranış korunur). Tıklayınca lightbox. */}
-                  <BranchGallery
-                    name={branch.name}
-                    photos={
-                      branch.gallery?.length
-                        ? branch.gallery
-                        : branch.image?.ref
-                          ? [branch.image]
-                          : []
-                    }
-                    closeLabel={lightboxClose}
-                  />
+                  <div className={index % 2 === 1 ? "md:order-2" : undefined}>
+                    <BranchGallery
+                      name={branch.name}
+                      photos={
+                        branch.gallery?.length
+                          ? branch.gallery
+                          : branch.image?.ref
+                            ? [branch.image]
+                            : []
+                      }
+                      closeLabel={lightboxClose}
+                    />
+                  </div>
                   <div>
                     <Heading level="h2" size="md">
                       {branch.name}
