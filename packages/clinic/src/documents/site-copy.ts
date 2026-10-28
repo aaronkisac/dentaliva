@@ -35,6 +35,7 @@ export const siteCopy = defineType({
         { name: "treatmentProcessEyebrow", title: "Tedavi süreci üst etiketi", type: "localeText" },
         { name: "doctorProfileLink", title: "Hekim profil bağlantısı", type: "localeText" },
         { name: "routeLink", title: "Yol tarifi bağlantısı", type: "localeText" },
+        { name: "branchContact", title: "Şube iletişim başlığı", type: "localeText" },
         { name: "callbackForm", title: "Geri arama formu başlığı", type: "localeText" },
         { name: "galleryPage", title: "Galeri sayfası başlığı", type: "localeText" },
         { name: "galleryHome", title: "Ana sayfa galeri başlığı", type: "localeText" },
