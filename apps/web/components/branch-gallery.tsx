@@ -21,10 +21,10 @@ interface BranchPhoto {
 
 /**
  * DSN-72: şube satırındaki mini foto galeri — 1 fotoğrafta tek kare,
- * 2-3'te mosaic (ilk kare geniş), tıklanan fotoğraf lightbox'ta açılır
- * (LightboxStage: oklar + sayaç + caption, Esc/dialog native).
- * Galeri boşsa server fallback tek fotoğrafı düz basar (bu bileşen
- * çağrılmaz).
+ * 2-3'te mosaic (ilk kare geniş), DSN-75: 4+ fotoda 4'lü 2×2 kare grid;
+ * fazlası son karedeki +N rozetinde sayılır (lightbox o kareden açılır —
+ * LightboxStage: oklar + sayaç + caption, Esc/dialog native). Galeri
+ * boşsa server fallback tek fotoğrafı düz basar (bu bileşen çağrılmaz).
  */
 export function BranchGallery({
   name,
@@ -39,7 +39,8 @@ export function BranchGallery({
   const [active, setActive] = useState<number | null>(null);
   const touchStart = useRef<number | null>(null);
   const items = photos.filter((photo) => photo.ref);
-  const visible = items.slice(0, 3);
+  const visible = items.slice(0, 4);
+  const more = items.length - visible.length;
   // LightboxStage GalleryImage biçimi bekler (asset._ref) — uyarla.
   const lightboxItems: GalleryImage[] = items.map((photo) => ({
     asset: { _ref: photo.ref },
@@ -64,7 +65,7 @@ export function BranchGallery({
 
   if (items.length === 0) return null;
 
-  const tile = (photo: BranchPhoto, index: number, className: string) => {
+  const tile = (photo: BranchPhoto, index: number, className: string, moreCount?: number) => {
     const ref = photo.ref as string;
     const dims = refDimensions(ref) ?? { width: 800, height: 600 };
     return (
@@ -72,7 +73,9 @@ export function BranchGallery({
         key={ref}
         type="button"
         onClick={() => setActive(index)}
-        aria-label={uiString("lightboxImageAria")(index + 1)}
+        aria-label={
+          moreCount ? uiString("galleryMore")(moreCount) : uiString("lightboxImageAria")(index + 1)
+        }
         className={
           "group/tile relative overflow-hidden rounded-[4px] bg-ivory-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold " +
           className
@@ -88,26 +91,35 @@ export function BranchGallery({
           blurDataURL={photo.lqip ?? lqipUrl(ref, ENV)}
           className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover/tile:scale-[1.05] motion-reduce:transition-none motion-reduce:transform-none"
         />
+        {moreCount ? (
+          <span
+            aria-hidden="true"
+            className="absolute inset-0 flex items-center justify-center bg-navy/60 font-sans text-sm font-semibold tracking-wide text-ivory"
+          >
+            +{moreCount}
+          </span>
+        ) : null}
       </button>
     );
   };
 
   return (
     <>
-      <div
-        className={"grid gap-2 " + (visible.length === 1 ? "grid-cols-1" : "grid-cols-2")}
-      >
-        {visible.length === 1 && visible[0] ? (
-          tile(visible[0], 0, "aspect-[4/3]")
-        ) : (
-          visible.map((photo, index) =>
-            tile(
-              photo,
-              index,
-              index === 0 ? "col-span-2 aspect-[16/10]" : "aspect-square",
-            ),
-          )
-        )}
+      <div className={"grid gap-2 " + (visible.length === 1 ? "grid-cols-1" : "grid-cols-2")}>
+        {visible.length === 1 && visible[0]
+          ? tile(visible[0], 0, "aspect-[4/3]")
+          : visible.length < 4
+            ? visible.map((photo, index) =>
+                tile(photo, index, index === 0 ? "col-span-2 aspect-[16/10]" : "aspect-square"),
+              )
+            : visible.map((photo, index) =>
+                tile(
+                  photo,
+                  index,
+                  "aspect-square",
+                  index === visible.length - 1 ? more : undefined,
+                ),
+              )}
       </div>
       <dialog
         ref={dialogRef}
@@ -128,7 +140,11 @@ export function BranchGallery({
           if (Math.abs(delta) > 48) navigate(delta < 0 ? 1 : -1);
           touchStart.current = null;
         }}
-        className="backdrop:bg-navy/90 bg-transparent p-0 text-ivory"
+        // DSN-75: m-auto zorunlu (DSN-68 GalleryLightbox dersinin aynısı) —
+        // preflight tüm margin'leri sıfırladığı için UA'nın dialog:modal
+        // { margin: auto } merkezlemesi ölür ve dialog sol üste yapışıyor;
+        // fit-content kutu m-auto ile viewport ortasına oturur.
+        className="backdrop:bg-navy/90 m-auto bg-transparent p-0 text-ivory"
         aria-label={name ?? uiString("galleryImageAlt")}
       >
         {active !== null && lightboxItems[active] ? (

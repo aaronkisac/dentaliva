@@ -46,6 +46,7 @@ const tr = {
   nextImages: "Sonraki görseller",
   galleryImageAria: (n: number) => `${n}. görsel`,
   galleryImageAlt: "Galeri görseli",
+  galleryMore: (n: number) => `+${n} — galeriyi aç`,
 
   // callback form (client — INT-4)
   nameLabel: "Ad Soyad *",
@@ -126,6 +127,7 @@ const en: typeof tr = {
   nextImages: "Next images",
   galleryImageAria: (n) => `Image ${n}`,
   galleryImageAlt: "Gallery image",
+  galleryMore: (n) => `+${n} — open gallery`,
 
   nameLabel: "Full Name *",
   phoneLabel: "Phone / WhatsApp *",
@@ -203,6 +205,7 @@ const nl: typeof tr = {
   nextImages: "Volgende afbeeldingen",
   galleryImageAria: (n) => `Afbeelding ${n}`,
   galleryImageAlt: "Galerijafbeelding",
+  galleryMore: (n) => `+${n} — galerij openen`,
 
   nameLabel: "Volledige naam *",
   phoneLabel: "Telefoon / WhatsApp *",
