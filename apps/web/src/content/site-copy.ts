@@ -42,6 +42,10 @@ export interface SiteCopy {
     aftercareHeading?: LocalizedPair;
     aftercareNormalTitle?: LocalizedPair;
     aftercareUrgentTitle?: LocalizedPair;
+    clinicsEyebrow?: LocalizedPair;
+    clinicsHeading?: LocalizedPair;
+    clinicsIntro?: LocalizedPair;
+    resultsVaryNote?: LocalizedPair;
     onceSonraEyebrow?: LocalizedPair;
     onceSonraHeading?: LocalizedPair;
   } | null;

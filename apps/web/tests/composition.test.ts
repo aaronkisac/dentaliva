@@ -12,6 +12,7 @@ const emptyData: HomeData = {
   testimonials: [],
   siteSettings: null,
   siteCopy: null,
+  branches: [],
 };
 
 describe("home composition engine (PGT-3)", () => {

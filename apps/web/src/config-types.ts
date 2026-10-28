@@ -32,6 +32,7 @@ export const homeSectionIds = [
   "travelStay",
   "aftercare",
   "reviews",
+  "clinics",
   "gallery",
   "onceSonra",
   "doctors",
