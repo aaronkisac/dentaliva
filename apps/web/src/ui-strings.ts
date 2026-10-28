@@ -74,6 +74,7 @@ const tr = {
   } as Record<string, string>,
   consentLabel:
     "KVKK aydınlatma metnini okudum; kişisel verilerimin geri arama amacıyla işlenmesine onay veriyorum. *",
+  privacyNotice: "Gizlilik Bildirimi",
   submitting: "Gönderiliyor…",
   submitCta: "Geri arama talep et",
   successMessage: "Talebiniz alındı. En kısa sürede size dönüş yapacağız.",
@@ -153,6 +154,7 @@ const en: typeof tr = {
   },
   consentLabel:
     "I have read the Privacy Policy and consent to my personal data being processed for the purpose of a callback. *",
+  privacyNotice: "Privacy Notice",
   submitting: "Sending…",
   submitCta: "Request a callback",
   successMessage: "We've received your request. We'll get back to you as soon as possible.",
@@ -231,6 +233,7 @@ const nl: typeof tr = {
   },
   consentLabel:
     "Ik heb het privacybeleid gelezen en geef toestemming voor het verwerken van mijn gegevens voor een terugbelverzoek. *",
+  privacyNotice: "Privacyverklaring",
   submitting: "Versturen…",
   submitCta: "Terugbelverzoek aanvragen",
   successMessage: "Uw aanvraag is ontvangen. Wij nemen zo snel mogelijk contact met u op.",

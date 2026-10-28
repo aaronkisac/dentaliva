@@ -27,6 +27,9 @@ export interface FooterProps extends HTMLAttributes<HTMLElement> {
     quickLinks?: string;
     follow?: string;
   };
+  /** DSN-78: yasal link satırı (KVKK/Privacy Notice) — layout site routes'tan
+      geçer; boşsa satır render edilmez (paket copy'siz kalır). */
+  legalLinks?: Array<{ label: string; href: string }>;
 }
 
 function SocialIcon({ platform, className }: { platform: string; className?: string }) {
@@ -70,7 +73,7 @@ function SocialIcon({ platform, className }: { platform: string; className?: str
 
 /** Site footer: NAP block, link columns, socials, copyright (CMS-driven). */
 export const Footer = forwardRef<HTMLElement, FooterProps>(function Footer(
-  { columns, contact, social, copyright, labels, className, ...rest },
+  { columns, contact, social, copyright, labels, legalLinks, className, ...rest },
   ref,
 ) {
   // DSN-34: tek linkli nav sütunları tek düz listeye indirgenir (href dedupe).
@@ -151,6 +154,19 @@ export const Footer = forwardRef<HTMLElement, FooterProps>(function Footer(
           </ul>
         </div>
       </div>
+      {legalLinks && legalLinks.length > 0 ? (
+        <div className="border-t border-[var(--dvn-line-gold)] py-4">
+          <ul className="flex flex-wrap justify-center gap-x-8 gap-y-2 font-sans text-sm">
+            {legalLinks.map((item) => (
+              <li key={item.href}>
+                <Link href={item.href} className="hover:text-gold-soft">
+                  {item.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
       <div className="border-t border-[var(--dvn-line-gold)] py-4 text-center font-sans text-xs">
         {copyright}
       </div>

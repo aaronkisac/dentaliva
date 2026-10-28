@@ -24,10 +24,13 @@ export const branchBySlugQuery = defineQuery(
     phone,
     hours,
     mapUrl,
+    mapEmbedUrl,
     geo,
     image { "ref": asset._ref, alt },
     // DSN-73: galeri referansları — []-> öğe başına deref (bkz. misc.ts).
     "gallery": gallery[]->{ "ref": photo.asset._ref, "alt": photo.alt, "lqip": photo.asset->metadata.lqip, "category": category },
+    // DSN-77: orijinal şube sayfalarındaki gövde metinleri (blog deseninde).
+    body,
     seo
   }`,
 );

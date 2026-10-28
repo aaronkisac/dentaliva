@@ -17,10 +17,13 @@ export function ReviewFormSection({
   data,
   eyebrow,
   heading,
+  privacyHref,
 }: {
   data: { steps?: LocalizedPair[]; note?: LocalizedPair } | null;
   eyebrow?: string;
   heading?: string;
+  /** DSN-78: Privacy Notice linki formun izin satırına eklenir. */
+  privacyHref?: string;
 }) {
   if (!data) return null;
   const steps = (data.steps ?? [])
@@ -65,7 +68,7 @@ export function ReviewFormSection({
           ) : null}
         </div>
         <div className="rounded-[4px] border border-[var(--dvn-line-soft)] bg-white p-6 md:p-8">
-          <ReviewFormLoader />
+          <ReviewFormLoader privacyHref={privacyHref} />
         </div>
       </div>
     </Section>

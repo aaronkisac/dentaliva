@@ -79,6 +79,7 @@ export const sectionRegistry: Record<HomeSectionId, SectionRenderer> = {
         data={data.homePage?.reviewForm ?? null}
         eyebrow={t(data.siteCopy?.sectionHeadings?.reviewFormEyebrow)}
         heading={t(data.siteCopy?.sectionHeadings?.reviewFormHeading)}
+        privacyHref={routes.legal}
       />,
     ),
   howItWorks: (data) =>
@@ -128,10 +129,7 @@ export const sectionRegistry: Record<HomeSectionId, SectionRenderer> = {
   gallery: (data) =>
     reveal(
       <GallerySection
-        images={pickHomeGallery(
-          data.homePage?.homeGallery,
-          data.homePage?.gallery ?? [],
-        )}
+        images={pickHomeGallery(data.homePage?.homeGallery, data.homePage?.gallery ?? [])}
         onceSonra={data.homePage?.onceSonraGallery ?? []}
         eyebrow={t(data.siteCopy?.sectionHeadings?.galleryEyebrow)}
         heading={t(data.siteCopy?.sectionHeadings?.galleryHome)}
@@ -171,6 +169,7 @@ export const sectionRegistry: Record<HomeSectionId, SectionRenderer> = {
         eyebrow={data.siteCopy?.sectionHeadings?.finalCtaEyebrow ?? null}
         phone={data.siteSettings?.phone ?? ""}
         whatsapp={data.siteSettings?.whatsapp ?? null}
+        privacyHref={routes.legal}
       />,
     ),
 };
