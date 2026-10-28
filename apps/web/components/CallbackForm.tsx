@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { createCallbackSchema, type CallbackFormInput } from "@dentaliva/lib/forms/callback-schema";
-import { Button } from "@dentaliva/ui";
+import { Button, Link } from "@dentaliva/ui";
 import { Text } from "@dentaliva/ui";
 
 import { uiString } from "../src/ui-strings";
@@ -50,6 +50,7 @@ type SubmitState = "idle" | "success" | "error";
 export function CallbackForm({
   endpoint = "/api/callback",
   variant = "full",
+  privacyHref,
 }: {
   endpoint?: string;
   /**
@@ -57,6 +58,8 @@ export function CallbackForm({
    * opsiyonel alanlar gizlenir, şema aynıdır (eksik alanlar optional).
    */
   variant?: "full" | "compact";
+  /** DSN-78: doc zorunluluğu — consent metninin yanındaki Privacy Notice linki. */
+  privacyHref?: string;
 }) {
   const compact = variant === "compact";
   const {
@@ -266,16 +269,32 @@ export function CallbackForm({
       </div>
 
       <div>
-        <label className="flex items-start gap-3 text-sm text-ink">
+        {/* DSN-78: doc "[Privacy Notice]" — link, label DIŞINDA (label içindeki
+            link tıklaması checkbox'ı da toggle eder). Erişilebilir ad aynı
+            kalır: checkbox'un adı hâlâ consentLabel metnidir. */}
+        <div className="flex items-start gap-3 text-sm text-ink">
           <input
+            id="cb-kvkk"
             type="checkbox"
             aria-invalid={Boolean(errors.kvkkConsent)}
             aria-describedby={errors.kvkkConsent ? "cb-kvkk-error" : undefined}
             className="mt-0.5 size-5 accent-[var(--dvn-gold)]"
             {...register("kvkkConsent")}
           />
-          <span>{uiString("consentLabel")}</span>
-        </label>
+          <span>
+            <label htmlFor="cb-kvkk" className="cursor-pointer">
+              {uiString("consentLabel")}
+            </label>{" "}
+            {privacyHref ? (
+              <Link
+                href={privacyHref}
+                className="whitespace-nowrap font-semibold text-navy underline decoration-gold underline-offset-4 hover:text-gold-deep"
+              >
+                {uiString("privacyNotice")}
+              </Link>
+            ) : null}
+          </span>
+        </div>
         {errors.kvkkConsent ? (
           <p id="cb-kvkk-error" role="alert" className="mt-1 text-sm font-medium text-red-600">
             {errors.kvkkConsent.message}

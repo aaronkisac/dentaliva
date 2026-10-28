@@ -141,6 +141,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             quickLinks: t(siteCopy?.footer?.quickLinksHeading),
             follow: t(siteCopy?.footer?.followHeading),
           }}
+          // DSN-78: KVKK/Privacy Notice yasal satırı — doc'un "zorunlu güven"
+          // seti (com: /kvkk, eu: /privacy, nl: /privacybeleid).
+          legalLinks={
+            site.routes.legal
+              ? [{ label: uiString("privacyNotice"), href: site.routes.legal }]
+              : undefined
+          }
         />
         <ThemeSwitcher />
       </body>
