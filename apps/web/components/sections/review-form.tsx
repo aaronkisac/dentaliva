@@ -18,7 +18,7 @@ export function ReviewFormSection({
   eyebrow,
   heading,
 }: {
-  data: { steps?: LocalizedPair[] } | null;
+  data: { steps?: LocalizedPair[]; note?: LocalizedPair } | null;
   eyebrow?: string;
   heading?: string;
 }) {
@@ -27,6 +27,8 @@ export function ReviewFormSection({
     .map((step) => t(step))
     .filter(Boolean)
     .slice(0, 3);
+  // DSN-79: doküman #06 body copy — koordinatör fotoğraf/kayıt güvencesi.
+  const note = t(data.note);
   return (
     <Section id="review" className="scroll-mt-24 bg-ivory">
       <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-16">
@@ -55,6 +57,11 @@ export function ReviewFormSection({
                 </li>
               ))}
             </ol>
+          ) : null}
+          {note ? (
+            <p className="mt-6 border-l-2 border-[var(--dvn-gold)] pl-4 font-sans text-sm text-ink/70">
+              {note}
+            </p>
           ) : null}
         </div>
         <div className="rounded-[4px] border border-[var(--dvn-line-soft)] bg-white p-6 md:p-8">
