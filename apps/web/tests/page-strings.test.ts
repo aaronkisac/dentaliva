@@ -29,7 +29,7 @@ describe("pageString server tables (INT-3)", () => {
   it("serves the exact legacy TR strings on the com site", () => {
     expect(pageString("skipLabel")).toBe("İçeriğe atla");
     expect(pageString("skipAnchor")).toBe("icerik");
-    expect(pageString("servicesTitle")).toBe("Hizmetlerimiz");
+    expect(pageString("servicesTitle")).toBe("Tedavilerimiz");
     expect(pageString("legalTitle")).toBe("KVKK Aydınlatma Metni");
     expect(pageString("toggleMenu")).toBe("Menüyü aç/kapat");
     // call every function entry (coverage + interpolation regressions)
@@ -45,7 +45,7 @@ describe("pageString server tables (INT-3)", () => {
     const { pageString: p } = await import("../src/page-strings");
     expect(p("skipLabel")).toBe("Skip to content");
     expect(p("skipAnchor")).toBe("content");
-    expect(p("servicesTitle")).toBe("Services");
+    expect(p("servicesTitle")).toBe("Our Treatments");
     expect(p("legalTitle")).toBe("Privacy Policy");
     expect(p("homeTitle")).toBe("Dentaliva Dental Clinic | Istanbul");
     expect(p("gallerySrSummary")(12)).toBe("Gallery: 12 images, select one to enlarge.");

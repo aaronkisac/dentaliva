@@ -10,6 +10,7 @@ import { DoctorPortrait } from "../../../components/doctor-portrait";
 import { PageHero } from "../../../components/page-hero";
 import { fetchDoctorBySlug, fetchDoctors } from "../../../src/content/doctors";
 import { fetchHomePageDocument, fetchSiteSettings } from "../../../src/content/home";
+import { fetchSiteCopy } from "../../../src/content/site-copy";
 import { readClient } from "../../../src/sanity";
 import { absoluteUrl, pageMetadata } from "../../../src/seo";
 import { SeedPlaceholder } from "../../../components/seed-placeholder";
@@ -53,9 +54,10 @@ export default async function DoctorDetailPage({ params }: PageProps) {
   }
 
   // DSN-24: sayfa sonu bandının CMS içeriği; fetch hatasında sessizce düşer.
-  const [homePage, settings] = await Promise.all([
+  const [homePage, settings, copy] = await Promise.all([
     fetchHomePageDocument(readClient).catch(() => null),
     fetchSiteSettings(readClient),
+    fetchSiteCopy(readClient),
   ]);
 
   return (
@@ -115,6 +117,7 @@ export default async function DoctorDetailPage({ params }: PageProps) {
         title={homePage?.cta?.title ?? null}
         text={homePage?.cta?.text ?? null}
         phone={settings?.phone}
+        actionLabel={t(copy?.ui?.appointmentCta)}
       />
     </>
   );

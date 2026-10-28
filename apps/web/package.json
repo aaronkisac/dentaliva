@@ -20,6 +20,7 @@
     "deploy:nl:staging": "node scripts/clear-build-cache.mjs && node scripts/build-site.mjs --site nl --env staging && wrangler deploy -c wrangler.nl.jsonc --env staging"
   },
   "dependencies": {
+    "@dentaliva/lib": "workspace:*",
     "@dentaliva/sanity-schema": "workspace:*",
     "@dentaliva/seo": "workspace:*",
     "@dentaliva/tokens": "workspace:*",

@@ -1,6 +1,7 @@
 # Quality gate: lint → typecheck → unit+coverage → build on every PR and push
-# to main. The job name "CI" is the required status check on main
-# (scripts/protect-main.mjs).
+# to main. The job name "CI" is the check scripts/merge-pr.mjs requires green
+# before merging. (Branch protection cannot enforce it: private repo on
+# GitHub Free has no branch protection — protect-main.mjs gets 403.)
 name: CI
 
 on:

@@ -3,12 +3,15 @@ import type { Metadata } from "next";
 import { buildDentistJsonLd } from "@dentaliva/seo";
 
 import { JsonLd } from "../components/json-ld";
+import { ThemeSwitcher } from "../components/theme-switcher";
 import { site } from "../src/config";
 import { fetchSiteSettings } from "../src/content/home";
 import { fetchSiteCopy } from "../src/content/site-copy";
+import { buildHeaderItems } from "../src/header-items";
 import { t } from "../src/i18n";
 import { readClient } from "../src/sanity";
 import { siteUrl } from "../src/seo";
+import { palettePrepaintScript } from "../src/theme";
 import { fontVariables } from "../src-fonts";
 import { Footer } from "@dentaliva/ui";
 import { Header } from "@dentaliva/ui";
@@ -62,6 +65,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang={site.defaultLocale} className={fontVariables}>
       <body className="bg-ivory text-ink antialiased">
+        {/* DSN-57: seçili palet ilk boyamadan önce uygulanır — yenilemede
+            varsayılan palet flash'ı yaşanmaz. Inline script hash'i postbuild
+            generate-headers tarafından per-route CSP'ye yazılır. */}
+        <script dangerouslySetInnerHTML={{ __html: palettePrepaintScript }} />
         {/* PRF-3/PRF-5: display: optional yalnızca preload ile çalışır —
             başlık (Cormorant) ve gövde (Montserrat, tr için latin + latin-ext)
             fontları ilk boyamadan önce hazırda bekler. */}
@@ -102,8 +109,17 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           {pageString("skipLabel")}
         </a>
         <Header
-          items={site.nav}
-          logo={<span className="font-serif text-2xl">{siteName}</span>}
+          items={buildHeaderItems(site, siteCopy)}
+          // DSN-58: orijinal marka kilidi (canlı siteden çıkarılan kuğu logosu)
+          // home bağlantısı olarak; beyaz varyant hero üstündeki şeffaf
+          // header'da, renkli varyant ışık header'da.
+          logo={{
+            src: "/logo.png",
+            srcDark: "/logo-white.png",
+            alt: siteName,
+            width: 339,
+            height: 112,
+          }}
           cta={{ label: uiString("bookCta"), href: routes.contact }}
           labels={{ toggleMenu: pageString("toggleMenu"), closeMenu: pageString("closeMenu") }}
           contact={
@@ -126,6 +142,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             follow: t(siteCopy?.footer?.followHeading),
           }}
         />
+        <ThemeSwitcher />
       </body>
     </html>
   );

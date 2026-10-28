@@ -67,3 +67,12 @@
   --dvn-z-overlay: 200;
   --dvn-z-modal: 300;
 }
+
+/* DSN-60: wide-screen container cap — every --dvn-container-max consumer
+   (Container, header row, mega panel, footer) widens together above the
+   prototype breakpoints. */
+@media (min-width: 1536px) {
+  :root {
+    --dvn-container-max: 1360px;
+  }
+}

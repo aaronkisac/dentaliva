@@ -9,6 +9,7 @@ import { Reveal, Heading, Section, Text } from "@dentaliva/ui";
 import { JsonLd } from "../../../components/json-ld";
 import { PageHero } from "../../../components/page-hero";
 import { fetchBranchBySlug, fetchBranches } from "../../../src/content/branches";
+import { fetchSiteSettings } from "../../../src/content/home";
 import { fetchSiteCopy } from "../../../src/content/site-copy";
 import { readClient } from "../../../src/sanity";
 import { absoluteUrl, pageMetadata } from "../../../src/seo";
@@ -45,9 +46,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function BranchDetailPage({ params }: PageProps) {
   const { slug } = await params;
-  const [branch, copy] = await Promise.all([
+  const [branch, copy, settings] = await Promise.all([
     fetchBranchBySlug(readClient, slug),
     fetchSiteCopy(readClient),
+    fetchSiteSettings(readClient),
   ]);
   if (!branch) {
     return <SeedPlaceholder title="Şube" />;
@@ -82,6 +84,15 @@ export default async function BranchDetailPage({ params }: PageProps) {
                   </a>
                 </Text>
               ) : null}
+              {/* SUBE-1: orijinal şube sayfasındaki iletişim kartı Telefon /
+                  E-mail / Lokasyon / Çalışma Saatleri sırasını izler. */}
+              {settings?.email ? (
+                <Text className="mt-3">
+                  <a href={`mailto:${settings.email}`} className="hover:text-gold-deep">
+                    {settings.email}
+                  </a>
+                </Text>
+              ) : null}
               {t(branch.hours) ? <Text className="mt-2">{t(branch.hours)}</Text> : null}
             </div>
             {branch.geo ? (
@@ -98,7 +109,7 @@ export default async function BranchDetailPage({ params }: PageProps) {
               <div className="md:col-span-2">
                 <Image
                   src={branch.image.ref}
-                  alt={branch.name ?? ""}
+                  alt={t(branch.image.alt) || branch.name || ""}
                   width={1200}
                   height={600}
                   sizes="(max-width: 900px) 100vw, 1180px"

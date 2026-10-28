@@ -26,11 +26,35 @@ export interface SiteCopy {
     galleryPage?: LocalizedPair;
     galleryHome?: LocalizedPair;
     galleryEmpty?: LocalizedPair;
+    doctorsLead?: LocalizedPair;
+    /** Şubelerimiz sayfası hero açıklaması (DSN-71). */
+    branchesLead?: LocalizedPair;
+    galleryEyebrow?: LocalizedPair;
+    galleryLead?: LocalizedPair;
+    allGalleryCta?: LocalizedPair;
     servicesEyebrow?: LocalizedPair;
     servicesHeading?: LocalizedPair;
     allServicesCta?: LocalizedPair;
+    treatmentPathsEyebrow?: LocalizedPair;
+    treatmentPathsHeading?: LocalizedPair;
+    reviewFormEyebrow?: LocalizedPair;
+    reviewFormHeading?: LocalizedPair;
+    howItWorksEyebrow?: LocalizedPair;
+    howItWorksHeading?: LocalizedPair;
+    finalCtaEyebrow?: LocalizedPair;
+    travelEyebrow?: LocalizedPair;
+    travelHeading?: LocalizedPair;
+    aftercareEyebrow?: LocalizedPair;
+    aftercareHeading?: LocalizedPair;
+    aftercareNormalTitle?: LocalizedPair;
+    aftercareUrgentTitle?: LocalizedPair;
+    clinicsEyebrow?: LocalizedPair;
+    clinicsHeading?: LocalizedPair;
+    clinicsIntro?: LocalizedPair;
+    resultsVaryNote?: LocalizedPair;
     onceSonraEyebrow?: LocalizedPair;
     onceSonraHeading?: LocalizedPair;
+    blogFeatured?: LocalizedPair;
   } | null;
   /** DSN-47: ana sayfa SSS bölümü — eyebrow, destek metni ve CTA. */
   faq?: {
@@ -52,7 +76,23 @@ export interface SiteCopy {
     notFoundBackLink?: LocalizedPair;
     onceSonraBefore?: LocalizedPair;
     onceSonraAfter?: LocalizedPair;
+    /** Header mega menüsünün "tümünü gör" bağlantısı. */
+    menuAllLink?: LocalizedPair;
+    /** Blog kart/vitrin okuma bağlantısı (DSN-72 — "Oku →" hardcoded'inin yerine). */
+    blogReadCta?: LocalizedPair;
+    /** Dönüşüm bandının randevu butonu (CtaBand — DSN-68). */
+    appointmentCta?: LocalizedPair;
+    /** Tedavi gövdelerinin orta dönüşüm molası (ReadingCta — DSN-70). */
+    treatmentMidCta?: LocalizedPair;
+    /** Şube listeleme satırlarındaki detay bağlantısı (DSN-71). */
+    branchDetailLink?: LocalizedPair;
   } | null;
+  /** Header Tedaviler menüsünün grupları — sırayla mega panel sütunlarına düşer. */
+  navMenu?: Array<{
+    heading?: LocalizedPair;
+    headingPage?: { name?: LocalizedPair; slug?: string } | null;
+    treatments?: Array<{ name?: LocalizedPair; slug?: string } | null>;
+  }> | null;
 }
 
 /**

@@ -13,6 +13,7 @@ const emptyData: HomeData = {
   testimonials: [],
   siteSettings: null,
   siteCopy: null,
+  branches: [],
 };
 
 describe("HomeSections hidden filtering (DSN-56)", () => {

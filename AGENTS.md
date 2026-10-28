@@ -28,6 +28,8 @@ Two goals of equal weight:
 
 **Checkpoints (⏸) are hard stops.** Do not continue past 0/1/2/3 without Aaron's explicit reply. Do not use Goal mode / full-access mode until Phase 4 is explicitly approved. **No application code until Phase 4.**
 
+**PR MERGE KURALI (Aaron, 2026-10-28: "merge öncesi conflict kontrolü"):** her merge yalnız `node scripts/merge-pr.mjs <dal-veya-PR> <issue>` üzerinden yapılır. Script yeşil-CI beklemeden ÖNCE üç kapı çalıştırır: (1) GitHub `mergeable = MERGEABLE`; (2) `git merge-tree --write-tree` ile bellek-içi gerçek merge denemesi — çakışma varsa dosya listesiyle REFUSE; (3) merge-base kontrolü — dal origin/main'in gerisindeyse REFUSE (önce main'i dala merge et + push + CI rerun). `--delete-branch` opt-in'dir; worktree'den merge'de KULLANMA. Arka plan: GitHub Free'de private repoda branch protection özelliği YOK (`protect-main.mjs` 403 — FND-4'teki "required CI check on main" hiç fiilen devrede olmamış; kapı disiplini script'tedir). Tetikleyen olaylar: #337 blog dalının (main tabanlı, DSN-68/69 commit'leri yok) staging deploy'unun #335'in DSN-69 hekimler vitrini staging'ini ezmesi; DSN-57'de eski base'e karşı yeşil CI'lı PR'ın merge sonrası main'i kırması.
+
 ## Fixed decisions (do not re-open)
 
 Next.js App Router + TypeScript strict + Tailwind; `output: 'export'` static-first; Sanity (Content Lake + Studio, no self-hosted CMS); GitHub (single Turborepo repo, Issues + Milestones + Projects board, PR-per-change linked to issue, GitHub Actions CI, branch protection on `main`); Vitest + RTL (unit/component), Playwright (E2E), axe (a11y); v1 = Turkish site only but i18n/multi-domain ready from day one; SEO manager owns meta copy/keywords — editable in Sanity without code.

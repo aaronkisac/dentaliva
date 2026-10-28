@@ -8,16 +8,49 @@ import { cn } from "./cn";
 import { Link } from "./link";
 import { useFocusTrap } from "./use-focus-trap";
 
+export interface NavMenuLink {
+  label: string;
+  href: string;
+}
+
+/** Açılır menü grubu — başlık (opsiyonel) + bağlantı listesi. */
+export interface NavMenuGroup {
+  heading?: string;
+  headingHref?: string;
+  links: NavMenuLink[];
+}
+
+/** NavLink.menu — gruplu açılır menü + listeleme sayfası bağlantısı. */
+export interface NavMenu {
+  groups: NavMenuGroup[];
+  all?: NavMenuLink;
+}
+
 export interface NavLink {
   label: string;
   href: string;
-  children?: Array<{ label: string; href: string }>;
+  children?: Array<NavMenuLink>;
+  menu?: NavMenu;
+}
+
+/**
+ * Brand lockup shown as the home link. `srcDark` is the variant rendered while
+ * the header is transparent over the dark home hero (DSN-58: the original
+ * Dentaliva logo ships as a light and a white file); alt text comes from the
+ * caller — the package hardcodes no copy.
+ */
+export interface HeaderLogo {
+  src: string;
+  srcDark?: string;
+  alt: string;
+  width: number;
+  height: number;
 }
 
 export interface HeaderProps {
   items: NavLink[];
   cta?: { label: string; href: string };
-  logo: React.ReactNode;
+  logo: HeaderLogo;
   contact?: { phone: string; email: string };
   /** Locale chrome copy — the package hardcodes no language (i18n-ready). */
   labels: { toggleMenu: string; closeMenu: string };
@@ -72,6 +105,23 @@ function CloseIcon({ className }: { className?: string }) {
   );
 }
 
+function ChevronIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={cn("h-3.5 w-3.5", className)}
+    >
+      <path d="m6 9 6 6 6-6" />
+    </svg>
+  );
+}
+
 function DesktopDropdown({ item, dark }: { item: NavLink; dark: boolean }) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -102,7 +152,7 @@ function DesktopDropdown({ item, dark }: { item: NavLink; dark: boolean }) {
         aria-expanded={open}
         onClick={() => setOpen((value) => !value)}
         className={cn(
-          "px-3 py-2 font-sans text-sm",
+          "whitespace-nowrap px-3 py-2 font-sans text-sm",
           dark ? "text-ivory/90 hover:text-gold-soft" : "text-ink hover:text-gold-deep",
         )}
       >
@@ -114,7 +164,7 @@ function DesktopDropdown({ item, dark }: { item: NavLink; dark: boolean }) {
             <Link
               key={child.href}
               href={child.href}
-              className="block px-3 py-2 text-sm text-ink hover:bg-ivory"
+              className="block whitespace-nowrap px-3 py-2 text-sm text-ink hover:bg-ivory"
               onClick={() => setOpen(false)}
             >
               {child.label}
@@ -123,6 +173,214 @@ function DesktopDropdown({ item, dark }: { item: NavLink; dark: boolean }) {
         </div>
       ) : null}
     </div>
+  );
+}
+
+const MEGA_PANEL_ID = "dvn-mega-panel";
+
+function DesktopMegaTrigger({
+  item,
+  dark,
+  open,
+  onToggle,
+}: {
+  item: NavLink;
+  dark: boolean;
+  open: boolean;
+  onToggle: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      aria-expanded={open}
+      aria-controls={MEGA_PANEL_ID}
+      onClick={onToggle}
+      className={cn(
+        "flex items-center gap-1.5 whitespace-nowrap px-3 py-2 font-sans text-sm",
+        dark ? "text-ivory/90 hover:text-gold-soft" : "text-ink hover:text-gold-deep",
+      )}
+    >
+      {item.label}
+      <ChevronIcon
+        className={cn(
+          "transition-transform duration-[var(--dvn-duration-base)]",
+          open && "rotate-180",
+        )}
+      />
+    </button>
+  );
+}
+
+/**
+ * Tam genişlik mega panel — header çubuğunun altında, container ızgarasında
+ * grup sütunları. Başlıksız grup da başlık yüksekliği kadar aşağıdan başlar;
+ * sütunlar hizalı kalır.
+ */
+function MegaPanel({ menu, onClose }: { menu: NavMenu; onClose: () => void }) {
+  return (
+    <div
+      id={MEGA_PANEL_ID}
+      className="absolute inset-x-0 top-full hidden border-b border-[var(--dvn-line-gold)] bg-white shadow-[var(--dvn-shadow-soft)] xl:block"
+    >
+      <div className="mx-auto grid max-w-[var(--dvn-container-max)] grid-cols-2 gap-x-8 gap-y-6 px-[var(--dvn-container-gutter)] py-6 md:grid-cols-4">
+        {menu.groups.map((group) => (
+          <div key={group.heading ?? group.links[0]?.href}>
+            <div className="mb-2 min-h-6">
+              {group.heading ? (
+                group.headingHref ? (
+                  <Link
+                    href={group.headingHref}
+                    onClick={onClose}
+                    className="text-xs font-semibold uppercase tracking-[0.08em] text-navy hover:text-gold-deep"
+                  >
+                    {group.heading}
+                  </Link>
+                ) : (
+                  <span className="text-xs font-semibold uppercase tracking-[0.08em] text-navy">
+                    {group.heading}
+                  </span>
+                )
+              ) : null}
+            </div>
+            <ul className="space-y-0.5">
+              {group.links.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    onClick={onClose}
+                    className="block whitespace-nowrap py-1 text-sm text-ink/80 hover:text-gold-deep"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+      {menu.all ? (
+        <div className="border-t border-[var(--dvn-line-soft)]">
+          <div className="mx-auto max-w-[var(--dvn-container-max)] px-[var(--dvn-container-gutter)] py-3">
+            <Link
+              href={menu.all.href}
+              onClick={onClose}
+              className="inline-flex items-center gap-1 text-sm font-medium text-gold-deep hover:text-navy"
+            >
+              {menu.all.label}
+              <span aria-hidden="true">→</span>
+            </Link>
+          </div>
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
+function MobileNavItem({
+  item,
+  dark,
+  onClose,
+}: {
+  item: NavLink;
+  dark: boolean;
+  onClose: () => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const linkClass = cn("block px-2 py-3 text-base", dark ? "text-ivory" : "text-navy");
+
+  if (!item.menu) {
+    return (
+      <>
+        <Link href={item.href} className={linkClass} onClick={onClose}>
+          {item.label}
+        </Link>
+        {item.children?.map((child) => (
+          <Link
+            key={child.href}
+            href={child.href}
+            className={cn("block px-6 py-2 text-sm", dark ? "text-ivory/70" : "text-muted")}
+            onClick={onClose}
+          >
+            {child.label}
+          </Link>
+        ))}
+      </>
+    );
+  }
+
+  return (
+    <>
+      <button
+        type="button"
+        aria-expanded={open}
+        onClick={() => setOpen((value) => !value)}
+        className={cn(
+          "flex w-full items-center justify-between px-2 py-3 text-base",
+          dark ? "text-ivory" : "text-navy",
+        )}
+      >
+        {item.label}
+        <ChevronIcon
+          className={cn(
+            "h-4 w-4 transition-transform duration-[var(--dvn-duration-base)]",
+            open && "rotate-180",
+          )}
+        />
+      </button>
+      {open ? (
+        <div className="ml-2 border-l border-[var(--dvn-line-soft)] pb-2 pl-3">
+          {item.menu.all ? (
+            <Link
+              href={item.menu.all.href}
+              onClick={onClose}
+              className={cn(
+                "block px-2 py-2 text-sm font-medium",
+                dark ? "text-gold-soft" : "text-gold-deep",
+              )}
+            >
+              {item.menu.all.label}
+            </Link>
+          ) : null}
+          {item.menu.groups.map((group) => (
+            <div key={group.heading ?? group.links[0]?.href} className="mt-2">
+              {group.heading ? (
+                group.headingHref ? (
+                  <Link
+                    href={group.headingHref}
+                    onClick={onClose}
+                    className={cn(
+                      "block px-2 py-1 text-xs font-semibold uppercase tracking-[0.08em]",
+                      dark ? "text-ivory/90" : "text-navy",
+                    )}
+                  >
+                    {group.heading}
+                  </Link>
+                ) : (
+                  <div
+                    className={cn(
+                      "px-2 py-1 text-xs font-semibold uppercase tracking-[0.08em]",
+                      dark ? "text-ivory/90" : "text-navy",
+                    )}
+                  >
+                    {group.heading}
+                  </div>
+                )
+              ) : null}
+              {group.links.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={onClose}
+                  className={cn("block px-4 py-1.5 text-sm", dark ? "text-ivory/70" : "text-muted")}
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+          ))}
+        </div>
+      ) : null}
+    </>
   );
 }
 
@@ -148,7 +406,7 @@ function MobileMenu({
     <div
       ref={ref}
       className={cn(
-        "border-t md:hidden",
+        "border-t xl:hidden",
         dark ? "border-gold/30 bg-navy" : "border-[var(--dvn-line-soft)] bg-ivory",
       )}
     >
@@ -156,23 +414,7 @@ function MobileMenu({
         <ul className="space-y-1">
           {items.map((item) => (
             <li key={item.href}>
-              <Link
-                href={item.href}
-                className={cn("block px-2 py-3 text-base", dark ? "text-ivory" : "text-navy")}
-                onClick={onClose}
-              >
-                {item.label}
-              </Link>
-              {item.children?.map((child) => (
-                <Link
-                  key={child.href}
-                  href={child.href}
-                  className={cn("block px-6 py-2 text-sm", dark ? "text-ivory/70" : "text-muted")}
-                  onClick={onClose}
-                >
-                  {child.label}
-                </Link>
-              ))}
+              <MobileNavItem item={item} dark={dark} onClose={onClose} />
             </li>
           ))}
         </ul>
@@ -219,6 +461,13 @@ function MobileMenu({
  * DSN-23: mobil menünün altın slotu randevu CTA'sıdır (cta prop'u varsa);
  * menü burger toggle, Escape veya bağlantı tıklamasıyla kapanır. Burger
  * unicode değil SVG ikondur; durum aria-expanded ile bildirilir (APG pattern).
+ * Gruplu açılır menü (mega panel) header seviyesinde tek state ile yönetilir;
+ * Escape ve dış tıklama kapatır (APG disclosure).
+ * DSN-60: masaüstü chrome'u (nav + telefon + CTA) xl(1280) altında gizli —
+ * tek satırlık satır ihtiyacı en geniş yerel (EN) için ~1166px'tir ve 1280
+ * altındaki kullanılabilir genişlik bunu karşılayamaz; etiketler İKİ SATIRA
+ * sarılıyordu. 1280 altı burger + mobil mega akordeonla hizmet verir. Tüm
+ * satır öğeleri nowrap'dır — sarma imkânsız, taşma olursa flex sıkıştırır.
  */
 export function headerMode(
   pathname: string,
@@ -231,6 +480,8 @@ export function headerMode(
 
 export function Header({ items, cta, logo, contact, labels }: HeaderProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [openMenu, setOpenMenu] = useState<string | null>(null);
+  const headerRef = useRef<HTMLElement>(null);
   const pathname = usePathname();
   // PRF-5: başlangıç değeri SSR ile aynı kuraldan gelir (scrollY=0, vh=800) —
   // render içinde window okunmaz, hidrasyon eşleşir.
@@ -251,12 +502,36 @@ export function Header({ items, cta, logo, contact, labels }: HeaderProps) {
     };
   }, [pathname]);
 
+  // Mega panel açıkken dış tıklama ve Escape kapatır — APG disclosure.
+  useEffect(() => {
+    if (!openMenu) return;
+    const onPointerDown = (event: PointerEvent) => {
+      // v8 ignore next 3 — the ref is always mounted while this listener exists
+      if (headerRef.current && !headerRef.current.contains(event.target as Node)) {
+        setOpenMenu(null);
+      }
+    };
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setOpenMenu(null);
+    };
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [openMenu]);
+
   // PRF-5: stabil identity — aksi halde her Header render'ı (scroll'da)
   // useFocusTrap efektini yeniden koşturup odağı menünün ilk bağlantısına
   // çalar ve "restores focus" zincirini bozar.
   const closeMobileMenu = useCallback(() => setMobileOpen(false), []);
+  const closeOpenMenu = useCallback(() => setOpenMenu(null), []);
 
   const onHome = pathname === "/";
+  const openMenuItem = openMenu
+    ? items.find((item) => item.href === openMenu && item.menu)
+    : undefined;
 
   const linkClass = dark ? "text-ivory/90 hover:text-gold-soft" : "text-ink hover:text-gold-deep";
   const ctaClass = dark
@@ -269,6 +544,7 @@ export function Header({ items, cta, logo, contact, labels }: HeaderProps) {
 
   return (
     <header
+      ref={headerRef}
       className={cn(
         positionClass,
         "z-[var(--dvn-z-header)] border-b transition-colors duration-[var(--dvn-duration-base)]",
@@ -278,41 +554,57 @@ export function Header({ items, cta, logo, contact, labels }: HeaderProps) {
       )}
     >
       <div className="mx-auto flex h-[var(--dvn-header-h)] max-w-[var(--dvn-container-max)] items-center justify-between gap-6 px-[var(--dvn-container-gutter)]">
-        <div className="flex items-center gap-3">
-          <span
-            aria-hidden="true"
-            className="flex h-9 w-9 items-center justify-center bg-gold font-serif text-xl font-bold text-navy"
-          >
-            D
-          </span>
-          {/* Wordmark, dark/light durumuna uyan diğer başlık öğeleriyle birlikte
-              renk değiştirir — logo düğümü renksiz geldiği için buradan miras
-              alır (şeffaf hero üstünde koyu wordmark okunmuyordu). */}
-          <span className={cn(dark ? "text-ivory" : "text-navy")}>{logo}</span>
-        </div>
-        <nav aria-label="Main" className="hidden items-center gap-1 md:flex">
+        {/* DSN-58: orijinal marka kilidi (kuğu logosu) home bağlantısıdır —
+            header'da daha önce link yoktu. Varyant dark/light durumunu izler:
+            şeffaf hero üstünde beyaz, ışık header'da renkli. Kaynak dosya
+            yerel public asset'idir; Sanity custom loader'ı yalnız CDN
+            görsellerini hedefler, bu yüzden düz img. */}
+        <Link href="/" className="flex shrink-0 items-center">
+          <img
+            src={dark ? (logo.srcDark ?? logo.src) : logo.src}
+            alt={logo.alt}
+            width={logo.width}
+            height={logo.height}
+            className="h-11 w-auto"
+          />
+        </Link>
+        <nav aria-label="Main" className="hidden items-center gap-1 xl:flex">
           {items.map((item) =>
-            item.children ? (
+            item.menu ? (
+              <DesktopMegaTrigger
+                key={item.href}
+                item={item}
+                dark={dark}
+                open={openMenu === item.href}
+                onToggle={() =>
+                  setOpenMenu((current) => (current === item.href ? null : item.href))
+                }
+              />
+            ) : item.children ? (
               <DesktopDropdown key={item.href} item={item} dark={dark} />
             ) : (
-              <Link key={item.href} href={item.href} className={cn("px-3 py-2 text-sm", linkClass)}>
+              <Link
+                key={item.href}
+                href={item.href}
+                className={cn("whitespace-nowrap px-3 py-2 text-sm", linkClass)}
+              >
                 {item.label}
               </Link>
             ),
           )}
         </nav>
-        <div className="hidden items-center gap-5 md:flex">
+        <div className="hidden items-center gap-5 xl:flex">
           {contact?.phone ? (
             <a
               href={`tel:${contact.phone}`}
-              className={cn("flex items-center gap-2 text-sm", linkClass)}
+              className={cn("flex items-center gap-2 whitespace-nowrap text-sm", linkClass)}
             >
               <PhoneIcon />
               {contact.phone}
             </a>
           ) : null}
           {cta ? (
-            <Link href={cta.href} className={cn("px-5 py-2.5 text-sm", ctaClass)}>
+            <Link href={cta.href} className={cn("whitespace-nowrap px-5 py-2.5 text-sm", ctaClass)}>
               {cta.label}
             </Link>
           ) : null}
@@ -322,11 +614,12 @@ export function Header({ items, cta, logo, contact, labels }: HeaderProps) {
           aria-expanded={mobileOpen}
           aria-label={labels.toggleMenu}
           onClick={() => setMobileOpen((open) => !open)}
-          className={cn("px-2 py-3 md:hidden", dark ? "text-ivory" : "text-navy")}
+          className={cn("px-2 py-3 xl:hidden", dark ? "text-ivory" : "text-navy")}
         >
           {mobileOpen ? <CloseIcon /> : <MenuIcon />}
         </button>
       </div>
+      {openMenuItem?.menu ? <MegaPanel menu={openMenuItem.menu} onClose={closeOpenMenu} /> : null}
       {mobileOpen ? (
         <MobileMenu
           items={items}

@@ -20,7 +20,7 @@ export const site = {
   },
   nav: [
     { label: "Hakkımızda", href: "/hakkimizda" },
-    { label: "Hizmetlerimiz", href: "/hizmetlerimiz" },
+    { label: "Tedavilerimiz", href: "/hizmetlerimiz" },
     { label: "Hekimlerimiz", href: "/hekimlerimiz" },
     { label: "Şubelerimiz", href: "/subelerimiz" },
     { label: "Blog", href: "/blog" },
@@ -31,15 +31,26 @@ export const site = {
     blog: true,
   },
   sections: {
+    // DSN-61: funnel strategy order — existing sections move to their final
+    // positions; new sections (treatmentPaths, reviewForm, …) are inserted by
+    // later waves between these slots.
     home: [
       "hero",
       "ticker",
-      "quickServices",
+      "trustStrip",
       "about",
-      "videoTestimonials",
-      "reviews",
-      "gallery",
+      "treatmentPaths",
+      "quickServices",
       "onceSonra",
+      "videoTestimonials",
+      "reviewForm",
+      "howItWorks",
+      "decisionModules",
+      "travelStay",
+      "aftercare",
+      "reviews",
+      "clinics",
+      "gallery",
       "doctors",
       "faq",
       "cta",

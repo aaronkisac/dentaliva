@@ -35,7 +35,7 @@ describe("uiString client tables (INT-3)", () => {
     expect(ui("doctorSlideAria")(4)).toBe("Doctor 4");
     expect(ui("lightboxImageAria")(2)).toBe("Image 2 — enlarge");
     expect(ui("galleryImageAria")(5)).toBe("Image 5");
-    expect(ui("exploreServicesCta")).toBe("Explore our services");
+    expect(ui("exploreServicesCta")).toBe("Explore our treatments");
     expect(ui("patientVideoAlt")).toBe("Patient video");
     expect(ui("doctorsLive")("Dr. Example", 1, 19)).toBe("Featured: Dr. Example (1/19)");
     expect(ui("serviceSlideAria")(7)).toBe("Service 7");

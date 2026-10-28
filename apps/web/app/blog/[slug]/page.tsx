@@ -12,6 +12,7 @@ import { CtaBand } from "../../../components/cta-band";
 import { SeedPlaceholder } from "../../../components/seed-placeholder";
 import { fetchBlogPostBySlug, fetchBlogPosts } from "../../../src/content/blog";
 import { fetchHomePageDocument, fetchSiteSettings } from "../../../src/content/home";
+import { fetchSiteCopy } from "../../../src/content/site-copy";
 import { readClient } from "../../../src/sanity";
 import { absoluteUrl, pageMetadata } from "../../../src/seo";
 import { pageString } from "../../../src/page-strings";
@@ -56,9 +57,10 @@ export default async function BlogPostPage({ params }: PageProps) {
   const blocks = tBlocks(post.body);
 
   // DSN-24: sayfa sonu bandının CMS içeriği; fetch hatasında sessizce düşer.
-  const [homePage, settings] = await Promise.all([
+  const [homePage, settings, copy] = await Promise.all([
     fetchHomePageDocument(readClient).catch(() => null),
     fetchSiteSettings(readClient),
+    fetchSiteCopy(readClient),
   ]);
 
   return (
@@ -115,6 +117,7 @@ export default async function BlogPostPage({ params }: PageProps) {
         title={homePage?.cta?.title ?? null}
         text={homePage?.cta?.text ?? null}
         phone={settings?.phone}
+        actionLabel={t(copy?.ui?.appointmentCta)}
       />
     </>
   );

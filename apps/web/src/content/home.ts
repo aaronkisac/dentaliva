@@ -11,6 +11,7 @@ import {
 } from "@dentaliva/sanity-schema/queries";
 
 import { fetchSiteCopy, type SiteCopy } from "./site-copy";
+import { fetchBranches, type BranchItem } from "./branches";
 
 export interface LocalizedPair {
   tr?: string;
@@ -67,6 +68,24 @@ interface HomeImage {
 export interface HomePageContent {
   hero?: { headline?: LocalizedPair; subline?: LocalizedPair; image?: HomeImage };
   quickServiceLinks?: QuickServiceItem[];
+  /** DSN-61: hero altı kompakt güven bandı — veri yoksa bölüm render edilmez. */
+  trustStrip?: TrustStripData;
+  /** DSN-62: ihtiyaç bazlı self-segmentation kartları — boşken bölüm render edilmez. */
+  treatmentPaths?: TreatmentPathItem[];
+  /** DSN-63: ön değerlendirme formu bölümü — alan unset ise bölüm render edilmez. */
+  reviewForm?: { steps?: LocalizedPair[] };
+  /** DSN-64: süreç adımları — boşken bölüm render edilmez. */
+  howItWorks?: { steps?: HowItWorksStep[] };
+  /** DSN-65: karar modülleri — GROQ hidden filtresi uygulanmış halde gelir. */
+  decisionModules?: DecisionModule[];
+  /** DSN-66: seyahat planlama check-listi — boşken bölüm render edilmez. */
+  travelStay?: { checklist?: LocalizedPair[] };
+  /** DSN-66: aftercare belirtileri + iletişim notu — boşken render edilmez. */
+  aftercare?: {
+    normal?: LocalizedPair[];
+    urgent?: LocalizedPair[];
+    contactNote?: LocalizedPair;
+  };
   about?: {
     title?: LocalizedPair;
     body?: LocalizedPair;
@@ -76,13 +95,15 @@ export interface HomePageContent {
   };
   stats?: Array<{ value?: string; label?: LocalizedPair }>;
   gallery?: GalleryImage[];
+  /** DSN-68: ana sayfa seçkisi — doluysa ana sayfa galerisi bunu basar (max 5). */
+  homeGallery?: GalleryImage[];
   /** DSN-29: hasta izinli önce/sonra görselleri — dolunca galeri sekmesi açılır. */
   onceSonraGallery?: GalleryImage[];
   /** DSN-50: anasayfa önce/sonra karşılaştırma kartları — boşken bölüm render edilmez. */
   onceSonraCases?: BeforeAfterCase[];
   /** Copy sweep: ekip bölümünün CMS'ten gelen başlık/copy bloğu. */
   teamSection?: HomeTeamSection;
-  cta?: { title?: LocalizedPair; text?: LocalizedPair };
+  cta?: { title?: LocalizedPair; text?: LocalizedPair; trustLine?: LocalizedPair };
   /**
    * DSN-56: içerik bazlı gizle/göster — site config sırasından düşülecek
    * bölüm id'leri (HomeSectionId). Alan unset/null olduğunda hiçbir bölüm
@@ -105,6 +126,42 @@ export interface HomeTeamSection {
   eyebrow?: LocalizedPair;
   heading?: LocalizedPair;
   text?: LocalizedPair;
+}
+
+/** DSN-61: güven şeridi hücreleri — puan rozeti + en fazla 3 gösterge. */
+export interface TrustStripData {
+  rating?: LocalizedPair;
+  ratingLabel?: LocalizedPair;
+  items?: Array<{ value?: string; label?: LocalizedPair }>;
+}
+
+/** DSN-62: tedavi yolu kartı — ihtiyaç cümlesi + teknik terim + tedavi linki. */
+export interface TreatmentPathItem {
+  headline?: LocalizedPair;
+  subline?: LocalizedPair;
+  image?: { ref?: string; alt?: LocalizedPair; lqip?: string };
+  treatment?: { name?: LocalizedPair; slug?: string } | null;
+}
+
+/** DSN-64: süreç adımı — başlık zorunlu, kısa açıklama opsiyonel. */
+export interface HowItWorksStep {
+  title?: LocalizedPair;
+  text?: LocalizedPair;
+}
+
+/** DSN-65: karar modülü — seçenek kartları + medya + CTA tedavisi. */
+export interface DecisionModule {
+  eyebrow?: LocalizedPair;
+  heading?: LocalizedPair;
+  body?: LocalizedPair;
+  image?: { ref?: string; alt?: LocalizedPair; lqip?: string };
+  youtubeId?: string;
+  options?: Array<{
+    title?: LocalizedPair;
+    text?: LocalizedPair;
+    treatment?: { name?: LocalizedPair; slug?: string } | null;
+  }>;
+  ctaTreatment?: { name?: LocalizedPair; slug?: string } | null;
 }
 
 /** DSN-50: önce/sonra karşılaştırma kartı — slider için görsel çifti. */
@@ -131,6 +188,8 @@ export interface HomeData {
   siteSettings: SiteSettingsLite | null;
   /** DSN-44: arayüz metinleri singleton'u — bölümler copy'sizse render etmez. */
   siteCopy: SiteCopy | null;
+  /** DSN-67: üç klinik bölümü — şube dokümanları (boşsa bölüm render edilmez). */
+  branches: BranchItem[];
 }
 
 async function fetchJson<T>(client: SanityClient, query: string): Promise<T> {
@@ -164,7 +223,7 @@ export const fetchHomePageDocument = cache(
 );
 
 export async function fetchHomeData(client: SanityClient): Promise<HomeData> {
-  const [homePage, quickServices, doctors, faqs, testimonials, siteSettings, siteCopy] =
+  const [homePage, quickServices, doctors, faqs, testimonials, siteSettings, siteCopy, branches] =
     await Promise.all([
       fetchHomePageDocument(client),
       fetchJson<QuickServiceItem[]>(client, treatmentListQuery),
@@ -173,6 +232,7 @@ export async function fetchHomeData(client: SanityClient): Promise<HomeData> {
       fetchJson<TestimonialItem[]>(client, testimonialListQuery),
       fetchSiteSettings(client),
       fetchSiteCopy(client),
+      fetchBranches(client),
     ]);
   // DSN-9: authored quickServiceLinks override the full treatment list;
   // unauthored (fresh template) falls back to every treatment. GROQ returns
@@ -189,5 +249,6 @@ export async function fetchHomeData(client: SanityClient): Promise<HomeData> {
     testimonials: testimonials ?? [],
     siteSettings: siteSettings ?? null,
     siteCopy: siteCopy ?? null,
+    branches: branches ?? [],
   };
 }

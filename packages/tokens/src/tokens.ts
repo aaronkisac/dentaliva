@@ -66,6 +66,10 @@ export const breakpoint = {
 
 export const layout = {
   containerMax: "1180px",
+  /** Wide-screen cap (≥ containerWideMin) — the 1180px base wastes 1440px+
+      viewports while the EU header row alone needs ~1166px (DSN-60). */
+  containerMaxWide: "1360px",
+  containerWideMin: "1536px",
   containerGutter: "28px",
   sectionPaddingY: "110px",
   sectionPaddingYMd: "80px",
