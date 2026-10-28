@@ -85,6 +85,7 @@ export function CtaSection({
   eyebrow,
   phone,
   whatsapp,
+  privacyHref,
 }: {
   title?: LocalizedPair | null;
   text?: LocalizedPair | null;
@@ -94,6 +95,8 @@ export function CtaSection({
   phone: string;
   /** DSN-63/64: WhatsApp kanalı — siteSettings.whatsapp boşken buton basılmaz. */
   whatsapp?: string | null;
+  /** DSN-78: doc #15 güven satırının privacy notice ayağı — linkli. */
+  privacyHref?: string;
 }) {
   if (!t(title)) return null;
   const eyebrowText = t(eyebrow);
@@ -127,6 +130,14 @@ export function CtaSection({
             </a>
           ) : null}
           {trust ? <p className="mt-6 font-sans text-sm text-white/60">{trust}</p> : null}
+          {privacyHref ? (
+            <Link
+              href={privacyHref}
+              className="mt-2 inline-block font-sans text-sm font-semibold text-gold-soft underline underline-offset-4 hover:text-gold"
+            >
+              {uiString("privacyNotice")}
+            </Link>
+          ) : null}
           {phone ? <p className="mt-2 font-sans text-sm text-white/60">{phone}</p> : null}
         </div>
         <div className="rounded-[4px] bg-white p-6 md:p-8">

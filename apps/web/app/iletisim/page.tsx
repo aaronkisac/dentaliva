@@ -71,7 +71,7 @@ export default async function ContactPage() {
               </Heading>
             ) : null}
             <div className="mt-4">
-              <CallbackForm />
+              <CallbackForm privacyHref={routes.legal} />
             </div>
           </div>
         </div>
