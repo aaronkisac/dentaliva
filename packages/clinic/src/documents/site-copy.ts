@@ -205,6 +205,12 @@ export const siteCopy = defineType({
           type: "localeText",
           description: "Şube listeleme satırlarındaki detay bağlantısı metni.",
         },
+        {
+          name: "blogReadCta",
+          title: "Blog okuma bağlantısı",
+          type: "localeText",
+          description: "Blog vitrin ve kartlarındaki okuma bağlantısı metni.",
+        },
       ],
     }),
     defineField({
