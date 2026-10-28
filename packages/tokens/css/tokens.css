@@ -76,3 +76,14 @@
     --dvn-container-max: 1360px;
   }
 }
+/* DSN-80: mobil display adımı — 64px hero başlığı küçük ekranda metni
+   ekrana sıkıştırıyordu (8 satır, CTA'lar fold altında). md altında display
+   ölçeği bir adım iner; kırılım değerleri değişmez. */
+@media (max-width: 899px) {
+  :root {
+    --dvn-text-display-xl-size: 40px;
+    --dvn-text-display-xl-lh: 1.15;
+    --dvn-text-display-lg-size: 32px;
+    --dvn-text-display-lg-lh: 1.2;
+  }
+}
