@@ -4,7 +4,7 @@ export const branchListQuery = defineQuery(
   // DSN-81: bayrak şube Başakşehir öne — slug üç sitede de "basaksehir"
   // (com/eu/nl aynı klinik ağı); sıra bir gün CMS alanına taşınırsa burası
   // düşer. name asc kalan sırayı kararlı tutar.
-  `*[_type == "branch"] | order(slug.current == "basaksehir" desc, name asc){
+  `*[_type == "branch"] | order((slug.current == "basaksehir") desc, name asc){
     name,
     "slug": slug.current,
     address,
