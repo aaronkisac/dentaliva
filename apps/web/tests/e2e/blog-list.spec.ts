@@ -20,21 +20,18 @@ test.describe("DSN-72: blog listeleme", () => {
 
     await expect(page.getByRole("heading", { level: 1, name: "Blog" })).toBeVisible();
 
-    // Vitrin (ilk link) + grid. Link sayısı iddiası yalnız com'da: CI'daki
-    // eu build'i anonim okur (SANITY_READ_TOKEN_EU repo secret'ı yok — INT-9
-    // açık kalemi) ve blogPost dokümanları gelmez; com build'i token'lıdır.
-    const postLinks = page.locator('a[href^="/blog/"]:not([href="/blog"])');
-    const count = await postLinks.count();
+    // Link iddiaları yalnız com'da: CI'daki eu build'i anonim okur
+    // (SANITY_READ_TOKEN_EU repo secret'ı yok — INT-9 açık kalemi) ve
+    // blogPost dokümanları hiç gelmez — grid 0 link render eder; com
+    // build'i token'lıdır. eu'da yalnız statik yapı iddiası kalır.
     if (SITE === "com") {
+      const postLinks = page.locator('a[href^="/blog/"]:not([href="/blog"])');
       // 24 yazılı üretim dataset'inde 24 link.
-      expect(count).toBeGreaterThanOrEqual(10);
-    }
+      expect(await postLinks.count()).toBeGreaterThanOrEqual(10);
 
-    // Kartların tamamı tek link: her link başlık (serif) taşıyor.
-    const first = postLinks.first();
-    await expect(first).toContainText(/./);
+      const first = postLinks.first();
+      await expect(first).toContainText(/./);
 
-    if (SITE === "com") {
       // Backfill sonrası vitrin görseli dolu gelir (üretim dataset'i);
       // loader boyutlandırması viewport'a göre değişir — yüklenmiş olması yeter.
       await expect
