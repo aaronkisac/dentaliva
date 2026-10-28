@@ -26,6 +26,12 @@ export interface SiteCopy {
     galleryPage?: LocalizedPair;
     galleryHome?: LocalizedPair;
     galleryEmpty?: LocalizedPair;
+    doctorsLead?: LocalizedPair;
+    /** Şubelerimiz sayfası hero açıklaması (DSN-71). */
+    branchesLead?: LocalizedPair;
+    galleryEyebrow?: LocalizedPair;
+    galleryLead?: LocalizedPair;
+    allGalleryCta?: LocalizedPair;
     servicesEyebrow?: LocalizedPair;
     servicesHeading?: LocalizedPair;
     allServicesCta?: LocalizedPair;
@@ -71,6 +77,12 @@ export interface SiteCopy {
     onceSonraAfter?: LocalizedPair;
     /** Header mega menüsünün "tümünü gör" bağlantısı. */
     menuAllLink?: LocalizedPair;
+    /** Dönüşüm bandının randevu butonu (CtaBand — DSN-68). */
+    appointmentCta?: LocalizedPair;
+    /** Tedavi gövdelerinin orta dönüşüm molası (ReadingCta — DSN-70). */
+    treatmentMidCta?: LocalizedPair;
+    /** Şube listeleme satırlarındaki detay bağlantısı (DSN-71). */
+    branchDetailLink?: LocalizedPair;
   } | null;
   /** Header Tedaviler menüsünün grupları — sırayla mega panel sütunlarına düşer. */
   navMenu?: Array<{

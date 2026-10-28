@@ -149,9 +149,20 @@ export const homePage = defineType({
     defineField({
       name: "gallery",
       title: "Fotoğraf galerisi",
+      description:
+        "Galeri sayfasının tamamı — en fazla 24 foto. Ana sayfada yalnız seçki varsa seçki, yoksa ilk 5'i görünür.",
       type: "array",
       of: [{ type: "imageWithAlt" }],
       validation: (rule) => rule.max(24),
+    }),
+    defineField({
+      name: "homeGallery",
+      title: "Ana sayfa galeri seçkisi",
+      description:
+        "Ana sayfadaki galeri bölümünde görünecek en fazla 5 fotoğraf (ilki büyük kare olur). Boşsa 'Fotoğraf galerisi'nin ilk 5'i kullanılır.",
+      type: "array",
+      of: [{ type: "imageWithAlt" }],
+      validation: (rule) => rule.max(5),
     }),
     defineField({
       name: "onceSonraGallery",

@@ -26,6 +26,8 @@ export const branchBySlugQuery = defineQuery(
     mapUrl,
     geo,
     image { "ref": asset._ref, alt },
+    // DSN-73: galeri referansları — []-> öğe başına deref (bkz. misc.ts).
+    "gallery": gallery[]->{ "ref": photo.asset._ref, "alt": photo.alt, "lqip": photo.asset->metadata.lqip, "category": category },
     seo
   }`,
 );
@@ -56,6 +58,7 @@ export const homePageQuery = defineQuery(`*[_type == "homePage"][0]{
   about { ..., image { ..., alt, "lqip": asset->metadata.lqip } },
   stats,
   gallery[]{ "asset": { "_ref": asset._ref }, "alt": alt, "lqip": asset->metadata.lqip },
+  homeGallery[]{ "asset": { "_ref": asset._ref }, "alt": alt, "lqip": asset->metadata.lqip },
   onceSonraGallery[]{ "asset": { "_ref": asset._ref }, "alt": alt, "lqip": asset->metadata.lqip },
   // DSN-56: [@.hidden != true] — dizi öğesinde hidden unset/false ise geçer.
   onceSonraCases[@.hidden != true]{

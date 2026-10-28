@@ -15,14 +15,17 @@
 // mobile disclosure) costs ~0.3KB of chrome. DSN-63 moved it to 206KB: the
 // review-form section's server chrome (steps list, #review anchor card,
 // hero WhatsApp CTA branch) — the form's RHF+zod chunk itself is dynamically
-// imported and stays OUT of the initial script set (~100KB). The real
+// imported and stays OUT of the initial script set (~100KB). DSN-68 moved it
+// to 207KB: the gallery lightbox v2 client surface (stage arrows, counter,
+// caption bar, swipe/keyboard handlers) costs ~0.9KB on the home page, where
+// the lightbox chunk is initial. The real
 // user-facing gate stays the CI Lighthouse perf budget; this line still
 // fails on genuine regressions.
 import { readFileSync } from "node:fs";
 import { gzipSync } from "node:zlib";
 import { join } from "node:path";
 
-const BUDGET_KB = Number(process.env.BUDGET_KB ?? 206);
+const BUDGET_KB = Number(process.env.BUDGET_KB ?? 207);
 const ROUTE_HTML = join(process.cwd(), "out", process.env.BUNDLE_HTML ?? "index.html");
 
 const html = readFileSync(ROUTE_HTML, "utf8");

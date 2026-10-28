@@ -34,6 +34,7 @@ const ALLOWED = new Set(
     "components/CallbackForm.tsx",
     "components/review-form-loader.tsx",
     "components/lightbox.tsx",
+    "components/branch-gallery.tsx",
     "components/before-after-slider.tsx",
     "components/sections/doctors.tsx",
     "components/sections/quick-services.tsx",
