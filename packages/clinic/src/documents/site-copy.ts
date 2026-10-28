@@ -137,6 +137,11 @@ export const siteCopy = defineType({
           type: "localeText",
         },
         { name: "onceSonraHeading", title: "Önce/Sonra başlığı (ana sayfa)", type: "localeText" },
+        {
+          name: "blogFeatured",
+          title: "Blog vitrin üst etiketi (/blog)",
+          type: "localeText",
+        },
       ],
     }),
     defineField({
@@ -192,14 +197,19 @@ export const siteCopy = defineType({
           name: "treatmentMidCta",
           title: "Tedavi gövdesi orta molası",
           type: "localeText",
-          description:
-            "Uzun tedavi metinlerinin ortasındaki randevu kartının metni (ReadingCta).",
+          description: "Uzun tedavi metinlerinin ortasındaki randevu kartının metni (ReadingCta).",
         },
         {
           name: "branchDetailLink",
           title: "Şube detay bağlantısı",
           type: "localeText",
           description: "Şube listeleme satırlarındaki detay bağlantısı metni.",
+        },
+        {
+          name: "blogReadCta",
+          title: "Blog okuma bağlantısı",
+          type: "localeText",
+          description: "Blog vitrin ve kartlarındaki okuma bağlantısı metni.",
         },
       ],
     }),

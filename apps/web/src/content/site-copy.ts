@@ -54,6 +54,7 @@ export interface SiteCopy {
     resultsVaryNote?: LocalizedPair;
     onceSonraEyebrow?: LocalizedPair;
     onceSonraHeading?: LocalizedPair;
+    blogFeatured?: LocalizedPair;
   } | null;
   /** DSN-47: ana sayfa SSS bölümü — eyebrow, destek metni ve CTA. */
   faq?: {
@@ -77,6 +78,8 @@ export interface SiteCopy {
     onceSonraAfter?: LocalizedPair;
     /** Header mega menüsünün "tümünü gör" bağlantısı. */
     menuAllLink?: LocalizedPair;
+    /** Blog kart/vitrin okuma bağlantısı (DSN-72 — "Oku →" hardcoded'inin yerine). */
+    blogReadCta?: LocalizedPair;
     /** Dönüşüm bandının randevu butonu (CtaBand — DSN-68). */
     appointmentCta?: LocalizedPair;
     /** Tedavi gövdelerinin orta dönüşüm molası (ReadingCta — DSN-70). */
