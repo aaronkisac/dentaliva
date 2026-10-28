@@ -18,12 +18,18 @@ export function OnceSonraSection({
   heading,
   beforeLabel,
   afterLabel,
+  resultsNote,
 }: {
   items: BeforeAfterCase[];
   eyebrow?: string;
   heading?: string;
   beforeLabel?: string;
   afterLabel?: string;
+  /**
+   * DSN-67: TR yönetmeliği (12 Kasım 2025) sonuç notu — "sonuçlar kişiden
+   * kişiye değişir" uyarısı. siteCopy'den; copy yoksa satır basılmaz.
+   */
+  resultsNote?: string;
 }) {
   const cards = items.filter((item) => item.before?.ref && item.after?.ref);
   if (cards.length === 0) return null;
@@ -98,6 +104,7 @@ export function OnceSonraSection({
           );
         })}
       </div>
+      {resultsNote ? <p className="mt-6 font-sans text-sm text-ink/60">{resultsNote}</p> : null}
     </Section>
   );
 }

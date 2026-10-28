@@ -19,6 +19,7 @@ import { ReviewFormSection } from "./review-form";
 import { HowItWorksSection } from "./how-it-works";
 import { DecisionModulesSection } from "./decision-modules";
 import { AftercareSection, TravelStaySection } from "./travel-aftercare";
+import { ClinicsSection } from "./clinics";
 import { t } from "../../src/i18n";
 import { routes } from "../../src/routes";
 
@@ -115,6 +116,15 @@ export const sectionRegistry: Record<HomeSectionId, SectionRenderer> = {
         heading={t(data.siteCopy?.sectionHeadings?.reviews)}
       />,
     ),
+  clinics: (data) =>
+    reveal(
+      <ClinicsSection
+        branches={data.branches}
+        eyebrow={t(data.siteCopy?.sectionHeadings?.clinicsEyebrow)}
+        heading={t(data.siteCopy?.sectionHeadings?.clinicsHeading)}
+        intro={t(data.siteCopy?.sectionHeadings?.clinicsIntro)}
+      />,
+    ),
   gallery: (data) =>
     reveal(
       <GallerySection
@@ -139,6 +149,7 @@ export const sectionRegistry: Record<HomeSectionId, SectionRenderer> = {
         heading={t(data.siteCopy?.sectionHeadings?.onceSonraHeading)}
         beforeLabel={t(data.siteCopy?.ui?.onceSonraBefore)}
         afterLabel={t(data.siteCopy?.ui?.onceSonraAfter)}
+        resultsNote={t(data.siteCopy?.sectionHeadings?.resultsVaryNote)}
       />,
     ),
   doctors: (data) =>

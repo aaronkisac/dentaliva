@@ -16,13 +16,25 @@ pnpm lint && pnpm typecheck && pnpm test && pnpm build
 git add -A && git commit -m "feat(web): < lowercase summary > (EPIC-n)\n\nCloses #<n>"
 git push -u origin feat/<issue>-<slug>
 gh pr create --title "..." --body "... **Closes #<n>**"
-node scripts/merge-pr.mjs feat/<issue>-<slug> <issue>   # CI green olmadan merge ETMEZ
+node scripts/merge-pr.mjs feat/<issue>-<slug> <issue>   # conflict + güncellik + yeşil CI olmadan merge ETMEZ
 node scripts/board-status.mjs <issue> Done
 git checkout main && git pull --ff-only
 ```
 
 ## Kurallar
 
+- **Merge yalnız `node scripts/merge-pr.mjs <dal-veya-PR> <issue>` üzerinden** (Aaron,
+  2026-10-28: "merge öncesi conflict kontrolü"). Script yeşil-CI beklemeden ÖNCE üç
+  kapı çalıştırır: (1) GitHub `mergeable = MERGEABLE`; (2) `git merge-tree
+  --write-tree` ile bellek-içi gerçek merge denemesi — çakışma varsa dosya
+  listesiyle REFUSE; (3) merge-base kontrolü — dal origin/main'in gerisindeyse
+  REFUSE (main'i dala merge et + push + CI rerun, sonra tekrar dene). GitHub
+  mergeable bayrağı tek başına yetmez: eski base'e karşı yeşil CI'lı PR merge
+  sonrası main'i kırmıştı (DSN-57), main tabanlı bir dalın staging deploy'u
+  kardeş PR'ın staging'ini ezmişti (#337 blog, #335 hekimler vitrini). Not:
+  private repo + GitHub Free'de branch protection YOK (`protect-main.mjs` 403) —
+  kapıyı bu script zorlar. `--delete-branch` opt-in'dir; worktree'den merge'de
+  KULLANMA (checkout'lu dalı silip worktree kaydını bozar).
 - **Conventional Commits**; subject **lowercase** başlar (commitlint
   `subject-case` sentence-case'i reddeder — "feat(web): lighthouse gate ✓",
   "feat(web): Lighthouse gate ✗").

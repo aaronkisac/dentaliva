@@ -419,6 +419,7 @@ export const homePage = defineType({
           { title: "Tedavi yolları", value: "treatmentPaths" },
           { title: "Video yorumlar", value: "videoTestimonials" },
           { title: "Hasta yorumları", value: "reviews" },
+          { title: "Üç klinik", value: "clinics" },
           { title: "Fotoğraf galerisi", value: "gallery" },
           { title: "Önce/Sonra vakalar", value: "onceSonra" },
           { title: "Ekip", value: "doctors" },
