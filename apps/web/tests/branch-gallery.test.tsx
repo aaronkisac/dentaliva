@@ -16,9 +16,7 @@ const photo = (n: number) => ({
 });
 
 const render = (photos: Parameters<typeof BranchGallery>[0]["photos"]) =>
-  renderToStaticMarkup(
-    <BranchGallery name="Altunizade" photos={photos} closeLabel="Kapat" />,
-  );
+  renderToStaticMarkup(<BranchGallery name="Altunizade" photos={photos} closeLabel="Kapat" />);
 
 describe("BranchGallery (DSN-72)", () => {
   it("renders a single 4/3 tile for one photo", () => {
@@ -36,13 +34,34 @@ describe("BranchGallery (DSN-72)", () => {
 
   it("drops ref-less entries and renders nothing without photos", () => {
     expect(render([{ alt: { tr: "bozuk" } }])).toBe("");
-    expect(render([{ ref: "image-a-800x600-jpg" }, {}]).match(/image-a-800x600-jpg/g)?.length)
-      .toBeGreaterThan(0);
+    expect(
+      render([{ ref: "image-a-800x600-jpg" }, {}]).match(/image-a-800x600-jpg/g)?.length,
+    ).toBeGreaterThan(0);
   });
 
   it("carries the branch name as the dialog label and alt fallback", () => {
     const html = render([photo(1)]);
     expect(html).toContain('aria-label="Altunizade"');
     expect(html).toContain("Şube foto 1");
+  });
+});
+
+describe("BranchGallery 4-up + more badge (DSN-75)", () => {
+  it("renders four uniform squares without a wide tile", () => {
+    const html = render([photo(1), photo(2), photo(3), photo(4)]);
+    expect(html.match(/aspect-square/g)?.length).toBe(4);
+    expect(html).not.toContain("col-span-2");
+  });
+
+  it("counts overflow on the fourth tile as a +N badge with a spoken label", () => {
+    const html = render([photo(1), photo(2), photo(3), photo(4), photo(5)]);
+    expect(html).toContain("+1");
+    expect(html).toContain("+1 — galeriyi aç");
+    expect(html.match(/aspect-square/g)?.length).toBe(4);
+  });
+
+  it("renders the centered dialog (m-auto survives preflight margin reset)", () => {
+    const html = render([photo(1), photo(2), photo(3), photo(4)]);
+    expect(/<dialog[^>]*class="[^"]*m-auto/.test(html)).toBe(true);
   });
 });
