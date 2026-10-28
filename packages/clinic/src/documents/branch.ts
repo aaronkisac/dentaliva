@@ -36,6 +36,16 @@ export const branch = defineType({
     defineField({ name: "hours", title: "Çalışma saatleri", type: "localeText" }),
     defineField({ name: "mapUrl", title: "Google Maps bağlantısı", type: "url" }),
     defineField({
+      name: "mapEmbedUrl",
+      title: "Harita gömme bağlantısı",
+      description:
+        "Sayfa içi iframe için (orijinal sitedeki maps.google.com embed'i); boşsa koordinat embed'i kullanılır.",
+      type: "url",
+    }),
+    // DSN-77: orijinal şube sayfalarındaki uzun gövde metinleri (blog
+    // deseninde yerelleştirilmiş portable text; boşsa bölüm render edilmez).
+    defineField({ name: "body", title: "Şube metni", type: "localeBlockContent" }),
+    defineField({
       name: "geo",
       title: "Konum",
       type: "object",
