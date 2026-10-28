@@ -47,6 +47,7 @@ export const site = {
       "travelStay",
       "aftercare",
       "reviews",
+      "clinics",
       "gallery",
       "doctors",
       "faq",

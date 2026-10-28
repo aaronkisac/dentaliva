@@ -12,7 +12,7 @@ export default [
     rules: { "no-console": "off" },
   },
   {
-    files: ["components/lightbox.tsx"],
+    files: ["components/lightbox.tsx", "components/branch-gallery.tsx"],
     rules: {
       "jsx-a11y/no-noninteractive-element-interactions": "off",
       "jsx-a11y/click-events-have-key-events": "off",

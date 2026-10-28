@@ -11,6 +11,7 @@ import {
 } from "@dentaliva/sanity-schema/queries";
 
 import { fetchSiteCopy, type SiteCopy } from "./site-copy";
+import { fetchBranches, type BranchItem } from "./branches";
 
 export interface LocalizedPair {
   tr?: string;
@@ -94,6 +95,8 @@ export interface HomePageContent {
   };
   stats?: Array<{ value?: string; label?: LocalizedPair }>;
   gallery?: GalleryImage[];
+  /** DSN-68: ana sayfa seçkisi — doluysa ana sayfa galerisi bunu basar (max 5). */
+  homeGallery?: GalleryImage[];
   /** DSN-29: hasta izinli önce/sonra görselleri — dolunca galeri sekmesi açılır. */
   onceSonraGallery?: GalleryImage[];
   /** DSN-50: anasayfa önce/sonra karşılaştırma kartları — boşken bölüm render edilmez. */
@@ -185,6 +188,8 @@ export interface HomeData {
   siteSettings: SiteSettingsLite | null;
   /** DSN-44: arayüz metinleri singleton'u — bölümler copy'sizse render etmez. */
   siteCopy: SiteCopy | null;
+  /** DSN-67: üç klinik bölümü — şube dokümanları (boşsa bölüm render edilmez). */
+  branches: BranchItem[];
 }
 
 async function fetchJson<T>(client: SanityClient, query: string): Promise<T> {
@@ -218,7 +223,7 @@ export const fetchHomePageDocument = cache(
 );
 
 export async function fetchHomeData(client: SanityClient): Promise<HomeData> {
-  const [homePage, quickServices, doctors, faqs, testimonials, siteSettings, siteCopy] =
+  const [homePage, quickServices, doctors, faqs, testimonials, siteSettings, siteCopy, branches] =
     await Promise.all([
       fetchHomePageDocument(client),
       fetchJson<QuickServiceItem[]>(client, treatmentListQuery),
@@ -227,6 +232,7 @@ export async function fetchHomeData(client: SanityClient): Promise<HomeData> {
       fetchJson<TestimonialItem[]>(client, testimonialListQuery),
       fetchSiteSettings(client),
       fetchSiteCopy(client),
+      fetchBranches(client),
     ]);
   // DSN-9: authored quickServiceLinks override the full treatment list;
   // unauthored (fresh template) falls back to every treatment. GROQ returns
@@ -243,5 +249,6 @@ export async function fetchHomeData(client: SanityClient): Promise<HomeData> {
     testimonials: testimonials ?? [],
     siteSettings: siteSettings ?? null,
     siteCopy: siteCopy ?? null,
+    branches: branches ?? [],
   };
 }

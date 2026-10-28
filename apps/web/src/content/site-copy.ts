@@ -26,6 +26,12 @@ export interface SiteCopy {
     galleryPage?: LocalizedPair;
     galleryHome?: LocalizedPair;
     galleryEmpty?: LocalizedPair;
+    doctorsLead?: LocalizedPair;
+    /** Şubelerimiz sayfası hero açıklaması (DSN-71). */
+    branchesLead?: LocalizedPair;
+    galleryEyebrow?: LocalizedPair;
+    galleryLead?: LocalizedPair;
+    allGalleryCta?: LocalizedPair;
     servicesEyebrow?: LocalizedPair;
     servicesHeading?: LocalizedPair;
     allServicesCta?: LocalizedPair;
@@ -42,6 +48,10 @@ export interface SiteCopy {
     aftercareHeading?: LocalizedPair;
     aftercareNormalTitle?: LocalizedPair;
     aftercareUrgentTitle?: LocalizedPair;
+    clinicsEyebrow?: LocalizedPair;
+    clinicsHeading?: LocalizedPair;
+    clinicsIntro?: LocalizedPair;
+    resultsVaryNote?: LocalizedPair;
     onceSonraEyebrow?: LocalizedPair;
     onceSonraHeading?: LocalizedPair;
     blogFeatured?: LocalizedPair;
@@ -70,6 +80,12 @@ export interface SiteCopy {
     menuAllLink?: LocalizedPair;
     /** Blog kart/vitrin okuma bağlantısı (DSN-72 — "Oku →" hardcoded'inin yerine). */
     blogReadCta?: LocalizedPair;
+    /** Dönüşüm bandının randevu butonu (CtaBand — DSN-68). */
+    appointmentCta?: LocalizedPair;
+    /** Tedavi gövdelerinin orta dönüşüm molası (ReadingCta — DSN-70). */
+    treatmentMidCta?: LocalizedPair;
+    /** Şube listeleme satırlarındaki detay bağlantısı (DSN-71). */
+    branchDetailLink?: LocalizedPair;
   } | null;
   /** Header Tedaviler menüsünün grupları — sırayla mega panel sütunlarına düşer. */
   navMenu?: Array<{

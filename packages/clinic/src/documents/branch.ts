@@ -45,6 +45,15 @@ export const branch = defineType({
       ],
     }),
     defineField({ name: "image", title: "Görsel", type: "imageWithAlt" }),
+    defineField({
+      name: "gallery",
+      title: "Şube foto galerisi",
+      description:
+        "Klinik Fotoğrafları kütüphanesinden seçilir (kategoriyle girilir; ilk 3 fotoğraf listelemede görünür, boşsa yukarıdaki Görsel kullanılır).",
+      type: "array",
+      of: [{ type: "reference", to: [{ type: "clinicPhoto" }] }],
+      validation: (rule) => rule.max(8),
+    }),
     defineField({ name: "seo", title: "SEO", type: "seo" }),
   ],
   preview: { select: { title: "name", subtitle: "address.tr", media: "image" } },

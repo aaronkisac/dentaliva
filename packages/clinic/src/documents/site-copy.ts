@@ -26,6 +26,7 @@ export const siteCopy = defineType({
       type: "object",
       fields: [
         { name: "relatedDoctors", title: "İlgili hekimler", type: "localeText" },
+        { name: "doctorsLead", title: "Hekimlerimiz sayfası açıklaması", type: "localeText" },
         { name: "reviews", title: "Hasta yorumları (ana sayfa)", type: "localeText" },
         { name: "videoReviews", title: "Hasta videoları (ana sayfa)", type: "localeText" },
         { name: "faq", title: "Sıkça sorulan sorular", type: "localeText" },
@@ -38,6 +39,18 @@ export const siteCopy = defineType({
         { name: "galleryPage", title: "Galeri sayfası başlığı", type: "localeText" },
         { name: "galleryHome", title: "Ana sayfa galeri başlığı", type: "localeText" },
         { name: "galleryEmpty", title: "Galeri boş durumu", type: "localeText" },
+        { name: "galleryEyebrow", title: "Galeri üst etiketi", type: "localeText" },
+        { name: "galleryLead", title: "Galeri açıklaması", type: "localeText" },
+        {
+          name: "allGalleryCta",
+          title: "Tüm fotoğraflar bağlantısı (ana sayfa)",
+          type: "localeText",
+        },
+        {
+          name: "branchesLead",
+          title: "Şubelerimiz sayfası açıklaması",
+          type: "localeText",
+        },
         {
           name: "servicesEyebrow",
           title: "Hizmetlerimiz üst etiketi (ana sayfa)",
@@ -107,6 +120,18 @@ export const siteCopy = defineType({
           type: "localeText",
         },
         {
+          name: "clinicsEyebrow",
+          title: "Üç klinik üst etiketi (ana sayfa)",
+          type: "localeText",
+        },
+        { name: "clinicsHeading", title: "Üç klinik başlığı (ana sayfa)", type: "localeText" },
+        { name: "clinicsIntro", title: "Üç klinik giriş metni (ana sayfa)", type: "localeText" },
+        {
+          name: "resultsVaryNote",
+          title: "Önce/sonra sonuç notu (ana sayfa)",
+          type: "localeText",
+        },
+        {
           name: "onceSonraEyebrow",
           title: "Önce/Sonra üst etiketi (ana sayfa)",
           type: "localeText",
@@ -161,6 +186,24 @@ export const siteCopy = defineType({
           title: "Menü 'tümünü gör' bağlantısı",
           type: "localeText",
           description: "Tedaviler açılır menüsünün altındaki liste sayfası bağlantısı.",
+        },
+        {
+          name: "appointmentCta",
+          title: "Randevu butonu (dönüşüm bandı)",
+          type: "localeText",
+          description: "İç sayfa sonlarındaki bandın randevu butonu metni.",
+        },
+        {
+          name: "treatmentMidCta",
+          title: "Tedavi gövdesi orta molası",
+          type: "localeText",
+          description: "Uzun tedavi metinlerinin ortasındaki randevu kartının metni (ReadingCta).",
+        },
+        {
+          name: "branchDetailLink",
+          title: "Şube detay bağlantısı",
+          type: "localeText",
+          description: "Şube listeleme satırlarındaki detay bağlantısı metni.",
         },
       ],
     }),

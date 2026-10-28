@@ -14,6 +14,9 @@ export interface BranchItem {
   mapUrl?: string;
   geo?: { lat?: number; lng?: number };
   image?: { ref?: string; alt?: LocalizedPair; lqip?: string };
+  /** DSN-72/73: şube foto galerisi — Klinik Fotoğrafları referanslarının
+      deref edilmiş hâli (category kütüphane etiketi); boşken image fallback. */
+  gallery?: Array<{ ref?: string; alt?: LocalizedPair; lqip?: string; category?: string }>;
   seo?: SeoObject | null;
 }
 
@@ -27,7 +30,7 @@ export async function fetchBranches(client: SanityClient): Promise<BranchItem[]>
   return list ?? [];
 }
 
-/** PRF-5: tek doküman sorgusu + render-pass dedupe — tüm listeyi çekmez. */
+/** PRF-5: tek dokÃ¼man sorgusu + render-pass dedupe â tÃ¼m listeyi Ã§ekmez. */
 export const fetchBranchBySlug = cache(
   async (client: SanityClient, slug: string): Promise<BranchItem | null> => {
     const result: unknown = await client.fetch(branchBySlugQuery, { slug });

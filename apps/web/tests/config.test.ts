@@ -89,6 +89,7 @@ describe("site config (PGT-1)", () => {
       "travelStay",
       "aftercare",
       "reviews",
+      "clinics",
       "gallery",
       "doctors",
       "faq",
