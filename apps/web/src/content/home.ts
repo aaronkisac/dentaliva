@@ -66,7 +66,15 @@ interface HomeImage {
 }
 
 export interface HomePageContent {
-  hero?: { headline?: LocalizedPair; subline?: LocalizedPair; image?: HomeImage };
+  /** DSN-84: eyebrow/body/sideImages additive — boşken v1 davranışı korunur. */
+  hero?: {
+    eyebrow?: LocalizedPair;
+    headline?: LocalizedPair;
+    subline?: LocalizedPair;
+    body?: LocalizedPair;
+    image?: HomeImage;
+    sideImages?: Array<{ ref?: string; alt?: LocalizedPair; lqip?: string }>;
+  };
   quickServiceLinks?: QuickServiceItem[];
   /** DSN-61: hero altı kompakt güven bandı — veri yoksa bölüm render edilmez. */
   trustStrip?: TrustStripData;
@@ -79,7 +87,7 @@ export interface HomePageContent {
   /** DSN-65: karar modülleri — GROQ hidden filtresi uygulanmış halde gelir. */
   decisionModules?: DecisionModule[];
   /** DSN-66: seyahat planlama check-listi — boşken bölüm render edilmez. */
-  travelStay?: { checklist?: LocalizedPair[] };
+  travelStay?: { checklist?: LocalizedPair[]; image?: HomeImage };
   /** DSN-66: aftercare belirtileri + iletişim notu — boşken render edilmez. */
   aftercare?: {
     normal?: LocalizedPair[];
@@ -126,6 +134,9 @@ export interface HomeTeamSection {
   eyebrow?: LocalizedPair;
   heading?: LocalizedPair;
   text?: LocalizedPair;
+  /** DSN-84: doküman #14 vitrin seçkisi — boşsa hekim listesinin ilk 4'ü. */
+  doctors?: DoctorItem[];
+  ctaLabel?: LocalizedPair;
 }
 
 /** DSN-61: güven şeridi hücreleri — puan rozeti + en fazla 3 gösterge. */
@@ -176,6 +187,8 @@ export interface BeforeAfterCase {
   after?: BeforeAfterImage;
   title?: LocalizedPair;
   text?: LocalizedPair;
+  /** DSN-84: doküman #04 vaka künyesi — boşken kartta basılmaz. */
+  meta?: LocalizedPair;
   treatment?: { name?: LocalizedPair; slug?: string };
 }
 

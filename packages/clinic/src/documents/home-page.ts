@@ -11,9 +11,21 @@ export const homePage = defineType({
       title: "Hero",
       type: "object",
       fields: [
+        // DSN-84: doküman #01 — split hero copy bloğu.
+        { name: "eyebrow", title: "Üst etiket", type: "localeString" },
         { name: "headline", title: "Başlık", type: "localeString" },
         { name: "subline", title: "Alt başlık", type: "localeText" },
+        { name: "body", title: "Gövde metni", type: "localeText" },
         { name: "image", type: "imageWithAlt" },
+        {
+          // DSN-84: doküman #01 — sağdaki klinik/planlama fotoğraf dizisi.
+          // Boşken bölüm tam-bleed tek fotoğraf davranışına döner.
+          name: "sideImages",
+          title: "Sağ kart görselleri (0-2)",
+          type: "array",
+          validation: (rule) => rule.max(2),
+          of: [{ type: "imageWithAlt" }],
+        },
       ],
     }),
     defineField({
@@ -189,6 +201,13 @@ export const homePage = defineType({
             { name: "title", title: "Başlık", type: "localeString" },
             { name: "text", title: "Açıklama", type: "localeText" },
             {
+              // DSN-84: doküman #04 — vaka künyesi (tedavi · hekim · şube ·
+              // tarih). Tek satır; boşken kartta basılmaz.
+              name: "meta",
+              title: "Vaka künyesi (tek satır)",
+              type: "localeString",
+            },
+            {
               name: "treatment",
               title: "İlgili hizmet",
               type: "reference",
@@ -239,6 +258,21 @@ export const homePage = defineType({
         { name: "eyebrow", type: "localeString" },
         { name: "heading", type: "localeString" },
         { name: "text", type: "localeText" },
+        {
+          // DSN-84: doküman #14 — vitrine çıkacak 3-4 hekim seçkisi.
+          // Boşsa hekim listesinin ilk 4'ü basılır.
+          name: "doctors",
+          title: "Vitrin hekimleri (en fazla 4)",
+          type: "array",
+          validation: (rule) => rule.max(4),
+          of: [{ type: "reference", to: [{ type: "doctor" }] }],
+        },
+        {
+          // DSN-84: doküman #14 CTA — "Ekibimizle Tanışın" (hekimler sayfası).
+          name: "ctaLabel",
+          title: "CTA etiketi",
+          type: "localeString",
+        },
       ],
     }),
     defineField({
@@ -256,6 +290,8 @@ export const homePage = defineType({
           validation: (rule) => rule.max(8),
           of: [{ type: "localeText" }],
         },
+        // DSN-84: doküman #10 — görsel (harita/klinik/İstanbul); data-gated.
+        { name: "image", title: "Görsel", type: "imageWithAlt" },
       ],
     }),
     defineField({

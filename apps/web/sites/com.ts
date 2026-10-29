@@ -31,16 +31,15 @@ export const site = {
     blog: true,
   },
   sections: {
-    // DSN-61: funnel strategy order — existing sections move to their final
-    // positions; new sections (treatmentPaths, reviewForm, …) are inserted by
-    // later waves between these slots.
+    // DSN-84: funnel dokümanı sırası — 16 bölüm birebir. ticker/about/
+    // quickServices/gallery dokümanda yok; com'dan çıkar (bileşenler ve
+    // eu/nl config'leri korunur). videoTestimonials/reviews CMS
+    // hiddenSections ile gizli (TR uyum); dizide kalırlar. v1 sırası:
+    // git tag homepage-v1.
     home: [
       "hero",
-      "ticker",
       "trustStrip",
-      "about",
       "treatmentPaths",
-      "quickServices",
       "onceSonra",
       "videoTestimonials",
       "reviewForm",
@@ -50,10 +49,9 @@ export const site = {
       "aftercare",
       "reviews",
       "clinics",
-      "gallery",
       "doctors",
-      "faq",
       "cta",
+      "faq",
     ],
   },
 } as const satisfies SiteConfig;
