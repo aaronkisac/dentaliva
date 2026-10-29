@@ -47,10 +47,10 @@ describe("PageHero (DSN-25)", () => {
   });
 });
 
-describe("PageHero media (DSN-83 v3 — duo hero)", () => {
+describe("PageHero media (DSN-83 v4 — flama arka planı)", () => {
   const media = { ref: `image-${"b".repeat(40)}-1080x1080-webp`, alt: "Klinik" };
 
-  it("renders the duo grid: text column left, gold-framed portrait right", () => {
+  it("renders the photo as a right-anchored background blending into navy", () => {
     const html = render({
       eyebrow: "Tedavilerimiz",
       eyebrowHref: "/hizmetlerimiz",
@@ -58,25 +58,22 @@ describe("PageHero media (DSN-83 v3 — duo hero)", () => {
       lead: "Diş eti sağlığı.",
       media,
     });
-    expect(html).toContain("lg:grid-cols-12");
-    expect(html).toContain("lg:col-span-7");
-    expect(html).toContain("lg:col-span-5");
-    expect(html).toContain("aspect-[3/4]");
-    expect(html).toContain("border-[var(--dvn-line-gold)]");
+    // Foto sağa yaslanmış, zemine geçişli karışıyor (gradient overlay).
+    expect(html).toContain("absolute inset-y-0 right-0");
+    expect(html).toContain("bg-gradient-to-r");
     expect(html).toContain(`src="${media.ref}"`);
-    expect(html).toContain('alt="Klinik"');
+    expect(html).toContain('alt=""'); // dekoratif arka plan
+    // Metin soldaki güvenli alanda; eski portre kartı kalktı.
+    expect(html).toContain("max-w-2xl");
     expect(html).toContain("Diş eti sağlığı.");
-  });
-
-  it("falls back to the treatment title as image alt when alt is empty", () => {
-    const html = render({ title: "Periodontoloji", media: { ref: media.ref } });
-    expect(html).toContain('alt="Periodontoloji"');
+    expect(html).not.toContain("aspect-[3/4]");
+    expect(html).not.toContain("lg:col-span-7");
   });
 
   it("keeps the single-column layout when no media is given (regression)", () => {
     const html = render({ eyebrow: "Tedavilerimiz", title: "Periodontoloji", lead: "x" });
-    expect(html).not.toContain("lg:grid-cols-12");
     expect(html).not.toContain("<figure");
+    expect(html).not.toContain("bg-gradient-to-r");
     expect(html).toContain("max-w-3xl");
   });
 });
