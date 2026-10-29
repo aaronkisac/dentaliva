@@ -23,8 +23,21 @@ export interface TreatmentStep {
   description?: LocalizedPair;
 }
 
+/** DSN-83: tedavi gövdesinin yapılandırılmış bölümü. */
+export interface TreatmentSection {
+  heading?: LocalizedPair;
+  lead?: LocalizedPair;
+  items?: Array<{ title?: LocalizedPair; text?: LocalizedPair }>;
+  image?: {
+    ref?: string;
+    lqip?: string;
+    alt?: LocalizedPair;
+  };
+}
+
 export interface TreatmentDetail extends TreatmentListItem {
   body?: LocalizedPair;
+  sections?: TreatmentSection[];
   benefits?: LocalizedPair[];
   steps?: TreatmentStep[];
   priceNote?: LocalizedPair;
