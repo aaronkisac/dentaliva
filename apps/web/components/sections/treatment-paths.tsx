@@ -11,13 +11,12 @@ import type { TreatmentPathItem } from "../../src/content/home";
 const ENV = imageTarget();
 
 /**
- * DSN-62: strateji dokümanı #03 TREATMENT PATHS — kullanıcının teknik menü
- * yerine İHTİYACINA göre kendini konumlandırması (self-segmentation).
- * Kartların tamamı ilgili tedavi sayfasına giden tek link; ihtiyaç cümlesi
- * kartta büyük, teknik terim (subline) ikinci satırda ince. Kompozisyon
- * CareNow'un "What You Can Do" bloğundan; kart dili bizim tokenlarımızla
- * (4px köşe, yumuşak çerçeve, hover'da lift). Başlık bloğu copy'sizse bölüm
- * render edilmez; kartın tedavi referansı yoksa link'siz article basılır.
+ * DSN-84: doküman #03 TREATMENT PATHS — ihtiyaç bazlı self-segmentasyon
+ * kartları, DSN-48 overlay kart diliyle (DentalX görsel-üstü kart, marka
+ * degradeleri): tam-kanat görsel + alttan navy degradeler, altın serif
+ * numara (01–04), ihtiyaç cümlesi beyaz serif büyük, teknik terim ikinci
+ * satır beyaz/75. Kartın tamamı link; görselsiz kart navy zeminde okunur.
+ * Başlık bloğu copy'sizse eyebrow/başlık basılmaz; veri yoksa bölüm yok.
  */
 export function TreatmentPathsSection({
   items,
@@ -30,7 +29,7 @@ export function TreatmentPathsSection({
 }) {
   if (items.length === 0) return null;
   return (
-    <Section className="bg-ivory">
+    <Section>
       {eyebrow ? (
         <div className="flex items-center gap-3">
           <span aria-hidden="true" className="h-px w-8 bg-gold" />
@@ -52,25 +51,43 @@ export function TreatmentPathsSection({
           const card = (
             <>
               {ref ? (
-                <div className="relative aspect-[4/3] overflow-hidden rounded-[4px] bg-navy">
-                  <Image
-                    src={ref}
-                    alt={t(item.image?.alt) || headline}
-                    fill
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                    placeholder="blur"
-                    blurDataURL={item.image?.lqip ?? lqipUrl(ref, ENV)}
-                    className="object-cover"
+                <>
+                  <div className="absolute inset-0">
+                    <Image
+                      src={ref}
+                      alt={t(item.image?.alt) || headline}
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                      placeholder="blur"
+                      blurDataURL={item.image?.lqip ?? lqipUrl(ref, ENV)}
+                      className="object-cover"
+                    />
+                  </div>
+                  {/* Kontrast garantisi: navy alt degrade (açık foto üstünde). */}
+                  <div
+                    aria-hidden="true"
+                    className="absolute inset-0 bg-gradient-to-t from-navy/95 via-navy/45 to-navy/10"
                   />
-                </div>
-              ) : null}
-              <h3 className="mt-4 font-serif text-xl leading-snug text-ink">{headline}</h3>
-              {subline ? <p className="mt-1 font-sans text-sm text-ink/70">{subline}</p> : null}
+                </>
+              ) : (
+                <div aria-hidden="true" className="absolute inset-0 bg-navy" />
+              )}
+              <div className="relative flex h-full flex-col justify-end p-5">
+                <span aria-hidden="true" className="font-serif text-sm text-gold-soft">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <h3 className="mt-2 font-serif text-xl leading-snug text-white">{headline}</h3>
+                {subline ? (
+                  <p className="mt-1 font-sans text-sm leading-relaxed text-white/75">{subline}</p>
+                ) : null}
+              </div>
             </>
           );
+          const frame =
+            "group relative block aspect-[4/5] overflow-hidden rounded-[4px] transition-shadow duration-300 hover:shadow-[var(--dvn-shadow-lift)]";
           if (!slug) {
             return (
-              <article key={`${headline}-${index}`} className="rounded-[4px]">
+              <article key={`${headline}-${index}`} className={frame}>
                 {card}
               </article>
             );
@@ -79,7 +96,7 @@ export function TreatmentPathsSection({
             <Link
               key={`${headline}-${index}`}
               href={routes.treatment(slug)}
-              className="group rounded-[4px] border border-transparent p-2 -m-2 hover:border-[var(--dvn-line-soft)] hover:bg-white hover:no-underline hover:shadow-[var(--dvn-shadow-lift)]"
+              className={frame + " hover:no-underline"}
             >
               {card}
             </Link>

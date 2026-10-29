@@ -36,7 +36,10 @@ export const branchBySlugQuery = defineQuery(
 );
 
 export const homePageQuery = defineQuery(`*[_type == "homePage"][0]{
-  hero { ..., image { ..., alt, "lqip": asset->metadata.lqip } },
+  hero { ..., image { ..., alt, "lqip": asset->metadata.lqip },
+    // DSN-84: sağ kart görselleri — boş dizi full-bleed fallback'e döner.
+    "sideImages": sideImages[]{ "ref": asset._ref, alt, "lqip": asset->metadata.lqip }
+  },
   quickServiceLinks[]->{ name, slug, summary, heroImage { "ref": asset._ref, alt, "lqip": asset->metadata.lqip } },
   trustStrip { rating, ratingLabel, items },
   treatmentPaths[]{
@@ -56,7 +59,7 @@ export const homePageQuery = defineQuery(`*[_type == "homePage"][0]{
     options[]{ title, text, treatment->{ name, "slug": slug.current } },
     ctaTreatment->{ name, "slug": slug.current }
   },
-  travelStay { checklist },
+  travelStay { checklist, image { "ref": asset._ref, alt, "lqip": asset->metadata.lqip } },
   aftercare { normal, urgent, contactNote },
   about { ..., image { ..., alt, "lqip": asset->metadata.lqip } },
   stats,
@@ -69,9 +72,14 @@ export const homePageQuery = defineQuery(`*[_type == "homePage"][0]{
     after { "ref": asset._ref, alt, "lqip": asset->metadata.lqip },
     title,
     text,
+    meta,
     treatment->{ name, "slug": slug.current }
   },
-  teamSection,
+  // DSN-84: vitrin hekimleri seçkisi — boşsa hekim listesinin ilk 4'ü.
+  teamSection {
+    eyebrow, heading, text, ctaLabel,
+    "doctors": doctors[]->{ name, "slug": slug.current, title, "photo": { "ref": photo.asset._ref, "alt": photo.alt }, "lqip": photo.asset->metadata.lqip }
+  },
   cta,
   hiddenSections
 }`);

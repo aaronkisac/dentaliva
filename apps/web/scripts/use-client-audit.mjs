@@ -20,7 +20,6 @@ const ROOTS = [join(process.cwd()), join(process.cwd(), "..", "..", "packages", 
  * - ui/accordion: disclosure state
  * - ui/reveal: IntersectionObserver + prefers-reduced-motion
  * - ui/use-focus-trap: client hook
- * - sections/doctors: carousel scroll state + entrance reveals
  * - sections/quick-services: carousel scroll state + arrow edge state (DSN-50)
  * - sections/testimonials: reviews carousel scroll/index state (DSN-52)
  * - app/error.tsx: Next error boundary — client zorunluluğu (reset state)
@@ -36,7 +35,6 @@ const ALLOWED = new Set(
     "components/lightbox.tsx",
     "components/branch-gallery.tsx",
     "components/before-after-slider.tsx",
-    "components/sections/doctors.tsx",
     "components/sections/quick-services.tsx",
     "components/use-track-carousel.ts",
     "components/carousel-track.tsx",

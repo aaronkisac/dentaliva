@@ -140,7 +140,7 @@ export function CtaSection({
           ) : null}
           {phone ? <p className="mt-2 font-sans text-sm text-white/60">{phone}</p> : null}
         </div>
-        <div className="rounded-[4px] bg-white p-6 md:p-8">
+        <div className="rounded-[4px] bg-white p-6 shadow-[var(--dvn-shadow-lift)] md:p-8">
           <ReviewFormLoader variant="compact" />
         </div>
       </div>

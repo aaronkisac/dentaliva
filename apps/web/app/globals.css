@@ -32,72 +32,8 @@
   }
 }
 
-@keyframes dvn-slide-next {
-  from {
-    opacity: 0.35;
-    transform: translateX(48px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-@keyframes dvn-slide-prev {
-  from {
-    opacity: 0.35;
-    transform: translateX(-48px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-.team-slide-next {
-  animation: dvn-slide-next 450ms var(--dvn-ease-out) both;
-}
-.team-slide-prev {
-  animation: dvn-slide-prev 450ms var(--dvn-ease-out) both;
-}
-/* DSN-20: büyük karta gelen görsel çerçevesi, gidiş yönünden küçük kart
-   boyutunda (~%50) başlayıp büyüyerek ve kayarak yerleşir; alt kenar
-   hizasına uygun olarak tabandan büyür. Sadece opacity/transform — LCP
-   güvenli. */
-@keyframes dvn-featured-next {
-  from {
-    opacity: 0.5;
-    transform: translateX(120px) scale(0.5);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-@keyframes dvn-featured-prev {
-  from {
-    opacity: 0.5;
-    transform: translateX(-120px) scale(0.5);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-.team-featured-next {
-  animation: dvn-featured-next 550ms var(--dvn-ease-out) both;
-  transform-origin: center bottom;
-}
-.team-featured-prev {
-  animation: dvn-featured-prev 550ms var(--dvn-ease-out) both;
-  transform-origin: center bottom;
-}
-@media (prefers-reduced-motion: reduce) {
-  .team-slide-next,
-  .team-slide-prev,
-  .team-featured-next,
-  .team-featured-prev {
-    animation: none;
-  }
-}
+/* DSN-84: DSN-18/19/20 ekip carousel'i emekli (server 4'lü kart grid'i);
+   team-slide/team-featured animasyonlarıyla birlikte kaldırıldı. */
 
 @keyframes dvn-hero-zoom {
   from {
