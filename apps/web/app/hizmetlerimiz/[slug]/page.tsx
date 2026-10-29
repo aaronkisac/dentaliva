@@ -114,6 +114,17 @@ export default async function TreatmentDetailPage({ params }: PageProps) {
         eyebrowHref={routes.treatments}
         title={name}
         lead={t(treatment.summary) ? t(treatment.summary) : null}
+        /* DSN-83 v3: kapak görseli varsa hero "duo" düzeninde açılır (giriş
+           metni solda, altın çerçeveli portre sağda) — yoksa tek kolon. */
+        media={
+          treatment.heroImage?.ref
+            ? {
+                ref: treatment.heroImage.ref,
+                alt: t(treatment.heroImage.alt),
+                lqip: treatment.heroImage.lqip,
+              }
+            : undefined
+        }
       />
 
       {/* DSN-83: yapılandırılmış bölüm akışı — doluysa düz metin kolonu ve
