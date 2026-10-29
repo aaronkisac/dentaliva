@@ -26,12 +26,15 @@ const token = typeof TOKEN === "string" ? TOKEN : TOKEN?.value;
 if (!token) throw new Error("no Sanity CLI session token");
 
 // Bölüm sırasına göre fotoğraf ataması (orijinal sayfadaki klinik fotoğrafları).
-// 5. bölüm (Genel Sağlık) metin-only — akış ReadingCta ile biter.
+// 5. bölüm (Genel Sağlık) v2'de tam kanat arka plan (showcase) — orijinal
+// sayfanın hero fotoğrafı dis-genel-012 kullanılır; heroImage alanındaki
+// görsel ayrıca liste kartı + og:image'i taşır.
 const SECTION_IMAGES = [
   { file: "dis-genel-004.webp", alt: "Dentaliva kliniğinde diş eti muayenesi" },
   { file: "dis-genel-001.webp", alt: "Dentaliva kliniği tedavi odası" },
   { file: "dis-genel-009.webp", alt: "Dentaliva kliniğinde ağız içi görüntüleme" },
   { file: "dis-genel-013.webp", alt: "Modern dental tedavi ünitesi" },
+  { file: "dis-genel-012.webp", alt: "Dentaliva kliniğinde periodontal tedavi" },
 ];
 const HERO = { file: "dis-genel-012.webp", alt: "Dentaliva kliniğinde periodontoloji tedavisi" };
 
@@ -168,8 +171,10 @@ async function main() {
   if (sections.length !== 5) throw new Error(`expected 5 sections, parsed ${sections.length}`);
 
   console.log(`=== ${APPLY ? "APPLY" : "DRY-RUN"} ===`);
+  // sections her koşuda yeniden yazılır (deterministik seed — Studio'daki elle
+  // düzenlemeler yeniden koşuda ezilir); heroImage yalnız boşken doldurulur.
   console.log(
-    `sections to set : ${treatment.hasSections ? 0 : sections.length}${treatment.hasSections ? " (already set — skip)" : ""}`,
+    `sections to set : ${sections.length}${treatment.hasSections ? " (re-set over existing)" : ""}`,
   );
   console.log(`heroImage       : ${treatment.hasHero ? "already set (skip)" : HERO.file}`);
   for (const [i, s] of sections.entries()) {
