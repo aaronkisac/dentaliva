@@ -9,7 +9,7 @@ import type { TreatmentSection } from "../src/content/treatments";
 
 const ENV = imageTarget();
 
-type Variant = "feature" | "duo" | "quad" | "interlude" | "showcase";
+type Variant = "feature" | "duo" | "quad" | "editorial" | "interlude" | "showcase";
 
 /**
  * DSN-83 (v2): tedavi gövdesi — her bölüm İÇERİK ŞEKLİNE GÖRE kendi
@@ -24,18 +24,23 @@ type Variant = "feature" | "duo" | "quad" | "interlude" | "showcase";
  *                           yanaşma, koyu zeminle bilinçli vurgu)
  *   1 madde    → showcase : tam kanat foto + navy scrim üzerine beyaz metin
  *                           (bölüm akışının dramatik kapanışı)
- *   madde yok  → interlude: ortalanmış dar kolon (max-w-2xl) + ortalanmış
- *                           altın çizgi — sessiz editoryal mola
+ *   madde yok, uzun metin (800+ karakter) → editorial: feature'ın maddesiz
+ *                           hali — sol hizalı okuma kolonu + foto bandı
+ *                           (ortalanmış kolon uzun metni taşırır, dalga 2)
+ *   madde yok, kısa metin → interlude: ortalanmış dar kolon (max-w-2xl) +
+ *                           ortalanmış altın çizgi — sessiz editoryal mola
  *
+ * Açık bantlar (feature/quad/editorial/interlude) bölüm sırasına göre
+ * beyaz/fildişi dönüşümlü ton alır; koyu bantlar (duo/showcase) sayılmaz.
  * Fotoğraf yoksa her varyant yalın düşer (duo/showcase navy bant olarak).
  * Başlıksız yarım CMS girişleri akışa girmez.
  */
-function variantOf(itemCount: number): Variant {
+function variantOf(itemCount: number, leadLength: number): Variant {
   if (itemCount === 4) return "quad";
   if (itemCount >= 3) return "feature";
   if (itemCount === 2) return "duo";
   if (itemCount === 1) return "showcase";
-  return "interlude";
+  return leadLength > 800 ? "editorial" : "interlude";
 }
 
 function SectionPhoto({
@@ -112,13 +117,18 @@ function SectionItems({
 
 export function TreatmentSections({ sections }: { sections: TreatmentSection[] }) {
   const visible = sections.filter((section) => t(section.heading));
+  // Açık bantların beyaz/fildişi dönüşümü (koyu bantlar sayılmaz).
+  let lightIndex = 0;
   return (
     <>
       {visible.map((section, index) => {
         const heading = t(section.heading);
         const lead = t(section.lead);
         const items = (section.items ?? []).filter((item) => t(item.title) || t(item.text));
-        const variant = variantOf(items.length);
+        const variant = variantOf(items.length, lead?.length ?? 0);
+        const light = variant !== "duo" && variant !== "showcase";
+        const lightTone = light && lightIndex % 2 === 0 ? "bg-white" : undefined;
+        if (light) lightIndex += 1;
         const key = `${heading}-${index}`;
 
         if (variant === "showcase") {
@@ -201,7 +211,7 @@ export function TreatmentSections({ sections }: { sections: TreatmentSection[] }
         if (variant === "quad") {
           return (
             <Reveal key={key}>
-              <Section>
+              <Section className={lightTone}>
                 <GoldRule />
                 <Heading level="h2" size="md" className="mt-4">
                   {heading}
@@ -244,7 +254,7 @@ export function TreatmentSections({ sections }: { sections: TreatmentSection[] }
         if (variant === "interlude") {
           return (
             <Reveal key={key}>
-              <Section className="bg-white">
+              <Section className={lightTone}>
                 <div className="mx-auto max-w-2xl text-center">
                   <GoldRule className="mx-auto" />
                   <Heading level="h2" size="md" className="mt-4">
@@ -263,10 +273,33 @@ export function TreatmentSections({ sections }: { sections: TreatmentSection[] }
           );
         }
 
+        if (variant === "editorial") {
+          // feature'ın maddesiz hali — uzun gövde metni sol hizalı okur.
+          return (
+            <Reveal key={key}>
+              <Section className={lightTone}>
+                <GoldRule />
+                <Heading level="h2" size="md" className="mt-4">
+                  {heading}
+                </Heading>
+                {lead ? (
+                  <Text className="mt-4 max-w-3xl leading-relaxed text-ink/85">{lead}</Text>
+                ) : null}
+                <SectionPhoto
+                  image={section.image}
+                  heading={heading}
+                  className="relative mt-10 aspect-[16/10] md:aspect-[16/7]"
+                  sizes="(max-width: 768px) 100vw, 1180px"
+                />
+              </Section>
+            </Reveal>
+          );
+        }
+
         // feature — uzun maddeler satırlarda okunur, foto altta sinematik bant.
         return (
           <Reveal key={key}>
-            <Section className="bg-white">
+            <Section className={lightTone}>
               <GoldRule />
               <Heading level="h2" size="md" className="mt-4">
                 {heading}

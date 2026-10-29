@@ -74,6 +74,29 @@ describe("TreatmentSections (DSN-83 v2 — kompozisyon varyantları)", () => {
     expect(html).toContain("mx-auto");
   });
 
+  it("madde yok + uzun metin (800+) → editorial: sol hizalı okuma kolonu, ortalanmış değil", () => {
+    const long = { tr: "uzun ".repeat(200).trim() };
+    const html = render([section({ lead: long, items: [] })]);
+    expect(html).toContain("max-w-3xl");
+    expect(html).not.toContain("text-center");
+    expect(html).toContain("leading-relaxed");
+  });
+
+  it("açık bantlar sırayla beyaz/fildişi dönüşür (koyu bant sayılmaz)", () => {
+    const html = render([
+      section({ heading: { tr: "B1" }, items: [item(1), item(2)] }),
+      section({ heading: { tr: "B2" }, items: [item(1), item(2), item(3)] }),
+      section({ heading: { tr: "B3" }, items: [item(1), item(2), item(3), item(4)] }),
+    ]);
+    const parts = html.split(/(?=<section)/);
+    const duoBand = parts.find((p) => p.includes("B1")) ?? "";
+    const featBand = parts.find((p) => p.includes("B2")) ?? "";
+    const quadBand = parts.find((p) => p.includes("B3")) ?? "";
+    expect(duoBand).toContain("bg-navy");
+    expect(featBand).toContain("bg-white");
+    expect(quadBand).not.toContain("bg-white");
+  });
+
   it("1 madde → showcase: tam kanat foto + navy scrim, metin üstte beyaz", () => {
     const html = render([
       section({ items: [item(1)], image: { ref: REF, alt: { tr: "Klinik" } } }),
