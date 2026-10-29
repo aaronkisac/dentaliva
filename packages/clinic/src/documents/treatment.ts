@@ -29,6 +29,43 @@ export const treatment = defineType({
     defineField({ name: "heroImage", title: "Kapak görseli", type: "imageWithAlt" }),
     defineField({ name: "body", title: "Açıklama", type: "localeText" }),
     defineField({
+      name: "sections",
+      title: "İçerik bölümleri",
+      description:
+        "Yapılandırılmış tedavi gövdesi (DSN-83): başlıklı bölümler, alt maddeler ve bölüm fotoğrafı. Doluysa 'Açıklama' düz metni sayfada kullanılmaz.",
+      type: "array",
+      of: [
+        {
+          type: "object",
+          name: "treatmentSection",
+          fields: [
+            { name: "heading", type: "localeString", title: "Bölüm başlığı" },
+            { name: "lead", type: "localeText", title: "Giriş metni" },
+            {
+              name: "items",
+              title: "Alt maddeler",
+              type: "array",
+              of: [
+                {
+                  type: "object",
+                  name: "treatmentSectionItem",
+                  fields: [
+                    { name: "title", type: "localeString", title: "Madde başlığı" },
+                    { name: "text", type: "localeText", title: "Madde metni" },
+                  ],
+                  preview: { select: { title: `title.${studioLocale}` } },
+                },
+              ],
+            },
+            { name: "image", type: "imageWithAlt", title: "Bölüm fotoğrafı" },
+          ],
+          preview: {
+            select: { title: `heading.${studioLocale}`, media: "image" },
+          },
+        },
+      ],
+    }),
+    defineField({
       name: "benefits",
       title: "Faydalar",
       type: "array",

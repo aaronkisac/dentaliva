@@ -18,6 +18,7 @@ import { fetchSiteCopy } from "../../../src/content/site-copy";
 import { readClient } from "../../../src/sanity";
 import { absoluteUrl, pageMetadata } from "../../../src/seo";
 import { SeedPlaceholder } from "../../../components/seed-placeholder";
+import { TreatmentSections } from "../../../components/treatment-sections";
 import { pageString } from "../../../src/page-strings";
 import { routes } from "../../../src/routes";
 
@@ -63,6 +64,12 @@ export default async function TreatmentDetailPage({ params }: PageProps) {
 
   const steps = treatment.steps ?? [];
   const name = t(treatment.name);
+  // DSN-83: yapılandırılmış gövde varsa düz metin kolonu basılmaz; başlıksız
+  // bölümler (yarım CMS girişi) akışa girmez.
+  const sections = (treatment.sections ?? []).filter((section) => t(section.heading));
+  const showLegacyBody = sections.length === 0;
+  const hasExtras =
+    (treatment.benefits ?? []).length > 0 || steps.length > 0 || Boolean(t(treatment.priceNote));
   // DSN-70: legacy düz metin gövde paragraflara bölünür; görsel ve dönüşüm
   // molası akışın ortasına yerleşir (hero'daki dev görsel bandı kalktı).
   const paragraphs = treatment.body ? splitBodyParagraphs(t(treatment.body)) : [];
@@ -109,129 +116,152 @@ export default async function TreatmentDetailPage({ params }: PageProps) {
         lead={t(treatment.summary) ? t(treatment.summary) : null}
       />
 
-      <Reveal>
-        <Section>
-          {/* DSN-70: okuma kolonu — ilk paragraf lead stili; görsel ve dönüşüm
+      {/* DSN-83: yapılandırılmış bölüm akışı — doluysa düz metin kolonu ve
+          ortadaki görsel/CTA molaları devre dışı (içerik bölümlere taşındı);
+          dönüşüm molası akışın sonunda tek kart olarak kalır. */}
+      {sections.length > 0 ? (
+        <>
+          <TreatmentSections sections={sections} />
+          {midCtaText || t(copy?.ui?.appointmentCta) ? (
+            <Section>
+              <ReadingCta
+                text={midCtaText}
+                phone={settings?.phone}
+                actionLabel={t(copy?.ui?.appointmentCta)}
+              />
+            </Section>
+          ) : null}
+        </>
+      ) : null}
+
+      {/* Sections'lu tedavide gövde kolonu basılmaz; fayda/adım/fiyat blokları
+          her iki modda da (veri-gated) kalır — sections'suz sayfalar için
+          çıktı DSN-70 düzeninden birebir aynıdır. */}
+      {showLegacyBody || hasExtras ? (
+        <Reveal>
+          <Section>
+            {/* DSN-70: okuma kolonu — ilk paragraf lead stili; görsel ve dönüşüm
               molası paragraf akışının içine yerleşir (hero'daki 1180px dev
               görsel bandı kalktı; LCP artık metin, preload gerekmez). */}
-          {paragraphs.length > 0 ? (
-            <div className="max-w-[680px]">
-              {paragraphs.map((paragraph, index) => (
-                <div key={index}>
-                  {imageAfter !== null && index === imageAfter && treatment.heroImage?.ref ? (
-                    <figure className="my-10 border border-[var(--dvn-line-gold)] bg-ivory-2">
-                      <Image
-                        src={treatment.heroImage.ref}
-                        alt={t(treatment.heroImage.alt)}
-                        width={1200}
-                        height={800}
-                        sizes="(max-width: 768px) 100vw, 680px"
-                        placeholder={treatment.heroImage.lqip ? "blur" : "empty"}
-                        blurDataURL={treatment.heroImage.lqip}
-                        className="h-auto w-full object-cover"
+            {showLegacyBody && paragraphs.length > 0 ? (
+              <div className="max-w-[680px]">
+                {paragraphs.map((paragraph, index) => (
+                  <div key={index}>
+                    {imageAfter !== null && index === imageAfter && treatment.heroImage?.ref ? (
+                      <figure className="my-10 border border-[var(--dvn-line-gold)] bg-ivory-2">
+                        <Image
+                          src={treatment.heroImage.ref}
+                          alt={t(treatment.heroImage.alt)}
+                          width={1200}
+                          height={800}
+                          sizes="(max-width: 768px) 100vw, 680px"
+                          placeholder={treatment.heroImage.lqip ? "blur" : "empty"}
+                          blurDataURL={treatment.heroImage.lqip}
+                          className="h-auto w-full object-cover"
+                        />
+                      </figure>
+                    ) : null}
+                    {midCtaAfter !== null && index === midCtaAfter ? (
+                      <ReadingCta
+                        text={midCtaText}
+                        phone={settings?.phone}
+                        actionLabel={t(copy?.ui?.appointmentCta)}
                       />
-                    </figure>
-                  ) : null}
-                  {midCtaAfter !== null && index === midCtaAfter ? (
-                    <ReadingCta
-                      text={midCtaText}
-                      phone={settings?.phone}
-                      actionLabel={t(copy?.ui?.appointmentCta)}
-                    />
-                  ) : null}
-                  <p
-                    className={
-                      index === 0
-                        ? "font-sans text-lg leading-relaxed text-ink"
-                        : "mt-5 font-sans text-[15px] leading-relaxed text-ink/90"
-                    }
-                  >
-                    {paragraph}
-                  </p>
-                </div>
-              ))}
-              {/* Kısa gövdelerde molasız kalan görsel/CTA sonda basılır. */}
-              {imageAfter === null && treatment.heroImage?.ref ? (
-                <figure className="mt-10 border border-[var(--dvn-line-gold)] bg-ivory-2">
-                  <Image
-                    src={treatment.heroImage.ref}
-                    alt={t(treatment.heroImage.alt)}
-                    width={1200}
-                    height={800}
-                    sizes="(max-width: 768px) 100vw, 680px"
-                    placeholder={treatment.heroImage.lqip ? "blur" : "empty"}
-                    blurDataURL={treatment.heroImage.lqip}
-                    className="h-auto w-full object-cover"
-                  />
-                </figure>
-              ) : null}
-              {midCtaAfter === null ? (
-                <ReadingCta
-                  text={midCtaText}
-                  phone={settings?.phone}
-                  actionLabel={t(copy?.ui?.appointmentCta)}
-                />
-              ) : null}
-            </div>
-          ) : null}
-
-          {/* CPT-6: H2 "farklar/avantajlar" bölümlerinden gelen faydalar. */}
-          {(treatment.benefits ?? []).length > 0 ? (
-            <div className="mt-10">
-              {t(headings?.keyBenefits) ? (
-                <Heading level="h2" size="md">
-                  {t(headings?.keyBenefits)}
-                </Heading>
-              ) : null}
-              <div className="mt-6 grid gap-4 md:grid-cols-3">
-                {(treatment.benefits ?? []).map((benefit, index) => (
-                  <Card key={index}>
-                    <Text>{t(benefit)}</Text>
-                  </Card>
-                ))}
-              </div>
-            </div>
-          ) : null}
-
-          {/* DSN-31: adımlar numaralı ve başlıklı (eyebrow motif, copy sweep borçlu). */}
-          {steps.length > 0 ? (
-            <div className="mt-12">
-              {t(headings?.treatmentProcessEyebrow) ? (
-                <div className="flex items-center gap-3">
-                  <span aria-hidden="true" className="h-px w-8 bg-gold" />
-                  <p className="font-sans text-xs uppercase tracking-widest text-gold-deep">
-                    {t(headings?.treatmentProcessEyebrow)}
-                  </p>
-                </div>
-              ) : null}
-              {t(headings?.treatmentProcess) ? (
-                <Heading level="h2" size="md" className="mt-4">
-                  {t(headings?.treatmentProcess)}
-                </Heading>
-              ) : null}
-              <div className="mt-6 grid gap-6 md:grid-cols-3">
-                {steps.map((step, index) => (
-                  <Card key={index} hover="lift">
-                    <p aria-hidden="true" className="font-serif text-3xl text-gold">
-                      {String(index + 1).padStart(2, "0")}
+                    ) : null}
+                    <p
+                      className={
+                        index === 0
+                          ? "font-sans text-lg leading-relaxed text-ink"
+                          : "mt-5 font-sans text-[15px] leading-relaxed text-ink/90"
+                      }
+                    >
+                      {paragraph}
                     </p>
-                    <Heading level="h3" size="title" className="mt-3">
-                      {t(step.title) || `Adım ${index + 1}`}
-                    </Heading>
-                    <Text className="mt-2">{t(step.description)}</Text>
-                  </Card>
+                  </div>
                 ))}
+                {/* Kısa gövdelerde molasız kalan görsel/CTA sonda basılır. */}
+                {imageAfter === null && treatment.heroImage?.ref ? (
+                  <figure className="mt-10 border border-[var(--dvn-line-gold)] bg-ivory-2">
+                    <Image
+                      src={treatment.heroImage.ref}
+                      alt={t(treatment.heroImage.alt)}
+                      width={1200}
+                      height={800}
+                      sizes="(max-width: 768px) 100vw, 680px"
+                      placeholder={treatment.heroImage.lqip ? "blur" : "empty"}
+                      blurDataURL={treatment.heroImage.lqip}
+                      className="h-auto w-full object-cover"
+                    />
+                  </figure>
+                ) : null}
+                {midCtaAfter === null ? (
+                  <ReadingCta
+                    text={midCtaText}
+                    phone={settings?.phone}
+                    actionLabel={t(copy?.ui?.appointmentCta)}
+                  />
+                ) : null}
               </div>
-            </div>
-          ) : null}
+            ) : null}
 
-          {t(treatment.priceNote) ? (
-            <div className="mt-12 max-w-3xl border border-[var(--dvn-line-gold)] bg-white p-8 shadow-[var(--dvn-shadow-soft)]">
-              <Text>{t(treatment.priceNote)}</Text>
-            </div>
-          ) : null}
-        </Section>
-      </Reveal>
+            {/* CPT-6: H2 "farklar/avantajlar" bölümlerinden gelen faydalar. */}
+            {(treatment.benefits ?? []).length > 0 ? (
+              <div className="mt-10">
+                {t(headings?.keyBenefits) ? (
+                  <Heading level="h2" size="md">
+                    {t(headings?.keyBenefits)}
+                  </Heading>
+                ) : null}
+                <div className="mt-6 grid gap-4 md:grid-cols-3">
+                  {(treatment.benefits ?? []).map((benefit, index) => (
+                    <Card key={index}>
+                      <Text>{t(benefit)}</Text>
+                    </Card>
+                  ))}
+                </div>
+              </div>
+            ) : null}
+
+            {/* DSN-31: adımlar numaralı ve başlıklı (eyebrow motif, copy sweep borçlu). */}
+            {steps.length > 0 ? (
+              <div className="mt-12">
+                {t(headings?.treatmentProcessEyebrow) ? (
+                  <div className="flex items-center gap-3">
+                    <span aria-hidden="true" className="h-px w-8 bg-gold" />
+                    <p className="font-sans text-xs uppercase tracking-widest text-gold-deep">
+                      {t(headings?.treatmentProcessEyebrow)}
+                    </p>
+                  </div>
+                ) : null}
+                {t(headings?.treatmentProcess) ? (
+                  <Heading level="h2" size="md" className="mt-4">
+                    {t(headings?.treatmentProcess)}
+                  </Heading>
+                ) : null}
+                <div className="mt-6 grid gap-6 md:grid-cols-3">
+                  {steps.map((step, index) => (
+                    <Card key={index} hover="lift">
+                      <p aria-hidden="true" className="font-serif text-3xl text-gold">
+                        {String(index + 1).padStart(2, "0")}
+                      </p>
+                      <Heading level="h3" size="title" className="mt-3">
+                        {t(step.title) || `Adım ${index + 1}`}
+                      </Heading>
+                      <Text className="mt-2">{t(step.description)}</Text>
+                    </Card>
+                  ))}
+                </div>
+              </div>
+            ) : null}
+
+            {t(treatment.priceNote) ? (
+              <div className="mt-12 max-w-3xl border border-[var(--dvn-line-gold)] bg-white p-8 shadow-[var(--dvn-shadow-soft)]">
+                <Text>{t(treatment.priceNote)}</Text>
+              </div>
+            ) : null}
+          </Section>
+        </Reveal>
+      ) : null}
 
       {/* DSN-9: tedavinin ilgili hekimleri (schema: treatment.doctors). */}
       {(treatment.doctors ?? []).length > 0 ? (
