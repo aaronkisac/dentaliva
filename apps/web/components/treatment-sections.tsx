@@ -15,8 +15,11 @@ type Variant = "feature" | "duo" | "quad" | "editorial" | "interlude" | "showcas
  * DSN-83 (v2): tedavi gövdesi — her bölüm İÇERİK ŞEKLİNE GÖRE kendi
  * kompozisyonunu alır (Aaron: "2 sütun gibi olmaması... biraz daha yaratıcı"):
  *
- *   3+/5 madde → feature  : tam genişlik başlık + numaralı satırlar + altında
- *                           sinematik foto bandı (16/7) — yanaşma yok
+ *   3+/5 madde → feature  : başlık + lead + maddeler 2 kolonlu mozaik
+ *                           hücrelerinde (hairline üst çizgili, büyük serif
+ *                           altın sayaç); foto akışın içine işlenir — madde
+ *                           sayısı tekse son hücreyle eşlenir (4/3), çiftse
+ *                           altta sinematik bant olarak (16/7)
  *   4 madde    → quad     : geniş foto bandı (2/1) + 2×2 numaralı kadran
  *                           (hairline ayraçlı, kart yok)
  *   2 madde    → duo      : LACİVERT kontrast bandı — beyaz başlık, altın
@@ -296,7 +299,10 @@ export function TreatmentSections({ sections }: { sections: TreatmentSection[] }
           );
         }
 
-        // feature — uzun maddeler satırlarda okunur, foto altta sinematik bant.
+        // feature (v5) — maddeler 2 kolonlu mozaik hücrelerine dağılır; uzun
+        // maddeler sıralı metin duvarı yerine taranabilir hücreler olur, foto
+        // akışın içine işlenir (tek sayıda son hücreyle eşleşir).
+        const photoPaired = Boolean(section.image?.ref) && items.length % 2 === 1;
         return (
           <Reveal key={key}>
             <Section className={lightTone}>
@@ -305,15 +311,37 @@ export function TreatmentSections({ sections }: { sections: TreatmentSection[] }
                 {heading}
               </Heading>
               {lead ? <Text className="mt-4 max-w-3xl">{lead}</Text> : null}
-              <div className="max-w-3xl">
-                <SectionItems items={items} tone="light" />
+              <div className="mt-10 grid gap-x-14 gap-y-10 md:grid-cols-2">
+                {items.map((item, itemIndex) => (
+                  <div key={itemIndex} className="border-t border-[var(--dvn-line-soft)] pt-5">
+                    <span aria-hidden="true" className="font-serif text-2xl text-gold">
+                      {String(itemIndex + 1).padStart(2, "0")}
+                    </span>
+                    {t(item.title) ? (
+                      <Heading level="h3" size="title" className="mt-3">
+                        {t(item.title)}
+                      </Heading>
+                    ) : null}
+                    {t(item.text) ? <Text className="mt-2 text-ink/80">{t(item.text)}</Text> : null}
+                  </div>
+                ))}
+                {photoPaired ? (
+                  <SectionPhoto
+                    image={section.image}
+                    heading={heading}
+                    className="relative aspect-[4/3] self-start"
+                    sizes="(max-width: 768px) 100vw, 560px"
+                  />
+                ) : null}
               </div>
-              <SectionPhoto
-                image={section.image}
-                heading={heading}
-                className="relative mt-10 aspect-[16/10] md:aspect-[16/7]"
-                sizes="(max-width: 768px) 100vw, 1180px"
-              />
+              {section.image?.ref && !photoPaired ? (
+                <SectionPhoto
+                  image={section.image}
+                  heading={heading}
+                  className="relative mt-10 aspect-[16/10] md:aspect-[16/7]"
+                  sizes="(max-width: 768px) 100vw, 1180px"
+                />
+              ) : null}
             </Section>
           </Reveal>
         );
