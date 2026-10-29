@@ -13,61 +13,92 @@ import type { TreatmentSection } from "../src/content/treatments";
 
 const REF = `image-${"a".repeat(40)}-1024x1024-webp`;
 
-const priceSection: TreatmentSection = {
-  heading: { tr: "Fiyatlar" },
-  lead: { tr: "Fiyatlar birden fazla etkenle belirlenir." },
-};
+const item = (n: number): { title: { tr: string }; text: { tr: string } } => ({
+  title: { tr: `Madde ${n}` },
+  text: { tr: `Madde ${n} metni.` },
+});
 
-const sections: TreatmentSection[] = [
-  {
-    heading: { tr: "Periodontoloji Bölümü Neye Bakar?" },
-    lead: { tr: "Bölüm birçok farklı sorunla ilgilenir." },
-    items: [
-      { title: { tr: "Gingivitis (Diş Eti İltihabı)" }, text: { tr: "Diş eti iltihabı..." } },
-      { title: { tr: "Gingival Hiperplazi" }, text: { tr: "Diş eti büyümesi..." } },
-    ],
-    image: { ref: REF, lqip: "data:image/webp;base64,AAA", alt: { tr: "Klinik" } },
-  },
-  priceSection,
-  // Başlıksız yarım giriş akışa girmemeli.
-  { lead: { tr: "başlıksız bölüm" } },
-];
+const section = (over: Partial<TreatmentSection>): TreatmentSection => ({
+  heading: { tr: "Bölüm" },
+  lead: { tr: "Giriş metni." },
+  items: [],
+  ...over,
+});
 
-const render = (props: { sections: TreatmentSection[] }) =>
-  renderToStaticMarkup(<TreatmentSections {...props} />);
+const render = (sections: TreatmentSection[]) =>
+  renderToStaticMarkup(<TreatmentSections sections={sections} />);
 
-describe("TreatmentSections (DSN-83)", () => {
-  it("renders headings, lead, numbered items and the section photo", () => {
-    const html = render({ sections });
-    expect(html).toContain("Periodontoloji Bölümü Neye Bakar?");
-    expect(html).toContain("birçok farklı sorunla");
-    expect(html).toContain("Gingivitis (Diş Eti İltihabı)");
-    // Numaralı sayaçlar (DSN-52 motifi) ve ayraçlı satır listesi.
+describe("TreatmentSections (DSN-83 v2 — kompozisyon varyantları)", () => {
+  it("3 madde → feature: numaralı satırlar + altta sinematik bant, yanaşma yok", () => {
+    const html = render([
+      section({
+        items: [item(1), item(2), item(3)],
+        image: { ref: REF, lqip: "data:image/webp;base64,AAA", alt: { tr: "Klinik" } },
+      }),
+    ]);
     expect(html).toContain(">01<");
     expect(html).toContain("divide-y");
-    expect(html).toContain(`src="${REF}"`);
-    expect(html).toContain('alt="Klinik"');
+    expect(html).toContain("aspect-[16/10] md:aspect-[16/7]");
+    // 2 kolonlu şablonun izi yok
+    expect(html).not.toContain("lg:grid-cols-12");
+    expect(html).not.toContain("lg:order-2");
   });
 
-  it("drops sections without a heading (half-entered CMS rows)", () => {
-    const html = render({ sections });
-    expect(html).toContain("Fiyatlar");
-    expect(html).not.toContain("başlıksız bölüm");
+  it("2 madde → duo: lacivert bant, beyaz başlık, altın sayaç, portre foto", () => {
+    const html = render([
+      section({ items: [item(1), item(2)], image: { ref: REF, alt: { tr: "Klinik" } } }),
+    ]);
+    expect(html).toContain("bg-navy");
+    expect(html).toContain("text-white");
+    expect(html).toContain("divide-white/15");
+    expect(html).toContain("text-gold-soft");
+    expect(html).toContain("aspect-[3/4]");
   });
 
-  it("alternates photo side and band background per section index", () => {
-    const html = render({ sections });
-    // İlk bölüm: foto sağda (metin col-span-7 önde), beyaz bant.
-    expect(html).toContain("bg-white");
-    expect(html).toContain("lg:order-2 lg:col-span-7");
-    // İkinci bölüm (foto yok): dönüşümlü taraf sınıfı almaz.
-    const second = html.split("Fiyatlar")[1] ?? "";
-    expect(second).not.toContain("lg:order-2");
+  it("4 madde → quad: geniş foto bandı + 2×2 kadran (kart yok, hairline üst çizgi)", () => {
+    const html = render([
+      section({
+        items: [item(1), item(2), item(3), item(4)],
+        image: { ref: REF, alt: { tr: "Klinik" } },
+      }),
+    ]);
+    expect(html).toContain("md:grid-cols-2");
+    expect(html).toContain("md:aspect-[2/1]");
+    expect(html).toContain("border-t border-[var(--dvn-line-soft)]");
+    expect(html).toContain(">04<");
   });
 
-  it("renders a text-only section without a figure", () => {
-    const html = render({ sections: [priceSection] });
-    expect(html).toContain("Fiyatlar");
+  it("madde yok → interlude: ortalanmış dar kolon + ortalanmış altın çizgi", () => {
+    const html = render([section({ items: [] })]);
+    expect(html).toContain("max-w-2xl text-center");
+    expect(html).toContain("mx-auto");
+  });
+
+  it("1 madde → showcase: tam kanat foto + navy scrim, metin üstte beyaz", () => {
+    const html = render([
+      section({ items: [item(1)], image: { ref: REF, alt: { tr: "Klinik" } } }),
+    ]);
+    expect(html).toContain("relative overflow-hidden");
+    expect(html).toContain("from-navy via-navy/85 to-navy/55");
+    expect(html).toContain("text-white/80");
+  });
+
+  it("showcase fotosuz: düz navy bant olarak düşer", () => {
+    const html = render([section({ items: [item(1)] })]);
+    expect(html).toContain("from-navy to-navy");
+    expect(html).not.toContain("via-navy/85");
+  });
+
+  it("başlıksız yarım CMS girişi akışa girmez", () => {
+    const html = render([
+      section({ heading: undefined, items: [item(1)] }),
+      section({ items: [] }),
+    ]);
+    expect(html).not.toContain("Madde 1");
+  });
+
+  it("fotosuz bölüm figure basmaz", () => {
+    const html = render([section({ items: [item(1), item(2), item(3)] })]);
     expect(html).not.toContain("<figure");
   });
 });
