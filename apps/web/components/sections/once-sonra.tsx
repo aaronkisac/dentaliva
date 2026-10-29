@@ -98,6 +98,13 @@ export function OnceSonraSection({
                   {String(index + 1).padStart(2, "0")}
                 </span>
                 <div className="mt-3">{headingNode}</div>
+                {/* DSN-84: doküman #04 vaka künyesi (tedavi · hekim · şube ·
+                    tarih) — CMS'ten tek satır; boşken basılmaz. */}
+                {t(item.meta) ? (
+                  <p className="mt-1 font-sans text-xs uppercase tracking-wide text-ink/55">
+                    {t(item.meta)}
+                  </p>
+                ) : null}
                 {text ? <Text className="mt-2">{text}</Text> : null}
               </div>
             </article>

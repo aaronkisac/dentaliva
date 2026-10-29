@@ -54,4 +54,15 @@ describe("OnceSonraSection (DSN-50)", () => {
     expect(html).not.toContain("<h2");
     expect(html).toContain("Vaka 1");
   });
+
+  // DSN-84: doküman #04 — vaka künyesi (tedavi · hekim · şube · tarih) tek
+  // satır; CMS'te boşken kartta basılmaz.
+  it("renders the case meta line when authored and drops it when empty", () => {
+    const withMeta = render({
+      items: [{ ...item(1), meta: { tr: "İmplant · Dr. Dt. Ali · Avcılar · 2025" } }],
+    });
+    expect(withMeta).toContain("İmplant · Dr. Dt. Ali · Avcılar · 2025");
+    const withoutMeta = render({ items: [item(2)] });
+    expect(withoutMeta).not.toContain("Vaka 2 ·");
+  });
 });

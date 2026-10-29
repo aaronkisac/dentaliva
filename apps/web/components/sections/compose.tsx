@@ -124,6 +124,7 @@ export const sectionRegistry: Record<HomeSectionId, SectionRenderer> = {
         eyebrow={t(data.siteCopy?.sectionHeadings?.clinicsEyebrow)}
         heading={t(data.siteCopy?.sectionHeadings?.clinicsHeading)}
         intro={t(data.siteCopy?.sectionHeadings?.clinicsIntro)}
+        detailLabel={t(data.siteCopy?.ui?.branchDetailLink)}
       />,
     ),
   gallery: (data) =>

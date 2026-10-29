@@ -6,7 +6,7 @@ import type { BranchItem } from "../src/content/branches";
 
 const render = (
   branches: BranchItem[],
-  props?: { eyebrow?: string; heading?: string; intro?: string },
+  props?: { eyebrow?: string; heading?: string; intro?: string; detailLabel?: string },
 ) =>
   renderToStaticMarkup(
     <ClinicsSection
@@ -14,6 +14,7 @@ const render = (
       eyebrow={props?.eyebrow}
       heading={props?.heading}
       intro={props?.intro}
+      detailLabel={props?.detailLabel}
     />,
   );
 
@@ -47,5 +48,31 @@ describe("ClinicsSection (DSN-67)", () => {
     expect(html).toContain("Slugsuz");
     expect(html).toContain("<article");
     expect(html).not.toContain('href="/subelerimiz/');
+  });
+
+  // DSN-84: DentalX dolu lokasyon kartı — adres/telefon/saat satırları +
+  // siteCopy'den detay bağlantısı.
+  it("renders contact rows and the detail link when data and copy exist", () => {
+    const html = render(
+      [
+        {
+          name: "Avcılar",
+          slug: "avcilar",
+          address: { tr: "Adres bir" },
+          phone: "+90 530 840 54 82",
+          hours: { tr: "Pzt–Cmt 09:00–19:00" },
+        },
+      ],
+      { detailLabel: "Şube Detayı" },
+    );
+    expect(html).toContain("Adres bir");
+    expect(html).toContain("+90 530 840 54 82");
+    expect(html).toContain("Pzt–Cmt 09:00–19:00");
+    expect(html).toContain("Şube Detayı");
+  });
+
+  it("omits the detail link without copy (zero-hardcoded-copy)", () => {
+    const html = render([{ name: "Avcılar", slug: "avcilar" }]);
+    expect(html).not.toContain("Şube Detayı");
   });
 });
