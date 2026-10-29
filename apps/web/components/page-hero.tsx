@@ -17,10 +17,11 @@ const ENV = imageTarget();
  * DSN-32'de (kare portre kararı) bu bileşene taşınacak.
  * Metinler sayfa tarafından verilir (app katmanı) — pakette copy yok.
  *
- * DSN-83 v3: `media` doluysa hero, bölüm akışındaki "duo" kompozisyonuna
- * geçer (Aaron: girişteki yazı da Belirtiler bölümü gibi olsun) — solda
- * eyebrow + serif başlık + destek metni (7 kolon), sağda altın çerçeveli
- * portre (5 kolon). `media` verilmediginde çıktı öncekiyle birebir aynıdır.
+ * DSN-83 v4: `media` doluysa hero "flama" kompozisyonuna geçer (Aaron:
+ * girişteki bölüm çok boş kalıyordu) — kapak fotoğrafı banda sağdan
+ * yaslanır, lacivert zeminle geçişli karışır (gradient overlay); metin
+ * soldaki güvenli alanda. `media` verilmediginde çıktı öncekiyle birebir
+ * aynıdır.
  */
 export interface PageHeroMedia {
   ref: string;
@@ -61,32 +62,39 @@ export function PageHero({
 
   if (media?.ref) {
     return (
-      <Section className="bg-navy">
-        <div className="grid items-start gap-10 lg:grid-cols-12 lg:gap-14">
-          <div className="lg:col-span-7">
-            {eyebrowBlock}
-            <Heading level="h1" size="lg" className={eyebrow ? "mt-4 text-white" : "text-white"}>
-              {title}
-            </Heading>
-            {lead ? (
-              <Text size="lg" tone="white" className="mt-6">
-                {lead}
-              </Text>
-            ) : null}
-            {children}
-          </div>
-          <figure className="relative aspect-[3/4] overflow-hidden rounded-[4px] border border-[var(--dvn-line-gold)] lg:col-span-5">
-            <Image
-              src={media.ref}
-              alt={media.alt || title}
-              fill
-              priority
-              sizes="(max-width: 1024px) 100vw, 40vw"
-              placeholder="blur"
-              blurDataURL={media.lqip ?? lqipUrl(media.ref, ENV)}
-              className="object-cover"
-            />
-          </figure>
+      <Section className="relative overflow-hidden bg-navy">
+        {/* DSN-83 v4: flama arka planı (Aaron: "bölüm çok boş kalıyor") —
+            liste kartlarındaki kapak fotoğrafı banda sağdan yaslanır ve
+            lacivert zeminle geçişli karışır; metin soldaki güvenli alanda
+            (max-w-2xl), fotoğraf dekoratif (alt=""). Foto yoksa metin-only
+            eski görünüm korunur. */}
+        <figure
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-y-0 right-0 w-full md:w-[58%]"
+        >
+          <Image
+            src={media.ref}
+            alt=""
+            fill
+            priority
+            sizes="(max-width: 768px) 100vw, 58vw"
+            placeholder="blur"
+            blurDataURL={media.lqip ?? lqipUrl(media.ref, ENV)}
+            className="object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-navy via-navy/90 to-navy/40 md:via-navy/55 md:to-navy/10" />
+        </figure>
+        <div className="relative max-w-2xl">
+          {eyebrowBlock}
+          <Heading level="h1" size="lg" className={eyebrow ? "mt-4 text-white" : "text-white"}>
+            {title}
+          </Heading>
+          {lead ? (
+            <Text size="lg" tone="white" className="mt-6">
+              {lead}
+            </Text>
+          ) : null}
+          {children}
         </div>
       </Section>
     );
