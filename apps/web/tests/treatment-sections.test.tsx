@@ -29,7 +29,7 @@ const render = (sections: TreatmentSection[]) =>
   renderToStaticMarkup(<TreatmentSections sections={sections} />);
 
 describe("TreatmentSections (DSN-83 v2 — kompozisyon varyantları)", () => {
-  it("3 madde → feature: numaralı satırlar + altta sinematik bant, yanaşma yok", () => {
+  it("3 madde → feature (v5): 2 kolonlu mozaik, foto son hücreyle eşleşir", () => {
     const html = render([
       section({
         items: [item(1), item(2), item(3)],
@@ -37,11 +37,23 @@ describe("TreatmentSections (DSN-83 v2 — kompozisyon varyantları)", () => {
       }),
     ]);
     expect(html).toContain(">01<");
-    expect(html).toContain("divide-y");
+    expect(html).toContain("md:grid-cols-2");
+    expect(html).toContain("border-t border-[var(--dvn-line-soft)]");
+    expect(html).toContain("font-serif text-2xl text-gold");
+    // Tek sayı + foto → foto hücre olarak akışta (bant değil)
+    expect(html).toContain("aspect-[4/3]");
+    expect(html).not.toContain("aspect-[16/10] md:aspect-[16/7]");
+  });
+
+  it("feature çift sayı madde + foto → foto altta sinematik bant kalır", () => {
+    const html = render([
+      section({
+        items: [item(1), item(2), item(3), item(4), item(5), item(6)],
+        image: { ref: REF, lqip: "data:image/webp;base64,AAA", alt: { tr: "Klinik" } },
+      }),
+    ]);
     expect(html).toContain("aspect-[16/10] md:aspect-[16/7]");
-    // 2 kolonlu şablonun izi yok
-    expect(html).not.toContain("lg:grid-cols-12");
-    expect(html).not.toContain("lg:order-2");
+    expect(html).not.toContain("aspect-[4/3]");
   });
 
   it("2 madde → duo: lacivert bant, beyaz başlık, altın sayaç, portre foto", () => {
