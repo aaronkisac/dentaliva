@@ -7,6 +7,11 @@ import react from "@dentaliva/config/eslint/react";
 export default [
   ...react,
   {
+    // DSN-84: v1 ana sayfa arşivi — derlenmiş statik build çıktısı (minified
+    // chunk'lar), kaynak kod değil; lint dışında tutulur.
+    ignores: ["v1-homepage-snapshot/**"],
+  },
+  {
     files: ["scripts/*.mjs"],
     languageOptions: { globals: { ...globals.node } },
     rules: { "no-console": "off" },

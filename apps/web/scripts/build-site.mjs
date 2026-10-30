@@ -14,8 +14,36 @@
 //                                    if neither exists the token is BLANKED
 //                                    (anonymous CDN reads for public datasets)
 import { spawnSync } from "node:child_process";
+import { copyFileSync, existsSync, mkdirSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+
+/**
+ * DSN-84: v1 ana sayfa arşivini out/ altına merge-copy eder. Snapshot
+ * (v1-homepage-snapshot/) `homepage-v1/index.html` + v1'in kendi
+ * `_next/static` varlıklarını taşır; chunk adları content-hash olduğundan
+ * güncel build'in varlıklarıyla çakışmaz, out'ta zaten var olan dosyalar
+ * asla ezilmez. Sayfa noindex'lidir (snapshot HTML'ine işlenmiş).
+ */
+function attachV1Snapshot(webRoot) {
+  const snapshot = join(webRoot, "v1-homepage-snapshot");
+  const outDir = join(webRoot, "out");
+  if (!existsSync(snapshot) || !existsSync(outDir)) return;
+  const copyMerge = (src, dest) => {
+    for (const entry of readdirSync(src, { withFileTypes: true })) {
+      const s = join(src, entry.name);
+      const d = join(dest, entry.name);
+      if (entry.isDirectory()) {
+        mkdirSync(d, { recursive: true });
+        copyMerge(s, d);
+      } else if (!existsSync(d)) {
+        copyFileSync(s, d);
+      }
+    }
+  };
+  copyMerge(snapshot, outDir);
+  console.log("[build-site] v1 ana sayfa arşivi /homepage-v1 olarak eklendi");
+}
 
 const args = process.argv.slice(2);
 const siteId = args[args.indexOf("--site") + 1];
@@ -61,4 +89,5 @@ if (clear.status !== 0) process.exit(clear.status ?? 1);
 // next build triggers the postbuild chain (prune-routes + generate-redirects
 // + generate-headers).
 const result = spawnSync("pnpm", ["build"], { stdio: "inherit", env, shell: true });
+if (site.id === "com" && result.status === 0) attachV1Snapshot(webRoot);
 process.exit(result.status ?? 1);
