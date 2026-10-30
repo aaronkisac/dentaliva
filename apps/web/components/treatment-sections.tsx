@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { Fragment } from "react";
 
 import { Container, Heading, Reveal, Section, Text } from "@dentaliva/ui";
 import { lqipUrl } from "@dentaliva/sanity-schema/image-url";
@@ -18,8 +19,8 @@ type Variant = "feature" | "duo" | "quad" | "editorial" | "interlude" | "showcas
  *   3+/5 madde → feature  : başlık + lead + maddeler 2 kolonlu mozaik
  *                           hücrelerinde (hairline üst çizgili, büyük serif
  *                           altın sayaç); foto akışın içine işlenir — madde
- *                           sayısı tekse son hücreyle eşlenir (4/3), çiftse
- *                           altta sinematik bant olarak (16/7)
+ *                           sayısı tekse İLK maddeyle eşlenir ve sağ üstte
+ *                           (4/3), çiftse altta sinematik bant olarak (16/7)
  *   4 madde    → quad     : geniş foto bandı (2/1) + 2×2 numaralı kadran
  *                           (hairline ayraçlı, kart yok)
  *   2 madde    → duo      : LACİVERT kontrast bandı — beyaz başlık, altın
@@ -301,8 +302,17 @@ export function TreatmentSections({ sections }: { sections: TreatmentSection[] }
 
         // feature (v5) — maddeler 2 kolonlu mozaik hücrelerine dağılır; uzun
         // maddeler sıralı metin duvarı yerine taranabilir hücreler olur, foto
-        // akışın içine işlenir (tek sayıda son hücreyle eşleşir).
+        // akışın içine işlenir: tek sayıda İLK maddeyle eşleşir (sağ üst —
+        // Aaron v6), çift sayıda altta sinematik bant olarak kalır.
         const photoPaired = Boolean(section.image?.ref) && items.length % 2 === 1;
+        const photoCell = photoPaired ? (
+          <SectionPhoto
+            image={section.image}
+            heading={heading}
+            className="relative aspect-[4/3] self-start"
+            sizes="(max-width: 768px) 100vw, 560px"
+          />
+        ) : null;
         return (
           <Reveal key={key}>
             <Section className={lightTone}>
@@ -313,26 +323,23 @@ export function TreatmentSections({ sections }: { sections: TreatmentSection[] }
               {lead ? <Text className="mt-4 max-w-3xl">{lead}</Text> : null}
               <div className="mt-10 grid gap-x-14 gap-y-10 md:grid-cols-2">
                 {items.map((item, itemIndex) => (
-                  <div key={itemIndex} className="border-t border-[var(--dvn-line-soft)] pt-5">
-                    <span aria-hidden="true" className="font-serif text-2xl text-gold">
-                      {String(itemIndex + 1).padStart(2, "0")}
-                    </span>
-                    {t(item.title) ? (
-                      <Heading level="h3" size="title" className="mt-3">
-                        {t(item.title)}
-                      </Heading>
-                    ) : null}
-                    {t(item.text) ? <Text className="mt-2 text-ink/80">{t(item.text)}</Text> : null}
-                  </div>
+                  <Fragment key={itemIndex}>
+                    <div className="border-t border-[var(--dvn-line-soft)] pt-5">
+                      <span aria-hidden="true" className="font-serif text-2xl text-gold">
+                        {String(itemIndex + 1).padStart(2, "0")}
+                      </span>
+                      {t(item.title) ? (
+                        <Heading level="h3" size="title" className="mt-3">
+                          {t(item.title)}
+                        </Heading>
+                      ) : null}
+                      {t(item.text) ? (
+                        <Text className="mt-2 text-ink/80">{t(item.text)}</Text>
+                      ) : null}
+                    </div>
+                    {itemIndex === 0 ? photoCell : null}
+                  </Fragment>
                 ))}
-                {photoPaired ? (
-                  <SectionPhoto
-                    image={section.image}
-                    heading={heading}
-                    className="relative aspect-[4/3] self-start"
-                    sizes="(max-width: 768px) 100vw, 560px"
-                  />
-                ) : null}
               </div>
               {section.image?.ref && !photoPaired ? (
                 <SectionPhoto
