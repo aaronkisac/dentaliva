@@ -29,7 +29,7 @@ const render = (sections: TreatmentSection[]) =>
   renderToStaticMarkup(<TreatmentSections sections={sections} />);
 
 describe("TreatmentSections (DSN-83 v2 — kompozisyon varyantları)", () => {
-  it("3 madde → feature (v5): 2 kolonlu mozaik, foto son hücreyle eşleşir", () => {
+  it("3 madde → feature (v5/v6): 2 kolonlu mozaik, foto ilk maddeye eşleşir (sağ üst)", () => {
     const html = render([
       section({
         items: [item(1), item(2), item(3)],
@@ -43,6 +43,13 @@ describe("TreatmentSections (DSN-83 v2 — kompozisyon varyantları)", () => {
     // Tek sayı + foto → foto hücre olarak akışta (bant değil)
     expect(html).toContain("aspect-[4/3]");
     expect(html).not.toContain("aspect-[16/10] md:aspect-[16/7]");
+    // Foto ilk maddeden sonra, ikinci maddeden önce (sağ üst hücre)
+    const i1 = html.indexOf("Madde 1");
+    const ifig = html.indexOf("<figure");
+    const i2 = html.indexOf("Madde 2");
+    expect(i1).toBeGreaterThan(-1);
+    expect(ifig).toBeGreaterThan(i1);
+    expect(i2).toBeGreaterThan(ifig);
   });
 
   it("feature çift sayı madde + foto → foto altta sinematik bant kalır", () => {
