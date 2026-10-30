@@ -154,21 +154,26 @@ export const Footer = forwardRef<HTMLElement, FooterProps>(function Footer(
           </ul>
         </div>
       </div>
-      {legalLinks && legalLinks.length > 0 ? (
-        <div className="border-t border-[var(--dvn-line-gold)] py-4">
-          <ul className="flex flex-wrap justify-center gap-x-8 gap-y-2 font-sans text-sm">
-            {legalLinks.map((item) => (
-              <li key={item.href}>
-                <Link href={item.href} className="hover:text-gold-soft">
-                  {item.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
+      {/* DSN-85: yasal linkler + telif TEK alt bantta (Aaron: iki ayrı bant
+          alt alt güzel durmuyor) — brand dilindeki ince dikey ayraç ile. */}
+      <div className="border-t border-[var(--dvn-line-gold)] py-4">
+        <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+          {legalLinks && legalLinks.length > 0 ? (
+            <>
+              <ul className="flex flex-wrap items-center justify-center gap-x-8 gap-y-2 font-sans text-sm">
+                {legalLinks.map((item) => (
+                  <li key={item.href}>
+                    <Link href={item.href} className="hover:text-gold-soft">
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+              <span aria-hidden="true" className="hidden h-3 w-px bg-white/30 sm:block" />
+            </>
+          ) : null}
+          <p className="font-sans text-xs">{copyright}</p>
         </div>
-      ) : null}
-      <div className="border-t border-[var(--dvn-line-gold)] py-4 text-center font-sans text-xs">
-        {copyright}
       </div>
     </footer>
   );

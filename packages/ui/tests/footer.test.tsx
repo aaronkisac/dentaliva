@@ -50,6 +50,26 @@ describe("Footer", () => {
     );
   });
 
+  it("merges legal links and copyright into ONE bottom band (DSN-85)", () => {
+    const { container } = renderUi(
+      <Footer {...props} legalLinks={[{ label: "Gizlilik Bildirimi", href: "/kvkk" }]} />,
+    );
+    const bands = container.querySelector("footer")!.querySelectorAll(":scope > .border-t");
+    expect(bands.length).toBe(1);
+    expect(bands[0]?.textContent).toContain("Gizlilik Bildirimi");
+    expect(bands[0]?.textContent).toContain("© Copyright Dentaliva 2026");
+    // İnce dikey ayraç iki grubun arasında
+    expect(bands[0]?.querySelector("span[aria-hidden='true']")).not.toBeNull();
+  });
+
+  it("keeps a single copyright band when legal links are absent", () => {
+    const { container } = renderUi(<Footer {...props} />);
+    const bands = container.querySelector("footer")!.querySelectorAll(":scope > .border-t");
+    expect(bands.length).toBe(1);
+    expect(bands[0]?.textContent).toContain("© Copyright Dentaliva 2026");
+    expect(bands[0]?.querySelector("span[aria-hidden='true']")).toBeNull();
+  });
+
   it("omits nameless anchors when contact values are empty", () => {
     renderUi(
       <Footer
