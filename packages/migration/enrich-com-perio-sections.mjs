@@ -100,14 +100,20 @@ function parseSections(html) {
   const cut = full.indexOf("ır yani adlarından");
   if (cut === -1) throw new Error("Periodontitis split anchor not found");
   gingivitis.text = [full.slice(0, cut).trim()];
-  const perioBody = full.slice(cut + "ır yani adlarından da anlaşılabileceği üzere".length);
+  // Orijinalin bozuk metni aynı cümleyi iki kez tekrar eder ("...ilerlemiş
+  // bir halidir. diş eti iltihabının ilerlemiş bir halidir.") — tekrar kırpılır.
+  const tail = full.slice(cut + "ır yani adlarından da anlaşılabileceği üzere".length).trim();
+  const DUP = "diş eti iltihabının ilerlemiş bir halidir.";
+  const perioBody = tail.startsWith(DUP) ? tail.slice(DUP.length).trim() : tail;
   sections[0].items = [
     gingivitis,
     {
       title: "Periodontitis (İleri Diş Eti Hastalığı)",
       text: [
-        "Periodontitis, yani adından da anlaşılabileceği üzere, diş eti iltihabının ilerlemiş bir halidir." +
+        [
+          "Periodontitis, yani adından da anlaşılabileceği üzere, diş eti iltihabının ilerlemiş bir halidir.",
           perioBody,
+        ].join(" "),
       ],
     },
     sections[0].items[1],
