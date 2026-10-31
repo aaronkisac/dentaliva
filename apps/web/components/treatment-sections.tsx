@@ -10,7 +10,32 @@ import type { TreatmentSection } from "../src/content/treatments";
 
 const ENV = imageTarget();
 
-type Variant = "feature" | "duo" | "quad" | "editorial" | "interlude" | "showcase";
+type Variant =
+  | "feature"
+  | "duo"
+  | "duo-light"
+  | "quad"
+  | "editorial"
+  | "interlude"
+  | "showcase"
+  | "showcase-light";
+
+/** DSN-87: CRM'den sabitlenen stiller → varyant eşlemesi. */
+const STYLE_OVERRIDES: Record<string, Variant> = {
+  mosaic: "feature",
+  quad: "quad",
+  duo: "duo",
+  showcase: "showcase",
+  reading: "editorial",
+  break: "interlude",
+};
+
+const DARK_VARIANTS: ReadonlySet<Variant> = new Set(["duo", "showcase"]);
+/** Ardışık koyu bant / fotosuz koyu bant yerine geçen açık ikamesi. */
+const LIGHT_TWIN: Record<"duo" | "showcase", Variant> = {
+  duo: "duo-light",
+  showcase: "editorial", // fotosuz kapanış bandı lacivert duvar olur → okuma kolonu
+};
 
 /**
  * DSN-83 (v2): tedavi gövdesi — her bölüm İÇERİK ŞEKLİNE GÖRE kendi
@@ -121,6 +146,40 @@ function SectionItems({
 
 export function TreatmentSections({ sections }: { sections: TreatmentSection[] }) {
   const visible = sections.filter((section) => t(section.heading));
+
+  // DSN-87 planlayıcı: koyu bantlar (duo/showcase) sayfada seyrek vurgu
+  // olarak kalır — (a) fotosuz koyu bant düz lacivert duvara dönüşür, (b)
+  // ardışık koyu bantlar üst üste biner; ikisi de açık ikamesine çevrilir.
+  // Editör style alanından sabit seçerse kural dışına saygı duyulur.
+  const planned = visible.map((section) => {
+    const override = section.style && STYLE_OVERRIDES[section.style];
+    if (override) return override;
+    let variant = variantOf(
+      (section.items ?? []).filter((item) => t(item.title) || t(item.text)).length,
+      t(section.lead)?.length ?? 0,
+    );
+    if (DARK_VARIANTS.has(variant) && !section.image?.ref)
+      variant = LIGHT_TWIN[variant as "duo" | "showcase"];
+    return variant;
+  });
+  // Hero koyu flama olduğu için sıra KOYU bandla başlar — ilk bölüm koyu
+  // istese de açık ikamesine düşer (hero + koyu bant yan yana kalmasın).
+  let prevDark = true;
+  for (let i = 0; i < planned.length; i++) {
+    // Editör sabitlemişse (style !== auto/boş) kural dışına saygı duyrulur.
+    const style = visible[i]?.style;
+    const pinned = style ? STYLE_OVERRIDES[style] : undefined;
+    if (pinned) {
+      prevDark = DARK_VARIANTS.has(planned[i] as Variant);
+      continue;
+    }
+    const dark = DARK_VARIANTS.has(planned[i] as Variant) ? planned[i] : undefined;
+    if (dark && prevDark) {
+      planned[i] = LIGHT_TWIN[dark as "duo" | "showcase"];
+    }
+    prevDark = DARK_VARIANTS.has(planned[i] as Variant);
+  }
+
   // Açık bantların beyaz/fildişi dönüşümü (koyu bantlar sayılmaz).
   let lightIndex = 0;
   return (
@@ -129,8 +188,8 @@ export function TreatmentSections({ sections }: { sections: TreatmentSection[] }
         const heading = t(section.heading);
         const lead = t(section.lead);
         const items = (section.items ?? []).filter((item) => t(item.title) || t(item.text));
-        const variant = variantOf(items.length, lead?.length ?? 0);
-        const light = variant !== "duo" && variant !== "showcase";
+        const variant = planned[index] as Variant;
+        const light = !DARK_VARIANTS.has(variant);
         const lightTone = light && lightIndex % 2 === 0 ? "bg-white" : undefined;
         if (light) lightIndex += 1;
         const key = `${heading}-${index}`;
@@ -187,25 +246,34 @@ export function TreatmentSections({ sections }: { sections: TreatmentSection[] }
           );
         }
 
-        if (variant === "duo") {
+        if (variant === "duo" || variant === "duo-light") {
+          // DSN-87: duo-light — ardışık/fotosuz kalan duo açık zeminde akar
+          // (koyu bant sayfadaki TEK vurgu olarak kalır).
+          const dark = variant === "duo";
           return (
             <Reveal key={key}>
-              <Section className="bg-navy text-white">
+              <Section className={dark ? "bg-navy text-white" : lightTone}>
                 <div className="grid items-start gap-10 lg:grid-cols-12 lg:gap-14">
                   <div className="lg:col-span-7">
                     <GoldRule />
-                    <Heading level="h2" size="md" className="mt-4 text-white">
+                    <Heading level="h2" size="md" className={dark ? "mt-4 text-white" : "mt-4"}>
                       {heading}
                     </Heading>
-                    {lead ? <Text className="mt-4 text-white/80">{lead}</Text> : null}
-                    <SectionItems items={items} tone="dark" />
+                    {lead ? (
+                      <Text className={`mt-4 ${dark ? "text-white/80" : "text-ink/85"}`}>
+                        {lead}
+                      </Text>
+                    ) : null}
+                    <SectionItems items={items} tone={dark ? "dark" : "light"} />
                   </div>
-                  <SectionPhoto
-                    image={section.image}
-                    heading={heading}
-                    className="relative aspect-[3/4] lg:col-span-5"
-                    sizes="(max-width: 1024px) 100vw, 40vw"
-                  />
+                  {section.image?.ref ? (
+                    <SectionPhoto
+                      image={section.image}
+                      heading={heading}
+                      className="relative aspect-[3/4] lg:col-span-5"
+                      sizes="(max-width: 1024px) 100vw, 40vw"
+                    />
+                  ) : null}
                 </div>
               </Section>
             </Reveal>
