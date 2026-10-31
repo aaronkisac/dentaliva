@@ -20,7 +20,7 @@ export const treatmentBySlugQuery = defineQuery(
     heroImage { ..., alt, "ref": asset._ref, "lqip": asset->metadata.lqip },
     // DSN-83: yapılandırılmış tedavi gövdesi — başlıklı bölümler + alt maddeler
     // + bölüm fotoğrafı. Doluysa sayfa düz metin gövdesi yerine bunu render eder.
-    sections[]{ heading, lead, items[]{ title, text },
+    sections[]{ heading, lead, style, items[]{ title, text },
       image { alt, "ref": asset._ref, "lqip": asset->metadata.lqip } },
     benefits,
     steps,

@@ -126,13 +126,38 @@ export const treatment = defineType({
               description:
                 "1080×1080 (1:1) klinik karesi. Mozaikte sağ üst hücreye, kadran/mola düzenlerinde alt bantta basılır.",
             },
+            {
+              name: "style",
+              title: "Görünüm",
+              description:
+                "Boş bırak = otomatik (içerik şekline göre seçilir; ardışık lacivert bantlar ve fotosuz lacivert bantlar engellenir). Sabit seçerseniz kural dışına gider.",
+              type: "string",
+              options: {
+                list: [
+                  { title: "Otomatik (önerilen)", value: "auto" },
+                  { title: "Mozaik (3+ madde, foto sağ üstte)", value: "mosaic" },
+                  { title: "Kadran (4 madde, foto bandı + 2×2)", value: "quad" },
+                  { title: "Lacivert vurgu bandı (2 madde + foto)", value: "duo" },
+                  { title: "Kapanış bandı (1 madde, tam kanat foto)", value: "showcase" },
+                  { title: "Okuma kolonu (maddesiz uzun metin)", value: "reading" },
+                  { title: "Ortalanmış mola (maddesiz kısa metin)", value: "break" },
+                ],
+              },
+              initialValue: "auto",
+            },
           ],
           preview: {
-            select: { title: `heading.${studioLocale}`, media: "image", items: "items" },
+            select: {
+              title: `heading.${studioLocale}`,
+              media: "image",
+              items: "items",
+              style: "style",
+            },
             prepare: (value: Record<string, unknown> = {}) => {
               const title = value.title as string | undefined;
               const media = value.media;
               const items = value.items as unknown[] | undefined;
+              const style = value.style as string | undefined;
               const count = items?.length ?? 0;
               const shape =
                 count === 4
@@ -144,9 +169,10 @@ export const treatment = defineType({
                       : count === 1
                         ? "kapanış bandı"
                         : "okuma kolonu";
+              const fixed = style && style !== "auto" ? `sabit: ${style} · ` : "";
               return {
                 title: title || "(başlıksız bölüm — sayfada görünmez)",
-                subtitle: `${count} madde · ${shape}${media ? "" : " · foto yok"}`,
+                subtitle: `${fixed}${count} madde · ${shape}${media ? "" : " · foto yok"}`,
                 media: media as never, // PreviewValue.media ReactNode (react tipi bu pakette yok)
               };
             },

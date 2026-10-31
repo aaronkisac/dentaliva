@@ -63,9 +63,13 @@ describe("TreatmentSections (DSN-83 v2 — kompozisyon varyantları)", () => {
     expect(html).not.toContain("aspect-[4/3]");
   });
 
-  it("2 madde → duo: lacivert bant, beyaz başlık, altın sayaç, portre foto", () => {
+  it("2 madde → duo (sabitlenmiş): lacivert bant, beyaz başlık, altın sayaç, portre foto", () => {
     const html = render([
-      section({ items: [item(1), item(2)], image: { ref: REF, alt: { tr: "Klinik" } } }),
+      section({
+        items: [item(1), item(2)],
+        image: { ref: REF, alt: { tr: "Klinik" } },
+        style: "duo",
+      }),
     ]);
     expect(html).toContain("bg-navy");
     expect(html).toContain("text-white");
@@ -103,7 +107,12 @@ describe("TreatmentSections (DSN-83 v2 — kompozisyon varyantları)", () => {
 
   it("açık bantlar sırayla beyaz/fildişi dönüşür (koyu bant sayılmaz)", () => {
     const html = render([
-      section({ heading: { tr: "B1" }, items: [item(1), item(2)] }),
+      section({
+        heading: { tr: "B1" },
+        items: [item(1), item(2)],
+        image: { ref: REF, alt: { tr: "k" } },
+        style: "duo",
+      }),
       section({ heading: { tr: "B2" }, items: [item(1), item(2), item(3)] }),
       section({ heading: { tr: "B3" }, items: [item(1), item(2), item(3), item(4)] }),
     ]);
@@ -116,19 +125,87 @@ describe("TreatmentSections (DSN-83 v2 — kompozisyon varyantları)", () => {
     expect(quadBand).not.toContain("bg-white");
   });
 
-  it("1 madde → showcase: tam kanat foto + navy scrim, metin üstte beyaz", () => {
+  it("1 madde → showcase (sabitlenmiş): tam kanat foto + navy scrim, metin üstte beyaz", () => {
     const html = render([
-      section({ items: [item(1)], image: { ref: REF, alt: { tr: "Klinik" } } }),
+      section({ items: [item(1)], image: { ref: REF, alt: { tr: "Klinik" } }, style: "showcase" }),
     ]);
     expect(html).toContain("relative overflow-hidden");
     expect(html).toContain("from-navy via-navy/85 to-navy/55");
     expect(html).toContain("text-white/80");
   });
 
-  it("showcase fotosuz: düz navy bant olarak düşer", () => {
+  it("showcase fotosuz → açık okuma kolonu (fotosuz lacivert duvar olmaz, DSN-87)", () => {
     const html = render([section({ items: [item(1)] })]);
-    expect(html).toContain("from-navy to-navy");
-    expect(html).not.toContain("via-navy/85");
+    expect(html).not.toContain("from-navy");
+    expect(html).toContain("max-w-3xl");
+  });
+
+  it("duo fotosuz → açık bant (fotosuz lacivert duvar olmaz, DSN-87)", () => {
+    const html = render([section({ items: [item(1), item(2)] })]);
+    expect(html).not.toContain("bg-navy");
+    expect(html).toContain("lg:col-span-7");
+  });
+
+  it("hero sonrası ilk koyu bant açık ikamesine düşer (DSN-87)", () => {
+    const html = render([
+      section({
+        heading: { tr: "B1" },
+        items: [item(1), item(2)],
+        image: { ref: REF, alt: { tr: "k" } },
+      }),
+    ]);
+    expect(html).not.toContain("bg-navy");
+    expect(html).toContain("lg:col-span-7"); // duo-light: aynı düzen, açık zemin
+  });
+
+  it("ardışık koyu bantlar engellenir: araya açık bant girmeden ikinci koyu gelmez (DSN-87)", () => {
+    const html = render([
+      section({
+        heading: { tr: "B1" },
+        items: [item(1), item(2)],
+        image: { ref: REF, alt: { tr: "k" } },
+      }),
+      section({
+        heading: { tr: "B2" },
+        items: [item(1), item(2)],
+        image: { ref: REF, alt: { tr: "k" } },
+      }),
+      section({
+        heading: { tr: "B3" },
+        items: [item(1), item(2)],
+        image: { ref: REF, alt: { tr: "k" } },
+      }),
+    ]);
+    const bands = html
+      .split(/(?=<section)/)
+      .slice(1)
+      .filter((b) => b.includes("<h2"));
+    const flags = bands.map((b) => (b.includes("bg-navy") ? "K" : "a"));
+    // Hero sonrası B1 açık düşer → B2 koyu KALABİLİR → B3 tekrar açık düşer
+    expect(flags.join("")).toBe("aKa");
+    expect(bands.filter((b) => b.includes("bg-navy")).length).toBe(1);
+  });
+
+  it("CRM sabitlemesi kural dışına saygı duyar: ardışık da olsa ikisi de koyu kalır", () => {
+    const html = render([
+      section({
+        heading: { tr: "B1" },
+        items: [item(1), item(2)],
+        image: { ref: REF, alt: { tr: "k" } },
+        style: "duo",
+      }),
+      section({
+        heading: { tr: "B2" },
+        items: [item(1), item(2)],
+        image: { ref: REF, alt: { tr: "k" } },
+        style: "duo",
+      }),
+    ]);
+    const bands = html
+      .split(/(?=<section)/)
+      .slice(1)
+      .filter((b) => b.includes("<h2"));
+    expect(bands.filter((b) => b.includes("bg-navy")).length).toBe(2);
   });
 
   it("başlıksız yarım CMS girişi akışa girmez", () => {

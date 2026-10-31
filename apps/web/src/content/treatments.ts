@@ -27,6 +27,8 @@ export interface TreatmentStep {
 export interface TreatmentSection {
   heading?: LocalizedPair;
   lead?: LocalizedPair;
+  /** DSN-87: editör sabitlemesi — boşsa otomatik kompozisyon. */
+  style?: string;
   items?: Array<{ title?: LocalizedPair; text?: LocalizedPair }>;
   image?: {
     ref?: string;
