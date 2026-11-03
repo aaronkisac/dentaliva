@@ -45,7 +45,7 @@ export const homePage = defineType({
               fields: [
                 {
                   // Varyant formu şekillendirir; render verinin şeklini izler
-                  // (split'te sideImages, full-bleed'de image doludur).
+                  // (split'te sideImages, full-bleed/medilo'da image doludur).
                   name: "variant",
                   title: "Tasarım versiyonu",
                   type: "string",
@@ -56,6 +56,11 @@ export const homePage = defineType({
                         value: "split",
                       },
                       { title: "Tam ekran — v1 full-bleed fotoğraf + zoom", value: "full-bleed" },
+                      {
+                        // DSN-90: Medilo referansı — beyaz kart + tam ekran foto.
+                        title: "Medilo — beyaz kart + tam ekran fotoğraf",
+                        value: "medilo",
+                      },
                     ],
                   },
                   initialValue: "split",
@@ -69,17 +74,42 @@ export const homePage = defineType({
                 },
                 { name: "body", title: "Gövde metni", type: "localeText" },
                 {
+                  // DSN-90: Medilo varyantının vurgulu kelimesi — altın altı
+                  // çizili basılır; başlıkta geçmiyorsa düz başlık kalır.
+                  name: "highlight",
+                  title: "Vurgulu kelime (Medilo)",
+                  description:
+                    "Başlıkta altın renkle altı çizilerek vurgulanacak kısım. Başlıkta geçmelı; boşsa vurgu yapılmaz.",
+                  type: "localeString",
+                  hidden: ({ parent }) =>
+                    (parent as { variant?: string } | undefined)?.variant !== "medilo",
+                },
+                {
+                  // DSN-90: Medilo kartının sol şeritli bilgi bloğu başlığı —
+                  // alt satır siteSettings.phone ile otomatik gelir.
+                  name: "calloutTitle",
+                  title: "Kart bilgi başlığı (Medilo)",
+                  description:
+                    "Beyaz kartın sol şeritli bilgi bloğu; altında 'Bizi arayın: <telefon>' satırı otomatik görünür. Boşsa blok render edilmez.",
+                  type: "localeString",
+                  hidden: ({ parent }) =>
+                    (parent as { variant?: string } | undefined)?.variant !== "medilo",
+                },
+                {
                   name: "image",
                   title: "Arka plan fotoğrafı",
-                  description: "Tam ekran versiyonunun arka planı.",
+                  description: "Tam ekran ve Medilo versiyonlarının arka planı.",
                   type: "imageWithAlt",
                   hidden: ({ parent }) =>
-                    (parent as { variant?: string } | undefined)?.variant !== "full-bleed",
+                    (parent as { variant?: string } | undefined)?.variant === "split",
                   validation: (rule) =>
                     rule.custom((value, context) => {
                       const parent = context?.parent as { variant?: string } | undefined;
-                      if (parent?.variant === "full-bleed" && !value) {
-                        return "Tam ekran versiyonunda arka plan fotoğrafı zorunludur.";
+                      if (
+                        (parent?.variant === "full-bleed" || parent?.variant === "medilo") &&
+                        !value
+                      ) {
+                        return "Bu versiyonda arka plan fotoğrafı zorunludur.";
                       }
                       return true;
                     }),
@@ -100,6 +130,7 @@ export const homePage = defineType({
                   const labels: Record<string, string> = {
                     split: "split (sağ kartlı)",
                     "full-bleed": "tam ekran",
+                    medilo: "Medilo (beyaz kart)",
                   };
                   const variant = typeof value.variant === "string" ? value.variant : "";
                   return {

@@ -9,9 +9,10 @@
  *
  * Dokunulanlar:
  *  - hero.interval                    (5 saniye — Aaron Studio'dan değiştirir)
- *  - hero.banners                     (2 örnek banner: mevcut split hero
- *                                     copy'si + full-bleed varyant; içerik
- *                                     mevcut hero alanlarından türetilir)
+ *  - hero.banners                     (3 örnek banner: mevcut split hero
+ *                                     copy'si + full-bleed + medilo varyantı;
+ *                                     içerik mevcut hero alanlarından
+ *                                     türetilir)
  *
  * KORUMA: Studio'da banners elle düzenlenmişse (dizi doluysa) script EZMEZ —
  * ezmek için --force şart (DSN-83 sections ezme dersi).
@@ -132,6 +133,18 @@ if (Array.isArray(hero.banners) && hero.banners.length > 0 && !FORCE) {
         headline,
         image: hero.image,
       });
+      // DSN-90: Medilo varyantı örneği — vurgu başlığın son cümlesinden,
+      // bilgi bloğu başlığı fonksiyonel taslak (Aaron Studio'dan düzenler).
+      banners.push({
+        _type: "heroBanner",
+        _key: "banner-medilo",
+        variant: "medilo",
+        headline,
+        highlight: { _type: "localeString", tr: "Gülüş Dönüşümü." },
+        body: hero.body,
+        calloutTitle: { _type: "localeString", tr: "Randevu için bizi arayın" },
+        image: hero.image,
+      });
     }
   }
   if (banners.length === 0) {
@@ -143,7 +156,9 @@ if (Array.isArray(hero.banners) && hero.banners.length > 0 && !FORCE) {
       note: "türetme malzemesi yok (headline/sideImages/image boş) — atlandı",
     });
   } else {
-    if (plan("hero.banners", hero.banners ?? null, banners, "split + full-bleed örnekleri")) {
+    if (
+      plan("hero.banners", hero.banners ?? null, banners, "split + full-bleed + medilo örnekleri")
+    ) {
       patches["hero.banners"] = banners;
     }
   }

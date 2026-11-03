@@ -40,6 +40,8 @@ const tr = {
   serviceSlideAria: (n: number) => `${n}. hizmet`,
   // DSN-89: hero banner carousel bölge etiketi.
   heroCarouselRegion: "Öne çıkan banner'lar",
+  // DSN-90: Medilo varyantının bilgi bloğu telefon satırı.
+  heroMediloCallLabel: "Bizi arayın:",
 
   // lightbox aria labels
   lightboxImageAria: (n: number) => `Görsel ${n} — büyüt`,
@@ -124,6 +126,7 @@ const en: typeof tr = {
   nextServices: "Next services",
   serviceSlideAria: (n) => `Service ${n}`,
   heroCarouselRegion: "Featured banners",
+  heroMediloCallLabel: "Call us at:",
 
   lightboxImageAria: (n) => `Image ${n} — enlarge`,
   lightboxFilterAria: "Gallery filter",
@@ -204,6 +207,7 @@ const nl: typeof tr = {
   nextServices: "Volgende behandelingen",
   serviceSlideAria: (n) => `Behandeling ${n}`,
   heroCarouselRegion: "Uitgelichte banners",
+  heroMediloCallLabel: "Bel ons:",
 
   lightboxImageAria: (n) => `Afbeelding ${n} — vergroot`,
   lightboxFilterAria: "Galerijfilter",

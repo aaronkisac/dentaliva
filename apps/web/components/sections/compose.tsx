@@ -37,6 +37,7 @@ export const sectionRegistry: Record<HomeSectionId, SectionRenderer> = {
       data={data.homePage?.hero ?? null}
       trust={data.siteCopy?.heroTrust ?? null}
       whatsapp={data.siteSettings?.whatsapp ?? null}
+      phone={data.siteSettings?.phone ?? null}
     />
   ),
   ticker: (data) => <ServiceTicker items={data.quickServices} />,

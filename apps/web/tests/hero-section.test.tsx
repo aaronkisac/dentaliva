@@ -26,6 +26,15 @@ const bleedBanner: HeroBannerData = {
   image: { asset: { _ref: "image-def456-2400x1400-jpg" } },
 };
 
+const mediloBanner: HeroBannerData = {
+  variant: "medilo",
+  headline: { tr: "Eksiksiz Bir Gülüş Dönüşümü." },
+  highlight: { tr: "Gülüş Dönüşümü." },
+  body: { tr: "Medilo gövde metni" },
+  calloutTitle: { tr: "Randevu için bizi arayın" },
+  image: { asset: { _ref: "image-cccc33-2400x1400-jpg" } },
+};
+
 describe("HeroSection", () => {
   it("renders all banner slides; inactive slide is aria-hidden (DSN-89)", () => {
     const html = renderToStaticMarkup(
@@ -111,5 +120,57 @@ describe("HeroSection", () => {
     );
     expect(html).toContain("İkinci banner");
     expect(html).not.toContain("carousel");
+  });
+
+  it("medilo banner renders the white card with highlight and callout (DSN-90)", () => {
+    const html = renderToStaticMarkup(
+      <HeroSection
+        data={{ banners: [mediloBanner, bleedBanner] }}
+        trust={null}
+        whatsapp={null}
+        phone="+90 212 555 54 82"
+      />,
+    );
+    // Beyaz kart dili + bg foto.
+    expect(html).toContain("rounded-[50px]");
+    expect(html).toContain("bg-white");
+    expect(html).toContain("image-cccc33-2400x1400-jpg");
+    // Vurgu: kelime altın span'de, başlığın kalanı düz.
+    expect(html).toContain("Eksiksiz Bir");
+    expect(html).toContain("bg-gold/30");
+    // Bilgi bloğu: şerit + başlık + telefon (ui-strings etiketi + tel linki).
+    expect(html).toContain("Randevu için bizi arayın");
+    expect(html).toContain("Bizi arayın:");
+    expect(html).toContain("tel:+902125555482");
+    // Medilo kartında navy metin dili — beyaz-üstü yazı sınıfları yok.
+    expect(html).toContain("text-navy");
+  });
+
+  it("medilo highlight only wraps when the word occurs in the headline", () => {
+    const html = renderToStaticMarkup(
+      <HeroSection
+        data={{
+          banners: [{ ...mediloBanner, highlight: { tr: "olmayan kelime" } }, bleedBanner],
+        }}
+        trust={null}
+        whatsapp={null}
+        phone={null}
+      />,
+    );
+    expect(html).toContain("Eksiksiz Bir Gülüş Dönüşümü.");
+    expect(html).not.toContain("bg-gold/30");
+    // Telefon yoksa tel satırı render edilmez ama bilgi bloğu kalır.
+    expect(html).toContain("Randevu için bizi arayın");
+    expect(html).not.toContain("tel:");
+  });
+
+  it("single medilo banner renders without the carousel client surface", () => {
+    const html = renderToStaticMarkup(
+      <HeroSection data={{ banners: [mediloBanner] }} trust={null} whatsapp={null} phone={null} />,
+    );
+    expect(html).toContain("rounded-[50px]");
+    expect(html).not.toContain("carousel");
+    // Medilo bg'si hero-zoom (v1) animasyonu kullanmaz.
+    expect(html).not.toContain("hero-zoom");
   });
 });
