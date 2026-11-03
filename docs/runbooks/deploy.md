@@ -30,6 +30,13 @@ pnpm --filter @dentaliva/web deploy:staging
 # → https://dentaliva-com-staging.<account-subdomain>.workers.dev
 ```
 
+`deploy:staging` routes through `build-site.mjs --site com --with-v1-archive`:
+it reads the **production** dataset (the per-site staging datasets are empty —
+the staging worker serves a production-dataset build with `MOCK_EXTERNAL=1`)
+and attaches the frozen `/homepage-v1` page archive. The archive is
+**staging-only by decision (DSN-88)**: never add `--with-v1-archive` to a
+production build; `deploy:prod` does not carry it.
+
 Lock the URL behind Cloudflare Access (dashboard, one-time):
 
 1. Zero Trust → **Access → Applications → Add an application → Self-hosted**.
