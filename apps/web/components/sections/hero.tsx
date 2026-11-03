@@ -231,6 +231,160 @@ function HeroContent({
 
 const SECTION_CLASS = "relative flex min-h-[92vh] items-center overflow-clip bg-navy text-white";
 
+/**
+ * DSN-90: Medilo varyantı — tam-ekran fotoğraf zemininde SOLDA beyaz
+ * yuvarlatılmış kart (Medilo şablonunun yerleşim deseni; renk/typografi
+ * bizim marka dili, mavi→altın eşlemesi). Kart: eyebrow (verildiyse) +
+ * vurgulu başlık + gövde + sol şeritli bilgi bloğu (başlık + telefon) +
+ * pill CTA'lar. Fotoğrafın sağ kısmı kartın dışında açıkta kalır; hafif
+ * degrade foto kenarlarını yumuşatır (kart beyaz olduğu için full-bleed'den
+ * daha açık — kontrastı kart taşır, scrim taşımaz).
+ */
+function HeroMediloContent({
+  banner,
+  phone,
+  whatsapp,
+  priority = true,
+}: {
+  banner: HeroBannerData;
+  /** DSN-90: bilgi bloğu telefon satırı — siteSettings.phone. */
+  phone?: string | null;
+  whatsapp?: string | null;
+  priority?: boolean;
+}) {
+  const eyebrowText = t(banner.eyebrow);
+  const headlineText = t(banner.headline);
+  const bodyText = t(banner.body);
+  const highlightText = t(banner.highlight);
+  const calloutText = t(banner.calloutTitle);
+  const ref = banner.image?.asset?._ref;
+  const dims = ref ? (refDimensions(ref) ?? { width: 2400, height: 1400 }) : null;
+  // Vurgu: başlık içinde geçiyorsa ikiye bölüp altın altı çizili span ile
+  // sarılır; boşsa/geçmiyorsa düz başlık — kırılmaz.
+  const highlightAt = highlightText && headlineText ? headlineText.indexOf(highlightText) : -1;
+
+  return (
+    <>
+      {ref && dims ? (
+        <>
+          <div aria-hidden="true" className="absolute inset-0">
+            <Image
+              src={ref}
+              alt=""
+              fill
+              priority={priority}
+              sizes="100vw"
+              placeholder="blur"
+              blurDataURL={banner.image?.lqip ?? lqipUrl(ref, ENV)}
+              className="object-cover"
+            />
+          </div>
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 bg-gradient-to-b from-navy/45 via-navy/15 to-navy/55"
+          />
+        </>
+      ) : null}
+      <Container className="relative">
+        <div className="flex items-center py-[var(--dvn-section-y)] md:py-[var(--dvn-section-y-md)]">
+          <div className="w-full max-w-[825px] rounded-[28px] bg-white p-8 shadow-[var(--dvn-shadow-lift)] md:rounded-[50px] md:p-14 lg:p-16">
+            <div className="flex flex-col items-start gap-6 text-left">
+              {eyebrowText ? (
+                <div className="flex items-center gap-3">
+                  <span aria-hidden="true" className="h-px w-8 bg-gold" />
+                  <p className="font-sans text-xs uppercase tracking-widest text-gold">
+                    {eyebrowText}
+                  </p>
+                </div>
+              ) : null}
+              {headlineText ? (
+                <Heading level="h1" size="xl" className="text-navy">
+                  {highlightAt >= 0 && highlightText ? (
+                    <>
+                      {headlineText.slice(0, highlightAt)}
+                      <span className="relative inline-block text-gold">
+                        {highlightText}
+                        <span
+                          aria-hidden="true"
+                          className="absolute inset-x-0 bottom-1 h-[6px] bg-gold/30"
+                        />
+                      </span>
+                      {headlineText.slice(highlightAt + highlightText.length)}
+                    </>
+                  ) : (
+                    headlineText
+                  )}
+                </Heading>
+              ) : null}
+              {bodyText ? (
+                <p className="max-w-xl font-sans text-base leading-relaxed text-navy/70">
+                  {bodyText}
+                </p>
+              ) : null}
+              {calloutText ? (
+                <div className="relative border-l-[5px] border-navy py-1 pl-5">
+                  <span
+                    aria-hidden="true"
+                    className="absolute left-[-9px] top-1/2 h-2 w-2 -translate-y-1/2 rotate-45 bg-gold"
+                  />
+                  <Heading level="h3" size="sm" className="text-navy">
+                    {calloutText}
+                  </Heading>
+                  {phone ? (
+                    <p className="mt-1 font-sans text-navy/80">
+                      {uiString("heroMediloCallLabel")}{" "}
+                      <a
+                        href={`tel:${phone.replace(/[^\d+]/g, "")}`}
+                        className="font-semibold text-navy underline decoration-gold decoration-2 underline-offset-4"
+                      >
+                        {phone}
+                      </a>
+                    </p>
+                  ) : null}
+                </div>
+              ) : null}
+              <div className="flex flex-wrap items-center gap-4">
+                {/* DSN-63: birincil dönüşüm ilk değerlendirme formu (doküman #01). */}
+                <Link
+                  href="#review"
+                  className={buttonVariants({ size: "lg", class: "rounded-full" })}
+                >
+                  {uiString("startReviewCta")}
+                </Link>
+                {whatsapp ? (
+                  <a
+                    href={`https://wa.me/${whatsapp.replace(/[^\d]/g, "")}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={buttonVariants({
+                      variant: "navy",
+                      size: "lg",
+                      class: "rounded-full",
+                    })}
+                  >
+                    {uiString("whatsappCta")}
+                  </a>
+                ) : (
+                  <Link
+                    href={routes.treatments}
+                    className={buttonVariants({
+                      variant: "navy",
+                      size: "lg",
+                      class: "rounded-full",
+                    })}
+                  >
+                    {uiString("exploreServicesCta")}
+                  </Link>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </Container>
+    </>
+  );
+}
+
 /** Banner slaytlarının ortak gövdesi — en az bir içerik parçası taşır. */
 function hasContent(banner: HeroBannerData): boolean {
   return (
@@ -250,12 +404,15 @@ export function HeroSection({
   data,
   trust,
   whatsapp,
+  phone,
 }: {
   data: HeroData | null;
   /** DSN-44: güven satırı siteCopy'den — parça yoksa satır hiç render edilmez. */
   trust?: HeroTrust | null;
   /** DSN-63: ikincil CTA WhatsApp kanalı — numara yoksa tedaviler CTA'sı. */
   whatsapp?: string | null;
+  /** DSN-90: Medilo kartının bilgi bloğu telefon satırı. */
+  phone?: string | null;
 }) {
   const banners = (data?.banners ?? []).filter(hasContent);
 
@@ -264,16 +421,20 @@ export function HeroSection({
     if (banners.length === 1 && single) {
       return (
         <section className={SECTION_CLASS}>
-          <HeroContent
-            eyebrow={single.eyebrow}
-            headline={single.headline}
-            body={single.body}
-            image={single.image}
-            sideImages={single.sideImages}
-            trust={trust}
-            whatsapp={whatsapp}
-            priority
-          />
+          {single.variant === "medilo" ? (
+            <HeroMediloContent banner={single} phone={phone} whatsapp={whatsapp} priority />
+          ) : (
+            <HeroContent
+              eyebrow={single.eyebrow}
+              headline={single.headline}
+              body={single.body}
+              image={single.image}
+              sideImages={single.sideImages}
+              trust={trust}
+              whatsapp={whatsapp}
+              priority
+            />
+          )}
         </section>
       );
     }
@@ -282,16 +443,25 @@ export function HeroSection({
         <HeroCarousel intervalSeconds={data?.interval}>
           {banners.map((banner, index) => (
             <div key={index} className="relative flex min-h-[92vh] items-center">
-              <HeroContent
-                eyebrow={banner.eyebrow}
-                headline={banner.headline}
-                body={banner.body}
-                image={banner.image}
-                sideImages={banner.sideImages}
-                trust={trust}
-                whatsapp={whatsapp}
-                priority={index === 0}
-              />
+              {banner.variant === "medilo" ? (
+                <HeroMediloContent
+                  banner={banner}
+                  phone={phone}
+                  whatsapp={whatsapp}
+                  priority={index === 0}
+                />
+              ) : (
+                <HeroContent
+                  eyebrow={banner.eyebrow}
+                  headline={banner.headline}
+                  body={banner.body}
+                  image={banner.image}
+                  sideImages={banner.sideImages}
+                  trust={trust}
+                  whatsapp={whatsapp}
+                  priority={index === 0}
+                />
+              )}
             </div>
           ))}
         </HeroCarousel>

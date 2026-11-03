@@ -67,10 +67,14 @@ interface HomeImage {
 
 export interface HeroBannerData {
   /** DSN-89: varyant Studio formunu şekillendirir; render verinin şeklini izler. */
-  variant?: "split" | "full-bleed";
+  variant?: "split" | "full-bleed" | "medilo";
   eyebrow?: LocalizedPair;
   headline?: LocalizedPair;
   body?: LocalizedPair;
+  /** DSN-90: Medilo varyantı — başlıkta altın altı çizili vurgulanan kısım. */
+  highlight?: LocalizedPair;
+  /** DSN-90: Medilo kartının sol şeritli bilgi bloğu başlığı. */
+  calloutTitle?: LocalizedPair;
   image?: HomeImage;
   sideImages?: Array<{ ref?: string; alt?: LocalizedPair; lqip?: string }>;
 }

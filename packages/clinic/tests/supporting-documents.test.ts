@@ -67,7 +67,16 @@ describe("supporting documents (SAN-3)", () => {
     expect(banners?.of?.[0]?.name).toBe("heroBanner");
 
     const bannerFields = banners?.of?.[0]?.fields ?? [];
-    for (const name of ["variant", "eyebrow", "headline", "body", "image", "sideImages"]) {
+    for (const name of [
+      "variant",
+      "eyebrow",
+      "headline",
+      "body",
+      "highlight",
+      "calloutTitle",
+      "image",
+      "sideImages",
+    ]) {
       expect(
         bannerFields.find((f) => f.name === name),
         name,
@@ -80,14 +89,23 @@ describe("supporting documents (SAN-3)", () => {
     expect(typeof hiddenOf("image")).toBe("function");
     expect(hiddenOf("image")?.({ parent: { variant: "split" } })).toBe(true);
     expect(hiddenOf("image")?.({ parent: { variant: "full-bleed" } })).toBe(false);
+    expect(hiddenOf("image")?.({ parent: { variant: "medilo" } })).toBe(false);
     expect(hiddenOf("sideImages")?.({ parent: { variant: "full-bleed" } })).toBe(true);
+    expect(hiddenOf("sideImages")?.({ parent: { variant: "medilo" } })).toBe(true);
     expect(hiddenOf("sideImages")?.({ parent: { variant: "split" } })).toBe(false);
+    // DSN-90: highlight + calloutTitle yalnız medilo formunda görünür.
+    expect(hiddenOf("highlight")?.({ parent: { variant: "medilo" } })).toBe(false);
+    expect(hiddenOf("highlight")?.({ parent: { variant: "split" } })).toBe(true);
+    expect(hiddenOf("highlight")?.({ parent: { variant: "full-bleed" } })).toBe(true);
+    expect(hiddenOf("calloutTitle")?.({ parent: { variant: "medilo" } })).toBe(false);
+    expect(hiddenOf("calloutTitle")?.({ parent: { variant: "split" } })).toBe(true);
+    expect(hiddenOf("calloutTitle")?.({ parent: { variant: "full-bleed" } })).toBe(true);
 
     const interval = heroFields.find((f) => f.name === "interval") as
       { initialValue?: number } | undefined;
     expect(interval?.initialValue).toBe(5);
 
-    // full-bleed arka plan doğrulaması: değer + varyanta göre üç dal.
+    // full-bleed/medilo arka plan doğrulaması: değer + varyanta göre dallar.
     const imageField = bannerFields.find((f) => f.name === "image") as {
       validation?: (rule: unknown) => unknown;
     };
@@ -105,12 +123,15 @@ describe("supporting documents (SAN-3)", () => {
     imageField.validation?.(capturingRule);
     const validateImage = captured as (value: unknown, ctx: unknown) => string | true;
     expect(validateImage(undefined, { parent: { variant: "full-bleed" } })).toBe(
-      "Tam ekran versiyonunda arka plan fotoğrafı zorunludur.",
+      "Bu versiyonda arka plan fotoğrafı zorunludur.",
+    );
+    expect(validateImage(undefined, { parent: { variant: "medilo" } })).toBe(
+      "Bu versiyonda arka plan fotoğrafı zorunludur.",
     );
     expect(validateImage({ asset: {} }, { parent: { variant: "full-bleed" } })).toBe(true);
     expect(validateImage(undefined, { parent: { variant: "split" } })).toBe(true);
 
-    // Banner önizlemesi: başlık + versiyon etiketi; boş/brnmeyen varyant.
+    // Banner önizlemesi: başlık + versiyon etiketi; boş/bilinmeyen varyant.
     const prepare = (
       banners?.of?.[0] as unknown as {
         preview?: {
@@ -121,6 +142,10 @@ describe("supporting documents (SAN-3)", () => {
     expect(prepare?.({ title: "Merhaba", variant: "split" })).toEqual({
       title: "Merhaba",
       subtitle: "split (sağ kartlı)",
+    });
+    expect(prepare?.({ title: "Merhaba", variant: "medilo" })).toEqual({
+      title: "Merhaba",
+      subtitle: "Medilo (beyaz kart)",
     });
     expect(prepare?.({ title: "Merhaba", variant: "future-x" })).toEqual({
       title: "Merhaba",

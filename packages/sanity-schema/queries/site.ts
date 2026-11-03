@@ -40,8 +40,9 @@ export const homePageQuery = defineQuery(`*[_type == "homePage"][0]{
     // DSN-84: sağ kart görselleri — boş dizi full-bleed fallback'e döner.
     "sideImages": sideImages[]{ "ref": asset._ref, alt, "lqip": asset->metadata.lqip },
     // DSN-89: dönüşümlü banner'lar — boş dizi hero'yu mevcut davranışında bırakır.
+    // DSN-90: highlight + calloutTitle Medilo varyantının alanları.
     interval,
-    "banners": banners[]{ variant, eyebrow, headline, body,
+    "banners": banners[]{ variant, eyebrow, headline, body, highlight, calloutTitle,
       "image": image { ..., alt, "lqip": asset->metadata.lqip },
       "sideImages": sideImages[]{ "ref": asset._ref, alt, "lqip": asset->metadata.lqip }
     }
