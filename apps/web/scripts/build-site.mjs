@@ -2,7 +2,7 @@
 // from the site registry itself, so a stale apps/web/.env can never cross-wire
 // projects (Sanity read tokens are project-scoped).
 //
-//   node scripts/build-site.mjs --site eu [--env staging]
+//   node scripts/build-site.mjs --site eu [--env staging] [--with-v1-archive]
 //
 // Env resolution:
 //   SITE_ID / NEXT_PUBLIC_SITE_ID  — from --site
@@ -11,8 +11,15 @@
 //                                    otherwise site.dataset (shell beats .env)
 //   SANITY_READ_TOKEN              — passed through if already set, otherwise
 //                                    SANITY_READ_TOKEN_<SITE.toUpperCase()>;
-//                                    if neither exists the token is BLANKED
-//                                    (anonymous CDN reads for public datasets)
+//                                    if neither exists the var is left UNSET so
+//                                    Next's .env loading can still supply it
+//                                    (with no .env — CI — the read is anonymous;
+//                                    anonymous v1 reads omit documents)
+//
+// --with-v1-archive: attach the frozen /homepage-v1 page archive (DSN-84) to a
+// successful com build. STAGING-ONLY by decision (DSN-88, Aaron 2026-11-03):
+// the archive must never ship to production, so it is opt-in rather than
+// attached to every com build.
 import { spawnSync } from "node:child_process";
 import { copyFileSync, existsSync, mkdirSync, readdirSync } from "node:fs";
 import { join } from "node:path";
@@ -24,6 +31,9 @@ import { fileURLToPath, pathToFileURL } from "node:url";
  * `_next/static` varlıklarını taşır; chunk adları content-hash olduğundan
  * güncel build'in varlıklarıyla çakışmaz, out'ta zaten var olan dosyalar
  * asla ezilmez. Sayfa noindex'lidir (snapshot HTML'ine işlenmiş).
+ *
+ * DSN-88: yalnız `--with-v1-archive` ile çağrıldığında eklenir — arşiv
+ * staging-only'dir, prod build'lerine asla girmemeli.
  */
 function attachV1Snapshot(webRoot) {
   const snapshot = join(webRoot, "v1-homepage-snapshot");
@@ -48,6 +58,7 @@ function attachV1Snapshot(webRoot) {
 const args = process.argv.slice(2);
 const siteId = args[args.indexOf("--site") + 1];
 const envName = args.includes("--env") ? args[args.indexOf("--env") + 1] : "production";
+const withV1Archive = args.includes("--with-v1-archive");
 if (!siteId) {
   console.error("[build-site] kullanım: --site <id> [--env staging]");
   process.exit(1);
@@ -64,13 +75,15 @@ env.SANITY_PROJECT_ID = site.sanity.projectId;
 env.SANITY_DATASET = envName === "staging" ? site.sanity.stagingDataset : site.sanity.dataset;
 
 // Token: SANITY_READ_TOKEN passthrough; else the site-specific
-// SANITY_READ_TOKEN_<SITE> (CI secret / local session token); else blank
-// (anonymous — anonymous v1 reads omit documents, so real content builds
-// need the site token).
+// SANITY_READ_TOKEN_<SITE> (CI secret / local session token); else leave the
+// var UNSET so Next still loads it from apps/web/.env (local deploys). With
+// no .env (CI without a secret) the read stays anonymous — anonymous v1
+// reads omit documents, so real content builds need a token from somewhere.
 if (!env.SANITY_READ_TOKEN) {
-  env.SANITY_READ_TOKEN = env[`SANITY_READ_TOKEN_${site.id.toUpperCase()}`] ?? "";
+  const siteToken = env[`SANITY_READ_TOKEN_${site.id.toUpperCase()}`];
+  if (siteToken) env.SANITY_READ_TOKEN = siteToken;
+  else delete env.SANITY_READ_TOKEN;
 }
-if (!env.SANITY_READ_TOKEN) env.SANITY_READ_TOKEN = "";
 
 console.log(
   `[build-site] SITE_ID=${site.id} env=${envName} project=${env.SANITY_PROJECT_ID} dataset=${env.SANITY_DATASET} token=${env.SANITY_READ_TOKEN ? "set" : "anonymous"}`,
@@ -89,5 +102,5 @@ if (clear.status !== 0) process.exit(clear.status ?? 1);
 // next build triggers the postbuild chain (prune-routes + generate-redirects
 // + generate-headers).
 const result = spawnSync("pnpm", ["build"], { stdio: "inherit", env, shell: true });
-if (site.id === "com" && result.status === 0) attachV1Snapshot(webRoot);
+if (site.id === "com" && withV1Archive && result.status === 0) attachV1Snapshot(webRoot);
 process.exit(result.status ?? 1);
