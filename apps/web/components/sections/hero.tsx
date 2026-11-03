@@ -5,11 +5,13 @@ import { t } from "../../src/i18n";
 import { lqipUrl, refDimensions } from "@dentaliva/sanity-schema/image-url";
 
 import { site } from "../../src/config";
-import type { LocalizedPair } from "../../src/content/home";
+import type { HeroBannerData, LocalizedPair } from "../../src/content/home";
 
 import { imageTarget } from "../../src/image-target";
 import { uiString } from "../../src/ui-strings";
 import { routes } from "../../src/routes";
+
+import { HeroCarousel } from "./hero-carousel";
 
 export interface HeroData {
   eyebrow?: { tr?: string; en?: string };
@@ -20,6 +22,10 @@ export interface HeroData {
   image?: { asset?: { _ref?: string }; alt?: { tr?: string; en?: string }; lqip?: string };
   /** DSN-84: doküman #01 — sağdaki fotoğraf dizisi; doluysa split hero. */
   sideImages?: Array<{ ref?: string; alt?: LocalizedPair; lqip?: string }>;
+  /** DSN-89: dönüşümlü banner'lar — doluysa hero carousel'e döner. */
+  banners?: HeroBannerData[];
+  /** DSN-89: banner geçiş süresi (saniye) — CRM'den, default 5. */
+  interval?: number;
 }
 
 export interface HeroTrust {
@@ -30,57 +36,68 @@ export interface HeroTrust {
 
 const ENV = imageTarget();
 
+type HeroContentProps = {
+  eyebrow?: LocalizedPair;
+  headline?: LocalizedPair;
+  /** Yalnız legacy hero alanı (v1 alt başlığı) — banner'lar body kullanır. */
+  subline?: LocalizedPair;
+  body?: LocalizedPair;
+  image?: HeroData["image"];
+  sideImages?: HeroData["sideImages"];
+  trust?: HeroTrust | null;
+  whatsapp?: string | null;
+  /** DSN-89: carousel'da yalnız ilk slayt priority (LCP). */
+  priority?: boolean;
+};
+
 /**
- * DSN-84: doküman #01 — split hero (CareNow/DentalX kompozisyonu, marka
- * dilinde). Sol: altın çizgi eyebrow + H1 + alt başlık + gövde + çift CTA
- * (mobilde ilk ekranda). Sağ: 2 klinik/planlama fotoğrafı kartı (about
- * kartının altın çerçeve dili, dikey 3/4, ikinci kart offset'li). Sağ
- * görseller YOKSA (eu/nl, boş CMS) v1'in tam-bleed fotoğraf + zoom
- * davranışı aynen korunur — hero image'siz split'te düz navy zemin.
+ * Tek hero sahnesi: tam-bleed arka plan (görsel varken ve split kartı yokken,
+ * v1 ile birebir) + sol copy kolonu (eyebrow/H1/alt başlık/gövde/çift
+ * CTA/güven satırı) + split kartları. DSN-89 ile legacy hero ve her banner
+ * slaytı aynı sahneyi çizer — varyant verinin şekliyle belirlenir.
  */
-export function HeroSection({
-  data,
+function HeroContent({
+  eyebrow,
+  headline,
+  subline,
+  body,
+  image,
+  sideImages,
   trust,
   whatsapp,
-}: {
-  data: HeroData | null;
-  /** DSN-44: güven satırı siteCopy'den — parça yoksa satır hiç render edilmez. */
-  trust?: HeroTrust | null;
-  /** DSN-63: ikincil CTA WhatsApp kanalı — numara yoksa tedaviler CTA'sı. */
-  whatsapp?: string | null;
-}) {
-  const eyebrow = t(data?.eyebrow);
-  const headline = t(data?.headline);
-  const subline = t(data?.subline);
-  const body = t(data?.body);
+  priority = true,
+}: HeroContentProps) {
+  const eyebrowText = t(eyebrow);
+  const headlineText = t(headline);
+  const sublineText = t(subline);
+  const bodyText = t(body);
   const trustItems = [t(trust?.since), t(trust?.experience), t(trust?.googleRating)].filter(
     (item): item is string => Boolean(item),
   );
-  const sides = (data?.sideImages ?? []).filter(
+  const sides = (sideImages ?? []).filter(
     (img): img is { ref: string; alt?: LocalizedPair; lqip?: string } => Boolean(img.ref),
   );
   const primary = sides[0];
   const secondary = sides[1];
-  const split = primary !== undefined;
-  const ref = data?.image?.asset?._ref;
+  const ref = image?.asset?._ref;
   const dims = ref ? (refDimensions(ref) ?? { width: 2400, height: 1400 }) : null;
   const rise = (delay: number) => ({ animationDelay: `${delay}ms` });
 
   return (
-    <section className="relative flex min-h-[92vh] items-center overflow-clip bg-navy text-white">
+    <>
       {/* Split modda arka plan temiz kalır (sağ kartlar sahneyi taşır);
           tam-bleed yolu v1 ile birebir. */}
-      {ref && dims && !split ? (
+      {ref && dims && !primary ? (
         <>
           <div aria-hidden="true" className="hero-zoom absolute inset-0">
             <Image
               src={ref}
               alt=""
               fill
-              priority
+              priority={priority}
               sizes="100vw"
               placeholder="blur"
-              blurDataURL={data?.image?.lqip ?? lqipUrl(ref, ENV)}
+              blurDataURL={image?.lqip ?? lqipUrl(ref, ENV)}
               className="object-cover"
             />
           </div>
@@ -93,30 +110,30 @@ export function HeroSection({
       <Container className="relative">
         <div className="grid items-center gap-12 py-[var(--dvn-section-y)] md:py-[var(--dvn-section-y-md)] lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
           <div className="flex max-w-2xl flex-col items-start gap-6 text-left">
-            {eyebrow ? (
+            {eyebrowText ? (
               <div className="hero-rise flex items-center gap-3" style={rise(40)}>
                 <span aria-hidden="true" className="h-px w-8 bg-gold" />
                 <p className="font-sans text-xs uppercase tracking-widest text-gold-soft">
-                  {eyebrow}
+                  {eyebrowText}
                 </p>
               </div>
             ) : null}
-            {headline ? (
+            {headlineText ? (
               <Heading level="h1" size="xl" className="hero-rise text-white" style={rise(120)}>
-                {headline}
+                {headlineText}
               </Heading>
             ) : null}
-            {subline ? (
+            {sublineText ? (
               <Text size="lg" tone="white" className="hero-rise text-white/85" style={rise(240)}>
-                {subline}
+                {sublineText}
               </Text>
             ) : null}
-            {body ? (
+            {bodyText ? (
               <p
                 className="hero-rise max-w-xl font-sans text-base leading-relaxed text-white/70"
                 style={rise(320)}
               >
-                {body}
+                {bodyText}
               </p>
             ) : null}
             <div className="hero-rise flex flex-wrap items-center gap-4" style={rise(420)}>
@@ -172,7 +189,7 @@ export function HeroSection({
               </div>
             ) : null}
           </div>
-          {split ? (
+          {primary ? (
             <div
               className="hero-rise relative hidden h-full max-h-[640px] md:block"
               style={rise(300)}
@@ -183,7 +200,7 @@ export function HeroSection({
                   src={primary.ref}
                   alt={t(primary.alt) || ""}
                   fill
-                  priority
+                  priority={priority}
                   sizes="(max-width: 1024px) 0px, 40vw"
                   placeholder="blur"
                   blurDataURL={primary.lqip ?? lqipUrl(primary.ref, ENV)}
@@ -208,6 +225,93 @@ export function HeroSection({
           ) : null}
         </div>
       </Container>
+    </>
+  );
+}
+
+const SECTION_CLASS = "relative flex min-h-[92vh] items-center overflow-clip bg-navy text-white";
+
+/** Banner slaytlarının ortak gövdesi — en az bir içerik parçası taşır. */
+function hasContent(banner: HeroBannerData): boolean {
+  return (
+    Boolean(t(banner.headline)) ||
+    Boolean(banner.image?.asset?._ref) ||
+    (banner.sideImages ?? []).some((img) => Boolean(img.ref))
+  );
+}
+
+/**
+ * DSN-84 split hero (CareNow/DentalX kompozisyonu) + DSN-89 banner
+ * carousel'i. banners doluysa hero banner'lar arasında crossfade ile döner
+ * (ok/nokta yok; süre CRM'den); tek banner'da client JS hiç yüklenmez;
+ * banners boşken mevcut davranış birebir korunur (eu/nl güvenli).
+ */
+export function HeroSection({
+  data,
+  trust,
+  whatsapp,
+}: {
+  data: HeroData | null;
+  /** DSN-44: güven satırı siteCopy'den — parça yoksa satır hiç render edilmez. */
+  trust?: HeroTrust | null;
+  /** DSN-63: ikincil CTA WhatsApp kanalı — numara yoksa tedaviler CTA'sı. */
+  whatsapp?: string | null;
+}) {
+  const banners = (data?.banners ?? []).filter(hasContent);
+
+  if (banners.length > 0) {
+    const single = banners[0];
+    if (banners.length === 1 && single) {
+      return (
+        <section className={SECTION_CLASS}>
+          <HeroContent
+            eyebrow={single.eyebrow}
+            headline={single.headline}
+            body={single.body}
+            image={single.image}
+            sideImages={single.sideImages}
+            trust={trust}
+            whatsapp={whatsapp}
+            priority
+          />
+        </section>
+      );
+    }
+    return (
+      <section className="relative overflow-clip bg-navy text-white">
+        <HeroCarousel intervalSeconds={data?.interval}>
+          {banners.map((banner, index) => (
+            <div key={index} className="relative flex min-h-[92vh] items-center">
+              <HeroContent
+                eyebrow={banner.eyebrow}
+                headline={banner.headline}
+                body={banner.body}
+                image={banner.image}
+                sideImages={banner.sideImages}
+                trust={trust}
+                whatsapp={whatsapp}
+                priority={index === 0}
+              />
+            </div>
+          ))}
+        </HeroCarousel>
+      </section>
+    );
+  }
+
+  return (
+    <section className={SECTION_CLASS}>
+      <HeroContent
+        eyebrow={data?.eyebrow}
+        headline={data?.headline}
+        subline={data?.subline}
+        body={data?.body}
+        image={data?.image}
+        sideImages={data?.sideImages}
+        trust={trust}
+        whatsapp={whatsapp}
+        priority
+      />
     </section>
   );
 }

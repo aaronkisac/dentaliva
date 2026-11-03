@@ -65,6 +65,16 @@ interface HomeImage {
   lqip?: string;
 }
 
+export interface HeroBannerData {
+  /** DSN-89: varyant Studio formunu şekillendirir; render verinin şeklini izler. */
+  variant?: "split" | "full-bleed";
+  eyebrow?: LocalizedPair;
+  headline?: LocalizedPair;
+  body?: LocalizedPair;
+  image?: HomeImage;
+  sideImages?: Array<{ ref?: string; alt?: LocalizedPair; lqip?: string }>;
+}
+
 export interface HomePageContent {
   /** DSN-84: eyebrow/body/sideImages additive — boşken v1 davranışı korunur. */
   hero?: {
@@ -74,6 +84,9 @@ export interface HomePageContent {
     body?: LocalizedPair;
     image?: HomeImage;
     sideImages?: Array<{ ref?: string; alt?: LocalizedPair; lqip?: string }>;
+    /** DSN-89: dönüşümlü banner'lar — boşken hero mevcut davranışını korur. */
+    interval?: number;
+    banners?: HeroBannerData[];
   };
   quickServiceLinks?: QuickServiceItem[];
   /** DSN-61: hero altı kompakt güven bandı — veri yoksa bölüm render edilmez. */

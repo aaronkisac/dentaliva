@@ -58,6 +58,77 @@ describe("supporting documents (SAN-3)", () => {
     }
   });
 
+  it("hero supports banner carousel: banners(0-5) + interval (DSN-89)", () => {
+    const hero = fieldOf(homePage, "hero") as { fields?: AnyField[] };
+    const heroFields = hero.fields ?? [];
+    const banners = heroFields.find((f) => f.name === "banners") as
+      { of?: Array<{ name?: string; fields?: AnyField[] }> } | undefined;
+    expect(banners).toBeDefined();
+    expect(banners?.of?.[0]?.name).toBe("heroBanner");
+
+    const bannerFields = banners?.of?.[0]?.fields ?? [];
+    for (const name of ["variant", "eyebrow", "headline", "body", "image", "sideImages"]) {
+      expect(
+        bannerFields.find((f) => f.name === name),
+        name,
+      ).toBeDefined();
+    }
+
+    // Conditional görünürlük: forma yalnız seçilen versiyonun alanları gelir.
+    const hiddenOf = (name: string) =>
+      (bannerFields.find((f) => f.name === name) as { hidden?: (ctx: unknown) => boolean })?.hidden;
+    expect(typeof hiddenOf("image")).toBe("function");
+    expect(hiddenOf("image")?.({ parent: { variant: "split" } })).toBe(true);
+    expect(hiddenOf("image")?.({ parent: { variant: "full-bleed" } })).toBe(false);
+    expect(hiddenOf("sideImages")?.({ parent: { variant: "full-bleed" } })).toBe(true);
+    expect(hiddenOf("sideImages")?.({ parent: { variant: "split" } })).toBe(false);
+
+    const interval = heroFields.find((f) => f.name === "interval") as
+      { initialValue?: number } | undefined;
+    expect(interval?.initialValue).toBe(5);
+
+    // full-bleed arka plan doğrulaması: değer + varyanta göre üç dal.
+    const imageField = bannerFields.find((f) => f.name === "image") as {
+      validation?: (rule: unknown) => unknown;
+    };
+    let captured: unknown;
+    const capturingRule: unknown = new Proxy(() => capturingRule, {
+      get: (_target, prop) =>
+        prop === "custom"
+          ? (fn: unknown) => {
+              captured = fn;
+              return capturingRule;
+            }
+          : () => capturingRule,
+      apply: () => capturingRule,
+    });
+    imageField.validation?.(capturingRule);
+    const validateImage = captured as (value: unknown, ctx: unknown) => string | true;
+    expect(validateImage(undefined, { parent: { variant: "full-bleed" } })).toBe(
+      "Tam ekran versiyonunda arka plan fotoğrafı zorunludur.",
+    );
+    expect(validateImage({ asset: {} }, { parent: { variant: "full-bleed" } })).toBe(true);
+    expect(validateImage(undefined, { parent: { variant: "split" } })).toBe(true);
+
+    // Banner önizlemesi: başlık + versiyon etiketi; boş/brnmeyen varyant.
+    const prepare = (
+      banners?.of?.[0] as unknown as {
+        preview?: {
+          prepare?: (v?: Record<string, unknown>) => { title: string; subtitle: string };
+        };
+      }
+    )?.preview?.prepare;
+    expect(prepare?.({ title: "Merhaba", variant: "split" })).toEqual({
+      title: "Merhaba",
+      subtitle: "split (sağ kartlı)",
+    });
+    expect(prepare?.({ title: "Merhaba", variant: "future-x" })).toEqual({
+      title: "Merhaba",
+      subtitle: "future-x",
+    });
+    expect(prepare?.()).toEqual({ title: "(başlıksız banner)", subtitle: "versiyon seçilmedi" });
+  });
+
   it("redirect defaults to permanent 301", () => {
     expect(fieldOf(redirect, "permanent").initialValue).toBe(true);
     expect(fieldOf(redirect, "from").type).toBe("slug");

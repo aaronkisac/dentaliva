@@ -38,6 +38,8 @@ const tr = {
   prevServices: "Önceki hizmetler",
   nextServices: "Sonraki hizmetler",
   serviceSlideAria: (n: number) => `${n}. hizmet`,
+  // DSN-89: hero banner carousel bölge etiketi.
+  heroCarouselRegion: "Öne çıkan banner'lar",
 
   // lightbox aria labels
   lightboxImageAria: (n: number) => `Görsel ${n} — büyüt`,
@@ -121,6 +123,7 @@ const en: typeof tr = {
   prevServices: "Previous services",
   nextServices: "Next services",
   serviceSlideAria: (n) => `Service ${n}`,
+  heroCarouselRegion: "Featured banners",
 
   lightboxImageAria: (n) => `Image ${n} — enlarge`,
   lightboxFilterAria: "Gallery filter",
@@ -200,6 +203,7 @@ const nl: typeof tr = {
   prevServices: "Vorige behandelingen",
   nextServices: "Volgende behandelingen",
   serviceSlideAria: (n) => `Behandeling ${n}`,
+  heroCarouselRegion: "Uitgelichte banners",
 
   lightboxImageAria: (n) => `Afbeelding ${n} — vergroot`,
   lightboxFilterAria: "Galerijfilter",

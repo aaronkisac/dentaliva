@@ -26,6 +26,9 @@ const ROOTS = [join(process.cwd()), join(process.cwd(), "..", "..", "packages", 
  * - app/global-error.tsx: root hata sınırı — client zorunluluğu (reset state)
  * - components/theme-switcher: hover/panel open + dismiss state, palet
  *   uygulama (DSN-57 — kalıcı sürüm src/theme.ts'te, saf ve test edilebilir)
+ * - sections/hero-carousel: hero banner dönüş saatini (active index +
+ *   interval, DSN-89) tutar; slayt içerikleri server'dan children olarak
+ *   gelir, tek banner'da bileşen hiç mount edilmez
  * (ui/button was audited out — purely presentational, renders server-side.)
  */
 const ALLOWED = new Set(
@@ -36,6 +39,7 @@ const ALLOWED = new Set(
     "components/branch-gallery.tsx",
     "components/before-after-slider.tsx",
     "components/sections/quick-services.tsx",
+    "components/sections/hero-carousel.tsx",
     "components/use-track-carousel.ts",
     "components/carousel-track.tsx",
     "components/theme-switcher.tsx",
