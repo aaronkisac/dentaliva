@@ -1,5 +1,7 @@
 import { defineField, defineType } from "sanity";
 
+import { studioLocale } from "@dentaliva/sanity-schema";
+
 /** Singleton: home page section content (section order comes from site config). */
 export const homePage = defineType({
   name: "homePage",
@@ -25,6 +27,103 @@ export const homePage = defineType({
           type: "array",
           validation: (rule) => rule.max(2),
           of: [{ type: "imageWithAlt" }],
+        },
+        {
+          // DSN-89: dönüşümlü hero banner'ları. Dizi doluysa hero banner'lar
+          // arasında otomatik geçiş yapar (ok/nokta yok; süre interval alanı);
+          // boşken hero mevcut davranışını korur (eu/nl güvenli).
+          name: "banners",
+          title: "Hero banner'ları (0-5)",
+          description:
+            "Birden fazla banner girerseniz hero bunlar arasında otomatik geçiş yapar. Her banner'da tasarım versiyonu seçilir; forma yalnız o versiyonun alanları gelir. Yeni versiyonlar ileride bu listeye eklenir.",
+          type: "array",
+          validation: (rule) => rule.max(5).error("En fazla 5 hero banner girilebilir."),
+          of: [
+            {
+              type: "object",
+              name: "heroBanner",
+              fields: [
+                {
+                  // Varyant formu şekillendirir; render verinin şeklini izler
+                  // (split'te sideImages, full-bleed'de image doludur).
+                  name: "variant",
+                  title: "Tasarım versiyonu",
+                  type: "string",
+                  options: {
+                    list: [
+                      {
+                        title: "Split — başlık + sağ fotoğraf kartları (mevcut tasarım)",
+                        value: "split",
+                      },
+                      { title: "Tam ekran — v1 full-bleed fotoğraf + zoom", value: "full-bleed" },
+                    ],
+                  },
+                  initialValue: "split",
+                },
+                { name: "eyebrow", title: "Üst etiket", type: "localeString" },
+                {
+                  name: "headline",
+                  title: "Başlık",
+                  type: "localeString",
+                  validation: (rule) => rule.required(),
+                },
+                { name: "body", title: "Gövde metni", type: "localeText" },
+                {
+                  name: "image",
+                  title: "Arka plan fotoğrafı",
+                  description: "Tam ekran versiyonunun arka planı.",
+                  type: "imageWithAlt",
+                  hidden: ({ parent }) =>
+                    (parent as { variant?: string } | undefined)?.variant !== "full-bleed",
+                  validation: (rule) =>
+                    rule.custom((value, context) => {
+                      const parent = context?.parent as { variant?: string } | undefined;
+                      if (parent?.variant === "full-bleed" && !value) {
+                        return "Tam ekran versiyonunda arka plan fotoğrafı zorunludur.";
+                      }
+                      return true;
+                    }),
+                },
+                {
+                  name: "sideImages",
+                  title: "Sağ kart görselleri (0-2)",
+                  type: "array",
+                  hidden: ({ parent }) =>
+                    (parent as { variant?: string } | undefined)?.variant !== "split",
+                  validation: (rule) => rule.max(2),
+                  of: [{ type: "imageWithAlt" }],
+                },
+              ],
+              preview: {
+                select: { title: `headline.${studioLocale}`, media: "image", variant: "variant" },
+                prepare: (value: Record<string, unknown> = {}) => {
+                  const labels: Record<string, string> = {
+                    split: "split (sağ kartlı)",
+                    "full-bleed": "tam ekran",
+                  };
+                  const variant = typeof value.variant === "string" ? value.variant : "";
+                  return {
+                    title:
+                      typeof value.title === "string" && value.title
+                        ? value.title
+                        : "(başlıksız banner)",
+                    subtitle: variant ? (labels[variant] ?? variant) : "versiyon seçilmedi",
+                    media: value.media as never,
+                  };
+                },
+              },
+            },
+          ],
+        },
+        {
+          // DSN-89: banner geçiş süresi — karar Aaron'da, CRM'den.
+          name: "interval",
+          title: "Banner geçiş süresi (saniye)",
+          description:
+            "Banner'lar kaç saniyede bir değişsin (3-15; önerilen 5). İki ve daha fazla banner varken geçerlidir.",
+          type: "number",
+          initialValue: 5,
+          validation: (rule) => rule.min(3).max(15),
         },
       ],
     }),

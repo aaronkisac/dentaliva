@@ -38,7 +38,13 @@ export const branchBySlugQuery = defineQuery(
 export const homePageQuery = defineQuery(`*[_type == "homePage"][0]{
   hero { ..., image { ..., alt, "lqip": asset->metadata.lqip },
     // DSN-84: sağ kart görselleri — boş dizi full-bleed fallback'e döner.
-    "sideImages": sideImages[]{ "ref": asset._ref, alt, "lqip": asset->metadata.lqip }
+    "sideImages": sideImages[]{ "ref": asset._ref, alt, "lqip": asset->metadata.lqip },
+    // DSN-89: dönüşümlü banner'lar — boş dizi hero'yu mevcut davranışında bırakır.
+    interval,
+    "banners": banners[]{ variant, eyebrow, headline, body,
+      "image": image { ..., alt, "lqip": asset->metadata.lqip },
+      "sideImages": sideImages[]{ "ref": asset._ref, alt, "lqip": asset->metadata.lqip }
+    }
   },
   quickServiceLinks[]->{ name, slug, summary, heroImage { "ref": asset._ref, alt, "lqip": asset->metadata.lqip } },
   trustStrip { rating, ratingLabel, items },
