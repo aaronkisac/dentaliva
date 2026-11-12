@@ -52,20 +52,21 @@ export function DoctorsSection({
           {text ? <Text className="mt-4 max-w-2xl">{text}</Text> : null}
         </div>
       ) : null}
-      <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      {/* DSN-91: mobilde yatay swipe carousel (css-only), sm üstünde eski grid. */}
+      <div className="mt-10 -mx-[var(--dvn-container-gutter)] flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-pl-[var(--dvn-container-gutter)] px-[var(--dvn-container-gutter)] pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:grid sm:grid-cols-2 lg:grid-cols-4">
         {featured.map((doctor) => {
           const title = t(doctor.title);
           return (
             <article
               key={doctor.slug ?? doctor.name}
-              className="group rounded-[4px] border border-transparent p-2 -m-2 transition-shadow duration-300 hover:border-[var(--dvn-line-soft)] hover:bg-white hover:shadow-[var(--dvn-shadow-lift)]"
+              className="group w-[82%] shrink-0 snap-start rounded-[4px] border border-transparent p-2 -m-2 transition-shadow duration-300 hover:border-[var(--dvn-line-soft)] hover:bg-white hover:shadow-[var(--dvn-shadow-lift)] sm:w-auto"
             >
               <DoctorPortrait
                 name={doctor.name}
                 photo={doctor.photo?.ref ? { ref: doctor.photo.ref, lqip: doctor.lqip } : undefined}
                 alt={t(doctor.photo?.alt) || doctor.name || ""}
                 frameClassName="relative aspect-[3/4] w-full overflow-hidden rounded-[4px]"
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                sizes="(max-width: 640px) 82vw, (max-width: 1024px) 50vw, 25vw"
               />
               <h3 className="mt-4 font-serif text-lg leading-snug text-ink">
                 {doctor.slug ? (

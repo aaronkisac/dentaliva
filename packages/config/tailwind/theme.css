@@ -17,7 +17,13 @@
   --shadow-lift: var(--dvn-shadow-lift);
   --shadow-gold: var(--dvn-shadow-gold);
   --radius-full: var(--dvn-radius-full);
+  /* DSN-91: sm'i de px tanımlamak ŞART — rem'de kalan tek breakpoint, v4'ün
+     varyant sıralamasını bozup sm: kuralını lg:'den sonra basıyor (ikisi
+     eşleşince sonraki kazanır → desktop 4 kolon yerine 2 görünüyor). */
+  --breakpoint-sm: 640px;
   --breakpoint-md: 900px;
   --breakpoint-lg: 1080px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
   --ease-out-brand: var(--dvn-ease-out);
 }
