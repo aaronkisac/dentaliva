@@ -46,9 +46,13 @@ export function HowItWorksSection({
           aria-hidden="true"
           className="absolute left-6 right-6 top-[21px] hidden h-px bg-[var(--dvn-line-soft)] xl:block"
         />
-        <ol className="relative grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+        {/* DSN-91: mobilde yatay swipe carousel (css-only), sm üstünde eski grid. */}
+        <ol className="relative -mx-[var(--dvn-container-gutter)] flex snap-x snap-mandatory gap-x-6 overflow-x-auto scroll-pl-[var(--dvn-container-gutter)] px-[var(--dvn-container-gutter)] pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
           {visible.map((step, index) => (
-            <li key={`${index}-${step.title}`} className="bg-white">
+            <li
+              key={`${index}-${step.title}`}
+              className="w-[82%] shrink-0 snap-start bg-white sm:w-auto"
+            >
               <span
                 aria-hidden="true"
                 className="flex h-11 w-11 items-center justify-center rounded-full border border-gold/60 bg-white font-serif text-sm text-gold-deep"
