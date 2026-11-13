@@ -16,6 +16,11 @@ const props = {
   copyright: "© Copyright Dentaliva 2026",
 };
 
+/** DSN-34 altın monogram fallback'i — marka sütununun ilk çocuğu olan span. */
+function containerQueryMonogram(): Element | null {
+  return document.querySelector("footer span.bg-gold");
+}
+
 describe("Footer", () => {
   it("renders contact details, columns, socials and copyright", () => {
     renderUi(<Footer {...props} />);
@@ -68,6 +73,32 @@ describe("Footer", () => {
     expect(bands.length).toBe(1);
     expect(bands[0]?.textContent).toContain("© Copyright Dentaliva 2026");
     expect(bands[0]?.querySelector("span[aria-hidden='true']")).toBeNull();
+  });
+
+  it("renders the header brand lockup (white variant) when a logo is given", () => {
+    renderUi(
+      <Footer
+        {...props}
+        logo={{
+          src: "/logo.png",
+          srcDark: "/logo-white.png",
+          alt: "Dentaliva",
+          width: 339,
+          height: 112,
+        }}
+      />,
+    );
+    // Navy zeminde beyaz varyant; marka kilidi home bağlantısıdır.
+    const brand = screen.getByRole("link", { name: "Dentaliva" });
+    expect(brand).toHaveAttribute("href", "/");
+    expect(brand.querySelector("img")).toHaveAttribute("src", "/logo-white.png");
+    // Altın D monogramı fallback'e düşmez.
+    expect(containerQueryMonogram()).toBeNull();
+  });
+
+  it("falls back to the gold monogram without a logo prop", () => {
+    renderUi(<Footer {...props} />);
+    expect(containerQueryMonogram()).not.toBeNull();
   });
 
   it("omits nameless anchors when contact values are empty", () => {
