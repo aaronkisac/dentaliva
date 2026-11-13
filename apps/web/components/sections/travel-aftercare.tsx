@@ -170,10 +170,11 @@ export function AftercareSection({
           {heading}
         </Heading>
       ) : null}
-      {/* DSN-91: mobilde yatay swipe carousel (css-only), md üstünde eski grid. */}
-      <div className="mt-8 -mx-[var(--dvn-container-gutter)] flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-pl-[var(--dvn-container-gutter)] px-[var(--dvn-container-gutter)] pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:grid md:grid-cols-2">
+      {/* DSN-91 düzeltme: carousel YALNIZ telefon genişliğinde (<640) —
+          640-900 eski 1 kolon istif, 900+ eski 2 kolon grid. */}
+      <div className="mt-8 -mx-[var(--dvn-container-gutter)] flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-pl-[var(--dvn-container-gutter)] px-[var(--dvn-container-gutter)] pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:grid md:grid-cols-2">
         {normalTitle && normal.length > 0 ? (
-          <div className="w-[82%] shrink-0 snap-start rounded-[4px] border border-[var(--dvn-line-soft)] bg-white p-6 md:w-auto">
+          <div className="w-[82%] shrink-0 snap-start rounded-[4px] border border-[var(--dvn-line-soft)] bg-white p-6 sm:w-auto">
             <h3 className="flex items-center gap-3 font-serif text-lg text-ink">
               <CardIcon kind="check" />
               {normalTitle}
@@ -188,7 +189,7 @@ export function AftercareSection({
           </div>
         ) : null}
         {urgentTitle && urgent.length > 0 ? (
-          <div className="w-[82%] shrink-0 snap-start rounded-[4px] border border-[var(--dvn-line-gold)] bg-white p-6 md:w-auto">
+          <div className="w-[82%] shrink-0 snap-start rounded-[4px] border border-[var(--dvn-line-gold)] bg-white p-6 sm:w-auto">
             <h3 className="flex items-center gap-3 font-serif text-lg text-ink">
               <CardIcon kind="bell" />
               {urgentTitle}
