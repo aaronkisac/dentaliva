@@ -3,7 +3,8 @@ import type { Metadata } from "next";
 import { t } from "../../../src/i18n";
 import { buildBreadcrumbJsonLd } from "@dentaliva/seo";
 
-import { Reveal, Section, Text } from "@dentaliva/ui";
+import { Reveal, Section } from "@dentaliva/ui";
+import { DoctorBio } from "../../../components/doctor-bio";
 import { JsonLd } from "../../../components/json-ld";
 import { CtaBand } from "../../../components/cta-band";
 import { DoctorPortrait } from "../../../components/doctor-portrait";
@@ -91,9 +92,9 @@ export default async function DoctorDetailPage({ params }: PageProps) {
       </PageHero>
       <Reveal>
         <Section>
-          {t(doctor.bio) ? (
-            <Text className="max-w-3xl whitespace-pre-line">{t(doctor.bio)}</Text>
-          ) : null}
+          {/* DSN-92: biyo, yapılandırılmış CV bölümlerinde (parser fallback'u
+              bileşenin içinde — tanınmayan metin eski düz render'a düşer). */}
+          {t(doctor.bio) ? <DoctorBio bio={t(doctor.bio)} heroTitle={t(doctor.title)} /> : null}
 
           {/* DSN-9: hekimin ilgi alanları (schema: doctor.treatments). */}
           {(doctor.treatments ?? []).length > 0 ? (
