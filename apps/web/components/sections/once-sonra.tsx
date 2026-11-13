@@ -51,7 +51,11 @@ export function OnceSonraSection({
           </Heading>
         </div>
       ) : null}
-      <div className="mt-10 grid gap-6 md:grid-cols-3">
+      {/* DSN-91 deseni (düzeltilmiş): carousel YALNIZ telefon genişliğinde
+          (<640) — 640-900 eski 1 kolon istif, 900+ eski 3 kolon. Kart
+          içindeki önce/sonra slider'ı görsel alanında dokunmatik sürüklemeyi
+          kendisi alır (touch-none); carousel kaydırması metin/peek alanından. */}
+      <div className="mt-10 -mx-[var(--dvn-container-gutter)] flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-pl-[var(--dvn-container-gutter)] px-[var(--dvn-container-gutter)] pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:grid md:grid-cols-3">
         {cards.map((item, index) => {
           const title = t(item.title);
           const text = t(item.text);
@@ -73,7 +77,7 @@ export function OnceSonraSection({
           return (
             <article
               key={slug ?? title ?? index}
-              className="overflow-hidden rounded-[4px] border border-[var(--dvn-line-soft)] bg-white text-ink transition-shadow duration-300 hover:shadow-[var(--dvn-shadow-lift)]"
+              className="w-[82%] shrink-0 snap-start overflow-hidden rounded-[4px] border border-[var(--dvn-line-soft)] bg-white text-ink transition-shadow duration-300 hover:shadow-[var(--dvn-shadow-lift)] sm:w-auto"
             >
               <BeforeAfterSlider
                 before={{
