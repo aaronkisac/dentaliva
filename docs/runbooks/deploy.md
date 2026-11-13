@@ -142,10 +142,12 @@ Same codebase, second site — ADR-002/004 delivered end to end (2026-10-18):
 - **Workers**: `wrangler.eu.jsonc` → `dentaliva-eu` (prod, namespaces 1003)
   and `dentaliva-eu-staging` (mock mode, namespace 1004), `LOCALE=en`,
   `NOTIFY_FALLBACK=info@dentaliva.eu`.
-- **Build**: `node scripts/build-site.mjs --site eu [--env staging]` sets the
+- **Build**: `node scripts/build-site.mjs --site eu` sets the
   full site-scoped env from the registry; tokens are per-project
   (`SANITY_READ_TOKEN_EU` — anonymous v1 reads omit documents, so real
-  content builds need the token).
+  content builds need the token). **Staging builds read the PRODUCTION
+  dataset** (DSN-77/84/88 pattern — `--env staging` on the build step reads
+  the eu STAGING dataset, which is stale; only wrangler gets `--env staging`).
 - **Deploy**:
   ```bash
   pnpm --filter @dentaliva/web deploy:eu:staging   # dentaliva-eu-staging
