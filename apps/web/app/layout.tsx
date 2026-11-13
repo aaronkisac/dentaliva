@@ -62,6 +62,18 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         })
       : null;
 
+  // DSN-58: orijinal marka kilidi (canlı siteden çıkarılan kuğu logosu) —
+  // header'da home bağlantısı (beyaz varyant şeffaf hero üstünde, renkli
+  // varyant ışık header'da); footer navy zeminde aynı nesnenin beyaz
+  // varyantını kullanır.
+  const logo = {
+    src: "/logo.png",
+    srcDark: "/logo-white.png",
+    alt: siteName,
+    width: 339,
+    height: 112,
+  };
+
   return (
     <html lang={site.defaultLocale} className={fontVariables}>
       <body className="bg-ivory text-ink antialiased">
@@ -110,16 +122,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         </a>
         <Header
           items={buildHeaderItems(site, siteCopy)}
-          // DSN-58: orijinal marka kilidi (canlı siteden çıkarılan kuğu logosu)
-          // home bağlantısı olarak; beyaz varyant hero üstündeki şeffaf
-          // header'da, renkli varyant ışık header'da.
-          logo={{
-            src: "/logo.png",
-            srcDark: "/logo-white.png",
-            alt: siteName,
-            width: 339,
-            height: 112,
-          }}
+          logo={logo}
           cta={{ label: uiString("bookCta"), href: routes.contact }}
           labels={{ toggleMenu: pageString("toggleMenu"), closeMenu: pageString("closeMenu") }}
           contact={
@@ -130,6 +133,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           {children}
         </main>
         <Footer
+          logo={logo}
           columns={site.nav.map((item) => ({ title: item.label, links: [item] }))}
           contact={contact ?? { phone: "", email: "", address: "", hours: "" }}
           social={(settings?.social ?? [])

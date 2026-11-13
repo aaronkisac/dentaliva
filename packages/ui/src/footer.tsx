@@ -2,6 +2,7 @@ import { forwardRef, type HTMLAttributes } from "react";
 
 import { cn } from "./cn";
 import { Link } from "./link";
+import type { HeaderLogo } from "./header";
 
 export interface FooterColumn {
   title: string;
@@ -20,6 +21,13 @@ export interface FooterProps extends HTMLAttributes<HTMLElement> {
   contact: FooterContact;
   social: Array<{ label: string; href: string }>;
   copyright: string;
+  /**
+   * Marka kilidi — header ile aynı nesne (HeaderLogo). Footer navy zeminde
+   * durduğu için daima beyaz varyant (srcDark) tercih edilir; verilmezse
+   * DSN-34 altın monogram fallback kalır (paket copy'siz, başka tüketici
+   * güvenli).
+   */
+  logo?: HeaderLogo;
   /** DSN-44: sütun başlıkları CMS'ten (siteCopy) gelir — pakette copy yok;
       başlığı olmayan sütun render edilmez ("boş bölüm canlıya çıkmaz"). */
   labels?: {
@@ -73,7 +81,7 @@ function SocialIcon({ platform, className }: { platform: string; className?: str
 
 /** Site footer: NAP block, link columns, socials, copyright (CMS-driven). */
 export const Footer = forwardRef<HTMLElement, FooterProps>(function Footer(
-  { columns, contact, social, copyright, labels, legalLinks, className, ...rest },
+  { columns, contact, social, copyright, labels, legalLinks, logo, className, ...rest },
   ref,
 ) {
   // DSN-34: tek linkli nav sütunları tek düz listeye indirgenir (href dedupe).
@@ -92,12 +100,26 @@ export const Footer = forwardRef<HTMLElement, FooterProps>(function Footer(
     <footer ref={ref} className={cn("bg-navy text-white", className)} {...rest}>
       <div className="mx-auto grid max-w-[var(--dvn-container-max)] gap-10 px-[var(--dvn-container-gutter)] py-14 md:grid-cols-3">
         <div>
-          <span
-            aria-hidden="true"
-            className="flex h-9 w-9 items-center justify-center bg-gold font-serif text-xl font-bold text-navy"
-          >
-            D
-          </span>
+          {logo ? (
+            // Header ile aynı marka kilidi (DSN-58 kuğu logosu) — navy zeminde
+            // beyaz varyant; home bağlantısı. Yerel public asset → düz img.
+            <Link href="/" className="inline-flex items-center">
+              <img
+                src={logo.srcDark ?? logo.src}
+                alt={logo.alt}
+                width={logo.width}
+                height={logo.height}
+                className="h-11 w-auto"
+              />
+            </Link>
+          ) : (
+            <span
+              aria-hidden="true"
+              className="flex h-9 w-9 items-center justify-center bg-gold font-serif text-xl font-bold text-navy"
+            >
+              D
+            </span>
+          )}
           {labels?.contact ? (
             <h2 className="mt-6 font-serif text-[length:var(--dvn-text-title-size)] text-gold-soft">
               {labels.contact}
