@@ -98,15 +98,16 @@ export function VideoTestimonialsSection({
           {heading}
         </Heading>
       ) : null}
-      {/* DSN-91: mobilde yatay swipe carousel (css-only), md üstünde eski grid. */}
-      <div className="mt-8 -mx-[var(--dvn-container-gutter)] flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-pl-[var(--dvn-container-gutter)] px-[var(--dvn-container-gutter)] pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:grid md:grid-cols-3">
+      {/* DSN-91 düzeltme: carousel YALNIZ telefon genişliğinde (<640) —
+          640-900 eski 1 kolon istif, 900+ eski 3 kolon grid. */}
+      <div className="mt-8 -mx-[var(--dvn-container-gutter)] flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-pl-[var(--dvn-container-gutter)] px-[var(--dvn-container-gutter)] pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:grid md:grid-cols-3">
         {videos.map((item) => (
           <a
             key={item.youtubeId}
             href={`https://www.youtube-nocookie.com/embed/${item.youtubeId}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="group relative block aspect-video w-[82%] shrink-0 snap-start overflow-hidden border border-[var(--dvn-line-soft)] md:w-auto"
+            className="group relative block aspect-video w-[82%] shrink-0 snap-start overflow-hidden border border-[var(--dvn-line-soft)] sm:w-auto"
           >
             {/* CSP img-src i.ytimg.com'a izin verir (PRF-1); iframe yerine
                 poster: klavye tek durak + sayfa 6 uzaktan frame yüklemez. */}

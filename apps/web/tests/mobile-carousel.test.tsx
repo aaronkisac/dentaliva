@@ -43,12 +43,16 @@ describe("mobile card carousels (DSN-91)", () => {
     expect(html).toContain("xl:grid-cols-6");
   });
 
-  it("clinics: şube kartları snap, md grid korunur", () => {
+  it("clinics: şube kartları snap, carousel <640 — üstü eski yerleşim", () => {
     const html = renderToStaticMarkup(
       <ClinicsSection branches={[{ name: "Avcılar", slug: "avcilar" }]} />,
     );
     expect(html).toContain(TRACK);
     expect(html).toContain(CARD);
+    // DSN-91 düzeltme: kesim sm (640) — 640-900 eski 1 kolon, 900+ 3 kolon.
+    expect(html).toContain("sm:grid");
+    expect(html).toContain("sm:w-auto");
+    expect(html).not.toContain("md:grid ");
     expect(html).toContain("md:grid-cols-3");
   });
 
@@ -62,21 +66,25 @@ describe("mobile card carousels (DSN-91)", () => {
     expect(html).toContain("lg:grid-cols-4");
   });
 
-  it("aftercare: kartlar snap, md grid korunur", () => {
+  it("aftercare: kartlar snap, carousel <640 — üstü eski yerleşim", () => {
     const html = renderToStaticMarkup(
       <AftercareSection data={{ normal: [{ tr: "Şişlik" }] }} normalTitle="Normal" />,
     );
     expect(html).toContain(TRACK);
     expect(html).toContain(CARD);
+    expect(html).toContain("sm:grid");
+    expect(html).toContain("sm:w-auto");
     expect(html).toContain("md:grid-cols-2");
   });
 
-  it("videoTestimonials: video kartları snap, md grid korunur", () => {
+  it("videoTestimonials: video kartları snap, carousel <640 — üstü eski yerleşim", () => {
     const html = renderToStaticMarkup(
       <VideoTestimonialsSection items={[{ youtubeId: "abc123", author: "Hasta" }]} />,
     );
     expect(html).toContain(TRACK);
     expect(html).toContain(CARD);
+    expect(html).toContain("sm:grid");
+    expect(html).toContain("sm:w-auto");
     expect(html).toContain("md:grid-cols-3");
   });
 });

@@ -70,8 +70,9 @@ export function ClinicsSection({
         </Heading>
       ) : null}
       {intro ? <p className="mt-4 max-w-3xl font-sans text-lg text-ink/70">{intro}</p> : null}
-      {/* DSN-91: mobilde yatay swipe carousel (css-only), md üstünde eski grid. */}
-      <div className="mt-8 -mx-[var(--dvn-container-gutter)] flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-pl-[var(--dvn-container-gutter)] px-[var(--dvn-container-gutter)] pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:grid md:grid-cols-3">
+      {/* DSN-91 düzeltme: carousel YALNIZ telefon genişliğinde (<640) —
+          640-900 eski 1 kolon istif, 900+ eski 3 kolon grid. */}
+      <div className="mt-8 -mx-[var(--dvn-container-gutter)] flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-pl-[var(--dvn-container-gutter)] px-[var(--dvn-container-gutter)] pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:grid md:grid-cols-3">
         {branches.slice(0, 3).map((branch) => {
           const address = t(branch.address);
           const phone = branch.phone;
@@ -89,7 +90,7 @@ export function ClinicsSection({
                     src={branch.image.ref}
                     alt={t(branch.image.alt) || branch.name || ""}
                     fill
-                    sizes="(max-width: 899px) 82vw, 33vw"
+                    sizes="(max-width: 639px) 82vw, (max-width: 899px) 100vw, 33vw"
                     placeholder="blur"
                     blurDataURL={branch.image.lqip ?? lqipUrl(branch.image.ref, ENV)}
                     className="object-cover"
@@ -133,7 +134,7 @@ export function ClinicsSection({
             return (
               <article
                 key={branch.name ?? "branch"}
-                className="w-[82%] shrink-0 snap-start md:w-auto"
+                className="w-[82%] shrink-0 snap-start sm:w-auto"
               >
                 {card}
               </article>
@@ -143,7 +144,7 @@ export function ClinicsSection({
             <Link
               key={branch.slug}
               href={routes.branch(branch.slug)}
-              className="group block w-[82%] shrink-0 snap-start rounded-[4px] no-underline transition-shadow duration-300 hover:shadow-[var(--dvn-shadow-lift)] md:w-auto"
+              className="group block w-[82%] shrink-0 snap-start rounded-[4px] no-underline transition-shadow duration-300 hover:shadow-[var(--dvn-shadow-lift)] sm:w-auto"
             >
               {card}
             </Link>
