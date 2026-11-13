@@ -16,6 +16,7 @@ import { ClinicsSection } from "../components/sections/clinics";
 import { DoctorsSection } from "../components/sections/doctors";
 import { AftercareSection } from "../components/sections/travel-aftercare";
 import { VideoTestimonialsSection } from "../components/sections/testimonials";
+import { OnceSonraSection } from "../components/sections/once-sonra";
 
 const TRACK = "snap-x snap-mandatory";
 const CARD = "snap-start";
@@ -85,6 +86,27 @@ describe("mobile card carousels (DSN-91)", () => {
     expect(html).toContain(CARD);
     expect(html).toContain("sm:grid");
     expect(html).toContain("sm:w-auto");
+    expect(html).toContain("md:grid-cols-3");
+  });
+
+  it("onceSonra: karşılaştırma kartları snap, carousel <640 — üstü eski yerleşim", () => {
+    const html = renderToStaticMarkup(
+      <OnceSonraSection
+        items={[
+          {
+            title: { tr: "Diş Beyazlatma" },
+            before: { ref: "image-aaaa11-1448x1086-png" },
+            after: { ref: "image-bbbb22-1448x1086-png" },
+          },
+        ]}
+        heading="Önce / Sonra"
+      />,
+    );
+    expect(html).toContain(TRACK);
+    expect(html).toContain(CARD);
+    expect(html).toContain("w-[82%]");
+    expect(html).toContain("sm:w-auto");
+    expect(html).toContain("sm:grid");
     expect(html).toContain("md:grid-cols-3");
   });
 });
