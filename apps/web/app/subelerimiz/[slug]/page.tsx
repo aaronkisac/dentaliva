@@ -10,7 +10,7 @@ import { JsonLd } from "../../../components/json-ld";
 import { CtaBand } from "../../../components/cta-band";
 import { GalleryLightbox } from "../../../components/lightbox";
 import { PageHero } from "../../../components/page-hero";
-import { PortableText } from "../../../components/portable-text";
+import { PortableTextSections } from "../../../components/portable-text-sections";
 import { fetchBranchBySlug, fetchBranches } from "../../../src/content/branches";
 import { fetchHomePageDocument, fetchSiteSettings } from "../../../src/content/home";
 import { fetchSiteCopy } from "../../../src/content/site-copy";
@@ -22,6 +22,31 @@ import { routes } from "../../../src/routes";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
+}
+
+/** DSN-38 ikon dili — iletişim kartı satırlarında küçük stroke ikonlar. */
+function CardIcon({ kind }: { kind: "pin" | "phone" | "mail" | "clock" }) {
+  const paths: Record<typeof kind, string> = {
+    pin: "M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z M12 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z",
+    phone:
+      "M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92Z",
+    mail: "M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Zm0 2 8 6 8-6",
+    clock: "M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20Z M12 6v6l4 2",
+  };
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="mt-1 h-4 w-4 shrink-0 text-gold-deep"
+    >
+      <path d={paths[kind]} />
+    </svg>
+  );
 }
 
 export async function generateStaticParams(): Promise<Array<{ slug: string }>> {
@@ -106,11 +131,10 @@ export default async function BranchDetailPage({ params }: PageProps) {
       </Reveal>
       {blocks.length > 0 ? (
         <Reveal>
-          <Section>
-            {/* DSN-77: orijinalin H2/H3 + paragraf gövdesi — CMS'ten
-                (localeBlockContent), düzeni PortableText çizer. */}
-            <PortableText blocks={blocks} />
-          </Section>
+          {/* DSN-93: orijinalin gövdesi editoryal bantlarda — veri bulgusu:
+              üç şubede de 1 h2 (SEO satırı) + h3 bölümler; splitAt="h3"
+              h3'lerde böler, h2 + öncesi intro olur. */}
+          <PortableTextSections blocks={blocks} splitAt="h3" />
         </Reveal>
       ) : null}
       <Reveal>
@@ -128,31 +152,48 @@ export default async function BranchDetailPage({ params }: PageProps) {
           ) : null}
           <div className="grid gap-8 pt-6 md:grid-cols-[3fr_2fr] md:items-center">
             <div className="rounded-[4px] border border-[var(--dvn-line)] bg-white p-6 md:p-8">
-              {/* SUBE-1: orijinal şube sayfasındaki iletişim kartı Telefon /
-                  E-mail / Lokasyon / Çalışma Saatleri sırasını izler. */}
-              {branch.phone ? (
-                <a
-                  href={`tel:${branch.phone}`}
-                  className="font-sans text-xl font-semibold text-navy underline-offset-4 hover:text-gold-deep hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
-                >
-                  {branch.phone}
-                </a>
-              ) : null}
-              {settings?.email ? (
-                <p className="mt-3">
-                  <a
-                    href={`mailto:${settings.email}`}
-                    className="font-sans text-base text-ink underline-offset-4 hover:text-gold-deep hover:underline"
-                  >
-                    {settings.email}
-                  </a>
-                </p>
-              ) : null}
-              {t(branch.hours) ? (
-                <p className="mt-3 font-sans text-sm leading-relaxed text-muted">
-                  {t(branch.hours)}
-                </p>
-              ) : null}
+              {/* SUBE-1 sırası (Telefon / E-mail / Lokasyon / Çalışma
+                  Saatleri) DSN-38 ikonlu satır dilinde. */}
+              <ul className="space-y-4">
+                {branch.phone ? (
+                  <li className="flex items-start gap-2.5">
+                    <CardIcon kind="phone" />
+                    <a
+                      href={`tel:${branch.phone}`}
+                      className="font-sans text-lg font-semibold text-navy underline-offset-4 hover:text-gold-deep hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
+                    >
+                      {branch.phone}
+                    </a>
+                  </li>
+                ) : null}
+                {settings?.email ? (
+                  <li className="flex items-start gap-2.5">
+                    <CardIcon kind="mail" />
+                    <a
+                      href={`mailto:${settings.email}`}
+                      className="font-sans text-base text-ink underline-offset-4 hover:text-gold-deep hover:underline"
+                    >
+                      {settings.email}
+                    </a>
+                  </li>
+                ) : null}
+                {t(branch.address) ? (
+                  <li className="flex items-start gap-2.5">
+                    <CardIcon kind="pin" />
+                    <span className="font-sans text-sm leading-relaxed text-ink/80">
+                      {t(branch.address)}
+                    </span>
+                  </li>
+                ) : null}
+                {t(branch.hours) ? (
+                  <li className="flex items-start gap-2.5">
+                    <CardIcon kind="clock" />
+                    <span className="font-sans text-sm leading-relaxed text-muted">
+                      {t(branch.hours)}
+                    </span>
+                  </li>
+                ) : null}
+              </ul>
             </div>
             <div className="flex flex-wrap items-center gap-4">
               {t(copy?.ui?.appointmentCta) ? (
