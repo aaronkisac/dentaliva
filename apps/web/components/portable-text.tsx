@@ -2,7 +2,8 @@ import type { ReactNode } from "react";
 
 import type { PortableBlock } from "../src/content/blog";
 
-function renderChildren(block: PortableBlock): ReactNode {
+/** Bir bloğun çocuklarını mark'larla (strong/em/link) basar. */
+export function renderChildren(block: PortableBlock): ReactNode {
   const markDefs = block.markDefs ?? [];
   return (block.children ?? []).map((child) => {
     let node: ReactNode = child.text ?? "";
