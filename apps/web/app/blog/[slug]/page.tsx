@@ -7,8 +7,9 @@ import { buildBreadcrumbJsonLd } from "@dentaliva/seo";
 
 import { Reveal, Heading, Section, Text } from "@dentaliva/ui";
 import { JsonLd } from "../../../components/json-ld";
-import { PortableText } from "../../../components/portable-text";
 import { CtaBand } from "../../../components/cta-band";
+import { PortableTextSections } from "../../../components/portable-text-sections";
+import { formatPostDate } from "../../../components/blog-card";
 import { SeedPlaceholder } from "../../../components/seed-placeholder";
 import { fetchBlogPostBySlug, fetchBlogPosts } from "../../../src/content/blog";
 import { fetchHomePageDocument, fetchSiteSettings } from "../../../src/content/home";
@@ -68,6 +69,8 @@ export default async function BlogPostPage({ params }: PageProps) {
       <JsonLd
         data={buildBreadcrumbJsonLd([
           { name: pageString("breadcrumbHome"), url: absoluteUrl("/") },
+          // "Blog" literal: bu sayfanın breadcrumb'ı ve listing hero'su ile
+          // aynı (hardcode sweep kapsamı dışı gezinme etiketi).
           { name: "Blog", url: absoluteUrl(routes.blog) },
           {
             name: t(post.title) || "Blog",
@@ -76,12 +79,18 @@ export default async function BlogPostPage({ params }: PageProps) {
         ])}
       />
       <Section>
-        <Text tone="muted" size="small">
-          {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString("tr-TR") : ""}
-          {post.author?.name
-            ? ` · ${post.author.name}${t(post.author.title) ? ` — ${t(post.author.title)}` : ""}`
-            : ""}
-        </Text>
+        {/* DSN-94: sayfa ailesinin gold-dash eyebrow'i — listeye dönüş
+            bağlantısı (breadcrumb "Blog" literalini paylaşır). */}
+        <a
+          href={routes.blog}
+          className="group inline-flex items-center gap-3 font-sans text-xs uppercase tracking-widest text-gold-deep no-underline hover:text-gold"
+        >
+          <span
+            aria-hidden="true"
+            className="h-px w-8 bg-gold transition-colors group-hover:bg-gold-deep"
+          />
+          Blog
+        </a>
         {post.heroImage?.ref ? (
           <Image
             src={post.heroImage.ref}
@@ -97,6 +106,15 @@ export default async function BlogPostPage({ params }: PageProps) {
             className="mt-6 h-auto w-full border border-[var(--dvn-line)] object-cover"
           />
         ) : null}
+        {/* DSN-94: tarih·yazar satırı görselin altında, h1'in üstünde —
+            tepedeki yapay boşluk yerine künye akışı; tarih site dilinde
+            (formatPostDate) — ham 19.03.2026 yerine "18 Mart 2026". */}
+        <p className="mt-5 font-sans text-[length:var(--dvn-text-small-size)] leading-[var(--dvn-text-small-lh)] text-muted">
+          {post.publishedAt ? formatPostDate(post.publishedAt) : ""}
+          {post.author?.name
+            ? ` · ${post.author.name}${t(post.author.title) ? ` — ${t(post.author.title)}` : ""}`
+            : ""}
+        </p>
         <Heading level="h1" size="lg" className="mt-2">
           {t(post.title)}
         </Heading>
@@ -105,12 +123,13 @@ export default async function BlogPostPage({ params }: PageProps) {
             {t(post.excerpt)}
           </Text>
         ) : null}
-        <Reveal>
-          <div className="mt-10">
-            <PortableText blocks={blocks} />
-          </div>
-        </Reveal>
       </Section>
+
+      {/* DSN-94: gövde marka bantlarında (24/24 yazıda 2-8 h2 — veri
+          probu); bantlar tam genişlik — Section konteynerinin DIŞINDA. */}
+      <Reveal>
+        <PortableTextSections blocks={blocks} />
+      </Reveal>
 
       {/* DSN-24: sayfa sonu dönüşüm bandı. */}
       <CtaBand
