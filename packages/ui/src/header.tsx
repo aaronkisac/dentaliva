@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type ComponentType } from "react";
 import { usePathname } from "next/navigation";
 
 import { Button, buttonVariants } from "./button";
@@ -47,13 +47,34 @@ export interface HeaderLogo {
   height: number;
 }
 
+/**
+ * DSN-97: bayraklı dil toggle'ının bayrak kimlikleri — orijinal sitedeki
+ * sıranın karşılığı. TR bayrağı com'u (Türkçe), GB bayrağı eu'yu (İngilizce),
+ * NL bayrağı nl'yi (Felemenkçe) temsil eder; bayraklar inline SVG'dir
+ * (flag-icons yolları — sıfır istek, orijinal Elementor toggle'ının
+ * kullandığı kütüphane).
+ */
+export type HeaderFlag = "tr" | "gb" | "nl";
+
+/** Çapraz-domain dil girişi; etiket dil ottonimidir (Türkçe/English/…). */
+export interface HeaderLanguage {
+  flag: HeaderFlag;
+  /** O dile ait sitenin bugünkü served adresi. */
+  url: string;
+  label: string;
+  /** Bu header'ın kendi sitesi — bağlantı değil, geçerli dil işareti. */
+  active?: boolean;
+}
+
 export interface HeaderProps {
   items: NavLink[];
   cta?: { label: string; href: string };
   logo: HeaderLogo;
   contact?: { phone: string; email: string };
   /** Locale chrome copy — the package hardcodes no language (i18n-ready). */
-  labels: { toggleMenu: string; closeMenu: string };
+  labels: { toggleMenu: string; closeMenu: string; languageSwitcher?: string };
+  /** Cross-domain language switcher (DSN-97) — verilmeyince hiç render edilmez. */
+  languages?: HeaderLanguage[];
 }
 
 function PhoneIcon({ className }: { className?: string }) {
@@ -119,6 +140,116 @@ function ChevronIcon({ className }: { className?: string }) {
     >
       <path d="m6 9 6 6 6-6" />
     </svg>
+  );
+}
+
+function FlagTR({ className }: { className?: string }) {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 640 480" className={className}>
+      <g fillRule="evenodd">
+        <path fill="#e30a17" d="M0 0h640v480H0z" />
+        <path
+          fill="#fff"
+          d="M407 247.5c0 66.2-54.6 119.9-122 119.9s-122-53.7-122-120 54.6-119.8 122-119.8 122 53.7 122 119.9"
+        />
+        <path
+          fill="#e30a17"
+          d="M413 247.5c0 53-43.6 95.9-97.5 95.9s-97.6-43-97.6-96 43.7-95.8 97.6-95.8 97.6 42.9 97.6 95.9z"
+        />
+        <path
+          fill="#fff"
+          d="m430.7 191.5-1 44.3-41.3 11.2 40.8 14.5-1 40.7 26.5-31.8 40.2 14-23.2-34.1 28.3-33.9-43.5 12-25.8-37z"
+        />
+      </g>
+    </svg>
+  );
+}
+
+function FlagGB({ className }: { className?: string }) {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 640 480" className={className}>
+      <path fill="#012169" d="M0 0h640v480H0z" />
+      <path
+        fill="#fff"
+        d="m75 0 244 181L562 0h78v62L400 241l240 178v61h-80L320 301 81 480H0v-60l239-178L0 64V0z"
+      />
+      <path
+        fill="#c8102e"
+        d="m424 281 216 159v40L369 281zm-184 20 6 35L54 480H0zM640 0v3L391 191l2-44L590 0zM0 0l239 176h-60L0 42z"
+      />
+      <path fill="#fff" d="M241 0v480h160V0zM0 160v160h640V160z" />
+      <path fill="#c8102e" d="M0 193v96h640v-96zM273 0v480h96V0z" />
+    </svg>
+  );
+}
+
+function FlagNL({ className }: { className?: string }) {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 640 480" className={className}>
+      <path fill="#ae1c28" d="M0 0h640v160H0z" />
+      <path fill="#fff" d="M0 160h640v160H0z" />
+      <path fill="#21468b" d="M0 320h640v160H0z" />
+    </svg>
+  );
+}
+
+const FLAGS: Record<HeaderFlag, ComponentType<{ className?: string }>> = {
+  tr: FlagTR,
+  gb: FlagGB,
+  nl: FlagNL,
+};
+
+/**
+ * DSN-97: orijinal sitedeki bayraklı dil toggle'ı — her bayrak o dilin
+ * alan adına gider. Harici adresler ui Link marka kuralıyla target=_blank
+ * açılır (orijinal Elementor toggle'ı da target=_blank kullanıyordu).
+ * Geçerli dil bağlantı değil, altın çerçeveli işarettir.
+ */
+function LanguageSwitcher({
+  languages,
+  label,
+  dark,
+  className,
+}: {
+  languages: HeaderLanguage[];
+  label?: string;
+  dark: boolean;
+  className?: string;
+}) {
+  return (
+    <nav aria-label={label} className={cn("flex items-center gap-2", className)}>
+      {languages.map((lang) => {
+        const Flag = FLAGS[lang.flag];
+        const ringClass = lang.active ? "ring-gold" : dark ? "ring-ivory/25" : "ring-ink/15";
+        const flag = (
+          <Flag
+            className={cn(
+              "block h-[18px] w-6 rounded-[2px] ring-1 ring-inset",
+              ringClass,
+              !lang.active && "opacity-80",
+            )}
+          />
+        );
+        if (lang.active) {
+          return (
+            <span key={lang.url} aria-current="true" title={lang.label} className="flex">
+              {flag}
+            </span>
+          );
+        }
+        return (
+          <Link
+            key={lang.url}
+            href={lang.url}
+            aria-label={lang.label}
+            title={lang.label}
+            className="flex transition-opacity hover:opacity-100"
+          >
+            {flag}
+          </Link>
+        );
+      })}
+    </nav>
   );
 }
 
@@ -391,6 +522,7 @@ function MobileMenu({
   dark,
   onClose,
   labels,
+  languages,
 }: {
   items: NavLink[];
   phone?: string;
@@ -398,6 +530,7 @@ function MobileMenu({
   dark: boolean;
   onClose: () => void;
   labels: HeaderProps["labels"];
+  languages?: HeaderLanguage[];
 }) {
   const ref = useRef<HTMLDivElement>(null);
   useFocusTrap(ref, true, onClose);
@@ -418,6 +551,14 @@ function MobileMenu({
             </li>
           ))}
         </ul>
+        {languages && languages.length > 1 ? (
+          <LanguageSwitcher
+            languages={languages}
+            label={labels.languageSwitcher}
+            dark={dark}
+            className="mt-4"
+          />
+        ) : null}
         {phone ? (
           <a
             href={`tel:${phone}`}
@@ -478,7 +619,7 @@ export function headerMode(
   return scrollY > Math.max(viewportHeight - 84, 120) ? "light" : "dark";
 }
 
-export function Header({ items, cta, logo, contact, labels }: HeaderProps) {
+export function Header({ items, cta, logo, contact, labels, languages }: HeaderProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const headerRef = useRef<HTMLElement>(null);
@@ -594,6 +735,10 @@ export function Header({ items, cta, logo, contact, labels }: HeaderProps) {
           )}
         </nav>
         <div className="hidden items-center gap-5 xl:flex">
+          {/* DSN-97: tek dilli sitede toggle'ın anlamı yok — en az iki dil. */}
+          {languages && languages.length > 1 ? (
+            <LanguageSwitcher languages={languages} label={labels.languageSwitcher} dark={dark} />
+          ) : null}
           {contact?.phone ? (
             <a
               href={`tel:${contact.phone}`}
@@ -628,6 +773,7 @@ export function Header({ items, cta, logo, contact, labels }: HeaderProps) {
           dark={dark}
           onClose={closeMobileMenu}
           labels={labels}
+          languages={languages}
         />
       ) : null}
     </header>
