@@ -35,7 +35,6 @@ export const blogPost = defineType({
       initialValue: () => new Date().toISOString(),
     }),
     defineField({ name: "author", title: "Yazar", type: "reference", to: [{ type: "doctor" }] }),
-    defineField({ name: "tags", title: "Etiketler", type: "array", of: [{ type: "string" }] }),
     defineField({ name: "seo", title: "SEO", type: "seo" }),
   ],
   preview: {

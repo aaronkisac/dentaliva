@@ -22,12 +22,6 @@ export const seo = defineType({
       validation: (rule) => rule.max(160).warning("160 karakteri aşan açıklamalar kısaltılır"),
     }),
     defineField({
-      name: "ogImage",
-      title: "Paylaşım görseli (Open Graph)",
-      type: "image",
-      description: "1200×630 önerilir",
-    }),
-    defineField({
       name: "noIndex",
       title: "Arama motorlarına kapat",
       type: "boolean",

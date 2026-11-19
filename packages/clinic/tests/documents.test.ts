@@ -61,11 +61,10 @@ describe("clinic core documents", () => {
     expect(captured.custom?.("not-a-phone")).toContain("Geçerli bir telefon");
   });
 
-  it("doctor phone is optional but validated when present", () => {
-    const phone = fieldOf(doctor, "phone");
-    const { rule, captured } = fakeRule();
-    (phone.validation as (rule: unknown) => unknown)(rule);
-    expect(captured.custom?.(undefined)).toBe(true);
+  // DSN-95: doctor.phone kaldırıldı — hiçbir sorgu projekte etmiyordu, hiçbir
+  // bileşen basmıyordu (klinik telefonu tek iletişim kanalı).
+  it("doctor form no longer carries the unused direct phone field", () => {
+    expect(fieldsOf(doctor).some((field) => field.name === "phone")).toBe(false);
   });
 
   it("slug fields source from their names", () => {

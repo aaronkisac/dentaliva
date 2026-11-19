@@ -33,7 +33,6 @@ export const siteCopy = defineType({
         { name: "keyBenefits", title: "Öne çıkan faydalar", type: "localeText" },
         { name: "treatmentProcess", title: "Tedavi süreci", type: "localeText" },
         { name: "treatmentProcessEyebrow", title: "Tedavi süreci üst etiketi", type: "localeText" },
-        { name: "doctorProfileLink", title: "Hekim profil bağlantısı", type: "localeText" },
         { name: "routeLink", title: "Yol tarifi bağlantısı", type: "localeText" },
         { name: "branchContact", title: "Şube iletişim başlığı", type: "localeText" },
         { name: "callbackForm", title: "Geri arama formu başlığı", type: "localeText" },

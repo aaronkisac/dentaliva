@@ -1,7 +1,5 @@
 import { defineField, defineType } from "sanity";
 
-import { validTrPhone } from "@dentaliva/sanity-schema";
-
 /** A dentist (hekim) profile page. */
 export const doctor = defineType({
   name: "doctor",
@@ -24,12 +22,6 @@ export const doctor = defineType({
     defineField({ name: "title", title: "Unvan", type: "localeString" }),
     defineField({ name: "photo", title: "Fotoğraf", type: "imageWithAlt" }),
     defineField({ name: "bio", title: "Özgeçmiş", type: "localeText" }),
-    defineField({
-      name: "phone",
-      title: "Doğrudan telefon (opsiyonel)",
-      type: "string",
-      validation: (rule) => rule.custom(validTrPhone),
-    }),
     defineField({
       name: "treatments",
       title: "Uzmanlık tedavileri",

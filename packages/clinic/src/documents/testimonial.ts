@@ -33,12 +33,6 @@ export const testimonial = defineType({
       initialValue: "Google",
     }),
     defineField({
-      name: "treatment",
-      title: "İlgili tedavi",
-      type: "reference",
-      to: [{ type: "treatment" }],
-    }),
-    defineField({
       // CPT-5: video testimonials — presence of youtubeId routes the doc to
       // the home video section; text-only docs stay in the reviews section.
       name: "youtubeId",

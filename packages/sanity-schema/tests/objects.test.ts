@@ -29,16 +29,13 @@ describe("imageWithAlt", () => {
 });
 
 describe("seo", () => {
-  it("exposes the SEO manager fields", () => {
-    for (const name of [
-      "metaTitle",
-      "metaDescription",
-      "ogImage",
-      "noIndex",
-      "canonicalOverride",
-    ]) {
+  it("exposes the SEO manager fields (DSN-95: ogImage kaldırıldı — OG görselleri hero/portre'den)", () => {
+    for (const name of ["metaTitle", "metaDescription", "noIndex", "canonicalOverride"]) {
       expect(findField(seo, name)).toBeDefined();
     }
+    expect((seo.fields as Array<{ name: string }>).some((field) => field.name === "ogImage")).toBe(
+      false,
+    );
   });
 });
 
