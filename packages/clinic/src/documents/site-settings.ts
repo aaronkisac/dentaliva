@@ -28,7 +28,6 @@ export const siteSettings = defineType({
     }),
     defineField({ name: "address", title: "Adres", type: "localeText" }),
     defineField({ name: "hours", title: "Çalışma saatleri", type: "localeText" }),
-    defineField({ name: "tagline", title: "Slogan", type: "localeString" }),
     defineField({
       name: "social",
       title: "Sosyal medya",
@@ -44,7 +43,6 @@ export const siteSettings = defineType({
         },
       ],
     }),
-    defineField({ name: "defaultSeo", title: "Varsayılan SEO", type: "seo" }),
   ],
   preview: { select: { title: "siteName", subtitle: "phone" } },
 });

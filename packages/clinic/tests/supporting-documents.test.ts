@@ -46,10 +46,14 @@ describe("supporting documents (SAN-3)", () => {
     }
   });
 
-  it("siteSettings carries NAP, whatsapp, socials and default SEO", () => {
-    for (const name of ["phone", "email", "whatsapp", "address", "hours", "social", "defaultSeo"]) {
+  it("siteSettings carries NAP, whatsapp and socials (DSN-95: defaultSeo/tagline kaldırıldı)", () => {
+    for (const name of ["phone", "email", "whatsapp", "address", "hours", "social"]) {
       expect(fieldOf(siteSettings, name)).toBeDefined();
     }
+    // DSN-95: web hiçbirini okumayan alanlar formdan kaldırıldı.
+    const names = fieldsOf(siteSettings).map((field) => field.name);
+    expect(names).not.toContain("defaultSeo");
+    expect(names).not.toContain("tagline");
   });
 
   it("homePage carries hero, about, stats and cta content", () => {

@@ -7,7 +7,6 @@ import type { DoctorItem, LocalizedPair } from "./home";
 
 export interface DoctorDetail extends DoctorItem {
   bio?: LocalizedPair;
-  phone?: string;
   treatments?: Array<{ name?: LocalizedPair; slug?: string }>;
   photo?: { ref?: string; alt?: LocalizedPair; lqip?: string };
   seo?: SeoObject | null;

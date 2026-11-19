@@ -24,7 +24,6 @@ export const legalPage = defineType({
       type: "localeText",
       validation: (rule) => rule.required(),
     }),
-    defineField({ name: "seo", title: "SEO", type: "seo" }),
   ],
   preview: { select: { title: "title.tr", subtitle: "slug.current" } },
 });
