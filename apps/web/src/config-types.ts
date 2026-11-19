@@ -69,6 +69,13 @@ export interface SiteConfig {
   /** Short registry key — set as SITE_ID at build time. */
   id: string;
   domain: string;
+  /**
+   * URL the site is actually served on today — workers.dev until custom-domain
+   * DNS lands (Aaron dashboard). The DSN-97 header language switcher links
+   * here; canonical/robots/sitemap keep using `domain`. Flip this to
+   * `https://${domain}` in the DNS wave.
+   */
+  servedUrl: string;
   locales: Locale[];
   defaultLocale: Locale;
   sanity: SanityTarget;

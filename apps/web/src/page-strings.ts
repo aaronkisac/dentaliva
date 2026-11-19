@@ -15,6 +15,8 @@ const tr = {
   skipAnchor: "icerik",
   toggleMenu: "Menüyü aç/kapat",
   closeMenu: "Menüyü kapat",
+  // DSN-97: header dil toggle'ının erişilebilir adı.
+  languageSwitcher: "Dil seçimi",
   breadcrumbHome: "Ana Sayfa",
 
   // home metadata
@@ -54,6 +56,8 @@ const en: typeof tr = {
   skipAnchor: "content",
   toggleMenu: "Open/close menu",
   closeMenu: "Close menu",
+  // DSN-97: header dil toggle'ının erişilebilir adı.
+  languageSwitcher: "Language selection",
   breadcrumbHome: "Home",
 
   homeTitle: "Dentaliva Dental Clinic | Istanbul",
@@ -89,6 +93,8 @@ const nl: typeof tr = {
   skipAnchor: "inhoud",
   toggleMenu: "Menu openen/sluiten",
   closeMenu: "Menu sluiten",
+  // DSN-97: header dil toggle'ının erişilebilir adı.
+  languageSwitcher: "Taalkeuze",
   breadcrumbHome: "Home",
 
   homeTitle: "Dentaliva Tandkliniek | Istanbul",
