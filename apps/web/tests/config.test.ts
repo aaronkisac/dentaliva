@@ -74,7 +74,8 @@ describe("site config (PGT-1)", () => {
   it("orders the home sections per the approved design", () => {
     // DSN-84: com sırası funnel dokümanının 16 bölümü birebir (ticker/about/
     // quickServices/gallery dokümanda yok — v1: git tag homepage-v1).
-    // eu/nl kendi sıralarını korur (v1 düzeni); içerik dalgaları ayrı iş.
+    // DSN-98: aynı sıra eu/nl'e de uygulandı (Aaron: "tüm değişiklikleri
+    // diğer domainlere de uygula").
     expect(site.sections.home).toEqual([
       "hero",
       "trustStrip",
@@ -92,28 +93,8 @@ describe("site config (PGT-1)", () => {
       "cta",
       "faq",
     ]);
-    expect(getSite("eu").sections.home).toEqual([
-      "hero",
-      "ticker",
-      "trustStrip",
-      "about",
-      "treatmentPaths",
-      "quickServices",
-      "onceSonra",
-      "videoTestimonials",
-      "reviewForm",
-      "howItWorks",
-      "decisionModules",
-      "travelStay",
-      "aftercare",
-      "reviews",
-      "clinics",
-      "gallery",
-      "doctors",
-      "faq",
-      "cta",
-    ]);
-    expect(getSite("nl").sections.home).toEqual(getSite("eu").sections.home);
+    expect(getSite("eu").sections.home).toEqual(site.sections.home);
+    expect(getSite("nl").sections.home).toEqual(site.sections.home);
   });
 
   it("binds the image CDN project to the registry; the dataset follows the build", () => {

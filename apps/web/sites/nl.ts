@@ -35,14 +35,14 @@ export const site = {
     blog: false,
   },
   sections: {
-    // DSN-61: funnel strategy order — see com.ts.
+    // DSN-98: com'un DSN-84 funnel sırası eu/nl'e de uygulanır (Aaron:
+    // "tüm değişiklikleri diğer domainlere de uygula") — ticker/about/
+    // quickServices/gallery çıkar, cta↔faq yer değişir. videoTestimonials/
+    // reviews CMS hiddenSections ile gizli; dizide kalırlar.
     home: [
       "hero",
-      "ticker",
       "trustStrip",
-      "about",
       "treatmentPaths",
-      "quickServices",
       "onceSonra",
       "videoTestimonials",
       "reviewForm",
@@ -52,10 +52,9 @@ export const site = {
       "aftercare",
       "reviews",
       "clinics",
-      "gallery",
       "doctors",
-      "faq",
       "cta",
+      "faq",
     ],
   },
 } as const satisfies SiteConfig;
