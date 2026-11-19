@@ -1,0 +1,100 @@
+# DSN-99 — main'e merge edilen her değişiklik ÜÇ STAGING'e otomatik deploy
+# edilir (com/eu/nl paralel); "bir site bayat kaldı" ayrımı biter. Prod MANUEL
+# kalır — deploy:prod yalnız Aaron onayıyla, yerel çalıştırıcıdan (arşiv-
+# koruması DSN-88'de kodda garanti).
+#
+# Tetikler:
+#   - push → main            (kod değişikliği → üç site)
+#   - workflow_dispatch      (elle tetikleme: gh workflow run deploy-staging.yml)
+#   - repository_dispatch    (DEP-3: Sanity publish webhook'u buraya bağlanacak;
+#                             payload.sites = "com,eu,nl" veya tek site adı —
+#                             boşsa üçü de)
+#
+# Secret'lar:
+#   - SANITY_READ_TOKEN / SANITY_READ_TOKEN_EU / SANITY_READ_TOKEN_NL — var
+#     (2026-10-28'te CLI oturum token'ıyla set edildi).
+#   - CLOUDFLARE_API_TOKEN + CLOUDFLARE_ACCOUNT_ID — DEP-4 dashboard adımı.
+#     Eksikken joblar yeşilce SKIP eder (kırmızı CI üretmez); secret eklenince
+#     sonraki tetikten itibaren gerçek deploy başlar.
+#
+# NOT: matrix context'i job-level if'te kullanılamaz — site filtresi ve
+# secret kontrolü guard adımında yapılır.
+name: Deploy Staging
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  repository_dispatch:
+    types: [deploy-staging]
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      # Tek sitenin hatası diğer deploy'ları durdurmasın; paralel koşsunlar.
+      fail-fast: false
+      matrix:
+        include:
+          - site: com
+            deploy: pnpm --filter @dentaliva/web deploy:staging
+            # com staging build'i v1 arşivini de ekler (--with-v1-archive,
+            # DSN-88: arşiv staging-only, prod'a kodda girmez).
+            token_secret: SANITY_READ_TOKEN
+          - site: eu
+            deploy: pnpm --filter @dentaliva/web deploy:eu:staging
+            token_secret: SANITY_READ_TOKEN_EU
+          - site: nl
+            deploy: pnpm --filter @dentaliva/web deploy:nl:staging
+            token_secret: SANITY_READ_TOKEN_NL
+
+    concurrency:
+      # Aynı siteye üst üste tetik gelirse sıraya girer — deploy çakışmaz.
+      group: deploy-staging-${{ matrix.site }}
+      cancel-in-progress: false
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Guard — site filtresi + CLOUDFLARE_API_TOKEN varlık kontrolü
+        id: guard
+        env:
+          DISPATCH_SITES: ${{ github.event.client_payload.sites || 'com,eu,nl' }}
+        run: |
+          skip="false"
+          if [ "${{ github.event_name }}" = "repository_dispatch" ]; then
+            case ",${DISPATCH_SITES}," in
+              *",${{ matrix.site }},"*) ;;
+              *) skip="true"; echo "::notice::repository_dispatch isteği ${{ matrix.site }} içermiyor — atlandı." ;;
+            esac
+          fi
+          if [ -z "${{ secrets.CLOUDFLARE_API_TOKEN }}" ]; then
+            echo "::notice::CLOUDFLARE_API_TOKEN repo secret'ı yok (DEP-4 dashboard adımı) — ${{ matrix.site }} staging deploy'u atlandı. Secret eklenince bir sonraki push'tan itibaren otomatik deploy başlar."
+            skip="true"
+          fi
+          echo "skipped=${skip}" >> "$GITHUB_OUTPUT"
+
+      - uses: pnpm/action-setup@v4
+        if: steps.guard.outputs.skipped == 'false'
+      - uses: actions/setup-node@v4
+        if: steps.guard.outputs.skipped == 'false'
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - name: Install
+        if: steps.guard.outputs.skipped == 'false'
+        run: pnpm install --frozen-lockfile
+
+      - name: Build + deploy (staging — production dataset)
+        if: steps.guard.outputs.skipped == 'false'
+        run: ${{ matrix.deploy }}
+        env:
+          # build-site.mjs token çözümü: shell'deki siteye uygun değişkeni
+          # bulur (.env fallback'ine hiç düşmez — DSN-97 dersi).
+          SANITY_READ_TOKEN: ${{ secrets[matrix.token_secret] }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
