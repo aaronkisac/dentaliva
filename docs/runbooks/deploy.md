@@ -25,6 +25,17 @@ dentaliva 2026-09-27: subdomain **`dentaliva.workers.dev`** →
 
 ## 1. Staging (5 min)
 
+**Otomatik (DSN-99, varsayılan yol):** `main` dalına her merge/push üç
+staging'i paralel deploy eder (`.github/workflows/deploy-staging.yml` — com /
+eu / nl matrix, her site kendi SANITY_READ_TOKEN secret'ıyla). Secret'lar
+hazır; tek gereksinim `CLOUDFLARE_API_TOKEN` + `CLOUDFLARE_ACCOUNT_ID` repo
+secret'ları (DEP-4 dashboard adımı — eksikken workflow yeşilce SKIP eder).
+Secret sonrası elle deploy gerekmez; `gh workflow run deploy-staging.yml`
+ile de anında tetiklenebilir. Prod bu workflow'a dahil DEĞİLDİR (onaylı
+manuel bölüm 2).
+
+Elle deploy (acil durum / tek site):
+
 ```bash
 pnpm --filter @dentaliva/web deploy:staging
 # → https://dentaliva-com-staging.<account-subdomain>.workers.dev
