@@ -4,6 +4,10 @@ import type { SiteConfig } from "../src/config-types";
 export const site = {
   id: "com",
   domain: "www.dentaliva.com",
+  // DSN-97: header dil toggle'ının bugünkü served adresi — custom-domain DNS
+  // aktifleşince `https://www.dentaliva.com`'a döner; canonical/robots/sitemap
+  // `domain` alanını kullanmaya devam eder.
+  servedUrl: "https://dentaliva-com.dentaliva.workers.dev",
   locales: ["tr"],
   defaultLocale: "tr",
   sanity: { projectId: "86x2hbzv", dataset: "production", stagingDataset: "staging" },

@@ -27,6 +27,8 @@ export {
   Header,
   type HeaderProps,
   type HeaderLogo,
+  type HeaderFlag,
+  type HeaderLanguage,
   type NavLink,
   type NavMenu,
   type NavMenuGroup,

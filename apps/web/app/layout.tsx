@@ -8,6 +8,7 @@ import { site } from "../src/config";
 import { fetchSiteSettings } from "../src/content/home";
 import { fetchSiteCopy } from "../src/content/site-copy";
 import { buildHeaderItems } from "../src/header-items";
+import { buildLanguageLinks } from "../src/language-links";
 import { t } from "../src/i18n";
 import { readClient } from "../src/sanity";
 import { siteUrl } from "../src/seo";
@@ -124,7 +125,14 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           items={buildHeaderItems(site, siteCopy)}
           logo={logo}
           cta={{ label: uiString("bookCta"), href: routes.contact }}
-          labels={{ toggleMenu: pageString("toggleMenu"), closeMenu: pageString("closeMenu") }}
+          // DSN-97: bayraklı dil toggle — sister domain'lere gider (servedUrl;
+          // custom-domain DNS dalında canonical'a döner).
+          labels={{
+            toggleMenu: pageString("toggleMenu"),
+            closeMenu: pageString("closeMenu"),
+            languageSwitcher: pageString("languageSwitcher"),
+          }}
+          languages={buildLanguageLinks()}
           contact={
             settings?.phone ? { phone: settings.phone, email: settings.email ?? "" } : undefined
           }

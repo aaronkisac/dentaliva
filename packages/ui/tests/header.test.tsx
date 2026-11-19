@@ -5,7 +5,7 @@ import { describe, expect, it, vi } from "vitest";
 const { mockPathname } = vi.hoisted(() => ({ mockPathname: { value: "/" } }));
 vi.mock("next/navigation", () => ({ usePathname: () => mockPathname.value }));
 
-import { headerMode, Header, type NavLink } from "../src/header";
+import { headerMode, Header, type HeaderLanguage, type NavLink } from "../src/header";
 import { expectNoA11yViolations, renderUi, screen } from "./helpers";
 
 const items: NavLink[] = [
@@ -27,6 +27,24 @@ const logo = {
   alt: "Dentaliva",
   width: 339,
   height: 112,
+};
+
+// DSN-97: bayraklı dil toggle verisi — com sitesi senaryosu (Türkçe aktif).
+const languages: HeaderLanguage[] = [
+  {
+    flag: "tr",
+    url: "https://dentaliva-com.dentaliva.workers.dev",
+    label: "Türkçe",
+    active: true,
+  },
+  { flag: "gb", url: "https://dentaliva-eu.dentaliva.workers.dev", label: "English" },
+  { flag: "nl", url: "https://dentaliva-nl.dentaliva.workers.dev", label: "Nederlands" },
+];
+
+const languageLabels = {
+  toggleMenu: "Menüyü aç/kapat",
+  closeMenu: "Menüyü kapat",
+  languageSwitcher: "Dil seçimi",
 };
 
 function renderHeader(overrides: Partial<Parameters<typeof Header>[0]> = {}) {
@@ -61,6 +79,38 @@ describe("Header", () => {
   it("omits the contact bar when no contact is given", () => {
     renderHeader({ contact: undefined });
     expect(screen.queryByText("+90 212 555 54 82")).not.toBeInTheDocument();
+  });
+
+  it("renders the cross-domain language switcher with flag links (DSN-97)", () => {
+    renderHeader({ languages, labels: languageLabels });
+    const nav = screen.getByRole("navigation", { name: "Dil seçimi" });
+    const english = within(nav).getByRole("link", { name: "English" });
+    expect(english).toHaveAttribute("href", "https://dentaliva-eu.dentaliva.workers.dev");
+    expect(english).toHaveAttribute("target", "_blank");
+    expect(within(nav).getByRole("link", { name: "Nederlands" })).toHaveAttribute(
+      "href",
+      "https://dentaliva-nl.dentaliva.workers.dev",
+    );
+    // Geçerli dil bağlantı değildir — aria-current'lı işaret olarak durur.
+    expect(within(nav).queryByRole("link", { name: "Türkçe" })).not.toBeInTheDocument();
+    expect(within(nav).getByTitle("Türkçe")).toHaveAttribute("aria-current", "true");
+  });
+
+  it("omits the language switcher when languages is not given (copyless default)", () => {
+    renderHeader();
+    expect(screen.queryByTitle("Türkçe")).not.toBeInTheDocument();
+    expect(screen.queryByRole("navigation", { name: "Dil seçimi" })).not.toBeInTheDocument();
+  });
+
+  it("shows the language switcher inside the mobile menu (DSN-97)", async () => {
+    renderHeader({ languages, labels: languageLabels });
+    await userEvent.click(screen.getByRole("button", { name: "Menüyü aç/kapat" }));
+    const mobileNav = within(screen.getByRole("navigation", { name: "Mobile" }));
+    expect(mobileNav.getByRole("link", { name: "English" })).toHaveAttribute(
+      "href",
+      "https://dentaliva-eu.dentaliva.workers.dev",
+    );
+    expect(mobileNav.getByTitle("Türkçe")).toHaveAttribute("aria-current", "true");
   });
 
   it("closes the dropdown on outside pointerdown", async () => {

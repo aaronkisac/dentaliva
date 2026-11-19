@@ -10,6 +10,14 @@ export function availableSiteIds(): string[] {
 }
 
 /**
+ * All configured sites (registry order: com, eu, nl). Cross-site UI — the
+ * DSN-97 header language switcher — reads sister URLs here.
+ */
+export function allSites(): SiteConfig[] {
+  return Object.values(registry);
+}
+
+/**
  * Resolves the active site. Runs at build time: an unknown SITE_ID fails the
  * build loudly instead of silently deploying the wrong domain (PGT-1 AC).
  */
