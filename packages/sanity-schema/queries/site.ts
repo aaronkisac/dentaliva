@@ -47,7 +47,7 @@ export const homePageQuery = defineQuery(`*[_type == "homePage"][0]{
       "sideImages": sideImages[]{ "ref": asset._ref, alt, "lqip": asset->metadata.lqip }
     }
   },
-  quickServiceLinks[]->{ name, slug, summary, heroImage { "ref": asset._ref, alt, "lqip": asset->metadata.lqip } },
+  quickServiceLinks[]->{ name, "slug": slug.current, summary, heroImage { "ref": asset._ref, alt, "lqip": asset->metadata.lqip } },
   trustStrip { rating, ratingLabel, items },
   treatmentPaths[]{
     headline,

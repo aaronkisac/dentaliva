@@ -18,6 +18,6 @@ export const doctorBySlugQuery = defineQuery(
     photo { ..., alt, "ref": asset._ref, "lqip": asset->metadata.lqip },
     bio,
     seo,
-    "treatments": treatments[]->{ name, slug }
+    "treatments": treatments[]->{ name, "slug": slug.current }
   }`,
 );

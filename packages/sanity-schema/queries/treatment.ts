@@ -30,7 +30,7 @@ export const treatmentBySlugQuery = defineQuery(
     // (koseli + ok + koseli, parantezsiz) filtreyi deref içine alıp tüm
     // öğeleri null yapıyor — bileşik parantezli form doğru (canlı API doğrulu).
     "faqs": (faqs[]->{ question, answer, hidden })[@.hidden != true]{ question, answer },
-    doctors[]->{ name, slug, title, photo { "ref": asset._ref, alt } },
+    doctors[]->{ name, "slug": slug.current, title, photo { "ref": asset._ref, alt } },
     seo
   }`,
 );

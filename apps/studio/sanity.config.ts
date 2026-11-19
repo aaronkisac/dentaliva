@@ -31,10 +31,18 @@ export default defineConfig({
               .title("Ana Sayfa")
               .id("homePage")
               .child(S.document().schemaType("homePage").documentId("homePage")),
+            // DSN-95: Site Metinleri singleton'ı listede yoktu — Aaron site
+            // copy'lerini Studio'dan düzenleyemiyordu (yalnız global aramayla
+            // bulunuyordu). Ana sayfa ile aynı singleton desenine alındı.
+            S.listItem()
+              .title("Site Metinleri")
+              .id("siteCopy")
+              .child(S.document().schemaType("siteCopy").documentId("siteCopy")),
             S.divider(),
             S.documentTypeListItem("treatment").title("Tedaviler"),
             S.documentTypeListItem("doctor").title("Hekimler"),
             S.documentTypeListItem("branch").title("Şubeler"),
+            S.documentTypeListItem("clinicPhoto").title("Klinik Fotoğrafları"),
             S.documentTypeListItem("faq").title("SSS"),
             S.documentTypeListItem("testimonial").title("Hasta Yorumları"),
             S.documentTypeListItem("blogPost").title("Blog"),
