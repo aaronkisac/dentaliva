@@ -1,11 +1,23 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
 
-/** Localized portable text: { tr: blocks (required), en: blocks }. */
+import { studioLocale } from "@dentaliva/sanity-schema";
+
+/**
+ * Localized portable text: { tr: blocks, en: blocks } — no nl slot (the nl
+ * site carries no portable content).
+ *
+ * DSN-96: stüdyo dili dışındaki slot formdan gizlenir (Aaron: boş dil
+ * kutuları çok yer kaplıyor). Zorunluluk GÖRÜNÜR slotu izler — com'da tr
+ * zorunlu; eu/nl'de en görünür + opsiyonel (boşsa site tr fallback'ine
+ * düşer), tr gizli + opsiyonel (görünmez zorunlu alan yayınlama tuzağına
+ * yol açmasın). hidden yalnız görünümdür; veri Content Lake'te kalır.
+ */
+const visibleSlot = studioLocale === "tr" ? "tr" : "en";
+
 export const localeBlockContent = defineType({
   name: "localeBlockContent",
   title: "Yerelleştirilmiş zengin metin",
   type: "object",
-  fieldsets: [{ name: "translations", title: "Çeviriler", options: { collapsible: true } }],
   fields: [
     defineField({
       name: "tr",
@@ -21,13 +33,15 @@ export const localeBlockContent = defineType({
           ],
         }),
       ],
-      validation: (rule) => rule.required(),
+      hidden: visibleSlot !== "tr",
+      validation: (rule) => (visibleSlot === "tr" ? rule.required() : rule),
     }),
     defineField({
       name: "en",
       title: "İngilizce",
       type: "array",
       of: [defineArrayMember({ type: "block" })],
+      hidden: visibleSlot !== "en",
     }),
   ],
 });

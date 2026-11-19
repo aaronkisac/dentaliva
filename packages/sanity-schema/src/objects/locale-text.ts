@@ -26,7 +26,12 @@ const localeTitle: Record<StudioLocale, string> = {
 
 const ALL_LOCALES: StudioLocale[] = ["tr", "en", "nl"];
 
-/** Required studio-locale field first; the other two locales optional. */
+/**
+ * DSN-96: her domain Studio'su TEK dillidir (ADR-002) — stüdyo dili dışındaki
+ * locale kutuları formdan gizlenir (Aaron: boş EN/NL kutuları ekranda çok
+ * yer kaplıyor). hidden yalnız GÖRÜNÜM filtresidir: veri Content Lake'te
+ * kalır; çeviri iş akışı gerektiğinde koşulu kaldırmak tek satırdır.
+ */
 function localeFields(kind: "string" | "text") {
   const required = (name: StudioLocale) =>
     defineField({
@@ -40,23 +45,24 @@ function localeFields(kind: "string" | "text") {
   // Stable sort: the studio locale leads, the rest keep tr→en→nl order.
   return [...ALL_LOCALES]
     .sort((a) => (a === studioLocale ? -1 : 1))
-    .map((locale) => (locale === studioLocale ? required(locale) : optional(locale)));
+    .map((locale) => {
+      const field = locale === studioLocale ? required(locale) : optional(locale);
+      return locale === studioLocale ? field : { ...field, hidden: true };
+    });
 }
 
-/** Single-line localized string: { tr, en, nl } — the studio locale is required. */
+/** Single-line localized string: { tr, en, nl } — only the studio locale is visible. */
 export const localeString = defineType({
   name: "localeString",
   title: "Yerelleştirilmiş metin (tek satır)",
   type: "object",
-  fieldsets: [{ name: "translations", title: "Çeviriler", options: { collapsible: true } }],
   fields: localeFields("string"),
 });
 
-/** Multi-paragraph localized text: { tr, en, nl } — the studio locale is required. */
+/** Multi-paragraph localized text: { tr, en, nl } — only the studio locale is visible. */
 export const localeText = defineType({
   name: "localeText",
   title: "Yerelleştirilmiş metin (çok satır)",
   type: "object",
-  fieldsets: [{ name: "translations", title: "Çeviriler", options: { collapsible: true } }],
   fields: localeFields("text"),
 });

@@ -19,6 +19,16 @@ describe("locale objects", () => {
     expect(findField(type, "tr")).toBeDefined();
     expect(findField(type, "en")).toBeDefined();
   });
+
+  // DSN-96: stüdyo dili dışındaki locale kutuları formdan gizlenir
+  // (varsayılan env'de stüdyo dili tr — en/nl hidden; veri korunur).
+  it.each([["localeString"], ["localeText"]])("%s hides the non-studio locales", (name) => {
+    const type = name === "localeString" ? localeString : localeText;
+    const fields = (type.fields ?? []) as Array<{ name: string; hidden?: boolean }>;
+    expect(fields.find((f) => f.name === "tr")?.hidden).toBeUndefined();
+    expect(fields.find((f) => f.name === "en")?.hidden).toBe(true);
+    expect(fields.find((f) => f.name === "nl")?.hidden).toBe(true);
+  });
 });
 
 describe("imageWithAlt", () => {
