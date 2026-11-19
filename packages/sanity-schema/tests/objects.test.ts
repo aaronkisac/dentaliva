@@ -36,6 +36,31 @@ describe("imageWithAlt", () => {
     expect(findField(imageWithAlt, "alt")).toBeDefined();
     expect(imageWithAlt.options).toMatchObject({ hotspot: true });
   });
+
+  // DSN-96 takip: alt validator'ı STÜDYO-GÖRÜNÜR slotu ister — eski requireTr
+  // gizli tr slotunu isteyip eu/nl stüdyolarında düzeltilemez hata basıyordu
+  // (varsayılan env'de stüdyo dili tr: tr dolu → true, boş → mesaj).
+  it("validates the studio-visible alt slot, not the hidden tr slot", () => {
+    const altField = findField(imageWithAlt, "alt") as {
+      validation?: (rule: unknown) => unknown;
+    };
+    let captured: unknown;
+    const capturingRule: unknown = new Proxy(() => capturingRule, {
+      get: (_target, prop) =>
+        prop === "custom"
+          ? (fn: unknown) => {
+              captured = fn;
+              return capturingRule;
+            }
+          : () => capturingRule,
+      apply: () => capturingRule,
+    });
+    altField.validation?.(capturingRule);
+    const validateAlt = captured as (value: unknown) => string | true;
+    expect(validateAlt({ tr: "Dentaliva kliniği" })).toBe(true);
+    expect(validateAlt({ en: "Filled in the EN studio" })).toBe("Alt metin zorunludur");
+    expect(validateAlt(undefined)).toBe("Alt metin zorunludur");
+  });
 });
 
 describe("seo", () => {
@@ -95,12 +120,13 @@ describe("validation wiring on schema objects", () => {
     expect(captured.custom?.("")).toBe("Bu alan zorunludur");
   });
 
-  it("imageWithAlt alt validates the localized object", () => {
+  it("imageWithAlt alt validates the studio-visible slot (DSN-96 takip)", () => {
     const field = fieldsOf(imageWithAlt).find((f) => f.name === "alt");
     const { rule, captured } = fakeRule();
     (field?.validation as (rule: unknown) => unknown)(rule);
-    expect(captured.custom?.(undefined)).toBe("Türkçe içerik zorunludur");
+    expect(captured.custom?.(undefined)).toBe("Alt metin zorunludur");
     expect(captured.custom?.({ tr: "Hasta gülümsüyor" })).toBe(true);
+    expect(captured.custom?.({ en: "EN-only draft" })).toBe("Alt metin zorunludur");
   });
 
   it("every seo field with validation executes its chain", () => {
