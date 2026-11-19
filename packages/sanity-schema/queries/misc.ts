@@ -46,7 +46,8 @@ export const blogBySlugQuery = defineQuery(
     body,
     heroImage { ..., alt, "ref": asset._ref, "lqip": asset->metadata.lqip },
     publishedAt,
-    author->{ name, slug, title, photo { "ref": asset._ref, alt } },
+    // DSN-95: byline yalnız ad + unvan okur — slug/photo over-fetch çıkarıldı.
+    author->{ name, title },
     seo
   }`,
 );
