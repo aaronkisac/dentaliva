@@ -57,7 +57,7 @@ function ArrowButton({
  */
 export function CarouselTrack({
   count,
-  ariaLabelPrefix,
+  labels,
   children,
   className,
   tone = "light",
@@ -66,8 +66,12 @@ export function CarouselTrack({
   trackClassName,
 }: {
   count: number;
-  /** Nokta/ok aria etiketi öneki: "yorum" -> "3. yorum", "Önceki yorum". */
-  ariaLabelPrefix: string;
+  /**
+   * DSN-103: erişilebilir adlar çağrıdan gelir (ui-strings) — paket artık
+   * "Önceki/Sonraki" Türkçe önekini birleştirmiyor; nl/en sitelerde doğru
+   * dilde duyurulur.
+   */
+  labels: { prev: string; next: string; slide: (n: number) => string };
   children: React.ReactNode;
   className?: string;
   /** Başlık bloğu (eyebrow/başlık/rozet vb.) — oklar bu bloğun sağına gelir. */
@@ -86,14 +90,14 @@ export function CarouselTrack({
     <div className="hidden gap-2 md:flex">
       <ArrowButton
         direction="left"
-        label={`Önceki ${ariaLabelPrefix}`}
+        label={labels.prev}
         onClick={() => goTo(index - 1)}
         disabled={index === 0}
         dark={dark}
       />
       <ArrowButton
         direction="right"
-        label={`Sonraki ${ariaLabelPrefix}`}
+        label={labels.next}
         onClick={() => goTo(index + 1)}
         disabled={index >= maxIndex}
         dark={dark}
@@ -136,10 +140,11 @@ export function CarouselTrack({
             <button
               key={i}
               type="button"
-              aria-label={`${i + 1}. ${ariaLabelPrefix}`}
+              aria-label={labels.slide(i + 1)}
               aria-current={i === index ? "true" : undefined}
               onClick={() => goTo(Math.min(i, maxIndex))}
-              className="p-1.5"
+              // DSN-103: p-1.5 toplam 18px — WCAG 2.5.8 (24×24) altındaydı.
+              className="p-2.5"
             >
               <span
                 aria-hidden="true"

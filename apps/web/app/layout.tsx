@@ -131,6 +131,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             toggleMenu: pageString("toggleMenu"),
             closeMenu: pageString("closeMenu"),
             languageSwitcher: pageString("languageSwitcher"),
+            navMain: pageString("headerNavMain"),
+            navMobile: pageString("headerNavMobile"),
           }}
           languages={buildLanguageLinks()}
           contact={

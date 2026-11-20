@@ -72,7 +72,14 @@ export interface HeaderProps {
   logo: HeaderLogo;
   contact?: { phone: string; email: string };
   /** Locale chrome copy — the package hardcodes no language (i18n-ready). */
-  labels: { toggleMenu: string; closeMenu: string; languageSwitcher?: string };
+  labels: {
+    toggleMenu: string;
+    closeMenu: string;
+    languageSwitcher?: string;
+    /** DSN-103: nav landmark adları — "Main"/"Mobile" İngilizce sabiti kalktı. */
+    navMain: string;
+    navMobile: string;
+  };
   /** Cross-domain language switcher (DSN-97) — verilmeyince hiç render edilmez. */
   languages?: HeaderLanguage[];
 }
@@ -230,9 +237,11 @@ function LanguageSwitcher({
             )}
           />
         );
+        // DSN-103: bayrak 18×24px — WCAG 2.5.8 (24×24) altında. p-2 hit
+        // alanı büyütür, -m-2 düzen etkisini sıfırlar (görsel yerleşim aynı).
         if (lang.active) {
           return (
-            <span key={lang.url} aria-current="true" title={lang.label} className="flex">
+            <span key={lang.url} aria-current="true" title={lang.label} className="flex p-2 -m-2">
               {flag}
             </span>
           );
@@ -243,7 +252,7 @@ function LanguageSwitcher({
             href={lang.url}
             aria-label={lang.label}
             title={lang.label}
-            className="flex transition-opacity hover:opacity-100"
+            className="flex p-2 -m-2 transition-opacity hover:opacity-100"
           >
             {flag}
           </Link>
@@ -543,7 +552,7 @@ function MobileMenu({
         dark ? "border-gold/30 bg-navy" : "border-[var(--dvn-line-soft)] bg-ivory",
       )}
     >
-      <nav aria-label="Mobile" className="px-4 py-4">
+      <nav aria-label={labels.navMobile} className="px-4 py-4">
         <ul className="space-y-1">
           {items.map((item) => (
             <li key={item.href}>
@@ -709,7 +718,7 @@ export function Header({ items, cta, logo, contact, labels, languages }: HeaderP
             className="h-11 w-auto"
           />
         </Link>
-        <nav aria-label="Main" className="hidden items-center gap-1 xl:flex">
+        <nav aria-label={labels.navMain} className="hidden items-center gap-1 xl:flex">
           {items.map((item) =>
             item.menu ? (
               <DesktopMegaTrigger

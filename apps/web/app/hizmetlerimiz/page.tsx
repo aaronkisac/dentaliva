@@ -8,6 +8,7 @@ import { fetchTreatments } from "../../src/content/treatments";
 import { readClient } from "../../src/sanity";
 import { pageMetadata } from "../../src/seo";
 import { pageString } from "../../src/page-strings";
+import { uiString } from "../../src/ui-strings";
 import { routes } from "../../src/routes";
 
 export const metadata: Metadata = pageMetadata({
@@ -26,7 +27,7 @@ export default async function TreatmentsPage() {
       <Reveal>
         <Section>
           {treatments.length === 0 ? (
-            <Text className="mt-6">Tedavi listesi hazırlanıyor.</Text>
+            <Text className="mt-6">{uiString("treatmentsEmptyState")}</Text>
           ) : (
             <div className="mt-8 grid gap-6 md:grid-cols-3">
               {treatments.map((treatment) => (

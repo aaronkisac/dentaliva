@@ -228,7 +228,8 @@ export function QuickServicesSection({
               aria-label={uiString("serviceSlideAria")(i + 1)}
               aria-current={i === index ? "true" : undefined}
               onClick={() => goTo(Math.min(i, maxIndex))}
-              className="p-1.5"
+              // DSN-103: nokta dokunma hedefi 24×24'ün altındaydı.
+              className="p-2.5"
             >
               <span
                 aria-hidden="true"

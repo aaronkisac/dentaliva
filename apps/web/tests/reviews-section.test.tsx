@@ -31,8 +31,10 @@ describe("ReviewsSection carousel (DSN-52)", () => {
     expect(html).toContain("Google Değerlendirmeleri · 5,0");
     expect(html).toContain("Ayşe Yılmaz · Google");
     expect(html).toContain("snap-x");
+    // DSN-103: etiketler ui-strings'ten — "1. yorum" slide aria'sı + çoğul
+    // prev/next etiketleri (Türkçe önek birleştirmesi kalktı).
     expect(html).toContain('aria-label="1. yorum"');
-    expect(html).toContain('aria-label="Sonraki yorum"');
+    expect(html).toContain('aria-label="Sonraki yorumlar"');
   });
 
   it("omits the heading without CMS copy and keeps the carousel", () => {

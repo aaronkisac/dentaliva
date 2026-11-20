@@ -48,6 +48,12 @@ type HeroContentProps = {
   whatsapp?: string | null;
   /** DSN-89: carousel'da yalnız ilk slayt priority (LCP). */
   priority?: boolean;
+  /**
+   * DSN-103: carousel'da 2+ banner iken yalnız slayt 0 h1, diğerleri h2 —
+   * DOM'da tek h1 kalır (pasif slaytların başlıkları da SEO/a11y dış
+   * listelerde ikinci belge başlığı görünmesin).
+   */
+  headingLevel?: "h1" | "h2";
 };
 
 /**
@@ -66,6 +72,7 @@ function HeroContent({
   trust,
   whatsapp,
   priority = true,
+  headingLevel = "h1",
 }: HeroContentProps) {
   const eyebrowText = t(eyebrow);
   const headlineText = t(headline);
@@ -119,7 +126,12 @@ function HeroContent({
               </div>
             ) : null}
             {headlineText ? (
-              <Heading level="h1" size="xl" className="hero-rise text-white" style={rise(120)}>
+              <Heading
+                level={headingLevel}
+                size="xl"
+                className="hero-rise text-white"
+                style={rise(120)}
+              >
                 {headlineText}
               </Heading>
             ) : null}
@@ -173,7 +185,9 @@ function HeroContent({
                 style={rise(520)}
               >
                 {trustItems.map((item, index) => (
-                  <span key={item}>
+                  // DSN-103: CMS'ten özdeş iki güven metni gelirse React
+                  // duplicate-key uyarısı yerine deterministik anahtar.
+                  <span key={`${item}-${index}`}>
                     {index > 0 ? (
                       <span aria-hidden="true" className="mr-8 text-gold">
                         ·
@@ -245,12 +259,15 @@ function HeroMediloContent({
   phone,
   whatsapp,
   priority = true,
+  headingLevel = "h1",
 }: {
   banner: HeroBannerData;
   /** DSN-90: bilgi bloğu telefon satırı — siteSettings.phone. */
   phone?: string | null;
   whatsapp?: string | null;
   priority?: boolean;
+  /** DSN-103: carousel'da slayt 0 dışında h2 (DOM'da tek h1). */
+  headingLevel?: "h1" | "h2";
 }) {
   const eyebrowText = t(banner.eyebrow);
   const headlineText = t(banner.headline);
@@ -300,7 +317,7 @@ function HeroMediloContent({
                 </div>
               ) : null}
               {headlineText ? (
-                <Heading level="h1" size="xl" className="text-navy">
+                <Heading level={headingLevel} size="xl" className="text-navy">
                   {highlightAt >= 0 && highlightText ? (
                     <>
                       {headlineText.slice(0, highlightAt)}
@@ -454,6 +471,7 @@ export function HeroSection({
                   phone={phone}
                   whatsapp={whatsapp}
                   priority={index === 0}
+                  headingLevel={index === 0 ? "h1" : "h2"}
                 />
               ) : (
                 <HeroContent
@@ -465,6 +483,7 @@ export function HeroSection({
                   trust={trust}
                   whatsapp={whatsapp}
                   priority={index === 0}
+                  headingLevel={index === 0 ? "h1" : "h2"}
                 />
               )}
             </div>

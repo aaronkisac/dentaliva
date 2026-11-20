@@ -45,6 +45,8 @@ const languageLabels = {
   toggleMenu: "Menüyü aç/kapat",
   closeMenu: "Menüyü kapat",
   languageSwitcher: "Dil seçimi",
+  navMain: "Main",
+  navMobile: "Mobile",
 };
 
 function renderHeader(overrides: Partial<Parameters<typeof Header>[0]> = {}) {
@@ -54,7 +56,12 @@ function renderHeader(overrides: Partial<Parameters<typeof Header>[0]> = {}) {
       logo={logo}
       cta={{ label: "Randevu Al", href: "/randevu" }}
       contact={{ phone: "+90 212 555 54 82", email: "info@dentaliva.com" }}
-      labels={{ toggleMenu: "Menüyü aç/kapat", closeMenu: "Menüyü kapat" }}
+      labels={{
+        toggleMenu: "Menüyü aç/kapat",
+        closeMenu: "Menüyü kapat",
+        navMain: "Main",
+        navMobile: "Mobile",
+      }}
       {...overrides}
     />,
   );
@@ -210,7 +217,12 @@ describe("Header", () => {
       <Header
         items={items}
         logo={logo}
-        labels={{ toggleMenu: "Menüyü aç/kapat", closeMenu: "Menüyü kapat" }}
+        labels={{
+          toggleMenu: "Menüyü aç/kapat",
+          closeMenu: "Menüyü kapat",
+          navMain: "Main",
+          navMobile: "Mobile",
+        }}
       />,
     );
   });
@@ -362,7 +374,12 @@ describe("gruplu açılır menü (mega panel)", () => {
       <Header
         items={menuItems}
         logo={logo}
-        labels={{ toggleMenu: "Menüyü aç/kapat", closeMenu: "Menüyü kapat" }}
+        labels={{
+          toggleMenu: "Menüyü aç/kapat",
+          closeMenu: "Menüyü kapat",
+          navMain: "Main",
+          navMobile: "Mobile",
+        }}
       />,
     );
   }
@@ -454,7 +471,12 @@ describe("gruplu açılır menü (mega panel)", () => {
       <Header
         items={menuItems}
         logo={logo}
-        labels={{ toggleMenu: "Menüyü aç/kapat", closeMenu: "Menüyü kapat" }}
+        labels={{
+          toggleMenu: "Menüyü aç/kapat",
+          closeMenu: "Menüyü kapat",
+          navMain: "Main",
+          navMobile: "Mobile",
+        }}
       />,
     );
   });
@@ -487,7 +509,12 @@ describe("gruplu menü varyant dalları", () => {
       <Header
         items={darkItems}
         logo={logo}
-        labels={{ toggleMenu: "Menüyü aç/kapat", closeMenu: "Menüyü kapat" }}
+        labels={{
+          toggleMenu: "Menüyü aç/kapat",
+          closeMenu: "Menüyü kapat",
+          navMain: "Main",
+          navMobile: "Mobile",
+        }}
       />,
     );
   }

@@ -40,8 +40,21 @@ const tr = {
   serviceSlideAria: (n: number) => `${n}. hizmet`,
   // DSN-89: hero banner carousel bölge etiketi.
   heroCarouselRegion: "Öne çıkan banner'lar",
+  // DSN-103: slayt değişince ekran okuyucu duyurusu (WCAG 4.1.3; #159 deseni).
+  heroCarouselStatus: (n: number, total: number) => `${n}. banner, ${total} banner içinde`,
   // DSN-90: Medilo varyantının bilgi bloğu telefon satırı.
   heroMediloCallLabel: "Bizi arayın:",
+  // DSN-103: yorum carousel etiketleri (önceki Önceki/Sonraki yorum sabitleri).
+  prevReviews: "Önceki yorumlar",
+  nextReviews: "Sonraki yorumlar",
+  reviewSlideAria: (n: number) => `${n}. yorum`,
+  // DSN-103: galeri sekmeleri + alt fallback'leri (Türkçe sabitlerdi).
+  galleryTabClinic: "Klinik",
+  galleryTabOnceSonra: "Önce / Sonra",
+  galleryAltFallback: (n: number) => `Galeri görseli ${n}`,
+  lightboxLargeAlt: "Büyük görsel",
+  treatmentsEmptyState: "Tedavi listesi hazırlanıyor.",
+  branchesEmptyState: "Şube bilgileri hazırlanıyor.",
 
   // lightbox aria labels
   lightboxImageAria: (n: number) => `Görsel ${n} — büyüt`,
@@ -126,7 +139,17 @@ const en: typeof tr = {
   nextServices: "Next services",
   serviceSlideAria: (n) => `Service ${n}`,
   heroCarouselRegion: "Featured banners",
+  heroCarouselStatus: (n, total) => `Banner ${n} of ${total}`,
   heroMediloCallLabel: "Call us at:",
+  prevReviews: "Previous reviews",
+  nextReviews: "Next reviews",
+  reviewSlideAria: (n) => `Review ${n}`,
+  galleryTabClinic: "Clinic",
+  galleryTabOnceSonra: "Before / After",
+  galleryAltFallback: (n) => `Gallery image ${n}`,
+  lightboxLargeAlt: "Large image",
+  treatmentsEmptyState: "Treatment list is being prepared.",
+  branchesEmptyState: "Branch information is being prepared.",
 
   lightboxImageAria: (n) => `Image ${n} — enlarge`,
   lightboxFilterAria: "Gallery filter",
@@ -207,7 +230,17 @@ const nl: typeof tr = {
   nextServices: "Volgende behandelingen",
   serviceSlideAria: (n) => `Behandeling ${n}`,
   heroCarouselRegion: "Uitgelichte banners",
+  heroCarouselStatus: (n, total) => `Banner ${n} van ${total}`,
   heroMediloCallLabel: "Bel ons:",
+  prevReviews: "Vorige reviews",
+  nextReviews: "Volgende reviews",
+  reviewSlideAria: (n) => `Review ${n}`,
+  galleryTabClinic: "Kliniek",
+  galleryTabOnceSonra: "Voor / Na",
+  galleryAltFallback: (n) => `Galerijafbeelding ${n}`,
+  lightboxLargeAlt: "Vergrote afbeelding",
+  treatmentsEmptyState: "Behandellijst wordt voorbereid.",
+  branchesEmptyState: "Vestigingsinformatie wordt voorbereid.",
 
   lightboxImageAria: (n) => `Afbeelding ${n} — vergroot`,
   lightboxFilterAria: "Galerijfilter",
