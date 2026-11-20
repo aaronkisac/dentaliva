@@ -75,7 +75,7 @@ async function readBodyWithCap(request: Request, maxBytes: number): Promise<Uint
       done: boolean;
       value?: Uint8Array;
     };
-    if (done) break;
+    if (done || !value) break;
     total += value.byteLength;
     if (total > maxBytes) {
       await reader.cancel();
