@@ -47,6 +47,65 @@ export interface BreadcrumbItem {
   url: string;
 }
 
+/** DSN-101: hekim detay sayfası için Physician varlığı. */
+export interface PhysicianInput {
+  name: string;
+  url: string;
+  /** Prebuilt absolute image URL; omitted → alan çıkmaz. */
+  imageUrl?: string;
+  /** Unvan (ör. "Periodontolog"); omitted → alan çıkmaz. */
+  jobTitle?: string;
+  /** Kurum adı (worksFor). */
+  organizationName?: string;
+  organizationUrl?: string;
+}
+
+/** Physician entity from doctor profile data (local pack + rich results). */
+export function buildPhysicianJsonLd(input: PhysicianInput): Record<string, unknown> {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Physician",
+    name: input.name,
+    url: input.url,
+    ...(input.imageUrl ? { image: input.imageUrl } : {}),
+    ...(input.jobTitle ? { jobTitle: input.jobTitle } : {}),
+    ...(input.organizationName
+      ? {
+          worksFor: {
+            "@type": "Dentist",
+            name: input.organizationName,
+            ...(input.organizationUrl ? { url: input.organizationUrl } : {}),
+          },
+        }
+      : {}),
+  };
+}
+
+/** DSN-101: blog detay sayfası için BlogPosting varlığı. */
+export interface BlogPostingInput {
+  headline: string;
+  url: string;
+  /** Prebuilt absolute image URL; omitted → alan çıkmaz. */
+  imageUrl?: string;
+  datePublished?: string;
+  dateModified?: string;
+  authorName?: string;
+}
+
+/** BlogPosting entity from post data (article rich results). */
+export function buildBlogPostingJsonLd(input: BlogPostingInput): Record<string, unknown> {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: input.headline,
+    url: input.url,
+    ...(input.imageUrl ? { image: [input.imageUrl] } : {}),
+    ...(input.datePublished ? { datePublished: input.datePublished } : {}),
+    ...(input.dateModified ? { dateModified: input.dateModified } : {}),
+    ...(input.authorName ? { author: { "@type": "Person", name: input.authorName } } : {}),
+  };
+}
+
 /** BreadcrumbList from the rendered section trail (first = root). */
 export function buildBreadcrumbJsonLd(items: BreadcrumbItem[]): Record<string, unknown> {
   return {

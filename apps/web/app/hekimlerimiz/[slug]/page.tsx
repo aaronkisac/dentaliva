@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 import { t } from "../../../src/i18n";
-import { buildBreadcrumbJsonLd } from "@dentaliva/seo";
+import { buildBreadcrumbJsonLd, buildPhysicianJsonLd } from "@dentaliva/seo";
 
 import { Reveal, Section } from "@dentaliva/ui";
 import { DoctorBio } from "../../../components/doctor-bio";
@@ -13,7 +13,7 @@ import { fetchDoctorBySlug, fetchDoctors } from "../../../src/content/doctors";
 import { fetchHomePageDocument, fetchSiteSettings } from "../../../src/content/home";
 import { fetchSiteCopy } from "../../../src/content/site-copy";
 import { readClient } from "../../../src/sanity";
-import { absoluteUrl, pageMetadata } from "../../../src/seo";
+import { absoluteUrl, pageMetadata, sanityImageUrl, siteUrl } from "../../../src/seo";
 import { SeedPlaceholder } from "../../../components/seed-placeholder";
 import { pageString } from "../../../src/page-strings";
 import { routes } from "../../../src/routes";
@@ -69,6 +69,17 @@ export default async function DoctorDetailPage({ params }: PageProps) {
           { name: pageString("doctorsTitle"), url: absoluteUrl(routes.doctors) },
           { name: doctor.name ?? "Hekim", url: absoluteUrl(routes.doctor(slug)) },
         ])}
+      />
+      {/* DSN-101: Physician varlığı — local pack + rich result sinyali. */}
+      <JsonLd
+        data={buildPhysicianJsonLd({
+          name: doctor.name ?? "Hekim",
+          url: absoluteUrl(routes.doctor(slug)),
+          ...(doctor.photo?.ref ? { imageUrl: sanityImageUrl(doctor.photo.ref) } : {}),
+          ...(t(doctor.title) ? { jobTitle: t(doctor.title) } : {}),
+          organizationName: settings?.siteName ?? "Dentaliva",
+          organizationUrl: siteUrl,
+        })}
       />
       {/* DSN-32: kare portre (carousel'la aynı dil, rounded-[4px]) + PageHero.
             DSN-43: foto yoksa markalı baş harf monogramı — boş hero değil. */}

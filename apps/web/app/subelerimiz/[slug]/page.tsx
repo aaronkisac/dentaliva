@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 
 import { t, tBlocks } from "../../../src/i18n";
-import { buildBreadcrumbJsonLd } from "@dentaliva/seo";
+import { buildBreadcrumbJsonLd, buildDentistJsonLd } from "@dentaliva/seo";
 
 import { Reveal, Section } from "@dentaliva/ui";
 import { JsonLd } from "../../../components/json-ld";
@@ -69,6 +69,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     title: branch.name ?? "Şube",
     description: t(branch.address),
     seo: branch.seo,
+    alternateKey: "branches",
+    // DSN-101: şube sayfası kendi fotoğrafıyla paylaşılır (WhatsApp kartı).
+    ...(branch.image?.ref
+      ? { ogImageRef: branch.image.ref, ogImageAlt: branch.name ?? t(branch.address) }
+      : {}),
   });
 }
 
@@ -86,9 +91,26 @@ export default async function BranchDetailPage({ params }: PageProps) {
   }
   const lightboxClose = t(copy?.ui?.lightboxClose);
   const blocks = tBlocks(branch.body);
+  // DSN-101: şube-başına LocalBusiness (Dentist) varlığı — local pack sinyali.
+  // NAP/geo verisi zaten branch dokümanında; eksikse varlık basılmaz.
+  const branchJsonLd =
+    branch.phone && t(branch.address)
+      ? buildDentistJsonLd({
+          name: branch.name ?? "",
+          url: absoluteUrl(routes.branch(branch.slug)),
+          phone: branch.phone,
+          streetAddress: t(branch.address),
+          city: pageString("jsonLdCity"),
+          ...(t(branch.hours) ? { openingHours: t(branch.hours) } : {}),
+          ...(branch.geo?.lat !== undefined && branch.geo?.lng !== undefined
+            ? { geo: { lat: branch.geo.lat, lng: branch.geo.lng } }
+            : {}),
+        })
+      : null;
 
   return (
     <>
+      {branchJsonLd ? <JsonLd data={branchJsonLd} /> : null}
       <JsonLd
         data={buildBreadcrumbJsonLd([
           { name: pageString("breadcrumbHome"), url: absoluteUrl("/") },

@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 
 import { t, tBlocks } from "../../../src/i18n";
-import { buildBreadcrumbJsonLd } from "@dentaliva/seo";
+import { buildBlogPostingJsonLd, buildBreadcrumbJsonLd } from "@dentaliva/seo";
 
 import { Reveal, Heading, Section, Text } from "@dentaliva/ui";
 import { JsonLd } from "../../../components/json-ld";
@@ -15,7 +15,7 @@ import { fetchBlogPostBySlug, fetchBlogPosts } from "../../../src/content/blog";
 import { fetchHomePageDocument, fetchSiteSettings } from "../../../src/content/home";
 import { fetchSiteCopy } from "../../../src/content/site-copy";
 import { readClient } from "../../../src/sanity";
-import { absoluteUrl, pageMetadata } from "../../../src/seo";
+import { absoluteUrl, pageMetadata, sanityImageUrl } from "../../../src/seo";
 import { pageString } from "../../../src/page-strings";
 import { routes } from "../../../src/routes";
 
@@ -77,6 +77,16 @@ export default async function BlogPostPage({ params }: PageProps) {
             url: absoluteUrl(routes.blogPost(slug)),
           },
         ])}
+      />
+      {/* DSN-101: BlogPosting varlığı — article rich result sinyali. */}
+      <JsonLd
+        data={buildBlogPostingJsonLd({
+          headline: t(post.title) || "Blog",
+          url: absoluteUrl(routes.blogPost(slug)),
+          ...(post.heroImage?.ref ? { imageUrl: sanityImageUrl(post.heroImage.ref) } : {}),
+          ...(post.publishedAt ? { datePublished: post.publishedAt } : {}),
+          ...(post.author?.name ? { authorName: post.author.name } : {}),
+        })}
       />
       <Section>
         {/* DSN-94: sayfa ailesinin gold-dash eyebrow'i — listeye dönüş

@@ -20,6 +20,7 @@ export const metadata: Metadata = pageMetadata({
   path: routes.about,
   title: pageString("aboutTitle"),
   description: pageString("aboutDescription"),
+  alternateKey: "about",
 });
 
 /**

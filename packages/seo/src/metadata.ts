@@ -39,6 +39,8 @@ export interface BuiltMetadata {
     card: "summary_large_image" | "summary";
     title: string;
     description: string;
+    /** DSN-101: X/Twitter kartı og görselini taşır — og olsa bile eskiden düşerdi. */
+    images: Array<{ url: string; alt?: string }>;
   };
 }
 
@@ -75,6 +77,7 @@ export function buildMetadata(input: SeoBuilderInput): BuiltMetadata {
       card: images.length > 0 ? "summary_large_image" : "summary",
       title,
       description,
+      images,
     },
   };
 }

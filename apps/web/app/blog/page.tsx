@@ -19,6 +19,7 @@ export const metadata: Metadata = pageMetadata({
   path: routes.blog,
   title: "Blog",
   description: pageString("blogDescription"),
+  alternateKey: "blog",
 });
 
 /**

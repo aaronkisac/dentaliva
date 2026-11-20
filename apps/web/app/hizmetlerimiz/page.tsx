@@ -14,6 +14,7 @@ export const metadata: Metadata = pageMetadata({
   path: routes.treatments,
   title: pageString("servicesTitle"),
   description: "Dentaliva tedavileri",
+  alternateKey: "treatments",
 });
 
 export default async function TreatmentsPage() {

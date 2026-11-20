@@ -17,6 +17,7 @@ export const metadata: Metadata = pageMetadata({
   path: routes.gallery,
   title: pageString("galleryTitle"),
   description: pageString("galleryDescription"),
+  alternateKey: "gallery",
 });
 
 export default async function GalleryPage() {

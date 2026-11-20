@@ -71,3 +71,25 @@ describe("buildMetadata", () => {
     expect(meta.description).toBe("İmplant tedavisi hakkında bilgi.");
   });
 });
+
+describe("buildMetadata twitter images (DSN-101)", () => {
+  const base = {
+    siteUrl: SITE,
+    path: "/hizmetlerimiz/implant/",
+    fallbackTitle: "İmplant Tedavisi",
+    fallbackDescription: "İmplant tedavisi hakkında bilgi.",
+  };
+
+  it("mirrors the og image into the twitter card", () => {
+    const meta = buildMetadata({
+      ...base,
+      ogImageUrl: "https://cdn.sanity.io/img.jpg",
+      ogImageAlt: "İmplant",
+    });
+    expect(meta.twitter.images).toEqual([{ url: "https://cdn.sanity.io/img.jpg", alt: "İmplant" }]);
+  });
+
+  it("leaves twitter images empty without an og image", () => {
+    expect(buildMetadata({ ...base }).twitter.images).toEqual([]);
+  });
+});
