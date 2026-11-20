@@ -80,7 +80,10 @@ export function BeforeAfterSlider({
   return (
     <div
       ref={frameRef}
-      className="relative aspect-[4/3] cursor-ew-resize touch-none select-none bg-navy"
+      // DSN-103: touch-pan-y — dikey sayfa kaydırma korunur; yatay sürükleme
+      // pointer-capture'la slider'ı sürer (touch-none görsel alanını ölü
+      // bölge yapıyordu).
+      className="relative aspect-[4/3] cursor-ew-resize touch-pan-y select-none bg-navy"
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
       onPointerUp={stopDrag}

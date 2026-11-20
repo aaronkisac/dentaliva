@@ -47,7 +47,11 @@ export function ReviewsSection({ items, heading }: { items: TestimonialItem[]; h
     <Section className="bg-navy">
       <CarouselTrack
         count={items.length}
-        ariaLabelPrefix="yorum"
+        labels={{
+          prev: uiString("prevReviews"),
+          next: uiString("nextReviews"),
+          slide: (n) => uiString("reviewSlideAria")(n),
+        }}
         tone="dark"
         header={header}
         className="mt-8 items-stretch"

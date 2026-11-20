@@ -10,6 +10,7 @@ import { fetchSiteCopy } from "../../src/content/site-copy";
 import { readClient } from "../../src/sanity";
 import { pageMetadata } from "../../src/seo";
 import { pageString } from "../../src/page-strings";
+import { uiString } from "../../src/ui-strings";
 import { routes } from "../../src/routes";
 
 export const metadata: Metadata = pageMetadata({
@@ -40,7 +41,7 @@ export default async function BranchesPage() {
       <Reveal>
         <Section>
           {branches.length === 0 ? (
-            <Text className="mt-6">Şube bilgileri hazırlanıyor.</Text>
+            <Text className="mt-6">{uiString("branchesEmptyState")}</Text>
           ) : (
             /* DSN-71: yatay şube satırları — foto + tam iletişim (telefon,
                saatler) + yol tarifi; 3 öğeli sayfada kart grid'i yerine

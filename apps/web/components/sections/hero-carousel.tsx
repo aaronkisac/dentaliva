@@ -45,6 +45,13 @@ export function HeroCarousel({
       onFocusCapture={() => setPaused(true)}
       onBlurCapture={() => setPaused(false)}
     >
+      {/* DSN-103: slayt değişince ekran okuyucu duyurusu (WCAG 4.1.3) —
+          team carousel'in role="status" deseni (#159); pasif slaytlar
+          aria-hidden + visibility ile tab sırası dışında olduğu için
+          konum duyurusu yeterli. */}
+      <div role="status" className="sr-only">
+        {uiString("heroCarouselStatus")(active + 1, count)}
+      </div>
       {slides.map((slide, index) => (
         <div
           key={index}

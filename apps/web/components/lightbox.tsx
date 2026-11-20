@@ -14,8 +14,8 @@ import { uiString } from "../src/ui-strings";
 const ENV = imageTarget();
 
 const TABS = [
-  { id: "klinik", label: "Klinik" },
-  { id: "onceSonra", label: "Önce / Sonra" },
+  { id: "klinik", labelKey: "galleryTabClinic" },
+  { id: "onceSonra", labelKey: "galleryTabOnceSonra" },
 ] as const;
 
 type GalleryTab = (typeof TABS)[number]["id"];
@@ -110,7 +110,7 @@ export function GalleryLightbox({
       >
         <Image
           src={ref}
-          alt={caption || `Galeri görseli ${index + 1}`}
+          alt={caption || uiString("galleryAltFallback")(index + 1)}
           width={dims.width}
           height={dims.height}
           sizes={span ? "(max-width: 768px) 100vw, 50vw" : "(max-width: 768px) 50vw, 25vw"}
@@ -161,7 +161,7 @@ export function GalleryLightbox({
                     : "border border-[var(--dvn-line-gold)] text-navy hover:bg-navy hover:text-white")
                 }
               >
-                {t.label}
+                {uiString(t.labelKey)}
               </button>
             ))}
           </div>
@@ -231,7 +231,8 @@ export function GalleryLightbox({
                   aria-label={uiString("galleryImageAria")(i + 1)}
                   aria-current={carousel.index === i ? "true" : undefined}
                   onClick={() => carousel.goTo(Math.min(i, carousel.maxIndex))}
-                  className="p-1.5"
+                  // DSN-103: nokta dokunma hedefi 24×24'ün altındaydı.
+                  className="p-2.5"
                 >
                   <span
                     aria-hidden="true"
@@ -367,7 +368,7 @@ export function LightboxStage({
         {image && dims ? (
           <Image
             src={ref}
-            alt={caption || "Büyük görsel"}
+            alt={caption || uiString("lightboxLargeAlt")}
             width={dims.width}
             height={dims.height}
             sizes="90vw"

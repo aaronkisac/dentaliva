@@ -17,6 +17,11 @@ const tr = {
   closeMenu: "Menüyü kapat",
   // DSN-97: header dil toggle'ının erişilebilir adı.
   languageSwitcher: "Dil seçimi",
+  // DSN-103: nav landmark etiketleri (ui paketindeki "Main"/"Mobile"
+  // İngilizce sabitleri yerine — nl/tr sitelerde ekran okuyucu doğru dilde
+  // duyurur).
+  headerNavMain: "Ana gezinme",
+  headerNavMobile: "Mobil menü",
   breadcrumbHome: "Ana Sayfa",
 
   // home metadata
@@ -58,6 +63,8 @@ const en: typeof tr = {
   closeMenu: "Close menu",
   // DSN-97: header dil toggle'ının erişilebilir adı.
   languageSwitcher: "Language selection",
+  headerNavMain: "Main navigation",
+  headerNavMobile: "Mobile menu",
   breadcrumbHome: "Home",
 
   homeTitle: "Dentaliva Dental Clinic | Istanbul",
@@ -95,6 +102,8 @@ const nl: typeof tr = {
   closeMenu: "Menu sluiten",
   // DSN-97: header dil toggle'ının erişilebilir adı.
   languageSwitcher: "Taalkeuze",
+  headerNavMain: "Hoofdnavigatie",
+  headerNavMobile: "Mobiel menu",
   breadcrumbHome: "Home",
 
   homeTitle: "Dentaliva Tandkliniek | Istanbul",
