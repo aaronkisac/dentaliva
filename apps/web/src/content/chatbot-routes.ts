@@ -17,6 +17,7 @@ import type {
 import type { DoctorItem, FaqEntry } from "./home";
 
 import { getSite } from "../config";
+import { filterPublishable } from "./publishable-slug";
 import { toChatbotClinic, toChatbotDoctors, toChatbotFaq, toChatbotServices } from "./chatbot";
 
 /** Demo slot data from the prototype contract (no live scheduling in v1). */
@@ -37,11 +38,11 @@ const endpoints = {
   },
   services: async (client: SanityClient): Promise<ChatbotService[]> => {
     const list = await client.fetch<Array<ChatbotServiceItem> | null>(treatmentListQuery);
-    return toChatbotServices(list ?? []);
+    return toChatbotServices(filterPublishable(list));
   },
   doctors: async (client: SanityClient): Promise<ChatbotDoctor[]> => {
     const list = await client.fetch<Array<DoctorItem> | null>(doctorListQuery);
-    return toChatbotDoctors(list ?? []);
+    return toChatbotDoctors(filterPublishable(list));
   },
   faq: async (client: SanityClient): Promise<ChatbotFaq[]> => {
     const list = await client.fetch<Array<FaqEntry> | null>(faqListQuery);

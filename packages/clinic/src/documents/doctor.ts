@@ -1,5 +1,7 @@
 import { defineField, defineType } from "sanity";
 
+import { publishableSlugValidation } from "../slug";
+
 /** A dentist (hekim) profile page. */
 export const doctor = defineType({
   name: "doctor",
@@ -17,7 +19,7 @@ export const doctor = defineType({
       title: "URL",
       type: "slug",
       options: { source: "name" },
-      validation: (rule) => rule.required(),
+      validation: publishableSlugValidation,
     }),
     defineField({ name: "title", title: "Unvan", type: "localeString" }),
     defineField({ name: "photo", title: "Fotoğraf", type: "imageWithAlt" }),

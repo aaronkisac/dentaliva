@@ -27,6 +27,12 @@ describe("blog content fetchers (PGT-8)", () => {
     expect(await fetchBlogPosts(mockClient([fixture]))).toEqual(fixture);
   });
 
+  it("drops slugs violating the publishable pattern (DSN-100)", async () => {
+    const polluted = [...fixture, { title: { tr: "Ornek" }, slug: "google.com" }];
+    const result = await fetchBlogPosts(mockClient([polluted]));
+    expect(result.map((post) => post.slug)).toEqual(["implant-mi-kopru-mu"]);
+  });
+
   it("fetches detail by slug and null-safes misses", async () => {
     const detail = { ...fixture[0], body: { tr: [{ _type: "block", style: "normal" }] } };
     const client = mockClient([detail]);

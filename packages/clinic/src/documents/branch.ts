@@ -2,6 +2,8 @@ import { defineField, defineType } from "sanity";
 
 import { validTrPhone } from "@dentaliva/sanity-schema";
 
+import { publishableSlugValidation } from "../slug";
+
 /** A clinic branch (şube) with NAP details for local SEO. */
 export const branch = defineType({
   name: "branch",
@@ -19,7 +21,7 @@ export const branch = defineType({
       title: "URL",
       type: "slug",
       options: { source: "name" },
-      validation: (rule) => rule.required(),
+      validation: publishableSlugValidation,
     }),
     defineField({
       name: "address",

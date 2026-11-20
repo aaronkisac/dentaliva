@@ -1,5 +1,7 @@
 import { defineField, defineType } from "sanity";
 
+import { publishableSlugValidation } from "../slug";
+
 /** Legal pages (KVKK, gizlilik, çerez politikası). */
 export const legalPage = defineType({
   name: "legalPage",
@@ -16,7 +18,7 @@ export const legalPage = defineType({
       name: "slug",
       title: "URL",
       type: "slug",
-      validation: (rule) => rule.required(),
+      validation: publishableSlugValidation,
     }),
     defineField({
       name: "body",

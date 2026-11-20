@@ -26,6 +26,12 @@ describe("treatment content fetchers (PGT-4)", () => {
     expect(await fetchTreatments(mockClient([fixture]))).toEqual(fixture);
   });
 
+  it("drops slugs violating the publishable pattern (DSN-100)", async () => {
+    const polluted = [...fixture, { name: { tr: "Ornek" }, slug: "google.com" }];
+    const result = await fetchTreatments(mockClient([polluted]));
+    expect(result.map((treatment) => treatment.slug)).toEqual(["implant-tedavisi"]);
+  });
+
   it("sorts alphabetically by the active locale (locale-aware Collator)", async () => {
     const unsorted = [
       { name: { tr: "Zirkonyum Kron", en: "Zirconium crown" }, slug: "zirkonyum" },
