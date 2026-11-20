@@ -17,30 +17,13 @@ export interface SiteFeatures {
   blog: boolean;
 }
 
-/** Home page section ids rendered by the composition engine (PGT-3). */
-export const homeSectionIds = [
-  "hero",
-  "ticker",
-  "trustStrip",
-  "quickServices",
-  "about",
-  "treatmentPaths",
-  "videoTestimonials",
-  "reviewForm",
-  "howItWorks",
-  "decisionModules",
-  "travelStay",
-  "aftercare",
-  "reviews",
-  "clinics",
-  "gallery",
-  "onceSonra",
-  "doctors",
-  "faq",
-  "cta",
-] as const;
+/** Home page section ids rendered by the composition engine (PGT-3).
+ *  DSN-105: tek kaynak packages/config home-sections'ta — web ve Studio şeması
+ *  aynı listeyi tüketir, elle senkron iki liste desync'i imkânsız. */
+import type { HomeSectionId } from "@dentaliva/config/home-sections";
 
-export type HomeSectionId = (typeof homeSectionIds)[number];
+export { HOME_SECTION_IDS as homeSectionIds } from "@dentaliva/config/home-sections";
+export type { HomeSectionId };
 
 export interface NavItem {
   label: string;

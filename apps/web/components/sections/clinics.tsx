@@ -6,6 +6,7 @@ import { lqipUrl } from "@dentaliva/sanity-schema/image-url";
 
 import { imageTarget } from "../../src/image-target";
 import { routes } from "../../src/routes";
+import { MOBILE_CAROUSEL_TRACK, MOBILE_CAROUSEL_CARD } from "../mobile-carousel";
 import type { BranchItem } from "../../src/content/branches";
 
 const ENV = imageTarget();
@@ -72,7 +73,7 @@ export function ClinicsSection({
       {intro ? <p className="mt-4 max-w-3xl font-sans text-lg text-ink/70">{intro}</p> : null}
       {/* DSN-91 düzeltme: carousel YALNIZ telefon genişliğinde (<640) —
           640-900 eski 1 kolon istif, 900+ eski 3 kolon grid. */}
-      <div className="mt-8 -mx-[var(--dvn-container-gutter)] flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-pl-[var(--dvn-container-gutter)] px-[var(--dvn-container-gutter)] pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:grid md:grid-cols-3">
+      <div className={`mt-8 ${MOBILE_CAROUSEL_TRACK} gap-6 sm:grid md:grid-cols-3`}>
         {branches.slice(0, 3).map((branch) => {
           const address = t(branch.address);
           const phone = branch.phone;
@@ -134,7 +135,7 @@ export function ClinicsSection({
             return (
               <article
                 key={branch.name ?? "branch"}
-                className="w-[82%] shrink-0 snap-start sm:w-auto"
+                className={`${MOBILE_CAROUSEL_CARD} sm:w-auto`}
               >
                 {card}
               </article>
@@ -144,7 +145,7 @@ export function ClinicsSection({
             <Link
               key={branch.slug}
               href={routes.branch(branch.slug)}
-              className="group block w-[82%] shrink-0 snap-start rounded-[4px] no-underline transition-shadow duration-300 hover:shadow-[var(--dvn-shadow-lift)] sm:w-auto"
+              className={`group block ${MOBILE_CAROUSEL_CARD} rounded-[4px] no-underline transition-shadow duration-300 hover:shadow-[var(--dvn-shadow-lift)] sm:w-auto`}
             >
               {card}
             </Link>

@@ -18,14 +18,23 @@
 // imported and stays OUT of the initial script set (~100KB). DSN-68 moved it
 // to 207KB: the gallery lightbox v2 client surface (stage arrows, counter,
 // caption bar, swipe/keyboard handlers) costs ~0.9KB on the home page, where
-// the lightbox chunk is initial. The real
-// user-facing gate stays the CI Lighthouse perf budget; this line still
-// fails on genuine regressions.
+// the lightbox chunk is initial.
+//
+// DSN-105 headroom kuralı: bütçe = ölçülen + 2KB. 207'de kalan pay sıfıra
+// inmişti (206.7/207) — bir sonraki dürüst client eklemesi kapıyı kıracak ve
+// ratchet anlamsızlaşacaktı. Lightbox chunk'ını dynamic() ile düşürme
+// değerlendirildi ve REDDEDİLDİ: görünür galeri grid'i bileşenin içinde
+// (onClick dialog'u açar) — tam split ilk boyamada galeriyi boşaltır
+// (LCP/CLS zararı); yalnız dialog-içeriği split'i kazancı bütçeyi aşmaz.
+// 209KB, mevcut + 2KB'a eşittir; bir SONRAKİ artış yalnızca bu dosyaya
+// yazılmış bir gerekçeyle yapılabilir. Gerçek kullanıcı kapısı CI Lighthouse
+// perf bütçesi olmaya devam eder; bu çizgi gerçek regresyonları hâlâ
+// yakalar.
 import { readFileSync } from "node:fs";
 import { gzipSync } from "node:zlib";
 import { join } from "node:path";
 
-const BUDGET_KB = Number(process.env.BUDGET_KB ?? 207);
+const BUDGET_KB = Number(process.env.BUDGET_KB ?? 209);
 const ROUTE_HTML = join(process.cwd(), "out", process.env.BUNDLE_HTML ?? "index.html");
 
 const html = readFileSync(ROUTE_HTML, "utf8");

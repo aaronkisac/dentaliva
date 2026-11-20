@@ -1,5 +1,6 @@
 import { defineField, defineType } from "sanity";
 
+import { HOME_SECTION_OPTIONS } from "@dentaliva/config/home-sections";
 import { studioLocale } from "@dentaliva/sanity-schema";
 
 /** Singleton: home page section content (section order comes from site config). */
@@ -582,28 +583,10 @@ export const homePage = defineType({
         "Seçilen bölümler anasayfada gösterilmez (içerikleri silinmez). Tümünü geri açmak için listeyi boşaltın.",
       type: "array",
       of: [{ type: "string" }],
+      // DSN-105: seçenek listesi HOME_SECTION_IDS'ten türetilir (web
+      // composition ile aynı tek kaynak) — elle senkron liste kalmadı.
       options: {
-        list: [
-          { title: "Hero", value: "hero" },
-          { title: "Hizmet şeridi", value: "ticker" },
-          { title: "Güven şeridi", value: "trustStrip" },
-          { title: "Hizmetler carousel'i", value: "quickServices" },
-          { title: "Hakkında", value: "about" },
-          { title: "Tedavi yolları", value: "treatmentPaths" },
-          { title: "Video yorumlar", value: "videoTestimonials" },
-          { title: "Hasta yorumları", value: "reviews" },
-          { title: "Üç klinik", value: "clinics" },
-          { title: "Fotoğraf galerisi", value: "gallery" },
-          { title: "Önce/Sonra vakalar", value: "onceSonra" },
-          { title: "Ekip", value: "doctors" },
-          { title: "Ön değerlendirme formu", value: "reviewForm" },
-          { title: "Nasıl işler", value: "howItWorks" },
-          { title: "Karar modülleri", value: "decisionModules" },
-          { title: "Seyahat ve konaklama", value: "travelStay" },
-          { title: "Tedavi sonrası bakım", value: "aftercare" },
-          { title: "SSS", value: "faq" },
-          { title: "CTA bandı", value: "cta" },
-        ],
+        list: HOME_SECTION_OPTIONS,
       },
     }),
   ],

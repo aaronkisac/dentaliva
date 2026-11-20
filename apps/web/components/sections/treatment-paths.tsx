@@ -6,6 +6,7 @@ import { lqipUrl } from "@dentaliva/sanity-schema/image-url";
 
 import { imageTarget } from "../../src/image-target";
 import { routes } from "../../src/routes";
+import { MOBILE_CAROUSEL_TRACK, MOBILE_CAROUSEL_CARD } from "../mobile-carousel";
 import type { TreatmentPathItem } from "../../src/content/home";
 
 const ENV = imageTarget();
@@ -43,7 +44,7 @@ export function TreatmentPathsSection({
       ) : null}
       {/* DSN-91: mobilde yatay swipe carousel (peek'li, ok/nokta yok — css-only),
           sm üstünde eski grid birebir. */}
-      <div className="mt-8 -mx-[var(--dvn-container-gutter)] flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-pl-[var(--dvn-container-gutter)] px-[var(--dvn-container-gutter)] pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:grid sm:grid-cols-2 lg:grid-cols-4">
+      <div className={`mt-8 ${MOBILE_CAROUSEL_TRACK} gap-6 sm:grid sm:grid-cols-2 lg:grid-cols-4`}>
         {items.map((item, index) => {
           const headline = t(item.headline);
           if (!headline) return null;
@@ -85,8 +86,7 @@ export function TreatmentPathsSection({
               </div>
             </>
           );
-          const frame =
-            "group relative block aspect-[4/5] w-[82%] shrink-0 snap-start overflow-hidden rounded-[4px] transition-shadow duration-300 hover:shadow-[var(--dvn-shadow-lift)] sm:w-auto";
+          const frame = `group relative block aspect-[4/5] ${MOBILE_CAROUSEL_CARD} overflow-hidden rounded-[4px] transition-shadow duration-300 hover:shadow-[var(--dvn-shadow-lift)] sm:w-auto`;
           if (!slug) {
             return (
               <article key={`${headline}-${index}`} className={frame}>

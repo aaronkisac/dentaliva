@@ -11,7 +11,8 @@
     "./vitest/base": "./vitest/base.ts",
     "./tsconfig/base.json": "./tsconfig/base.json",
     "./tsconfig/nextjs.json": "./tsconfig/nextjs.json",
-    "./tsconfig/library.json": "./tsconfig/library.json"
+    "./tsconfig/library.json": "./tsconfig/library.json",
+    "./home-sections": "./src/home-sections.ts"
   },
   "dependencies": {
     "@eslint/js": "^9.0.0",
