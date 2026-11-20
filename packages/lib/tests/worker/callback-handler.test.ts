@@ -50,6 +50,25 @@ describe("handleCallbackPost (FRM-3)", () => {
     expect(res.status).toBe(400);
   });
 
+  it("400 invalidBody when the body stream ERRORS mid-read (review fix)", async () => {
+    const request = new Request("https://x/api/callback", {
+      method: "POST",
+      headers: { "content-type": "application/json", "cf-connecting-ip": "1.2.3.4" },
+      // undici: ReadableStream gövde duplex anahtarı ister.
+      body: new ReadableStream({
+        start(controller) {
+          controller.error(new Error("abort mid-body"));
+        },
+      }),
+      duplex: "half",
+    });
+    const deps = makeDeps();
+    const res = await handleCallbackPost(request, deps);
+    expect(res.status).toBe(400);
+    expect(deps.verifyTurnstile).not.toHaveBeenCalled();
+    expect(deps.sendMail).not.toHaveBeenCalled();
+  });
+
   it("200 + silent ok on honeypot fill (no mail sent)", async () => {
     const deps = makeDeps();
     const res = await handleCallbackPost(

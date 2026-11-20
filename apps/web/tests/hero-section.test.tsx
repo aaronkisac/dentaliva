@@ -54,6 +54,31 @@ describe("HeroSection", () => {
     // interval CRM'den gelir; client saatini sızdırmamak için markup'ta taşınmaz.
   });
 
+  it("carousel keeps ONE h1 (slide 0) and announces rotation via role=status (DSN-103)", () => {
+    const html = renderToStaticMarkup(
+      <HeroSection
+        data={{ banners: [splitBanner, bleedBanner], interval: 5 }}
+        trust={null}
+        whatsapp={null}
+      />,
+    );
+    // İnceleme nit'i: eskiden DOM'da her slaytta bir h1 vardı (3 h1).
+    expect(html).toContain("<h1");
+    expect((html.match(/<h1/g) ?? []).length).toBe(1);
+    expect(html).toContain("<h2");
+    // role=status konum duyurusu (WCAG 4.1.3) — sr-only span.
+    expect(html).toContain('role="status"');
+  });
+
+  it("single banner keeps its h1 and never mounts the status region", () => {
+    const html = renderToStaticMarkup(
+      <HeroSection data={{ banners: [splitBanner] }} trust={null} whatsapp={null} />,
+    );
+    expect(html).toContain("<h1");
+    expect((html.match(/<h1/g) ?? []).length).toBe(1);
+    expect(html).not.toContain('role="status"');
+  });
+
   it("single banner renders without the carousel client surface", () => {
     const html = renderToStaticMarkup(
       <HeroSection data={{ banners: [splitBanner] }} trust={null} whatsapp={null} />,

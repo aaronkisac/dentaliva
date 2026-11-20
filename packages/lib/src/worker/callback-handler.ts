@@ -121,7 +121,15 @@ export async function handleCallbackPost(
   }
 
   // DSN-104: cap'li okuma — chunked istek de dahil 10KB üstü erken abort.
-  const raw = await readBodyWithCap(request, MAX_BODY_BYTES);
+  // İnceleme düzeltmesi: reader atışı (istemci gövde ortasında abort,
+  // bozuk chunked encoding) 400 invalidBody'ye eslenir — request.json()
+  // dönemindeki davranış; Worker girişinde dış catch yok.
+  let raw: Uint8Array | null;
+  try {
+    raw = await readBodyWithCap(request, MAX_BODY_BYTES);
+  } catch {
+    return json(400, { error: m.invalidBody });
+  }
   if (raw === null) {
     return json(413, { error: m.bodyTooLarge });
   }
