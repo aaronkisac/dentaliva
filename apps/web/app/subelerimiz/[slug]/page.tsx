@@ -146,7 +146,7 @@ export default async function BranchDetailPage({ params }: PageProps) {
               width={1200}
               height={600}
               sizes="(max-width: 900px) 100vw, 1180px"
-              className="h-auto w-full rounded-[4px] border border-[var(--dvn-line)] object-cover"
+              className="h-auto w-full rounded-[4px] border border-[var(--dvn-line-soft)] object-cover"
             />
           ) : null}
         </Section>
@@ -173,7 +173,7 @@ export default async function BranchDetailPage({ params }: PageProps) {
             </div>
           ) : null}
           <div className="grid gap-8 pt-6 md:grid-cols-[3fr_2fr] md:items-center">
-            <div className="rounded-[4px] border border-[var(--dvn-line)] bg-white p-6 md:p-8">
+            <div className="rounded-[4px] border border-[var(--dvn-line-soft)] bg-white p-6 md:p-8">
               {/* SUBE-1 sırası (Telefon / E-mail / Lokasyon / Çalışma
                   Saatleri) DSN-38 ikonlu satır dilinde. */}
               <ul className="space-y-4">
@@ -252,7 +252,7 @@ export default async function BranchDetailPage({ params }: PageProps) {
                 loading="lazy"
                 allowFullScreen
                 referrerPolicy="no-referrer-when-downgrade"
-                className="h-[380px] w-full rounded-[4px] border border-[var(--dvn-line)] md:h-[500px]"
+                className="h-[380px] w-full rounded-[4px] border border-[var(--dvn-line-soft)] md:h-[500px]"
               />
             </div>
           ) : null}

@@ -28,6 +28,7 @@ export const cssVariables: Record<string, string> = {
   "--dvn-white": color.white,
   "--dvn-ink": color.ink,
   "--dvn-muted": color.muted,
+  "--dvn-danger": color.danger,
   "--dvn-line-gold": line.gold,
   "--dvn-line-soft": line.soft,
   "--dvn-grad-gold": gradient.gold,

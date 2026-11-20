@@ -113,7 +113,7 @@ export default async function BlogPostPage({ params }: PageProps) {
             sizes="(max-width: 900px) 100vw, 1180px"
             placeholder={post.heroImage.lqip ? "blur" : "empty"}
             blurDataURL={post.heroImage.lqip}
-            className="mt-6 h-auto w-full border border-[var(--dvn-line)] object-cover"
+            className="mt-6 h-auto w-full border border-[var(--dvn-line-soft)] object-cover"
           />
         ) : null}
         {/* DSN-94: tarih·yazar satırı görselin altında, h1'in üstünde —

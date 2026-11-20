@@ -18,12 +18,19 @@ export const color = {
   navy3: "#322a1f",
   gold: "#c09a55",
   goldSoft: "#e3d2ab",
-  goldDeep: "#96733f",
+  // DSN-102: #96733f'ten koyulaştırıldı — 12px gold-deep eyebrow etiketleri
+  // ivory/beyaz üzerinde AA'yı (4.5:1) geçsin diye (eski: 4.14/4.36).
+  goldDeep: "#8a6a3a",
   ivory: "#faf9f6",
   ivory2: "#f2efe7",
   white: "#ffffff",
   ink: "#2b2620",
-  muted: "#7a746b",
+  // DSN-102: #7a746b'ten koyulaştırıldı — muted-on-ivory yasak çiftiydi
+  // (4.40:1); artık approved (4.86:1) ve yasak girdisi belgelerden kalktı.
+  muted: "#736d64",
+  // DSN-102: form hata metni için tokenlaştırılmış renk — text-red-600
+  // token dışıydı. White'ta 6.5:1 (beyaz metinle de kullanılabilir).
+  danger: "#b3261e",
 } as const;
 
 export const line = {
