@@ -30,6 +30,7 @@ const HANDLER_MESSAGES = {
     validationFailed: "Doğrulama hatası.",
     verifyFailed: "Doğrulama başarısız. Lütfen tekrar deneyin.",
     mailFailed: "E-posta gönderilemedi. Lütfen telefonla iletişime geçin.",
+    unexpected: "Beklenmeyen bir hata oluştu. Lütfen telefonla iletişime geçin.",
   },
   en: {
     rateLimited: "Too many requests. Please try again shortly.",
@@ -38,6 +39,7 @@ const HANDLER_MESSAGES = {
     validationFailed: "Validation failed.",
     verifyFailed: "Verification failed. Please try again.",
     mailFailed: "Email could not be sent. Please contact us by phone.",
+    unexpected: "An unexpected error occurred. Please contact us by phone.",
   },
   nl: {
     rateLimited: "Te veel verzoeken. Probeer het zo weer.",
@@ -46,6 +48,7 @@ const HANDLER_MESSAGES = {
     validationFailed: "Validatie mislukt.",
     verifyFailed: "Verificatie mislukt. Probeer het opnieuw.",
     mailFailed: "E-mail kon niet worden verzonden. Neem telefonisch contact met ons op.",
+    unexpected: "Onverwachte fout. Neem telefonisch contact met ons op.",
   },
 } as const;
 
@@ -54,6 +57,42 @@ const json = (status: number, body: Record<string, unknown>): Response =>
 
 /** Geçerli form yükü 1 KB'ın bile altında; daha büyüğü kötüye kullanımdır. */
 const MAX_BODY_BYTES = 10_000;
+
+/**
+ * DSN-104: gövdeyi parça parça okur, cap aşımında erken iptal eder.
+ * Content-Length header'ı chunked transfer'da yok — yalnız header'a bakmak
+ * cap'i bypass edip gövdeyi izolatta tamamen tamponlatıyordu (SEC-1 takip).
+ */
+async function readBodyWithCap(request: Request, maxBytes: number): Promise<Uint8Array | null> {
+  if (!request.body) return new Uint8Array(0);
+  const reader = request.body.getReader();
+  const chunks: Uint8Array[] = [];
+  let total = 0;
+  for (;;) {
+    // lib paketinin TS lib'inde reader generic'i any çözünüyor — tek
+    // noktada daraltılır (eslint no-unsafe-*).
+    const { done, value } = (await reader.read()) as {
+      done: boolean;
+      value?: Uint8Array;
+    };
+    if (done) break;
+    // WHATWG streams invariant: done=false iken value daima mevcuttur.
+    const chunk = value as Uint8Array;
+    total += chunk.byteLength;
+    if (total > maxBytes) {
+      await reader.cancel();
+      return null;
+    }
+    chunks.push(chunk);
+  }
+  const body = new Uint8Array(total);
+  let offset = 0;
+  for (const chunk of chunks) {
+    body.set(chunk, offset);
+    offset += chunk.byteLength;
+  }
+  return body;
+}
 
 export async function handleCallbackPost(
   request: Request,
@@ -64,8 +103,15 @@ export async function handleCallbackPost(
   const ip = request.headers.get("cf-connecting-ip");
 
   // Limiter en başta: siteverify outbound çağrısı dahil doğrulama maliyeti,
-  // limiter'ı hiç görmeyen flood'lara açık kalmamalı.
-  if (!(await deps.rateLimit(ip))) {
+  // limiter'ı hiç görmeyen flood'lara açık kalmamalı. Binding hataları
+  // (DSN-104) genel hata sayfası yerine 500 JSON döndürür.
+  let allowed: boolean;
+  try {
+    allowed = await deps.rateLimit(ip);
+  } catch {
+    return json(500, { error: m.unexpected });
+  }
+  if (!allowed) {
     return json(429, { error: m.rateLimited });
   }
 
@@ -74,9 +120,15 @@ export async function handleCallbackPost(
     return json(413, { error: m.bodyTooLarge });
   }
 
+  // DSN-104: cap'li okuma — chunked istek de dahil 10KB üstü erken abort.
+  const raw = await readBodyWithCap(request, MAX_BODY_BYTES);
+  if (raw === null) {
+    return json(413, { error: m.bodyTooLarge });
+  }
+
   let body: Record<string, unknown>;
   try {
-    body = (await request.json()) as Record<string, unknown>;
+    body = JSON.parse(new TextDecoder().decode(raw)) as Record<string, unknown>;
   } catch {
     return json(400, { error: m.invalidBody });
   }
@@ -99,7 +151,15 @@ export async function handleCallbackPost(
   const values = parsed.data;
 
   const token = typeof body.turnstileToken === "string" ? body.turnstileToken : "";
-  if (!(await deps.verifyTurnstile(token, ip))) {
+  // DSN-104: siteverify kesintisi/timeout'u atış yapar — sendMail ile aynı
+  // hata yolu disiplini; kullanıcı formun anladığı verifyFailed JSON'ını alır.
+  let verified: boolean;
+  try {
+    verified = await deps.verifyTurnstile(token, ip);
+  } catch {
+    return json(400, { error: m.verifyFailed });
+  }
+  if (!verified) {
     return json(400, { error: m.verifyFailed });
   }
 
