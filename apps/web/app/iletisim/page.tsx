@@ -17,6 +17,7 @@ export const metadata: Metadata = pageMetadata({
   path: routes.contact,
   title: pageString("contactTitle"),
   description: "Dentaliva iletişim bilgileri",
+  alternateKey: "contact",
 });
 
 export default async function ContactPage() {

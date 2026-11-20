@@ -16,6 +16,7 @@ export const metadata: Metadata = pageMetadata({
   path: routes.branches,
   title: pageString("branchesTitle"),
   description: "Dentaliva şubeleri",
+  alternateKey: "branches",
 });
 
 export default async function BranchesPage() {

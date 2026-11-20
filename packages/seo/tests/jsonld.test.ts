@@ -1,6 +1,12 @@
 import { describe, expect, it } from "vitest";
 
-import { buildBreadcrumbJsonLd, buildDentistJsonLd, buildFaqJsonLd } from "../src/jsonld";
+import {
+  buildBlogPostingJsonLd,
+  buildBreadcrumbJsonLd,
+  buildDentistJsonLd,
+  buildFaqJsonLd,
+  buildPhysicianJsonLd,
+} from "../src/jsonld";
 
 const fullInput = {
   name: "Dentaliva",
@@ -86,5 +92,77 @@ describe("buildFaqJsonLd", () => {
     expect(ld["@type"]).toBe("FAQPage");
     expect(ld.mainEntity[0]).toMatchObject({ "@type": "Question", name: "İmplant ağrılı mı?" });
     expect(ld.mainEntity[0]?.acceptedAnswer.text).toContain("Lokal anestezi");
+  });
+});
+
+describe("buildPhysicianJsonLd (DSN-101)", () => {
+  it("builds a Physician with photo, title and organization", () => {
+    const ld = buildPhysicianJsonLd({
+      name: "Dt. Emel Özdemir",
+      url: "https://www.dentaliva.com/hekimlerimiz/emel",
+      imageUrl: "https://cdn.sanity.io/portre.jpg",
+      jobTitle: "Periodontolog",
+      organizationName: "Dentaliva",
+      organizationUrl: "https://www.dentaliva.com",
+    });
+    expect(ld["@type"]).toBe("Physician");
+    expect(ld.image).toBe("https://cdn.sanity.io/portre.jpg");
+    expect(ld.jobTitle).toBe("Periodontolog");
+    expect(ld.worksFor).toMatchObject({ "@type": "Dentist", name: "Dentaliva" });
+  });
+
+  it("omits optional fields and worksFor when absent", () => {
+    const ld = buildPhysicianJsonLd({
+      name: "Dt. Ayşe",
+      url: "https://www.dentaliva.com/hekimlerimiz/ayse",
+    });
+    expect(ld.image).toBeUndefined();
+    expect(ld.jobTitle).toBeUndefined();
+    expect(ld.worksFor).toBeUndefined();
+  });
+
+  it("builds worksFor without an organization url (DSN-101)", () => {
+    const ld = buildPhysicianJsonLd({
+      name: "Dt. Ayşe",
+      url: "https://www.dentaliva.com/hekimlerimiz/ayse",
+      organizationName: "Dentaliva",
+    });
+    expect(ld.worksFor).toMatchObject({ "@type": "Dentist", name: "Dentaliva" });
+  });
+});
+
+describe("buildBlogPostingJsonLd (DSN-101)", () => {
+  it("builds a BlogPosting with image, dates and author", () => {
+    const ld = buildBlogPostingJsonLd({
+      headline: "İmplant mı köprü mü?",
+      url: "https://www.dentaliva.com/blog/implant-mi-kopru-mu",
+      imageUrl: "https://cdn.sanity.io/kapak.jpg",
+      datePublished: "2026-09-01T09:00:00Z",
+      authorName: "Dt. Emel Özdemir",
+    });
+    expect(ld["@type"]).toBe("BlogPosting");
+    expect(ld.image).toEqual(["https://cdn.sanity.io/kapak.jpg"]);
+    expect(ld.datePublished).toBe("2026-09-01T09:00:00Z");
+    expect(ld.author).toMatchObject({ "@type": "Person", name: "Dt. Emel Özdemir" });
+  });
+
+  it("emits dateModified when provided (DSN-101)", () => {
+    const ld = buildBlogPostingJsonLd({
+      headline: "Güncellendi",
+      url: "https://www.dentaliva.com/blog/x",
+      dateModified: "2026-10-01T09:00:00Z",
+    });
+    expect(ld.dateModified).toBe("2026-10-01T09:00:00Z");
+    expect(ld.datePublished).toBeUndefined();
+  });
+
+  it("omits image/dates/author when absent", () => {
+    const ld = buildBlogPostingJsonLd({
+      headline: "Başlık",
+      url: "https://www.dentaliva.com/blog/x",
+    });
+    expect(ld.image).toBeUndefined();
+    expect(ld.datePublished).toBeUndefined();
+    expect(ld.author).toBeUndefined();
   });
 });

@@ -96,4 +96,57 @@ describe("pageMetadata", () => {
     expect(meta.title).toEqual({ absolute: "Dentaliva" });
     expect(pageMetadata({ path: "/blog", title: "Blog" }).title).toBe("Blog");
   });
+
+  it("emits hreflang alternates from the sister route tables (DSN-101)", () => {
+    const meta = pageMetadata({
+      path: "/hekimlerimiz",
+      title: "Hekimlerimiz",
+      alternateKey: "doctors",
+    });
+    const languages = meta.alternates?.languages as Record<string, string> | undefined;
+    expect(languages?.tr).toBe("https://www.dentaliva.com/hekimlerimiz");
+    expect(languages?.en).toBe("https://www.dentaliva.eu/doctors");
+    expect(languages?.nl).toBe("https://www.dentaliva.nl/onze-tandartsen");
+    expect(languages?.["x-default"]).toBe("https://www.dentaliva.com/hekimlerimiz");
+  });
+
+  it("hreflang home maps every sister domain to the root (DSN-101)", () => {
+    const languages = pageMetadata({
+      path: "/",
+      title: "Dentaliva",
+      alternateKey: "home",
+    }).alternates?.languages as Record<string, string> | undefined;
+    expect(languages).toMatchObject({
+      tr: "https://www.dentaliva.com/",
+      en: "https://www.dentaliva.eu/",
+      nl: "https://www.dentaliva.nl/",
+    });
+  });
+
+  it("excludes sites without the feature from the hreflang set (blog on nl)", () => {
+    const languages = pageMetadata({
+      path: "/blog",
+      title: "Blog",
+      alternateKey: "blog",
+    }).alternates?.languages as Record<string, string> | undefined;
+    expect(languages?.tr).toBe("https://www.dentaliva.com/blog");
+    expect(languages?.en).toBe("https://www.dentaliva.eu/blog");
+    expect(languages?.nl).toBeUndefined();
+  });
+
+  it("emits no languages without alternateKey (detail pages keep canonical only)", () => {
+    const meta = pageMetadata({ path: "/hizmetlerimiz/implant", title: "İmplant" });
+    expect(meta.alternates?.languages).toBeUndefined();
+    expect(meta.alternates?.canonical).toBe(`${siteUrl}/hizmetlerimiz/implant`);
+  });
+
+  it("mirrors the og image into twitter images (DSN-101)", () => {
+    const meta = pageMetadata({
+      path: "/hizmetlerimiz/implant-tedavisi",
+      title: "İmplant",
+      ogImageRef: "image-bbe55cc642177ee3f0b29dbe6ca980f6946155a7-1024x1024-webp",
+    });
+    const twitter = meta.twitter as { images?: Array<{ url: string }> } | null | undefined;
+    expect(twitter?.images?.[0]?.url).toContain("https://cdn.sanity.io/images/");
+  });
 });

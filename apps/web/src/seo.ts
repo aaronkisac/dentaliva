@@ -8,10 +8,43 @@ import type { Metadata } from "next";
 import { buildMetadata, type SeoObject } from "@dentaliva/seo";
 import { urlForImage } from "@dentaliva/sanity-schema/image-url";
 
-import { site } from "./config";
+import { allSites, site } from "./config";
 import { imageTarget } from "./image-target";
 
 export const siteUrl = `https://${site.domain}`;
+
+/**
+ * DSN-101 hreflang: kardeş domain'lerdeki aynı MANTIKSAL sayfanın adresi.
+ * Yol eşlemesi rota ANAHTARI üzerinden yapılır (her sites/*.ts kendi
+ * yerelleştirilmiş segmentlerini taşır); detay sayfalarında slug setleri
+ * siteler arası tutarlı olmadığından alternateKey verilmez → yalnız canonical.
+ */
+export type AlternateRouteKey =
+  | "home"
+  | "about"
+  | "treatments"
+  | "doctors"
+  | "branches"
+  | "blog"
+  | "contact"
+  | "gallery"
+  | "legal";
+
+function alternateLanguages(key: AlternateRouteKey): Record<string, string> {
+  const languages: Record<string, string> = {};
+  for (const target of allSites()) {
+    // Blog listesi nl'de yok (features.blog=false) — hreflang setine giremez.
+    if (key === "blog" && !target.features.blog) continue;
+    const path = key === "home" ? "/" : target.routes[key];
+    languages[target.defaultLocale] = `https://${target.domain}${path}`;
+  }
+  // x-default: TR birincil site (com) — dil seçimi yapamayan tarayıcılar için.
+  const primary = languages[site.defaultLocale];
+  if (primary && Object.keys(languages).length > 1) {
+    languages["x-default"] = primary;
+  }
+  return languages;
+}
 
 export interface PageSeoInput {
   /** Route path, e.g. "/hizmetlerimiz/implant-tedavisi". */
@@ -26,6 +59,8 @@ export interface PageSeoInput {
   ogImageAlt?: string;
   /** Home page: render the title verbatim instead of "%s | Dentaliva". */
   absoluteTitle?: boolean;
+  /** DSN-101: verildiğinde kardeş domain hreflang alternates üretilir. */
+  alternateKey?: AlternateRouteKey;
 }
 
 export function sanityImageUrl(ref: string, width = 1200): string {
@@ -48,10 +83,12 @@ export function pageMetadata(input: PageSeoInput): Metadata {
     ogImageAlt: input.ogImageAlt,
   });
 
+  const languages = input.alternateKey ? alternateLanguages(input.alternateKey) : undefined;
+
   return {
     ...(input.absoluteTitle ? { title: { absolute: built.title } } : { title: built.title }),
     description: built.description,
-    alternates: { canonical: built.canonical },
+    alternates: { canonical: built.canonical, ...(languages ? { languages } : {}) },
     robots: built.robots,
     openGraph: {
       title: built.openGraph.title,
@@ -68,6 +105,15 @@ export function pageMetadata(input: PageSeoInput): Metadata {
       card: built.twitter.card,
       title: built.twitter.title,
       description: built.twitter.description,
+      // DSN-101: X/Twitter kartı og görselini taşır — eskiden og olsa bile düşerdi.
+      ...(built.twitter.images.length > 0
+        ? {
+            images: built.twitter.images.map((image) => ({
+              url: image.url,
+              alt: image.alt,
+            })),
+          }
+        : {}),
     },
   };
 }

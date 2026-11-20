@@ -14,6 +14,7 @@ export const metadata: Metadata = pageMetadata({
   path: routes.legal,
   title: pageString("legalTitle"),
   description: pageString("legalDescription"),
+  alternateKey: "legal",
 });
 
 export default async function KvkkPage() {

@@ -16,14 +16,12 @@ export const metadata: Metadata = pageMetadata({
   path: routes.doctors,
   title: pageString("doctorsTitle"),
   description: "Dentaliva hekim kadrosu",
+  alternateKey: "doctors",
 });
 
 export default async function DoctorsPage() {
   // DSN-69: hero lead siteCopy'den (yoksa satır render edilmez).
-  const [doctors, copy] = await Promise.all([
-    fetchDoctors(readClient),
-    fetchSiteCopy(readClient),
-  ]);
+  const [doctors, copy] = await Promise.all([fetchDoctors(readClient), fetchSiteCopy(readClient)]);
 
   return (
     <>
