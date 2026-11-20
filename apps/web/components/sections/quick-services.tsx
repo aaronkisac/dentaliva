@@ -9,6 +9,7 @@ import { TreatmentCard } from "../treatment-card";
 import { t } from "../../src/i18n";
 import { uiString } from "../../src/ui-strings";
 import { routes } from "../../src/routes";
+import { MOBILE_CAROUSEL_TRACK } from "../mobile-carousel";
 
 function ArrowIcon({ direction }: { direction: "left" | "right" }) {
   return (
@@ -211,7 +212,7 @@ export function QuickServicesSection({
         onScroll={syncFromScroll}
         onPointerDown={markUserScroll}
         onWheel={markUserScroll}
-        className="-mx-[var(--dvn-container-gutter)] mt-8 flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-pl-[var(--dvn-container-gutter)] px-[var(--dvn-container-gutter)] pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        className={`mt-8 ${MOBILE_CAROUSEL_TRACK} gap-6`}
       >
         {(renderAll ? items : items.slice(0, INITIAL_CARDS)).map((item) => (
           <div key={item.slug ?? t(item.name)} className="dvn-service-card shrink-0 snap-start">

@@ -2,6 +2,7 @@ import { Heading, Section } from "@dentaliva/ui";
 import { t } from "../../src/i18n";
 
 import type { HowItWorksStep } from "../../src/content/home";
+import { MOBILE_CAROUSEL_TRACK, MOBILE_CAROUSEL_CARD } from "../mobile-carousel";
 
 /**
  * DSN-84: doküman #07 HOW IT WORKS — CareNow'un numaralı-çember timeline
@@ -47,11 +48,13 @@ export function HowItWorksSection({
           className="absolute left-6 right-6 top-[21px] hidden h-px bg-[var(--dvn-line-soft)] xl:block"
         />
         {/* DSN-91: mobilde yatay swipe carousel (css-only), sm üstünde eski grid. */}
-        <ol className="relative -mx-[var(--dvn-container-gutter)] flex snap-x snap-mandatory gap-x-6 overflow-x-auto scroll-pl-[var(--dvn-container-gutter)] px-[var(--dvn-container-gutter)] pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+        <ol
+          className={`relative ${MOBILE_CAROUSEL_TRACK} gap-x-6 sm:grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6`}
+        >
           {visible.map((step, index) => (
             <li
               key={`${index}-${step.title}`}
-              className="w-[82%] shrink-0 snap-start bg-white sm:w-auto"
+              className={`${MOBILE_CAROUSEL_CARD} bg-white sm:w-auto`}
             >
               <span
                 aria-hidden="true"

@@ -3,6 +3,7 @@ import { t } from "../../src/i18n";
 
 import { clampWords } from "../treatment-card";
 import { CarouselTrack } from "../carousel-track";
+import { MOBILE_CAROUSEL_CARD, MOBILE_CAROUSEL_TRACK } from "../mobile-carousel";
 import { GoogleMark } from "../google-mark";
 import { uiString } from "../../src/ui-strings";
 
@@ -104,14 +105,14 @@ export function VideoTestimonialsSection({
       ) : null}
       {/* DSN-91 düzeltme: carousel YALNIZ telefon genişliğinde (<640) —
           640-900 eski 1 kolon istif, 900+ eski 3 kolon grid. */}
-      <div className="mt-8 -mx-[var(--dvn-container-gutter)] flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-pl-[var(--dvn-container-gutter)] px-[var(--dvn-container-gutter)] pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:grid md:grid-cols-3">
+      <div className={`mt-8 ${MOBILE_CAROUSEL_TRACK} gap-6 sm:grid md:grid-cols-3`}>
         {videos.map((item) => (
           <a
             key={item.youtubeId}
             href={`https://www.youtube-nocookie.com/embed/${item.youtubeId}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="group relative block aspect-video w-[82%] shrink-0 snap-start overflow-hidden border border-[var(--dvn-line-soft)] sm:w-auto"
+            className={`group relative block aspect-video ${MOBILE_CAROUSEL_CARD} overflow-hidden border border-[var(--dvn-line-soft)] sm:w-auto`}
           >
             {/* CSP img-src i.ytimg.com'a izin verir (PRF-1); iframe yerine
                 poster: klavye tek durak + sayfa 6 uzaktan frame yüklemez. */}

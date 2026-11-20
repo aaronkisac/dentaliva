@@ -1,5 +1,7 @@
 "use client";
 
+import { MOBILE_CAROUSEL_TRACK } from "./mobile-carousel";
+
 import { useTrackCarousel } from "./use-track-carousel";
 
 function ArrowButton({
@@ -125,10 +127,7 @@ export function CarouselTrack({
           onPointerDown={markUserScroll}
           onWheel={markUserScroll}
           className={
-            "-mx-[var(--dvn-container-gutter)] flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-pl-[var(--dvn-container-gutter)] px-[var(--dvn-container-gutter)] pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden " +
-            (className ?? "") +
-            " " +
-            (trackClassName ?? "")
+            MOBILE_CAROUSEL_TRACK + " gap-6 " + (className ?? "") + " " + (trackClassName ?? "")
           }
         >
           {children}

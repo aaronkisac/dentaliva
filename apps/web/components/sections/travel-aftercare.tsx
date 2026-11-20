@@ -6,6 +6,7 @@ import { lqipUrl } from "@dentaliva/sanity-schema/image-url";
 
 import { imageTarget } from "../../src/image-target";
 import type { LocalizedPair } from "../../src/content/home";
+import { MOBILE_CAROUSEL_TRACK, MOBILE_CAROUSEL_CARD } from "../mobile-carousel";
 
 const ENV = imageTarget();
 
@@ -172,9 +173,11 @@ export function AftercareSection({
       ) : null}
       {/* DSN-91 düzeltme: carousel YALNIZ telefon genişliğinde (<640) —
           640-900 eski 1 kolon istif, 900+ eski 2 kolon grid. */}
-      <div className="mt-8 -mx-[var(--dvn-container-gutter)] flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-pl-[var(--dvn-container-gutter)] px-[var(--dvn-container-gutter)] pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:grid md:grid-cols-2">
+      <div className={`mt-8 ${MOBILE_CAROUSEL_TRACK} gap-6 sm:grid md:grid-cols-2`}>
         {normalTitle && normal.length > 0 ? (
-          <div className="w-[82%] shrink-0 snap-start rounded-[4px] border border-[var(--dvn-line-soft)] bg-white p-6 sm:w-auto">
+          <div
+            className={`${MOBILE_CAROUSEL_CARD} rounded-[4px] border border-[var(--dvn-line-soft)] bg-white p-6 sm:w-auto`}
+          >
             <h3 className="flex items-center gap-3 font-serif text-lg text-ink">
               <CardIcon kind="check" />
               {normalTitle}
@@ -189,7 +192,9 @@ export function AftercareSection({
           </div>
         ) : null}
         {urgentTitle && urgent.length > 0 ? (
-          <div className="w-[82%] shrink-0 snap-start rounded-[4px] border border-[var(--dvn-line-gold)] bg-white p-6 sm:w-auto">
+          <div
+            className={`${MOBILE_CAROUSEL_CARD} rounded-[4px] border border-[var(--dvn-line-gold)] bg-white p-6 sm:w-auto`}
+          >
             <h3 className="flex items-center gap-3 font-serif text-lg text-ink">
               <CardIcon kind="bell" />
               {urgentTitle}
