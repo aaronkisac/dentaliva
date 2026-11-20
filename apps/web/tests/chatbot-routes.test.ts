@@ -50,10 +50,17 @@ describe("chatbot static endpoints (prototype contract)", () => {
 
   it("serves services, doctors, faq and demo slots", async () => {
     const service = { name: { tr: "İmplant" }, slug: "implant", summary: { tr: "X" } };
-    expect(await fetchChatbotEndpoint(mockClient([[service]]), "services")).toHaveLength(1);
+    // DSN-100: bozuk slug'lı test tedavisi chatbot servis listesine sızamaz.
+    const polluted = [service, { name: { tr: "Ornek" }, slug: "google.com", summary: { tr: "X" } }];
+    expect(await fetchChatbotEndpoint(mockClient([polluted]), "services")).toHaveLength(1);
 
-    const doctor = { name: "Dt. Ayşe", title: { tr: "Periodontolog" } };
-    expect(await fetchChatbotEndpoint(mockClient([[doctor]]), "doctors")).toHaveLength(1);
+    const doctor = { name: "Dt. Ayşe", slug: "dt-ayse", title: { tr: "Periodontolog" } };
+    expect(
+      await fetchChatbotEndpoint(
+        mockClient([[doctor, { name: "Ornek", slug: "google.com" }]]),
+        "doctors",
+      ),
+    ).toHaveLength(1);
 
     const faq = { question: { tr: "Soru" }, answer: { tr: "Cevap" } };
     expect(await fetchChatbotEndpoint(mockClient([[faq]]), "faq")).toHaveLength(1);

@@ -3,6 +3,7 @@ import { cache } from "react";
 
 import type { SeoObject } from "@dentaliva/seo";
 import { blogBySlugQuery, blogListQuery } from "@dentaliva/sanity-schema/queries";
+import { filterPublishable } from "./publishable-slug";
 import type { LocalizedPair } from "./home";
 
 export interface BlogListItem {
@@ -42,7 +43,7 @@ async function fetchJson<T>(client: SanityClient, query: string): Promise<T> {
 
 export async function fetchBlogPosts(client: SanityClient): Promise<BlogListItem[]> {
   const list = await fetchJson<BlogListItem[] | null>(client, blogListQuery);
-  return list ?? [];
+  return filterPublishable(list);
 }
 
 /** PRF-5: generateMetadata + sayfa aynı isteği paylaşır (React cache). */

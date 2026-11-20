@@ -1,6 +1,8 @@
 import { defineField, defineType } from "sanity";
 import { studioLocale } from "@dentaliva/sanity-schema";
 
+import { publishableSlugValidation } from "../slug";
+
 /** Blog post. Body is locale-aware portable text. */
 export const blogPost = defineType({
   name: "blogPost",
@@ -18,7 +20,7 @@ export const blogPost = defineType({
       title: "URL",
       type: "slug",
       options: { source: `title.${studioLocale}` },
-      validation: (rule) => rule.required(),
+      validation: publishableSlugValidation,
     }),
     defineField({ name: "excerpt", title: "Özet", type: "localeText" }),
     defineField({

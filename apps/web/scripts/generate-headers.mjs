@@ -81,8 +81,14 @@ if (!existsSync(OUT)) {
 const WILDCARD_CSP =
   "Content-Security-Policy: object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'";
 
+// DSN-100: staging host'ları arama motorlarına kapalı — public workers.dev
+// staging URL'leri prod içeriğini indexlememeli. HEADERS_STAGING=1 yalnız
+// build-site.mjs --staging (deploy:*:staging zinciri) tarafından geçirilir;
+// prod derlemesinde satır hiç basılmaz.
+const STAGING_HEADERS = process.env.HEADERS_STAGING === "1";
+
 const COMMON = `  Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
-  X-Content-Type-Options: nosniff
+${STAGING_HEADERS ? "  X-Robots-Tag: noindex\n" : ""}  X-Content-Type-Options: nosniff
   X-Frame-Options: DENY
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=()

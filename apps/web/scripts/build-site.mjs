@@ -59,8 +59,13 @@ const args = process.argv.slice(2);
 const siteId = args[args.indexOf("--site") + 1];
 const envName = args.includes("--env") ? args[args.indexOf("--env") + 1] : "production";
 const withV1Archive = args.includes("--with-v1-archive");
+// DSN-100: --staging SADECE postbuild'e (generate-headers) "bu çıktı staging
+// deploy'u için" der — X-Robots-Tag: noindex basılır. Dataset seçimini
+// DEĞİŞTİRMEZ: staging deploy'ları production dataset okumaya devam eder
+// (bayat staging dataset tuzağı, PR #388).
+const stagingHeaders = args.includes("--staging");
 if (!siteId) {
-  console.error("[build-site] kullanım: --site <id> [--env staging]");
+  console.error("[build-site] kullanım: --site <id> [--env staging] [--staging]");
   process.exit(1);
 }
 
@@ -73,6 +78,7 @@ env.SITE_ID = site.id;
 env.NEXT_PUBLIC_SITE_ID = site.id;
 env.SANITY_PROJECT_ID = site.sanity.projectId;
 env.SANITY_DATASET = envName === "staging" ? site.sanity.stagingDataset : site.sanity.dataset;
+if (stagingHeaders) env.HEADERS_STAGING = "1";
 
 // Token: SANITY_READ_TOKEN passthrough; else the site-specific
 // SANITY_READ_TOKEN_<SITE> (CI secret / local session token); else leave the

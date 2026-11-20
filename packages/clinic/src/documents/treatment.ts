@@ -1,6 +1,8 @@
 import { defineField, defineType } from "sanity";
 import { studioLocale } from "@dentaliva/sanity-schema";
 
+import { publishableSlugValidation } from "../slug";
+
 /**
  * DSN-86 — Tedavi içerik standardı (Aaron: "crmden girerken bize bir
  * standarta göre sorsun"): periodontoloji pilotunun onaylanan yapısı artık
@@ -39,7 +41,7 @@ export const treatment = defineType({
       type: "slug",
       options: { source: `name.${studioLocale}` },
       group: "temel",
-      validation: (rule) => rule.required(),
+      validation: publishableSlugValidation,
     }),
     defineField({
       name: "summary",

@@ -33,6 +33,12 @@ describe("branch content fetchers (PGT-6)", () => {
     expect(await fetchBranches(mockClient([fixture]))).toEqual(fixture);
   });
 
+  it("drops slugs violating the publishable pattern (DSN-100)", async () => {
+    const polluted = [...fixture, { name: "Ornek", slug: "google.com" }];
+    const result = await fetchBranches(mockClient([polluted]));
+    expect(result.map((branch) => branch.slug)).toEqual(["avcilar", "basaksehir"]);
+  });
+
   it("fetches a branch by slug (single-doc query) and null-safes misses", async () => {
     const client = mockClient([fixture[0]]);
     expect((await fetchBranchBySlug(client, "avcilar"))?.name).toBe("Avcılar");

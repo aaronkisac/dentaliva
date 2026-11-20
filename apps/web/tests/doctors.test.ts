@@ -22,6 +22,12 @@ describe("doctor content fetchers (PGT-5)", () => {
     expect(await fetchDoctors(mockClient([fixture]))).toEqual(fixture);
   });
 
+  it("drops slugs violating the publishable pattern (DSN-100)", async () => {
+    const polluted = [...fixture, { name: "Ornek", slug: "google.com" }];
+    const result = await fetchDoctors(mockClient([polluted]));
+    expect(result.map((doctor) => doctor.slug)).toEqual(["dr-dt-emel-ozdemir"]);
+  });
+
   it("fetches detail by slug and null-safes misses", async () => {
     const detail = { ...fixture[0], bio: { tr: "Özgeçmiş" } };
     const client = mockClient([detail]);

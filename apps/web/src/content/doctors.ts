@@ -3,6 +3,7 @@ import { cache } from "react";
 
 import type { SeoObject } from "@dentaliva/seo";
 import { doctorBySlugQuery, doctorListQuery } from "@dentaliva/sanity-schema/queries";
+import { filterPublishable } from "./publishable-slug";
 import type { DoctorItem, LocalizedPair } from "./home";
 
 export interface DoctorDetail extends DoctorItem {
@@ -19,7 +20,7 @@ async function fetchJson<T>(client: SanityClient, query: string): Promise<T> {
 
 export async function fetchDoctors(client: SanityClient): Promise<DoctorItem[]> {
   const list = await fetchJson<DoctorItem[] | null>(client, doctorListQuery);
-  return list ?? [];
+  return filterPublishable(list);
 }
 
 /** PRF-5: generateMetadata + sayfa aynı isteği paylaşır (React cache). */

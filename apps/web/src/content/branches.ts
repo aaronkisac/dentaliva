@@ -3,6 +3,7 @@ import { cache } from "react";
 
 import type { SeoObject } from "@dentaliva/seo";
 import { branchBySlugQuery, branchListQuery } from "@dentaliva/sanity-schema/queries";
+import { filterPublishable } from "./publishable-slug";
 import type { PortableBlock } from "./blog";
 import type { LocalizedPair } from "./home";
 
@@ -32,7 +33,7 @@ async function fetchJson<T>(client: SanityClient, query: string): Promise<T> {
 
 export async function fetchBranches(client: SanityClient): Promise<BranchItem[]> {
   const list = await fetchJson<BranchItem[] | null>(client, branchListQuery);
-  return list ?? [];
+  return filterPublishable(list);
 }
 
 /** PRF-5: tek dokÃ¼man sorgusu + render-pass dedupe â tÃ¼m listeyi Ã§ekmez. */
