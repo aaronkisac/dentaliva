@@ -54,8 +54,9 @@ export function OnceSonraSection({
       ) : null}
       {/* DSN-91 deseni (düzeltilmiş): carousel YALNIZ telefon genişliğinde
           (<640) — 640-900 eski 1 kolon istif, 900+ eski 3 kolon. Kart
-          içindeki önce/sonra slider'ı görsel alanında dokunmatik sürüklemeyi
-          kendisi alır (touch-none); carousel kaydırması metin/peek alanından. */}
+          içindeki önce/sonra slider'ı görsel alanında yatay sürüklemeyi
+          kendisi alır (touch-pan-y — DSN-103); carousel kaydırması
+          metin/peek alanından, dikey sayfa kaydırması korunur. */}
       <div className={`mt-10 ${MOBILE_CAROUSEL_TRACK} gap-6 sm:grid md:grid-cols-3`}>
         {cards.map((item, index) => {
           const title = t(item.title);

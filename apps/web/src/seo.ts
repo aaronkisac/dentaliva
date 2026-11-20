@@ -9,6 +9,7 @@ import { buildMetadata, type SeoObject } from "@dentaliva/seo";
 import { urlForImage } from "@dentaliva/sanity-schema/image-url";
 
 import { allSites, site } from "./config";
+import type { SiteConfig } from "./config-types";
 import { imageTarget } from "./image-target";
 
 export const siteUrl = `https://${site.domain}`;
@@ -18,17 +19,16 @@ export const siteUrl = `https://${site.domain}`;
  * Yol eşlemesi rota ANAHTARI üzerinden yapılır (her sites/*.ts kendi
  * yerelleştirilmiş segmentlerini taşır); detay sayfalarında slug setleri
  * siteler arası tutarlı olmadığından alternateKey verilmez → yalnız canonical.
+ *
+ * İnceleme düzeltmesi: union SiteConfig["routes"] anahtarlarından türetilir —
+ * yeni rota segmenti eklenince AlternateRouteKey sessizce bayatlamaz.
  */
-export type AlternateRouteKey =
-  | "home"
-  | "about"
-  | "treatments"
-  | "doctors"
-  | "branches"
-  | "blog"
-  | "contact"
-  | "gallery"
-  | "legal";
+export type AlternateRouteKey = "home" | keyof SiteConfig["routes"];
+
+/** x-default daima com'u (TR birincil marka sitesi) gösterir — build'in
+ *  EDİLDİĞİ siteye göre değil (eski kod eu/nl build'lerinde kendini
+ *  x-default yapıyordu; yorum/karar com diyordu). */
+const PRIMARY_SITE_ID = "com";
 
 function alternateLanguages(key: AlternateRouteKey): Record<string, string> {
   const languages: Record<string, string> = {};
@@ -38,8 +38,8 @@ function alternateLanguages(key: AlternateRouteKey): Record<string, string> {
     const path = key === "home" ? "/" : target.routes[key];
     languages[target.defaultLocale] = `https://${target.domain}${path}`;
   }
-  // x-default: TR birincil site (com) — dil seçimi yapamayan tarayıcılar için.
-  const primary = languages[site.defaultLocale];
+  const primary =
+    languages[allSites().find((target) => target.id === PRIMARY_SITE_ID)?.defaultLocale ?? ""];
   if (primary && Object.keys(languages).length > 1) {
     languages["x-default"] = primary;
   }

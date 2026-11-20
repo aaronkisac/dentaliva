@@ -69,7 +69,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     title: branch.name ?? "Şube",
     description: t(branch.address),
     seo: branch.seo,
-    alternateKey: "branches",
+    // İnceleme düzeltmesi: detail sayfaları canonical-only (alternateKey
+    // listing path'ine eşlerdi — şube DETAYI sister sitelerin LİSTESİNE
+    // işaret eden geçersiz bir hreflang kümesi üretiyordu).
     // DSN-101: şube sayfası kendi fotoğrafıyla paylaşılır (WhatsApp kartı).
     ...(branch.image?.ref
       ? { ogImageRef: branch.image.ref, ogImageAlt: branch.name ?? t(branch.address) }
