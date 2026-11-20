@@ -112,6 +112,38 @@ describe("handleCallbackPost (FRM-3)", () => {
     expect(res.status).toBe(413);
   });
 
+  it("413 on a chunked body exceeding the cap even WITHOUT content-length (DSN-104)", async () => {
+    // Chunked transfer'da Content-Length yok — eski header kontrolü bu yolu
+    // bypass edip gövdeyi tamponlardı; streaming cap erken abort eder.
+    const request = new Request("https://x/api/callback", {
+      method: "POST",
+      headers: { "content-type": "application/json", "cf-connecting-ip": "1.2.3.4" },
+      body: JSON.stringify({ ...validBody, name: "x".repeat(20_000) }),
+    });
+    expect(request.headers.get("content-length")).toBeNull();
+    const deps = makeDeps();
+    const res = await handleCallbackPost(request, deps);
+    expect(res.status).toBe(413);
+    expect(deps.verifyTurnstile).not.toHaveBeenCalled();
+    expect(deps.sendMail).not.toHaveBeenCalled();
+  });
+
+  it("400 verifyFailed when verifyTurnstile THROWS (siteverify outage, DSN-104)", async () => {
+    const deps = makeDeps({ verifyTurnstile: vi.fn().mockRejectedValue(new Error("timeout")) });
+    const res = await handleCallbackPost(jsonRequest(validBody), deps);
+    expect(res.status).toBe(400);
+    const body = (await res.json()) as { error: string };
+    expect(body.error).toContain("Doğrulama başarısız");
+  });
+
+  it("500 JSON when the rate limiter binding THROWS (DSN-104)", async () => {
+    const deps = makeDeps({ rateLimit: vi.fn().mockRejectedValue(new Error("binding")) });
+    const res = await handleCallbackPost(jsonRequest(validBody), deps);
+    expect(res.status).toBe(500);
+    const body = (await res.json()) as { error: string };
+    expect(body.error).toContain("Beklenmeyen");
+  });
+
   it("passes an empty token when turnstileToken is absent (SEC-1)", async () => {
     const withoutToken: Record<string, unknown> = { ...validBody };
     delete withoutToken.turnstileToken;
