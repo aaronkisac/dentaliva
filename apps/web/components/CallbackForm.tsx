@@ -163,11 +163,11 @@ export function CallbackForm({
           autoComplete="name"
           aria-invalid={Boolean(errors.name)}
           aria-describedby={errors.name ? "cb-name-error" : undefined}
-          className="w-full border border-[var(--dvn-line-soft)] bg-white px-4 py-3 text-ink focus:border-gold focus:outline-2 focus:outline-offset-0 focus:outline-gold aria-[invalid=true]:border-red-600"
+          className="w-full border border-[var(--dvn-line-soft)] bg-white px-4 py-3 text-ink focus:border-gold focus:outline-2 focus:outline-offset-0 focus:outline-gold aria-[invalid=true]:border-danger"
           {...register("name")}
         />
         {errors.name ? (
-          <p id="cb-name-error" role="alert" className="mt-1 text-sm font-medium text-red-600">
+          <p id="cb-name-error" role="alert" className="mt-1 text-sm font-medium text-danger">
             {errors.name.message}
           </p>
         ) : null}
@@ -184,11 +184,11 @@ export function CallbackForm({
           placeholder={uiString("phonePlaceholder")}
           aria-invalid={Boolean(errors.phone)}
           aria-describedby={errors.phone ? "cb-phone-error" : undefined}
-          className="w-full border border-[var(--dvn-line-soft)] bg-white px-4 py-3 text-ink focus:border-gold focus:outline-2 focus:outline-offset-0 focus:outline-gold aria-[invalid=true]:border-red-600"
+          className="w-full border border-[var(--dvn-line-soft)] bg-white px-4 py-3 text-ink focus:border-gold focus:outline-2 focus:outline-offset-0 focus:outline-gold aria-[invalid=true]:border-danger"
           {...register("phone")}
         />
         {errors.phone ? (
-          <p id="cb-phone-error" role="alert" className="mt-1 text-sm font-medium text-red-600">
+          <p id="cb-phone-error" role="alert" className="mt-1 text-sm font-medium text-danger">
             {errors.phone.message}
           </p>
         ) : null}
@@ -206,11 +206,11 @@ export function CallbackForm({
               autoComplete="email"
               aria-invalid={Boolean(errors.email)}
               aria-describedby={errors.email ? "cb-email-error" : undefined}
-              className="w-full border border-[var(--dvn-line-soft)] bg-white px-4 py-3 text-ink focus:border-gold focus:outline-2 focus:outline-offset-0 focus:outline-gold aria-[invalid=true]:border-red-600"
+              className="w-full border border-[var(--dvn-line-soft)] bg-white px-4 py-3 text-ink focus:border-gold focus:outline-2 focus:outline-offset-0 focus:outline-gold aria-[invalid=true]:border-danger"
               {...register("email")}
             />
             {errors.email ? (
-              <p id="cb-email-error" role="alert" className="mt-1 text-sm font-medium text-red-600">
+              <p id="cb-email-error" role="alert" className="mt-1 text-sm font-medium text-danger">
                 {errors.email.message}
               </p>
             ) : null}
@@ -296,14 +296,14 @@ export function CallbackForm({
           </span>
         </div>
         {errors.kvkkConsent ? (
-          <p id="cb-kvkk-error" role="alert" className="mt-1 text-sm font-medium text-red-600">
+          <p id="cb-kvkk-error" role="alert" className="mt-1 text-sm font-medium text-danger">
             {errors.kvkkConsent.message}
           </p>
         ) : null}
       </div>
 
       {submitState === "error" && serverError ? (
-        <p role="alert" className="text-sm font-medium text-red-600">
+        <p role="alert" className="text-sm font-medium text-danger">
           {serverError}
         </p>
       ) : null}

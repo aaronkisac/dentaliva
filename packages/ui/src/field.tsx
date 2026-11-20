@@ -4,7 +4,7 @@ import { cn } from "./cn";
 
 /** Shared control chrome: ivory surface, gold focus ring, error state. */
 export const controlClassName =
-  "w-full border border-[var(--dvn-line-soft)] bg-white px-4 py-3 font-sans text-[length:var(--dvn-text-body-size)] text-ink placeholder:text-muted focus:border-gold focus:outline-2 focus:outline-offset-0 focus:outline-gold aria-[invalid=true]:border-red-600";
+  "w-full border border-[var(--dvn-line-soft)] bg-white px-4 py-3 font-sans text-[length:var(--dvn-text-body-size)] text-ink placeholder:text-muted focus:border-gold focus:outline-2 focus:outline-offset-0 focus:outline-gold aria-[invalid=true]:border-danger";
 
 export interface FieldRenderProps {
   id: string;
@@ -80,7 +80,7 @@ export function FieldError({ id, message }: FieldErrorProps) {
     <p
       id={id}
       role="alert"
-      className="mt-1 text-[length:var(--dvn-text-small-size)] font-medium text-red-600"
+      className="mt-1 text-[length:var(--dvn-text-small-size)] font-medium text-danger"
     >
       {message}
     </p>

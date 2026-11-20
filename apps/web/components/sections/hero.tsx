@@ -292,7 +292,9 @@ function HeroMediloContent({
               {eyebrowText ? (
                 <div className="flex items-center gap-3">
                   <span aria-hidden="true" className="h-px w-8 bg-gold" />
-                  <p className="font-sans text-xs uppercase tracking-widest text-gold">
+                  {/* DSN-102: beyaz kartta gold (2.63:1) değil gold-deep —
+                      koyulaştırılan token AA geçer; altın çizgi dekoratif kalır. */}
+                  <p className="font-sans text-xs uppercase tracking-widest text-gold-deep">
                     {eyebrowText}
                   </p>
                 </div>
@@ -302,7 +304,10 @@ function HeroMediloContent({
                   {highlightAt >= 0 && highlightText ? (
                     <>
                       {headlineText.slice(0, highlightAt)}
-                      <span className="relative inline-block text-gold">
+                      {/* DSN-102: highlight large text (3:1 yeterli) — gold-deep
+                          altın vurguyu korur ve AA-large geçer; altı çizgi bandı
+                          aynen kalır. */}
+                      <span className="relative inline-block text-gold-deep">
                         {highlightText}
                         <span
                           aria-hidden="true"

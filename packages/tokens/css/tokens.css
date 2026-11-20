@@ -6,12 +6,13 @@
   --dvn-navy-3: #322a1f;
   --dvn-gold: #c09a55;
   --dvn-gold-soft: #e3d2ab;
-  --dvn-gold-deep: #96733f;
+  --dvn-gold-deep: #8a6a3a;
   --dvn-ivory: #faf9f6;
   --dvn-ivory-2: #f2efe7;
   --dvn-white: #ffffff;
   --dvn-ink: #2b2620;
-  --dvn-muted: #7a746b;
+  --dvn-muted: #736d64;
+  --dvn-danger: #b3261e;
   --dvn-line-gold: rgba(192, 154, 85, 0.35);
   --dvn-line-soft: rgba(28, 22, 16, 0.1);
   --dvn-grad-gold: linear-gradient(120deg, #96733f 0%, #e3d2ab 45%, #c09a55 100%);
