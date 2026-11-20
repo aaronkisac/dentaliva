@@ -41,6 +41,15 @@ describe("handleCallbackPost (FRM-3)", () => {
     expect(res.status).toBe(400);
   });
 
+  it("treats a body-less request as invalid JSON (covers the !request.body branch, DSN-104)", async () => {
+    const request = new Request("https://x/api/callback", {
+      method: "POST",
+      headers: { "content-type": "application/json", "cf-connecting-ip": "1.2.3.4" },
+    });
+    const res = await handleCallbackPost(request, makeDeps());
+    expect(res.status).toBe(400);
+  });
+
   it("200 + silent ok on honeypot fill (no mail sent)", async () => {
     const deps = makeDeps();
     const res = await handleCallbackPost(

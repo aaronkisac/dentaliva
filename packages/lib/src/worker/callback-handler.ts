@@ -75,13 +75,15 @@ async function readBodyWithCap(request: Request, maxBytes: number): Promise<Uint
       done: boolean;
       value?: Uint8Array;
     };
-    if (done || !value) break;
-    total += value.byteLength;
+    if (done) break;
+    // WHATWG streams invariant: done=false iken value daima mevcuttur.
+    const chunk = value as Uint8Array;
+    total += chunk.byteLength;
     if (total > maxBytes) {
       await reader.cancel();
       return null;
     }
-    chunks.push(value);
+    chunks.push(chunk);
   }
   const body = new Uint8Array(total);
   let offset = 0;
